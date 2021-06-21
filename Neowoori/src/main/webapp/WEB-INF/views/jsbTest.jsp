@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>test page</title>
+<title>jsb test page</title>
 </head>
 <body>
 <div id="map" style="width:100%;height:350px;"></div>
