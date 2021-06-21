@@ -210,25 +210,25 @@ function selectEmail(ele){
 
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
 
-$("#btn_con ").on("click",function(){ 
-	var email = $("#email").val();
-	var email2 = $("#email2").val();
+// $("#btn_con ").on("click",function(){ 
+// 	var email = $("#email").val();
+// 	var email2 = $("#email2").val();
 	
-	var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+// 	var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	
-	var mail = email+"@"+email2;
-	   $("#mail").val(mail);  
-	   console.log(email);
-	   console.log(email2);
-	   console.log(mail);
-	   if(!email_rule.test(mail)){
-	       alert("이메일을 형식에 맞게 입력해주세요.");
-	     return false;
-	   }else{
-		   alert("해당 이메일로 인증번호를 발급했습니다.");
-		   $("#send_num").css("display","");
-	   }
-})
+// 	var mail = email+"@"+email2;
+// 	   $("#mail").val(mail);  
+// 	   console.log(email);
+// 	   console.log(email2);
+// 	   console.log(mail);
+// 	   if(!email_rule.test(mail)){
+// 	       alert("이메일을 형식에 맞게 입력해주세요.");
+// 	     return false;
+// 	   }else{
+// 		   alert("해당 이메일로 인증번호를 발급했습니다.");
+// 		   $("#send_num").css("display","");
+// 	   }
+// })
 
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
 
@@ -244,7 +244,7 @@ $("#btn_num ").on("click",function(){
 /*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
 
 
-/*--------------------------유효성 검사(임시)---------------------------------*/
+/*--------------------------유효성 검사 & 아이디,닉네임 중복검사(임시)---------------------------------*/
 
 $(function(){
    //중복확인 & id 유효성검사   
@@ -397,18 +397,7 @@ $(function(){
 })
 	
 /*--------------------------유효성 검사(임시)---------------------------------*/
- 
- 
- 
-/*---------------------------아이디 중복체크 AJAX 영역(json배열로 넘길예정)-------------------------*/	
- 
- 
- 
- 
- 
- 
-/*---------------------------아이디 중복체크 AJAX 영역(json배열로 넘길예정)-------------------------*/	
- 
+ 	
  
  
  
@@ -416,19 +405,22 @@ $(function(){
 	
 	function signupajax(){
 		
-		/*--------------------------카카오 경도 위도 찾기 (콘솔로만 띄워놓고 나중에 적용해야됨.)---------------------------------*/
-		 var coords = new kakao.maps.Coords($('#entX').val(),$('#entY').val()); 
-// 		var coords = new kakao.maps.Coords(400207.5, -11710); 
+		/*--------------------------카카오 경도 위도 찾기 ---------------------------------*/
+		var coords = new kakao.maps.Coords($('#entX').val(),$('#entY').val()); 
 		coords.toLatLng().toString(); // (33.45067375096625, 126.5706721005115)
-		console.log(coords.toString())
-	
-		/*--------------------------카카오 경도 위도 찾기 (콘솔로만 띄워놓고 나중에 적용해야됨.)---------------------------------*/
+		cut = coords.toLatLng().toString().replace(/\(/g,'').replace(/\)/g,'');
+		var arr = cut.split(','); // ","기점으로 두개로 나눔
+		var lati = arr[0]; //위도
+		var longi = arr[1]; //경도
+		/*--------------------------카카오 경도 위도 찾기 ---------------------------------*/
 
 		/*-----이메일------*/
 		var email = $("#email").val();
 		var email2 = $("#email2").val();
 		var mail = email+"@"+email2;
 		/*-----이메일------*/
+		
+		/*-----생년월일------*/
 		var birth = $('#birth').val();
 		var year = birth.substring(0,4);
 		var birthday1 = birth.substring(5,7);
@@ -436,19 +428,34 @@ $(function(){
 		var birthday = birthday1+birthday2;
 		console.log(birthday);
 		console.log(year);
+		/*-----생년월일------*/
+		
+		/*-----주소------*/
+		var juso = $('#roadAddrPart1').val()+" "+$('#addrDetail').val();
+		/*-----주소------*/
 		
 		  $.ajax({
-		    url: "birthday.do",
+		    url: "sign.do",
 		    type: "POST",
 		    data: {
-		    	"year" : year,
-		    	"birthday" : birthday
+		    	"uid" : $('#id').val(), // 아이디
+		    	"uname" : $('#name').val(), // 이름
+		    	"upw" : $('#pw').val(), // 비빌번호
+		    	"unick" : $('#nick').val(), // 닉네임
+		    	"umobile" : $('#mobile').val(), // 모바일번호
+		    	"ugender" : $('#gender').val(), // 성별
+		    	"uyear" : year, // 생년
+		    	"ubirthday" : birthday, //월일
+		    	"uemail" : mail, //이메일
+		    	"ujuso" : juso, // 주소
+		    	"ulati" : lati, // 위도
+		    	"ulongi" : longi //경도
 		    },
 		    success : function(data){
-		      alert("성공")
+		      alert("회원가입 성공")
 		    },
 		    error : function(){
-		      alert("에러")		
+		      alert("회원가입 실패")		
 		    }
 		  });
 		}
@@ -479,38 +486,38 @@ $(function(){
 	   var nameregex = /[가-힣]{2,}/;
 	   var phoneregex = /^01\d\d{3,4}\d{4}$/;
 	   
-// 	   var idregex = idregex.exec(id);
-// 	   if(idregex == null){ // 아이디
-// 		   alert("아이디양식을 다시 확인해주세요");
-// 		   return;
-// 	   }
-// 	   var nameregex = nameregex.exec(name);
-// 	   if(nameregex == null){ // 이름
-// 		   alert("이름양식을 다시 확인해주세요");
-// 		   retrun;
-// 	   }
-// 	   var pwregex = pwregex.exec(pw);
-// 	   if(pwregex == null){ // 비밀번호
-// 		   alert("비밀번호양식을 다시 확인해주세요");
-// 		   retrun;
-// 	   }
-// 	   var phoneregex = phoneregex.exec(mobile);
-// 	   if(phoneregex == null){ // 핸드폰 번호
-// 		   alert("핸드폰번호양식을 다시 확인해주세요");
-// 		   retrun;
-// 	   }
-// 	   if(addr1.length == 0 || addr2.length == 0 || addr3.length == 0 ){ // 주소
-// 	        alert("주소를 다시 확인해주세요");
-// 	        return false;
-// 	    }
-// 	   if(birth.length == 0){ // 생일
-// 	        alert("생일을 다시 확인해주세요");
-// 	        return false;
-// 	    }
-// 		if(gender.length == 0){ // 성별
-// 	        alert("성별을 다시 확인해주세요");
-// 	        return false;
-// 	    }
+	   var idregex = idregex.exec(id);
+	   if(idregex == null){ // 아이디
+		   alert("아이디양식을 다시 확인해주세요");
+		   return;
+	   }
+	   var nameregex = nameregex.exec(name);
+	   if(nameregex == null){ // 이름
+		   alert("이름양식을 다시 확인해주세요");
+		   retrun;
+	   }
+	   var pwregex = pwregex.exec(pw);
+	   if(pwregex == null){ // 비밀번호
+		   alert("비밀번호양식을 다시 확인해주세요");
+		   retrun;
+	   }
+	   var phoneregex = phoneregex.exec(mobile);
+	   if(phoneregex == null){ // 핸드폰 번호
+		   alert("핸드폰번호양식을 다시 확인해주세요");
+		   retrun;
+	   }
+	   if(addr1.length == 0 || addr2.length == 0 || addr3.length == 0 ){ // 주소
+	        alert("주소를 다시 확인해주세요");
+	        return false;
+	    }
+	   if(birth.length == 0){ // 생일
+	        alert("생일을 다시 확인해주세요");
+	        return false;
+	    }
+		if(gender.length == 0){ // 성별
+	        alert("성별을 다시 확인해주세요");
+	        return false;
+	    }
 	   signupajax();
    
 })

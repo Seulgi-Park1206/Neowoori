@@ -105,27 +105,52 @@ public class HomeController {
 	   public String notice() {
 	      return "PJH_notice";
 	   }
-	
-	@ResponseBody /*AJAX 연동 성공 ( json으로 받아와서 한번에 저장할 예정),(아직 이메일 인증방법 적용 생각못함)*/
-	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
-	   public void signupajax(String uid, String uname, HttpServletRequest request) {
-			String id = request.getParameter("uid");
-			String name = request.getParameter("uname");
-			System.out.println(id);
-			System.out.println(name);
-			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-			dao.pjhSignDao(id, name);
+	@RequestMapping("/jusoPopup") //주소 팝업
+	   public String jusoPopup() {
+	      return "jusoPopup";
 	   }
 	
+//	@ResponseBody /*AJAX 연동 성공 ( json으로 받아와서 한번에 저장할 예정),(아직 이메일 인증방법 적용 생각못함)*/
+//	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
+//	   public void signupajax(String uid, String uname, HttpServletRequest request) {
+//			String id = request.getParameter("uid");
+//			String name = request.getParameter("uname");
+//			System.out.println(id);
+//			System.out.println(name);
+//			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+//			dao.pjhSignDao(id, name);
+//	   }
+
 	@ResponseBody /*생년월일 가능한지 테스트*/
-	@RequestMapping(value="/birthday.do", method=RequestMethod.POST)
-	   public void birthajax(String year, String birthday, HttpServletRequest request) {
-			String year1 = request.getParameter("year");
-			String birth = request.getParameter("birthday");
-			System.out.println(year1);
+	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
+	   public void birthajax(String uid, String uname,String upw, String unick, String umobile, String ugender, 
+			   				 String uyear, String ubirthday, String uemail, String ujuso, String ulati, String ulongi,  HttpServletRequest request) {
+			String id = request.getParameter("uid");
+			String name = request.getParameter("uname");
+			String pw = request.getParameter("upw");
+			String nick = request.getParameter("unick");
+			String mobile = request.getParameter("umobile");
+			String gender = request.getParameter("ugender");
+			String year = request.getParameter("uyear");
+			String birth = request.getParameter("ubirthday");
+			String email = request.getParameter("uemail");
+			String juso = request.getParameter("ujuso");
+			String lati = request.getParameter("ulati");
+			String longi = request.getParameter("ulongi");
+			System.out.println(id);
+			System.out.println(name);
+			System.out.println(pw);
+			System.out.println(nick);
+			System.out.println(mobile);
+			System.out.println(gender);
+			System.out.println(year);
 			System.out.println(birth);
+			System.out.println(email);
+			System.out.println(juso);
+			System.out.println(lati);
+			System.out.println(longi);
 			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-			dao.pjhBirthDao(year1, birth);
+			dao.pjhsignup(id, pw, name, nick, year, ubirthday, gender, mobile, email, juso, lati, longi);
 	   }
 	
 	
