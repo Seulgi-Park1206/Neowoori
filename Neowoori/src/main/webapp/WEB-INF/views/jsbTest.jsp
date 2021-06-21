@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="map" style="width:100%;height:350px;"></div>
-p테스트를 위ddd
+
 push
 </body>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
