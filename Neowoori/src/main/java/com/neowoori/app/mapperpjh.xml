@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+	
+<mapper namespace="com.neowoori.app.IDaopjh">
+	<insert id="pjhSignDao">
+		insert into test_members1(userid,uname) values (#{param1},#{param2})
+	</insert>
+	
+	
+	<insert id="pjhBirthDao">
+		insert into test_members2(uyear,ubirthday) values (#{param1},#{param2})
+	</insert>
+	
+	
+		
+	<select id="pjhIdChk" resultType="Integer"> 
+		SELECT COUNT(*) FROM test_members1 where userid = #{param1} 
+	</select>
+	
+	
+	
+	
+	<select id="pjhNickChk" resultType="Integer"> 
+		SELECT COUNT(*) FROM test_members1 where unick = #{param1} 
+	</select>
+</mapper>

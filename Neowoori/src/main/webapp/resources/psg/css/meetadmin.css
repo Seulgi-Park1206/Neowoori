@@ -1,0 +1,22 @@
+@charset "EUC-KR";
+.tdLeft {
+	width: 35%;
+}
+.intext {
+	width: 65%;
+}
+.trExp {
+	border-top: 1px solid gray;
+}
+.tdMul {
+	margin: 0;
+	height: 150px;
+	border-left: 0;
+}
+#explain {
+	width: 99%;
+	height: 95%;
+	border: 0;
+	resize: none;
+	font-size: 17px;
+}
