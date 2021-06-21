@@ -121,7 +121,7 @@ public class HomeController {
 //			dao.pjhSignDao(id, name);
 //	   }
 
-	@ResponseBody /*생년월일 가능한지 테스트*/
+	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
 	   public void birthajax(String uid, String uname,String upw, String unick, String umobile, String ugender, 
 			   				 String uyear, String ubirthday, String uemail, String ujuso, String ulati, String ulongi,  HttpServletRequest request) {
