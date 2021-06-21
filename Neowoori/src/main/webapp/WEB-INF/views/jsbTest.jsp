@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="map" style="width:100%;height:350px;"></div>
-테스트를 위한 jspdd
+테스트를 위한 jspdddd
 </body>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881"></script>
