@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
@@ -109,17 +110,10 @@ public class HomeController {
 	   public String jusoPopup() {
 	      return "jusoPopup";
 	   }
-	
-//	@ResponseBody /*AJAX 연동 성공 ( json으로 받아와서 한번에 저장할 예정),(아직 이메일 인증방법 적용 생각못함)*/
-//	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
-//	   public void signupajax(String uid, String uname, HttpServletRequest request) {
-//			String id = request.getParameter("uid");
-//			String name = request.getParameter("uname");
-//			System.out.println(id);
-//			System.out.println(name);
-//			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-//			dao.pjhSignDao(id, name);
-//	   }
+	@RequestMapping("/adminpage") //관리자 페이지
+	   public String adminpage() {
+	      return "PJH_adminpage";
+	   }
 
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
@@ -188,6 +182,43 @@ public class HomeController {
 		}
 	}
 	
+	@ResponseBody // 로그인 아이디 체크
+	@RequestMapping(value="/login.do",method=RequestMethod.POST, produces="application/json")
+	public String login_Check(String uid, String upw ,HttpServletRequest request, HttpSession session){
+		String ID = request.getParameter("uid");
+		String PW = request.getParameter("upw");
+		System.out.println(ID);
+		System.out.println(PW);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int dto = dao.pjhlogin(ID, PW);
+		
+		if(dto == 1) {//결과 값이 있으면 아이디 존재
+			session.setAttribute("userid", ID);
+			return "1";
+		} else {		//없으면 아이디 존재 X
+			System.out.println("null");
+			return "0";
+		}
+	}
+	
+	@ResponseBody // 어드민 로그인 아이디 체크
+	@RequestMapping(value="/adminlogin.do",method=RequestMethod.POST, produces="application/json")
+	public String adminlogin_Check(String uid, String upw ,HttpServletRequest request, HttpSession session){
+		String ID = request.getParameter("uid");
+		String PW = request.getParameter("upw");
+		System.out.println(ID);
+		System.out.println(PW);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int dto = dao.pjhadminlogin(ID, PW);
+		
+		if(dto == 1) {//결과 값이 있으면 아이디 존재
+			session.setAttribute("adminid", ID);
+			return "1";
+		} else {		//없으면 아이디 존재 X
+			System.out.println("null");
+			return "0";
+		}
+	}
 	/*---------------------------------------------*/
 	
 	//#############################################################
@@ -198,8 +229,8 @@ public class HomeController {
 	// mypage
 	@RequestMapping("/mypage")
     public String myPage(Model model) {
-		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-		model.addAttribute("alData",dao.jsbSelectlocation());
+		IDaopsg dao=sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("alData",dao.psgUserInfo());
 		return "psgMypage";
     }
 	@RequestMapping("/meetList/{user_id}")

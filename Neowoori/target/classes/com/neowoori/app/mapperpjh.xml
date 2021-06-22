@@ -3,25 +3,32 @@
 	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 	
 <mapper namespace="com.neowoori.app.IDaopjh">
-	<insert id="pjhSignDao">
-		insert into test_members1(userid,uname) values (#{param1},#{param2})
-	</insert>
 	
+		<!-- 유저 로그인 -->
+	<select id="pjhlogin" resultType="Integer"> 
+		select count(*) from members where USERID=#{param1} and UPW=#{param2}
+	</select>
+
+		<!-- 관리자 로그인 -->
+	<select id="pjhadminlogin" resultType="Integer"> 
+		select count(*) from admin_account where ADMINID=#{param1} and ADMINPW=#{param2}
+	</select>
 	
+		<!-- 회원가입 -->
 	<insert id="pjhsignup">
-		insert into test_members(UNUM,USERID,UPW,UNAME,UNICK,UYEAR,UBIRTHDAY,UGENDER,UMOBILE,UMAIL,ADDRESS,LATI,LONGI) values (MEMBER_SEQ.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12})
+		insert into members(UNUM,USERID,UPW,UNAME,UNICK,UYEAR,UBIRTHDAY,UGENDER,UMOBILE,UMAIL,ADDRESS,LATI,LONGI) values (MEMBERS_SEQ.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12})
 	</insert>
 	
 	
-		
+		<!-- 아이디 중복 찾기 -->
 	<select id="pjhIdChk" resultType="Integer"> 
-		SELECT COUNT(*) FROM test_members1 where userid = #{param1} 
+		SELECT COUNT(*) FROM members where userid = #{param1} 
 	</select>
 	
 	
 	
-	
+		<!-- 닉네임 중복 찾기 -->
 	<select id="pjhNickChk" resultType="Integer"> 
-		SELECT COUNT(*) FROM test_members1 where unick = #{param1} 
+		SELECT COUNT(*) FROM members where unick = #{param1} 
 	</select>
 </mapper>
