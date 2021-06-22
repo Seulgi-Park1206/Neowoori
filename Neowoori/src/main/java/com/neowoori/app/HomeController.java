@@ -115,7 +115,7 @@ public class HomeController {
 	   public String adminpage() {
 	      return "PJH_adminpage";
 	   }
-	@ResponseBody // 관리자 페이지 불러오기
+	@ResponseBody // 관리자 유저 ajax 불러오기
 	@RequestMapping(value="/post.do", method=RequestMethod.POST,produces = "application/json")
 	   public ArrayList<BDto> reqList() {
 		   iDao dao=sqlSession.getMapper(iDao.class);

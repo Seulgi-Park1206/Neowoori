@@ -95,7 +95,7 @@ $(document)
 	$('.test').remove(); //지우면서 다시 리로딩
  	$('.test2').remove();
 	$.ajax({
-        url:'post.do'
+        url:'adminpage.do'
         , method : 'POST'
         , data: {}
         , contentType : 'application/json; charset=UTF-8'
