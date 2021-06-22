@@ -115,13 +115,13 @@ public class HomeController {
 	   public String adminpage() {
 	      return "PJH_adminpage";
 	   }
-	@ResponseBody // 관리자 유저 ajax 불러오기
-	@RequestMapping(value="/post.do", method=RequestMethod.POST,produces = "application/json")
-	   public ArrayList<BDto> reqList() {
-		   iDao dao=sqlSession.getMapper(iDao.class);
-		   ArrayList<BDto> alData=dao.listDao();
-		   return alData;
-	   }
+//	@ResponseBody // 관리자 유저 ajax 불러오기
+//	@RequestMapping(value="/post.do", method=RequestMethod.POST,produces = "application/json")
+//	   public ArrayList<BDto> reqList() {
+//		   iDao dao=sqlSession.getMapper(iDao.class);
+//		   ArrayList<BDto> alData=dao.listDao();
+//		   return alData;
+//	   }
 
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
