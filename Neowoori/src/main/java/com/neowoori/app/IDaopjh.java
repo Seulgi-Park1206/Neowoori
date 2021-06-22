@@ -8,4 +8,6 @@ public interface IDaopjh {
 	public void pjhBirthDao(String userid, String name);
 	public int pjhIdChk(String userud);
 	public int pjhNickChk(String unick);
+	public void pjhsignup(String id, String name,String pw, String nick, String mobile, String gender, 
+							String year, String birthday, String email, String josu, String lati, String longi);
 }
