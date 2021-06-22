@@ -254,6 +254,10 @@ public class HomeController {
 	   public String messageBox() {
 	      return "jsbMsgBox";
 	   }
+	@RequestMapping("/search") //get
+	   public String search() {
+	      return "jsbSearch";
+	   }
 	
 	@RequestMapping("/test") //get
 	   public String test() {
@@ -262,6 +266,7 @@ public class HomeController {
 	
 	@RequestMapping("/testindex") //get
 	   public String testIndex() {
+		
 	      return "jsbTestIndex";
 	   }
 	
@@ -278,15 +283,15 @@ public class HomeController {
 	      return "ehsCompany";
 	   }
 	@RequestMapping("/findid") //아이디찾기
-	   public String companya() {
+	   public String findid() {
 	      return "ehsFindid";
 	   }
 	@RequestMapping("/findpw") //비밀번호찾기
-	   public String companyaa() {
+	   public String findpw() {
 	      return "ehsFindpw";
 	   }
 	@RequestMapping("/create") //게시글만들기
-	   public String companyaaa() {
+	   public String create() {
 	      return "ehsCreate";
 	   }
 	
@@ -307,8 +312,11 @@ public class HomeController {
 	/*---------------전석봉 영역----------------------*/
 	@ResponseBody
 	   @RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
-	   public ArrayList<BStudy> reqList() {
+	   public ArrayList<BStudy> reqList(HttpServletRequest req) {
 		   IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+		   String one = req.getParameter("one");
+		   String two = req.getParameter("two");
+		   System.out.println(one+","+two);
 		   ArrayList<BStudy> resp=dao.jsbGetTest();
 		   return resp;
 	   }
