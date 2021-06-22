@@ -20,15 +20,32 @@
 	</insert>
 	
 	
+<<<<<<< HEAD
 		<!-- 아이디 중복 찾기 -->
+=======
+	<insert id="pjhsignup">
+		insert into test_members(UNUM,USERID,UPW,UNAME,UNICK,UYEAR,UBIRTHDAY,UGENDER,UMOBILE,UMAIL,ADDRESS,LATI,LONGI) values (MEMBER_SEQ.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12})
+	</insert>
+	
+	
+		
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 	<select id="pjhIdChk" resultType="Integer"> 
+<<<<<<< HEAD
 		SELECT COUNT(*) FROM members where userid = #{param1} 
+=======
+		SELECT COUNT(*) FROM test_members where userid = #{param1} 
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 	</select>
 	
 	
 	
 		<!-- 닉네임 중복 찾기 -->
 	<select id="pjhNickChk" resultType="Integer"> 
+<<<<<<< HEAD
 		SELECT COUNT(*) FROM members where unick = #{param1} 
+=======
+		SELECT COUNT(*) FROM test_members where unick = #{param1} 
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 	</select>
 </mapper>
