@@ -15,13 +15,13 @@
 	
 		
 	<select id="pjhIdChk" resultType="Integer"> 
-		SELECT COUNT(*) FROM test_members1 where userid = #{param1} 
+		SELECT COUNT(*) FROM test_members where userid = #{param1} 
 	</select>
 	
 	
 	
 	
 	<select id="pjhNickChk" resultType="Integer"> 
-		SELECT COUNT(*) FROM test_members1 where unick = #{param1} 
+		SELECT COUNT(*) FROM test_members where unick = #{param1} 
 	</select>
 </mapper>
