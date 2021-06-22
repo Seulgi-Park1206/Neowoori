@@ -173,8 +173,8 @@ public class HomeController {
 	// mypage
 	@RequestMapping("/mypage")
     public String myPage(Model model) {
-		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-		model.addAttribute("alData",dao.jsbSelectlocation());
+		IDaopsg dao=sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("alData",dao.psgUserInfo());
 		return "psgMypage";
     }
 	@RequestMapping("/meetList/{user_id}")
