@@ -228,15 +228,37 @@ public class HomeController {
 	/*---------------박슬기 영역----------------------*/
 	// mypage
 	@RequestMapping("/mypage")
-    public String myPage(Model model) {
-		IDaopsg dao=sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("alData",dao.psgUserInfo());
+    public String myPage(Model model, HttpServletRequest request, HttpSession session) {
+		session = request.getSession();
+		String uid = (String) session.getAttribute("usid");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("alData", dao.psgUserInfo(uid));
 		return "psgMypage";
     }
 	@RequestMapping("/meetList/{user_id}")
-	public String meetList(@PathVariable String user_id, Model model) {
-		model.addAttribute("u_id", user_id);
+	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
+		// session 설정(로그인 시 설정부분 제거 예정)
+		session = request.getSession();
+		String usid = "juhyck95";
+		// id = juhyck95
+		// pw = qkrwngur12
+		session.setAttribute("usid", usid);
+		// session_usid 가져오기
+		String uid = (String) session.getAttribute("usid");
+		
+		// DB에서 해당 유저의 스터디 목록 조회
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+				
 		return "psgMeetList";
+	}
+	@ResponseBody // 내 스터디 목록 검색
+	@RequestMapping(value="/meetList.do",method=RequestMethod.POST, produces="application/json")
+	public String meetListDo(Model model, HttpServletRequest request, HttpSession session){
+		String user_id = request.getParameter("uid");
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		//model.addAttribute("mystudy", dao.psgStudyInfo(user_id));
+		model.addAttribute("data", user_id);
+		return "psgmeetList";
 	}
 	// meetadmin
 	@RequestMapping("/meetadmin/{study_id}")

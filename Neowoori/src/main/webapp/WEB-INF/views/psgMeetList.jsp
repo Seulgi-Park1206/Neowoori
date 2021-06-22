@@ -158,14 +158,23 @@
 <script>
 $(document)
 .ready(function(){
-	var uid = ${usid};
+	var uid = "${usid}";
 	console.log(uid);
 	// uid를 이용해 db에서 스터디 목록 불러오기
-	$.ajax{
-		
-	}
-	let mystudy = null;
-	let join = 1;
+	$.ajax({
+		url: '${path}/meetList.do',
+		method: "POST",
+		data: {"uid":uid},
+		success: function(data){
+			console.log(data);
+		},
+		error: function(){
+			alert('error');
+		}
+	});
+	
+	var mystudy = null;
+	var join = 1;
 	// 수정 사항
 	// mystudy: 내가 스터디장인 스터디의 개수 count / 있는지 확인
 	// join: 내가 가입된 스터디
