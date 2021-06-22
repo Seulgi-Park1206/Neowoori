@@ -434,6 +434,9 @@ $(function(){
 		var juso = $('#roadAddrPart1').val()+" "+$('#addrDetail').val();
 		/*-----주소------*/
 		
+		
+		/*-----회원상태 date이라 날짜 추가------*/
+		/*-----회원상태 date이라 날짜 추가------*/
 		  $.ajax({
 		    url: "sign.do",
 		    type: "POST",
@@ -449,7 +452,7 @@ $(function(){
 		    	"uemail" : mail, //이메일
 		    	"ujuso" : juso, // 주소
 		    	"ulati" : lati, // 위도
-		    	"ulongi" : longi //경도
+		    	"ulongi" : longi, //경도
 		    },
 		    success : function(data){
 		      alert("회원가입 성공")

@@ -131,20 +131,8 @@ public class HomeController {
 			String juso = request.getParameter("ujuso");
 			String lati = request.getParameter("ulati");
 			String longi = request.getParameter("ulongi");
-			System.out.println(id);
-			System.out.println(name);
-			System.out.println(pw);
-			System.out.println(nick);
-			System.out.println(mobile);
-			System.out.println(gender);
-			System.out.println(year);
-			System.out.println(birth);
-			System.out.println(email);
-			System.out.println(juso);
-			System.out.println(lati);
-			System.out.println(longi);
 			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-			dao.pjhsignup(id, pw, name, nick, year, ubirthday, gender, mobile, email, juso, lati, longi);
+			dao.pjhsignup(id, pw, name, nick, year, birth, gender, mobile, email, juso, lati, longi);
 	   }
 	
 	
@@ -184,9 +172,10 @@ public class HomeController {
 	
 	@ResponseBody // 로그인 아이디 체크
 	@RequestMapping(value="/login.do",method=RequestMethod.POST, produces="application/json")
-	public String login_Check(String uid, String upw ,HttpServletRequest request, HttpSession session){
+	public String login_Check(HttpServletRequest request, HttpSession session){
 		String ID = request.getParameter("uid");
 		String PW = request.getParameter("upw");
+		String today = request.getParameter("today");
 		System.out.println(ID);
 		System.out.println(PW);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
@@ -194,6 +183,7 @@ public class HomeController {
 		
 		if(dto == 1) {//결과 값이 있으면 아이디 존재
 			session.setAttribute("userid", ID);
+			dao.pjhstate(today);
 			return "1";
 		} else {		//없으면 아이디 존재 X
 			System.out.println("null");
