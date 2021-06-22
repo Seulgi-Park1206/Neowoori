@@ -12,7 +12,7 @@
 <body>
 	<header>
 		<div class=class-main>
-			<a href="index"><img class=logo
+			<a href="${path }/index"><img class=logo
 				src="${path}/resources/img/logo.png"></a>
 		</div>
 		<nav>
@@ -28,6 +28,7 @@
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
 function mystudy(){
+	/* 세션 사용 시 수정 */
 	<%-- var uid = <%=session.getAttribute("usid") %>; --%>
 	var uid = 2;
 	location.href='meetList/'+uid;
