@@ -25,7 +25,6 @@
 	</header>
 	<hr>
 </body>
-<script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
 function mystudy(){
 	/* 세션 사용 시 수정 */
