@@ -7,6 +7,7 @@
 <title>Insert title here</title>
 </head>
 <body>
-카테고리1, 카테고리2, 장소, 난이도, 
+<!-- 카테고리1, 카테고리2, 장소, 난이도 -->
+
 </body>
 </html>
