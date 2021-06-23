@@ -171,9 +171,13 @@
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=999776cb53f71de054b91ce661eb628c&libraries=LIBRARY"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=999776cb53f71de054b91ce661eb628c&libraries=services"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=999776cb53f71de054b91ce661eb628c&libraries=services,clusterer,drawing"></script>
+<!-- 포트번호 8080 인증키 : 4b0f94866b0f233c25fbdc0d8ed3c881 -->
+<!-- 포트번호 8181 인증키 : (주혁) -->
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881&libraries=LIBRARY"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881&libraries=services"></script>
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881&libraries=services,clusterer,drawing"></script>
+
+
 <script language='javascript'>
 /*--------------------------카카오 주소 찾기---------------------------------*/
 function goPopup(){
@@ -208,7 +212,9 @@ function selectEmail(ele){
 /*--------------------------이메일 직접입력만 글쓰기 가능---------------------------------*/
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
 var code="";
-$("#btn_con ").on("click",function(){ 
+
+$("#btn_con ").on("click",function(){
+
  	var email = $("#email").val();
  	var email2 = $("#email2").val();
 	
@@ -241,21 +247,30 @@ $("#btn_con ").on("click",function(){
  		   
  	   }
  })
- //test
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
 /*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
 $("#btn_num ").on("click",function(){
+	
 	if($("#send_number").val()==code){
-		alert("인증에 성공하였습니다.");
-		$('#send_number').attr("readonly",true);
-		$('#zipNo').focus();
+		if(code!=""){
+			alert("인증에 성공하였습니다.");
+			$('#send_number').attr("readonly",true);
+			$('#zipNo').focus();			
+		}
 		
 	}
-	else{($("#send_number").val()!=code)
+	
+	else if($('#send_number').val()==""){
+		alert("인증번호가 입력되지 않았습니다.\n인증번호를 입력해주세요.");
+		$('#send_number').focus();
+	}
+	else if($("#send_number").val()!=code){
 		alert("인증에 실패하였습니다.\n인증번호를 다시 입력해주세요.");
 		$('#send_number').val("");
 		$('#send_number').focus();
 	}
+	
+		
 })
 /*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
 /*--------------------------유효성 검사 & 아이디,닉네임 중복검사(임시)---------------------------------*/
@@ -527,6 +542,14 @@ $(function(){
 	        alert("성별을 다시 확인해주세요");
 	        return false;
 	    }
+		if($('#send_number').val()==""){
+			alert("인증번호를 입력해주세요.");
+			return false;
+		}
+		if($('#send_number').val()!=""){
+			alert("인증번호가 일치하지 않습니다.");
+			return false;
+		}
 	   signupajax();
    
 })
