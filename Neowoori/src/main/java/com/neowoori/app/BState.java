@@ -3,14 +3,22 @@ package com.neowoori.app;
 public class BState {
 	int userNum;
 	String lastJoin;
+	String userId;
 	
 	public BState() {
 
 	}
-	public BState(int userNum, String lastJoin) {
+	public BState(int userNum, String lastJoin, String userId) {
 		//super();
 		this.userNum = userNum;
 		this.lastJoin = lastJoin;
+		this.userId = userId;
+	}
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public int getUserNum() {
 		return userNum;

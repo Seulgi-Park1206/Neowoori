@@ -11,7 +11,7 @@
 <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css"> -->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <link rel="stylesheet" href="resources/pjh/adminpage.css" type="text/css">
-<link rel="stylesheet" href="resources/pjh/userview.css" type="text/css">
+<!-- <link rel="stylesheet" href="resources/pjh/userview.css" type="text/css"> -->
 
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
@@ -95,7 +95,7 @@ $(document)
 	$('.test').remove(); //지우면서 다시 리로딩
  	$('.test2').remove();
 	$.ajax({
-        url:'adminpage.do'
+        url:'userlist.do'
         , method : 'POST'
         , data: {}
         , contentType : 'application/json; charset=UTF-8'
@@ -106,21 +106,22 @@ $(document)
 	        	var result = '';
 		        result +='<thead id=list_th>'
 		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
-				+"<th><span>작성 일자</span></th>"
+				+"<th><span>마지막 접속</span></th>"
 		        +"</th>"
 		        result +='<tbody id=list></tbody>'
 		        $.each(resp,function(index,item){
 		        	//data-toggle="modal" data-target="#myModal == 파업창 띄우기
 		        	 result +='<tr class=test data-toggle="modal" data-target="#myModal"><td><input type="checkbox"></td>'
-		        	 result +='<td>'+item["usernum"]+'</td>'
-		        	 result +='<td>'+item["username"]+'</td>'
-		        	 result +='<td>'+item["userdate"]+'</td>'
+		        	 result +='<td>'+item["uNum"]+'</td>'
+		        	 result +='<td>'+item["uNick"]+'</td>'
+		        	 result +='<td>'+item["lastJoin"]+'</td>'
 		        })
 		        result +='</tbody>'
 		        result +='</thead>'
 		        $('.list').append(result)
         	}
 	})
+	
 })
 
 

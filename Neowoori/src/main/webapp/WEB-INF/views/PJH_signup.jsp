@@ -130,10 +130,10 @@
 							</colgroup>
 							<tbody>
 								<tr>
-									<th><span>우편번호</span></th>
+									<th></th>
 									<td>
 									    <input type="hidden" id="confmKey" name="confmKey" value=""  >
-										<input type="text" id="zipNo" name="zipNo"  style="width:100px">
+										<input type="hidden" id="zipNo" name="zipNo"  style="width:100px">
 										<input type="button"  value="주소검색" onclick="goPopup();">
 									</td>
 								</tr>
@@ -149,10 +149,10 @@
 									</td>
 								</tr>
 								<tr>
-									<th><span>좌표정보</span></th>
+<!-- 									<th><span>좌표정보</span></th> -->
 									<td>
-										<input type="text" id="entX" style="width:40%" value="">
-										<input type="text" id="entY"  style="width:40%" value="">
+										<input type="hidden" id="entX" style="width:40%" value="">
+										<input type="hidden" id="entY"  style="width:40%" value="">
 									</td>
 								</tr>
 							</tbody>
@@ -306,7 +306,7 @@ $(function(){
         	return;
         }
         
-        var regex = /[가-힣]{2,}/;
+        var regex = /^[가-힣a-zA-Z]+$/;
     	var result = regex.exec(nick);
         
     	 if(result != null){

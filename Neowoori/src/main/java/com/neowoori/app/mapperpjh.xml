@@ -19,7 +19,15 @@
 		insert all into members(UNUM,USERID,UPW,UNAME,UNICK,UYEAR,UBIRTHDAY,UGENDER,UMOBILE,UMAIL,ADDRESS,LATI,LONGI) values (MEMBERS_SEQ.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12}) into state(UNUM,USERID) values (MEMBERS_SEQ.nextval,#{param1}) select * from dual
 	</insert>
 	
+		<!-- 유저 정보가져오기 -->
+	<select id="pjhmemberlist" resultType="com.neowoori.app.BMembers">
+		select * from members
+	</select>
 	
+		<!-- 유저상태 정보가져오기 -->
+	<select id="pjhStatelist" resultType="com.neowoori.app.BMembersState">
+		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum
+	</select>
 	
 		<!-- 로그인시 접속시간 업데이트 -->
 	<update id="pjhstate">

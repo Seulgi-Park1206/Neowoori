@@ -251,6 +251,16 @@ public class HomeController {
 			return "0";
 		}
 	}
+	
+	@ResponseBody // 관리자 게시판(유저관리)
+	@RequestMapping(value="/userlist.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembersState> user_list(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembersState> user_list = dao.pjhStatelist();
+		return user_list;
+	}
+	
+	
 	/*---------------------------------------------*/
 	
 	//#############################################################
