@@ -89,10 +89,13 @@
                   </select>
                   </td>
                 </tr>
+                
                 <tr class="email">
                   <th><span>이메일</span></th>
+                  
                   <td>
-                    <input type="text"  id=email class="email" placeholder=""><span class="mar10">@</span>
+               
+                    <input type="text"  id=email name=email class="email" placeholder=""><span class="mar10">@</span>
 					<input type="text" id=email2 name="email2" class="email email2" readonly>
 					<select class="email3" id=email3 onChange="selectEmail(this)">
 						<option value="">선택</option>
@@ -102,8 +105,11 @@
 						<option value="1">직접입력</option>
 					</select>
                     <a href="javascript:;" id=btn_con class="btn_confirm">인증번호 발송</a>
+                    
                   </td>
+                  
                 </tr>
+                
                 <tr>
                 	<th></th>
                 	<td><div class="email regex" style="font-size: 10px;"></div></td>
@@ -113,7 +119,9 @@
                   <td><input type="text" id=send_number class="send_number">
                     <a href="javascript:;" id=btn_num class="btn_confirm" >인증번호 확인</a>
                   </td>
+                  
                 </tr>
+                
                 <form name="form" id="form" method="post">
 					<table>
 							<colgroup>
@@ -167,10 +175,7 @@
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=999776cb53f71de054b91ce661eb628c&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=999776cb53f71de054b91ce661eb628c&libraries=services,clusterer,drawing"></script>
 <script language='javascript'>
-
-
 /*--------------------------카카오 주소 찾기---------------------------------*/
-
 function goPopup(){
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
     var pop = window.open("jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
@@ -186,12 +191,8 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAdd
 	document.form.entX.value = entX;
 	document.form.entY.value = entY;
 }
-
 /*--------------------------카카오 주소 찾기---------------------------------*/
-
-
 /*--------------------------이메일 직접입력만 글쓰기 가능---------------------------------*/
-
 function selectEmail(ele){ 
 	var $ele = $(ele);
 	var $email2 = $('input[name=email2]');
@@ -204,48 +205,59 @@ function selectEmail(ele){
 			$email2.val($ele.val()); 
 		} 
 	}
-
 /*--------------------------이메일 직접입력만 글쓰기 가능---------------------------------*/
-
-
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
-
-// $("#btn_con ").on("click",function(){ 
-// 	var email = $("#email").val();
-// 	var email2 = $("#email2").val();
+var code="";
+$("#btn_con ").on("click",function(){ 
+ 	var email = $("#email").val();
+ 	var email2 = $("#email2").val();
 	
-// 	var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+ 	var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	
-// 	var mail = email+"@"+email2;
-// 	   $("#mail").val(mail);  
-// 	   console.log(email);
-// 	   console.log(email2);
-// 	   console.log(mail);
-// 	   if(!email_rule.test(mail)){
-// 	       alert("이메일을 형식에 맞게 입력해주세요.");
-// 	     return false;
-// 	   }else{
-// 		   alert("해당 이메일로 인증번호를 발급했습니다.");
-// 		   $("#send_num").css("display","");
-// 	   }
-// })
-
+ 	var mail = email+"@"+email2;
+ 	   $("#mail").val(mail);  
+ 	   console.log(email);
+ 	   console.log(email2);
+ 	   console.log(mail);
+ 	   if(!email_rule.test(mail)){
+ 	       alert("이메일을 형식에 맞게 입력해주세요.");
+ 	     return false;
+ 	   }else{
+ 		   alert("해당 이메일로 인증번호를 발급했습니다.");
+ 		   $("#send_num").css("display","");
+ 		   
+ 		   $.ajax({
+ 				
+ 				type:"GET",
+ 				url:"mailCheck?email=" + mail,
+ 				success:function(data){
+ 					
+ 					console.log("data : " + data);
+ 					code = data;
+ 					
+ 				}
+ 						
+ 			});
+ 		   
+ 	   }
+ })
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
-
-
 /*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
-
 $("#btn_num ").on("click",function(){
-	if($("#send_number").val()==""){
-		alert("안증번호를 다시 입력해주세요");
+	if($("#send_number").val()==code){
+		alert("인증에 성공하였습니다.");
+		$('#send_number').attr("readonly",true);
+		$('#zipNo').focus();
+		
+	}
+	else{($("#send_number").val()!=code)
+		alert("인증에 실패하였습니다.\n인증번호를 다시 입력해주세요.");
+		$('#send_number').val("");
+		$('#send_number').focus();
 	}
 })
-
 /*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
-
-
 /*--------------------------유효성 검사 & 아이디,닉네임 중복검사(임시)---------------------------------*/
-
 $(function(){
    //중복확인 & id 유효성검사   
     $("#duplcheck").on("click",function(){
@@ -272,7 +284,6 @@ $(function(){
     	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
     	    contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
     	    data: id ,
-
     	    success: function(data){
     	         if(data == 0){
     	         $(".id.regex").html("사용하실 수 있는 아이디입니다.");
@@ -311,7 +322,6 @@ $(function(){
     	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
     	    contentType : 'text/plain1; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
     	    data: nick ,
-
     	    success: function(data){
     	         if(data == 0){
     	         $(".nick.regex").html("사용하실 수 있는 닉네임입니다.");
@@ -376,7 +386,6 @@ $(function(){
             }
             
         })
-
         
        //이메일 유효성 검사
 	$("#email,#email2,#email3").on("click",function(){
@@ -413,7 +422,6 @@ $(function(){
 		var lati = arr[0]; //위도
 		var longi = arr[1]; //경도
 		/*--------------------------카카오 경도 위도 찾기 ---------------------------------*/
-
 		/*-----이메일------*/
 		var email = $("#email").val();
 		var email2 = $("#email2").val();
@@ -434,9 +442,6 @@ $(function(){
 		var juso = $('#roadAddrPart1').val()+" "+$('#addrDetail').val();
 		/*-----주소------*/
 		
-		
-		/*-----회원상태 date이라 날짜 추가------*/
-		/*-----회원상태 date이라 날짜 추가------*/
 		  $.ajax({
 		    url: "sign.do",
 		    type: "POST",
@@ -452,7 +457,7 @@ $(function(){
 		    	"uemail" : mail, //이메일
 		    	"ujuso" : juso, // 주소
 		    	"ulati" : lati, // 위도
-		    	"ulongi" : longi, //경도
+		    	"ulongi" : longi //경도
 		    },
 		    success : function(data){
 		      alert("회원가입 성공")
@@ -524,11 +529,6 @@ $(function(){
 	   signupajax();
    
 })
-
 /*--------------------------회원 가입 클릭시 유효성 검사(임시)---------------------------------*/
-
-
-
-
 </script>
 </html>
