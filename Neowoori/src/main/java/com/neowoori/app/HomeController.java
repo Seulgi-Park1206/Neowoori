@@ -115,6 +115,7 @@ public class HomeController {
 	      return "PJH_adminpage";
 	   }
 
+
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
 	   public void birthajax(String uid, String uname,String upw, String unick, String umobile, String ugender, 
