@@ -268,13 +268,15 @@ public class HomeController {
 	//#############################################################
 	
 	/*---------------박슬기 영역----------------------*/
-	// mypage
+	// 내 정보 출력 및 수정
 	@RequestMapping("/mypage")
     public String myPage(Model model, HttpServletRequest request, HttpSession session) {
 		session = request.getSession();
+		String usid = "human1";
+		session.setAttribute("usid", usid);
 		String uid = (String) session.getAttribute("usid");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("alData", dao.psgUserInfo(uid));
+		model.addAttribute("uData", dao.psgUserInfo(uid));
 		return "psgMypage";
     }
 	@RequestMapping("/meetList/{user_id}")
@@ -290,7 +292,7 @@ public class HomeController {
 		
 		// DB에서 해당 유저의 스터디 목록 조회
 		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-				
+		
 		return "psgMeetList";
 	}
 	@ResponseBody // 내 스터디 목록 검색

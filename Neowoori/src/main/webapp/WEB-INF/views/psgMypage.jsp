@@ -101,11 +101,45 @@ function cancel(){
 $(document)
 .ready(function(){
 	// 세션값을 이용해 user_id를 얻어와서 db에서 해당 유저 정보 불러오기
-	$('#uid').text('human123');
-	$('#uname').text('사람인');
-	$('#birth').text('1995/12/07');
-	$('#gender').text('남');
-	/* $('#hiddenResult').hide(); */
+	$.ajax({
+		url='/mypage',
+		data={},
+		contentType : 'application/json; charset=UTF-8',
+		dataType='json',
+		method='post',
+		success=function(result){
+			$.each(result, function(index, e)){
+				$('#uid').text(e['userid']);
+				$('#uname').text(e['uname']);
+				$('#birth').text(e['uyear']+e['ubirthday']);
+				$('#gender').text(e['ugender']);
+				
+			}
+		},
+		error=function(){
+			alert('error');
+		}
+	});
+	/* $.ajax({
+        url:"post.do"
+        , method : 'POST'
+        , data: {}
+        , contentType : 'application/json; charset=UTF-8'
+        , dataType : 'json'
+        , success :
+        	function output(resp){
+	        	var result = '';
+		        result +='<table border="1">'
+		        result +='<tr><th>게시물번호</th><th>작성자</th><th>제목</th></tr>'
+		        $.each(resp,function(index,item){
+		            result +='<tr><td>'+item["bId"]+'</td>'
+		            result +='<td>'+item["bName"]+'</td>'
+		            result +='<td>'+item["bTitle"]+'</td></tr>'
+		        })
+		        result +='</table>'
+		        $('#tbl').append(result)
+        	}
+	}) */
 	$('#hiddenTr').hide();
 })
 .on('change keyup paste','#pwdCheck',function(){
