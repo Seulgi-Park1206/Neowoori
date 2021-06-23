@@ -1,17 +1,16 @@
 package com.neowoori.app;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,22 +19,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.neowoori.app.IDaojsb;
-import com.neowoori.app.BDto;
-import com.neowoori.app.BStudy;
-
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
 	@Autowired
-		private SqlSession sqlSession;
+	private JavaMailSender mailSender;
+	
+	@Autowired
+	private SqlSession sqlSession;
 	
 	@RequestMapping("/") //
-	   public String toIndex() {
+	public String toIndex() {
 		return "redirect:/index";
-	   }
+	}
 	
 	/*---------------유건우 영역----------------------*/
 	@RequestMapping("/index") //인덱스 page
