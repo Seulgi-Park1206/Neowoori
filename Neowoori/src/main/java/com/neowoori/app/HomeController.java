@@ -178,12 +178,12 @@ public class HomeController {
 		String today = request.getParameter("today");
 		System.out.println(ID);
 		System.out.println(PW);
+		System.out.println(today);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhlogin(ID, PW);
-		
-		if(dto == 1) {//결과 값이 있으면 아이디 존재
+		if(dto == 1) { //결과 값이 있으면 아이디 존재
+			dao.pjhstate(today,ID); // 마지막 접속날짜
 			session.setAttribute("userid", ID);
-			dao.pjhstate(today);
 			return "1";
 		} else {		//없으면 아이디 존재 X
 			System.out.println("null");

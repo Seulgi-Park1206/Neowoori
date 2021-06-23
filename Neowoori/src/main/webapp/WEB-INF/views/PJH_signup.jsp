@@ -73,7 +73,7 @@
                 </tr>
                 <tr>
                   <th><span>휴대폰 번호</span></th>
-                  <td><input type="text" id=mobile placeholder="ID 를 입력하세요."></td>
+                  <td><input type="text" id=mobile placeholder="모바일 번호를 입력해주세요."></td>
                 </tr>
                 <tr>
                 	<th></th>
@@ -290,8 +290,8 @@ $(function(){
     $("#duplcheck1").on("click",function(){
     	var nick = $("#nick").val();
         if(nick == ""){
-        	$(".id.regex").html("닉네임를 입력해주세요.");
-            $(".id.regex").css("color","red")
+        	$(".nick.regex").html("닉네임를 입력해주세요.");
+            $(".nick.regex").css("color","red")
         	return;
         }
         
