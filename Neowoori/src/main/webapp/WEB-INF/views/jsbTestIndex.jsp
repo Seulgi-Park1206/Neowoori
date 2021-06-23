@@ -315,8 +315,8 @@ function btnSmClick(who){
 	if (who==4) $("#calTwo").text($("#selSm4").text());
 	if (who==5) $("#calTwo").text($("#selSm5").text());
 	if (who==6) $("#calTwo").text($("#selSm6").text());
-	if (who==6) $("#calTwo").text($("#selSm7").text());
-	if (who==6) $("#calTwo").text($("#selSm8").text());
+	if (who==7) $("#calTwo").text($("#selSm7").text());
+	if (who==8) $("#calTwo").text($("#selSm8").text());
 	$('#calTwo').trigger('click');//닫기
 	$("#map").show();
 	mapView();

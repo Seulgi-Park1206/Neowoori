@@ -1,7 +1,7 @@
 package com.neowoori.app;
 
 public class BDto {
-	int bId;;
+	int bId;
 	String bName;
 	
 	BDto(){ // 생성자 꼭필요

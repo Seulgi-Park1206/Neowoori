@@ -1,17 +1,16 @@
 package com.neowoori.app;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.Locale;
+import java.util.Random;
 
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,22 +19,21 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.neowoori.app.IDaojsb;
-import com.neowoori.app.BDto;
-import com.neowoori.app.BStudy;
-
 /**
  * Handles requests for the application home page.
  */
 @Controller
 public class HomeController {
 	@Autowired
-		private SqlSession sqlSession;
+	private JavaMailSender mailSender;
+	
+	@Autowired
+	private SqlSession sqlSession;
 	
 	@RequestMapping("/") //
-	   public String toIndex() {
+	public String toIndex() {
 		return "redirect:/index";
-	   }
+	}
 	
 	/*---------------유건우 영역----------------------*/
 	@RequestMapping("/index") //인덱스 page
@@ -75,6 +73,49 @@ public class HomeController {
 	   public String webstudy() {
 	      return "ygwWebstudy";
 	   }
+	/* 이메일 인증 */
+	@RequestMapping(value="/mailCheck", method=RequestMethod.GET)
+	@ResponseBody
+	public String mailCheckGET(String email) throws Exception{
+		
+		/* 뷰(View)로부터 넘어온 데이터 확인 */
+		System.out.println(email);
+				
+		/* 인증번호(난수) 생성 */
+		Random random = new Random();
+		int checkNum = random.nextInt(888888) + 111111;
+		System.out.println("인증번호 : "+checkNum);
+		
+		/* 이메일 보내기 */
+		String setFrom = "brokerdev99@gmail.com";
+		String toMail = email;
+		String title = "회원가입 인증 이메일 입니다.";
+		String content = 
+				"홈페이지를 방문해주셔서 감사합니다." +
+				"<br><br>" + 
+				"인증 번호는 " + checkNum + "입니다." + 
+				"<br>" + 
+				"해당 인증번호를 인증번호 확인란에 기입하여 주세요.";		
+		
+		try {
+			
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			helper.setFrom(setFrom);
+			helper.setTo(toMail);
+			helper.setSubject(title);
+			helper.setText(content,true);
+			mailSender.send(message);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}		
+		
+		String num = Integer.toString(checkNum);
+		
+		return num;
+		
+	}
 	/*---------------------------------------------*/
 	
 	//#############################################################
@@ -114,6 +155,7 @@ public class HomeController {
 	   public String adminpage() {
 	      return "PJH_adminpage";
 	   }
+
 
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
@@ -218,15 +260,37 @@ public class HomeController {
 	/*---------------박슬기 영역----------------------*/
 	// mypage
 	@RequestMapping("/mypage")
-    public String myPage(Model model) {
-		IDaopsg dao=sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("alData",dao.psgUserInfo());
+    public String myPage(Model model, HttpServletRequest request, HttpSession session) {
+		session = request.getSession();
+		String uid = (String) session.getAttribute("usid");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("alData", dao.psgUserInfo(uid));
 		return "psgMypage";
     }
 	@RequestMapping("/meetList/{user_id}")
-	public String meetList(@PathVariable String user_id, Model model) {
-		model.addAttribute("u_id", user_id);
+	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
+		// session 설정(로그인 시 설정부분 제거 예정)
+		session = request.getSession();
+		String usid = "juhyck95";
+		// id = juhyck95
+		// pw = qkrwngur12
+		session.setAttribute("usid", usid);
+		// session_usid 가져오기
+		String uid = (String) session.getAttribute("usid");
+		
+		// DB에서 해당 유저의 스터디 목록 조회
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+				
 		return "psgMeetList";
+	}
+	@ResponseBody // 내 스터디 목록 검색
+	@RequestMapping(value="/meetList.do",method=RequestMethod.POST, produces="application/json")
+	public String meetListDo(Model model, HttpServletRequest request, HttpSession session){
+		String user_id = request.getParameter("uid");
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		//model.addAttribute("mystudy", dao.psgStudyInfo(user_id));
+		model.addAttribute("data", user_id);
+		return "psgmeetList";
 	}
 	// meetadmin
 	@RequestMapping("/meetadmin/{study_id}")

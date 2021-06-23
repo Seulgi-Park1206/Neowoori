@@ -6,4 +6,7 @@
 	<select id="psgUserInfo" resultType="com.neowoori.app.BMembers">
 		select * from members where uid={param1}
 	</select>
+	<select id="psgStudyInfo" resultType="com.neowoori.app.BStudy">
+		select * from study where uid={param1}
+	</select>
 </mapper>
