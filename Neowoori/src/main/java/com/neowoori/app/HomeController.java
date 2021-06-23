@@ -259,7 +259,15 @@ public class HomeController {
 		ArrayList<BMembersState> user_list = dao.pjhStatelist();
 		return user_list;
 	}
-	
+	@ResponseBody // 관리자 게시판(유저관리)(팝업,modal)
+	@RequestMapping(value="/usermodal.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembers> user_modal(HttpServletRequest request){
+		int unum = Integer.parseInt(request.getParameter("usernum"));
+		System.out.println(unum);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembers> user_list = dao.pjhmemberlist1(unum);
+		return user_list;
+	}
 	
 	/*---------------------------------------------*/
 	

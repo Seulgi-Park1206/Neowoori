@@ -24,9 +24,13 @@
 		select * from members
 	</select>
 	
+	<select id="pjhmemberlist1" resultType="com.neowoori.app.BMembers">
+		select * from members where unum=#{param1}
+	</select>
+	
 		<!-- 유저상태 정보가져오기 -->
 	<select id="pjhStatelist" resultType="com.neowoori.app.BMembersState">
-		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum
+		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum
 	</select>
 	
 		<!-- 로그인시 접속시간 업데이트 -->
