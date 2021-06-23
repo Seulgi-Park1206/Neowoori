@@ -71,13 +71,17 @@
 $(document)
 //로그인 체크
 .on('click','#btn_login',function(){
+	
+	var today = new Date(); 
+	
 	$.ajax({
 	    url: 'login.do',
 	    type: 'POST',
 	    dataType: 'json', //서버로부터 내가 받는 데이터의 타입
 	    data: {
 	    	   uid : $('#id').val(),
-	    	   upw : $('#pw').val()
+	    	   upw : $('#pw').val(),
+	    	   today : today
 	    		}, 
 	    success: function(data){
 	    	var se = '<%=session.getAttribute("userid")%>';
