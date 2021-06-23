@@ -113,7 +113,7 @@ $(document)
 				$('#uname').text(e['uname']);
 				$('#birth').text(e['uyear']+e['ubirthday']);
 				$('#gender').text(e['ugender']);
-				
+				$('')
 			}
 		},
 		error=function(){
