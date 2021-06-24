@@ -44,15 +44,17 @@
 
 
 <!-- ---------------------------------페이징 띄우는곳------------------------------------------ -->
-<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">
-  <ul class="pagination">
-    <li class="page-item"><a class="page-link" href="#">Previous</a></li>
-    <li class="page-item"><a class="page-link" href="#">1</a></li>
-    <li class="page-item"><a class="page-link" href="#">2</a></li>
-    <li class="page-item"><a class="page-link" href="#">3</a></li>
-    <li class="page-item"><a class="page-link" href="#">Next</a></li>
-  </ul>
-</nav>
+<div id=test123>
+<!-- <nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;"> -->
+<!--   <ul class="pagination"> -->
+<!--     <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
+<!--     <li class="page-item"><a class="page-link" href="#">1</a></li> -->
+<!--     <li class="page-item"><a class="page-link" href="#">2</a></li> -->
+<!--     <li class="page-item"><a class="page-link" href="#">3</a></li> -->
+<!--     <li class="page-item"><a class="page-link" href="#">Next</a></li> -->
+<!--   </ul> -->
+<!-- </nav> -->
+</div>
 <!-- ---------------------------------페이징 띄우는곳------------------------------------------ -->
 
 
@@ -91,8 +93,8 @@
 <script language='javascript'>
 $(document)
 /*---------------------------------AJAX 목록 띄우는곳------------------------------------------*/
-.on('click','#btnradio1',function(){
-	$('.test').remove(); //지우면서 다시 리로딩
+.ready(function(){ // 처음 들어가면 유저 목록 5개만 나옴.
+	$('.usermodal').remove(); //지우면서 다시 리로딩
  	$('.test2').remove();
 	$.ajax({
         url:'userlist.do'
@@ -102,7 +104,6 @@ $(document)
         , dataType : 'json'
         , success :
         	function output(resp){
-        	console.log(resp);
 	        	var result = '';
 		        result +='<thead id=list_th>'
 		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
@@ -123,9 +124,76 @@ $(document)
         	}
 	})
 	
+	/*---------------------------------페이징 띄우는곳------------------------------------------*/
+	
+	$.ajax({
+        url:'count.do'
+        , method : 'POST'
+        , data: {}
+        , contentType : 'application/json; charset=UTF-8'
+        , dataType : 'json'
+        , success :
+        	function output(resp){
+        	var test = parseInt(resp/5);  // 총 유저수 / 5 
+        	test = test + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
+        	var result = '';
+        	result += '<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">'
+        	result += '<ul class="pagination">'
+        	for(var i = 1; i <= test; i++){
+        		result +='<li class="page-item" value='+i+'><a class="page-link" href="#">'+i+'</a></li>'
+        	}
+        	result += '</ul>'
+        	result += '</nav>'
+        	$('#test123').append(result)
+        }
+        })
 })
 
 
+
+/*---------------------------------페이징 클릭시------------------------------------------*/
+.on('click','.page-item',function(){
+	$('.usermodal').remove(); //지우면서 다시 리로딩
+ 	$('.test2').remove();
+	var btnnum = $(this).val(); // 선택한 버튼의 값 (ex = 1,2,3,4)
+	var btnvalue = (btnnum * 5) - 5; // (선택한 버튼의 값 * 5) - 1 == sql에서 사용할 값
+	if(btnnum == 1){ // 1 이면 처음 값 그대로 가져오기.
+		btnnum = 0;
+	}
+	else{
+		btnnum = (btnnum * 5) - 5;
+	}
+	$.ajax({
+        url:'btnnum.do'
+        , method : 'POST'
+        , data: {btnvalue : btnvalue}
+        , dataType : 'json'
+        , success :
+        	function output(resp){
+        	var result = '';
+	        result +='<thead id=list_th>'
+	        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
+			+"<th><span>마지막 접속</span></th>"
+	        +"</th>"
+	        result +='<tbody id=list></tbody>'
+	        $.each(resp,function(index,item){
+	        	 result +='<tr class=usermodal data-toggle="modal" data-target="#myModal"><td><input type="checkbox"></td>'
+	        	 result +='<td >'+item["uNum"]+'</td>'
+	        	 result +='<td >'+item["uNick"]+'</td>'
+	        	 result +='<td >'+item["lastJoin"]+'</td>'
+	        	 result +='<input type=hidden id=unummodal value="'+item["uNum"]+'">'
+	        })
+	        result +='</tbody>'
+	        result +='</thead>'
+	        $('.list').append(result)
+    	}
+	})
+	// 클릭 한 유저의 NO를 가져와서 label에 넣기(수정해야됨)
+	
+})
+
+
+/*---------------------------------페이징 클릭시------------------------------------------*/
 
 /*---------------------------------팝업창 띄우는곳------------------------------------------*/
 .on('click','.list tr',function(){
@@ -133,7 +201,6 @@ $(document)
 	$('.tableLeft').remove();
 	$('.btn-danger').remove();
 	var usernum = $(this).find('td:eq(1)').text();
-	console.log(usernum);
 	$.ajax({
         url:'usermodal.do'
         , method : 'POST'
@@ -141,7 +208,6 @@ $(document)
         , dataType : 'json'
         , success :
         	function output(resp){
-        	console.log(resp);
 	        	var result = '';
 	        	$.each(resp,function(index,item){
 	        	$('.modal-header').append('<button type="button" class="close" data-dismiss="modal">×</button>');

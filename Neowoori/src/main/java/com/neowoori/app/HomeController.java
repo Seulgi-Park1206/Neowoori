@@ -183,7 +183,6 @@ public class HomeController {
 	public String ID_Check(@RequestBody String paramData){
 		//클라이언트가 보낸 ID값
 		String ID = paramData.trim();
-		System.out.println(ID);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhIdChk(ID);
 		
@@ -200,7 +199,6 @@ public class HomeController {
 	public String Nick_Check(@RequestBody String paramData){
 		//클라이언트가 보낸 Nick값
 		String Nick = paramData.trim();
-		System.out.println(Nick);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhNickChk(Nick);
 		
@@ -218,9 +216,6 @@ public class HomeController {
 		String ID = request.getParameter("uid");
 		String PW = request.getParameter("upw");
 		String today = request.getParameter("today");
-		System.out.println(ID);
-		System.out.println(PW);
-		System.out.println(today);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhlogin(ID, PW);
 		if(dto == 1) { //결과 값이 있으면 아이디 존재
@@ -238,8 +233,6 @@ public class HomeController {
 	public String adminlogin_Check(String uid, String upw ,HttpServletRequest request, HttpSession session){
 		String ID = request.getParameter("uid");
 		String PW = request.getParameter("upw");
-		System.out.println(ID);
-		System.out.println(PW);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhadminlogin(ID, PW);
 		
@@ -259,14 +252,30 @@ public class HomeController {
 		ArrayList<BMembersState> user_list = dao.pjhStatelist();
 		return user_list;
 	}
+	@ResponseBody // 유저수 count
+	@RequestMapping(value="/count.do",method=RequestMethod.POST, produces="application/json")
+	public int user_count(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int user_count = dao.pjhStateCount();
+		return user_count;
+	}
+	
 	@ResponseBody // 관리자 게시판(유저관리)(팝업,modal)
 	@RequestMapping(value="/usermodal.do",method=RequestMethod.POST, produces="application/json")
 	public ArrayList<BMembers> user_modal(HttpServletRequest request){
 		int unum = Integer.parseInt(request.getParameter("usernum"));
-		System.out.println(unum);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		ArrayList<BMembers> user_list = dao.pjhmemberlist1(unum);
 		return user_list;
+	}
+	
+	@ResponseBody // 관리자 게시판(유저관리)(페이징)
+	@RequestMapping(value="/btnnum.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembersState> btn_num(HttpServletRequest request){
+		int btnvalue = Integer.parseInt(request.getParameter("btnvalue"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembersState> btn_num = dao.pjhpaging(btnvalue);
+		return btn_num;
 	}
 	
 	/*---------------------------------------------*/
