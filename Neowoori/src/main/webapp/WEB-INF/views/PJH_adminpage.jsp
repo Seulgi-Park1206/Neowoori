@@ -95,7 +95,7 @@ $(document)
 	$('.test').remove(); //지우면서 다시 리로딩
  	$('.test2').remove();
 	$.ajax({
-        url:'adminpage.do'
+        url:'userlist.do'
         , method : 'POST'
         , data: {}
         , contentType : 'application/json; charset=UTF-8'
@@ -106,43 +106,59 @@ $(document)
 	        	var result = '';
 		        result +='<thead id=list_th>'
 		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
-				+"<th><span>작성 일자</span></th>"
+				+"<th><span>마지막 접속</span></th>"
 		        +"</th>"
 		        result +='<tbody id=list></tbody>'
 		        $.each(resp,function(index,item){
 		        	//data-toggle="modal" data-target="#myModal == 파업창 띄우기
-		        	 result +='<tr class=test data-toggle="modal" data-target="#myModal"><td><input type="checkbox"></td>'
-		        	 result +='<td>'+item["usernum"]+'</td>'
-		        	 result +='<td>'+item["username"]+'</td>'
-		        	 result +='<td>'+item["userdate"]+'</td>'
+		        	 result +='<tr class=usermodal data-toggle="modal" data-target="#myModal"><td><input type="checkbox"></td>'
+		        	 result +='<td >'+item["uNum"]+'</td>'
+		        	 result +='<td >'+item["uNick"]+'</td>'
+		        	 result +='<td >'+item["lastJoin"]+'</td>'
+		        	 result +='<input type=hidden id=unummodal value="'+item["uNum"]+'">'
 		        })
 		        result +='</tbody>'
 		        result +='</thead>'
 		        $('.list').append(result)
         	}
 	})
+	
 })
 
 
 
 /*---------------------------------팝업창 띄우는곳------------------------------------------*/
-.on('click','.test',function(){
+.on('click','.list tr',function(){
 	$('.close').remove();
 	$('.tableLeft').remove();
 	$('.btn-danger').remove();
+	var usernum = $(this).find('td:eq(1)').text();
+	console.log(usernum);
+	$.ajax({
+        url:'usermodal.do'
+        , method : 'POST'
+        , data: {usernum : usernum}
+        , dataType : 'json'
+        , success :
+        	function output(resp){
+        	console.log(resp);
+	        	var result = '';
+	        	$.each(resp,function(index,item){
+	        	$('.modal-header').append('<button type="button" class="close" data-dismiss="modal">×</button>');
+	        	$('.modal-body').append('<table class=tableLeft><tr><td class=tdLeft>아이디:</td><td class=tdCenter><label class=intext id=uid>'+item["userId"]+'</label></td></tr>'
+	        		+'<tr><td class=tdLeft>유저 번호:</td><td class=tdCenter><label class=intext id=uNum>'+item["uNum"]+'</label></td></tr>'
+					+'<tr><td class=tdLeft>닉네임:</td><td class=tdCenter><label class=intext id=nick>'+item["uNick"]+'</label></td></tr>'
+					+'<tr><td class=tdLeft>성별:</td><td class=tdCenter><label class=intext id=gender>'+item["uGender"]+'</label></td></tr>'
+					+'<tr><td class=tdLeft>생년월일:</td><td class=tdCenter><label class=intext id=birth>'+item["uYear"]+''+item["uBirthday"]+'</label></td></tr>'
+					+'<tr><td class=tdLeft>연락처:</td><td class=tdCenter><label class=intext id=mobile>'+item["uMobile"]+'</label></td></tr>'
+					+'<tr><td class=tdLeft>이메일:</td><td class=tdCenter><label class=intext id=email>'+item["uMail"]+'</label></td></tr>'
+					+'</table>');
+	        	$('.modal-footer').append('<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>');
+	        	})
+	        }
+	})
 	// 클릭 한 유저의 NO를 가져와서 label에 넣기(수정해야됨)
-	$('.modal-header').append('<button type="button" class="close" data-dismiss="modal">×</button>');
-	$('.modal-body').append('<table class=tableLeft><tr><td class=tdLeft>아이디:</td><td class=tdCenter><label class=intext id=uid></label></td></tr>'
-							+'<tr><td class=tdLeft>유저 번호:</td><td class=tdCenter><label class=intext id=uNum></label></td></tr>'
-							+'<tr><td class=tdLeft>닉네임:</td><td class=tdCenter><label class=intext id=nick></label></td></tr>'
-							+'<tr><td class=tdLeft>성별:</td><td class=tdCenter><label class=intext id=gender></label></td></tr>'
-							+'<tr><td class=tdLeft>생년월일:</td><td class=tdCenter><label class=intext id=birth></label></td></tr>'
-							+'<tr><td class=tdLeft>연락처:</td><td class=tdCenter><label class=intext id=mobile></label></td></tr>'
-							+'<tr><td class=tdLeft>이메일:</td><td class=tdCenter><label class=intext id=email></label></td></tr>'
-							+'<tr><td class=tdLeft>제재 횟수:</td><td class=tdCenter><label class=intext id=cnt></label></td></tr>'
-							+'<tr><td class=tdLeft>제재 내역/번호:</td><td class=tdMul><textarea id=list readonly></textarea></td></tr>'
-							+'</table>');
-	$('.modal-footer').append('<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>');
+	
 })
 /*---------------------------------팝업창 띄우는곳------------------------------------------*/
 

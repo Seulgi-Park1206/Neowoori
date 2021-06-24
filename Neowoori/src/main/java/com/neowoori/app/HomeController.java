@@ -220,12 +220,12 @@ public class HomeController {
 		String today = request.getParameter("today");
 		System.out.println(ID);
 		System.out.println(PW);
+		System.out.println(today);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhlogin(ID, PW);
-		
-		if(dto == 1) {//결과 값이 있으면 아이디 존재
+		if(dto == 1) { //결과 값이 있으면 아이디 존재
+			dao.pjhstate(today,ID); // 마지막 접속날짜
 			session.setAttribute("userid", ID);
-			dao.pjhstate(today);
 			return "1";
 		} else {		//없으면 아이디 존재 X
 			System.out.println("null");
@@ -251,6 +251,24 @@ public class HomeController {
 			return "0";
 		}
 	}
+	
+	@ResponseBody // 관리자 게시판(유저관리)
+	@RequestMapping(value="/userlist.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembersState> user_list(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembersState> user_list = dao.pjhStatelist();
+		return user_list;
+	}
+	@ResponseBody // 관리자 게시판(유저관리)(팝업,modal)
+	@RequestMapping(value="/usermodal.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembers> user_modal(HttpServletRequest request){
+		int unum = Integer.parseInt(request.getParameter("usernum"));
+		System.out.println(unum);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembers> user_list = dao.pjhmemberlist1(unum);
+		return user_list;
+	}
+	
 	/*---------------------------------------------*/
 	
 	//#############################################################
@@ -258,13 +276,15 @@ public class HomeController {
 	//#############################################################
 	
 	/*---------------박슬기 영역----------------------*/
-	// mypage
+	// 내 정보 출력 및 수정
 	@RequestMapping("/mypage")
     public String myPage(Model model, HttpServletRequest request, HttpSession session) {
 		session = request.getSession();
+		String usid = "human1";
+		session.setAttribute("usid", usid);
 		String uid = (String) session.getAttribute("usid");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("alData", dao.psgUserInfo(uid));
+		model.addAttribute("uData", dao.psgUserInfo(uid));
 		return "psgMypage";
     }
 	@RequestMapping("/meetList/{user_id}")
@@ -280,7 +300,7 @@ public class HomeController {
 		
 		// DB에서 해당 유저의 스터디 목록 조회
 		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-				
+		
 		return "psgMeetList";
 	}
 	@ResponseBody // 내 스터디 목록 검색
