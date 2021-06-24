@@ -546,7 +546,7 @@ $(function(){
 			alert("인증번호를 입력해주세요.");
 			return false;
 		}
-		if($('#send_number').val()!=""){
+		if($('#send_number').val()!=code){
 			alert("인증번호가 일치하지 않습니다.");
 			return false;
 		}
