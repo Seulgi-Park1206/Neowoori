@@ -25,17 +25,17 @@
                 <tr>
                   <th><span>스터디명</span></th>
                   <td>
-                  	<input type="text" id=id placeholder="스터디명을 입력해주세요.">
+                  	<input type="text" id=studyName name=studyName placeholder="스터디명을 입력해주세요.">
                   </td>
                 </tr>
                 <tr>
                 	<th></th>
-               	 	<td><div class="id regex" style="font-size: 10px;"></div></td>
+               	 	<td><div class="nameChkView" style="font-size: 10px;"></div></td>
                 </tr>
                 <tr>
-                  <th><span>관심분야</span></th>
-                  <td>
-                	<div class="btn-group" role="group" aria-label="Basic radio toggle button group">
+                  <th ><span>관심분야</span></th>
+                  <td style="hight:100px;">
+                	<div class="btn-group" role="group" aria-label="Basic radio toggle button group" >
                 	
 					  <input onclick=btnBigClick(1) type="radio" class="btn-check" name="btnradio" id="btnradio1" autocomplete="off">
 					  <label id="labelBig1" class="btn btn-outline-success btn-sm" for="btnradio1">독서</label>
@@ -57,7 +57,6 @@
 					  
 					  <input onclick=btnBigClick(7) type="radio" class="btn-check" name="btnradio" id="btnradio7" autocomplete="off" >
 					  <label id="labelBig7" class="btn btn-outline-success btn-sm" for="btnradio7">기타</label>
-					  
 					</div>
 					<input type=hidden id="bigSel">
 					<br>
@@ -68,14 +67,14 @@
 					<input type=hidden id="smSel">
 					
                 </tr>
-                <tr>
+                 <tr>
                 	<th></th>
-               	 	<td><div class="name regex" style="font-size: 10px;"></div></td>
+               	 	<td><div class="carChkView" style="font-size: 10px;"></div></td>
                 </tr>
                 <tr>
                   <th><span>활동요일</span></th>
                   <td>
-                	<div class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
+                	<div id="btnCheckOn" class="btn-group" role="group" aria-label="Basic checkbox toggle button group">
 					  <input type="checkbox" name="chkWeek" class="btn-check" id="btncheck1" value="1" />
 					  <label class="btn btn-outline-success btn-sm" for="btncheck1">월</label>
 					
@@ -101,47 +100,58 @@
                 </tr>
                 <tr>
                 	<th></th>
-               	 	<td><div class="pw regex" style="font-size: 10px;"></div></td>
+               	 	<td><div class="dayChkView" style="font-size: 10px;"></div></td>
                 </tr>
                 <tr>
                   <th><span>스터디 시간</span></th>
                   <td>
                   	  <div class="input-group mb-3" style="width:60%;">
-					<input type="number" class="form-control" value="19" max="23" min="0">
+					<input id="studyTime" type="number" class="form-control" value="19" max="23" min="0">
 					<span class="input-group-text">시</span>
-					<input type="number" class="form-control" value="30" max="59" min="0" step="10">
+					<input id="studyMin" type="number" class="form-control" value="30" max="59" min="0" step="10">
 					<span class="input-group-text">분</span>
 					
 					</div>
 				  </td>
                 </tr>
                 <tr>
+                	<th></th>
+               	 	<td><div class="time regex" style="font-size: 10px;"></div></td>
+                </tr>
+                <tr>
                   <th><span>스터디 진행 시간</span></th>
                   <td>
  					<div class="input-group mb-3" style="width:75%;">
-					<input type="number" class="form-control" value="1" max="23" min="0">
+					<input id="playTime" type="number" class="form-control" value="1" max="23" min="0">
 					<span class="input-group-text">시간</span>
-					<input type="number" class="form-control" value="20" max="59" min="0" step="10">
+					<input id="playMin" type="number" class="form-control" value="20" max="59" min="0" step="10">
 					<span class="input-group-text">분 동안 진행되요</span>
 					</div>
                   </td>
                 </tr>
-
+                <tr>
+                	<th></th>
+               	 	<td><div class="play regex" style="font-size: 10px;"></div></td>
+                </tr>
                 <tr>
                   <th><span>난이도</span></th>
                   <td>
                   <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-					  <input onclick=btnLevel(1) type="radio" class="btn-check" name="btnradio" id="btnradio21" autocomplete="off">
+					  <input onclick=btnLevel(1) type="radio" class="btn-check" name="btnradio3" id="btnradio21" autocomplete="off">
 					  <label id="btnLevel1" class="btn btn-outline-success btn-sm" for="btnradio21">상</label>
 					
-					  <input onclick=btnLevel(2) type="radio" class="btn-check" name="btnradio" id="btnradio22" autocomplete="off">
+					  <input onclick=btnLevel(2) type="radio" class="btn-check" name="btnradio3" id="btnradio22" autocomplete="off">
 					  <label id="btnLevel2" class="btn btn-outline-success btn-sm" for="btnradio22">중</label>
 					
-					  <input onclick=btnLevel(3) type="radio" class="btn-check" name="btnradio" id="btnradio23" autocomplete="off">
+					  <input onclick=btnLevel(3) type="radio" class="btn-check" name="btnradio3" id="btnradio23" autocomplete="off">
 					  <label id="btnLevel3" class="btn btn-outline-success btn-sm" for="btnradio23">하</label>
 					</div>
 					<input type=hidden id="lvlSel">
                   </td>
+                </tr>
+				<tr>
+                	<th></th>
+               	 	<td><div class="level regex" style="font-size: 10px;"></div></td>
                 </tr>
                 <tr>
                   <th><span>모임 설명 및 목표</span></th>
@@ -185,7 +195,6 @@
 				</form>
               </tbody>
             </table>
-            <div class="exform_txt"><span>표시는 필수적으로 입력해주셔야 가입이 가능합니다.</span></div>
           </div><!-- join_form E  -->
           <div class="btn_wrap">
             <a href="javascript:;" id=signupbtn>만들기</a>
@@ -286,191 +295,123 @@ $("#btn_num ").on("click",function(){
 /*--------------------------유효성 검사 & 아이디,닉네임 중복검사(임시)---------------------------------*/
 /*
 $(function(){
-	
-   //중복확인 & id 유효성검사   
-    $("#duplcheck").on("click",function(){
-    	var id = $("#id").val();
-        if(id == ""){
-        	$(".id.regex").html("스터디명을 입력해주세요.");
-            $(".id.regex").css("color","red")
-        	return;
-        }
-        
-    	var regex = /^[a-z][a-z\d]{4,11}$/;
-    	var result = regex.exec(id);
-        
-    	 if(result != null){
-             $(".id.regex").html("");
-         }else{
-             $(".id.regex").html("영어 소문자,숫자 4-12자리");
-             $(".id.regex").css("color","red")
-             return;
-         }
-    	$.ajax({
-    	    url: 'ID_Check.do',
-    	    type: 'POST',
-    	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
-    	    contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
-    	    data: id ,
-
-    	    success: function(data){
-    	         if(data == 0){
-    	         $(".id.regex").html("사용하실 수 있는 스터디명입니다.");
-    	         $(".id.regex").css("color","green")
-    	         }else{
-    	         	 $(".id.regex").html("중복된 아이디가 존재합니다.");
-    	         	 $(".id.regex").css("color","red")
-    	         }
-    	    },
-    	    error: function (){        
-    	    }
-    	  })
-    })
-
-     //중복확인 & 닉네임 유효성검사             
-    $("#duplcheck1").on("click",function(){
-    	var nick = $("#nick").val();
-        if(nick == ""){
-        	$(".id.regex").html("닉네임를 입력해주세요.");
-            $(".id.regex").css("color","red")
-        	return;
-        }
-        
-        var regex = /[가-힣]{2,}/;
-    	var result = regex.exec(nick);
-        
-    	 if(result != null){
-             $(".nick.regex").html("");
-         }else{
-             $(".nick.regex").html("올바른 닉네임이 아닙니다.");
-             $(".nick.regex").css("color","red")
-             return;
-         }
-    	$.ajax({
-    	    url: 'Nick_Check.do',
-    	    type: 'POST',
-    	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
-    	    contentType : 'text/plain1; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
-    	    data: nick ,
-
-    	    success: function(data){
-    	         if(data == 0){
-    	         $(".nick.regex").html("사용하실 수 있는 닉네임입니다.");
-    	         $(".nick.regex").css("color","green")
-    	         }else{
-    	         	 $(".nick.regex").html("중복된 아이디가 존재합니다.");
-    	         	 $(".nick.regex").css("color","red")
-    	         }
-    	    },
-    	    error: function (){        
-    	    }
-    	  })
-    }) 
- 
-//비밀번호 유효성검사
-	
-    $("#pw").on("input",function(){
-        var regex = /^[A-Za-z\d]{8,12}$/;
-        var result = regex.exec($("#pw").val())
-        
-        if(result != null){
-            $(".pw.regex").html("");
-        }else{
-            $(".pw.regex").html("영어대소문자,숫자 8-11자리");
-            $(".pw.regex").css("color","red");
-        }
-    })
-    
-   //비밀번호 확인  
-   
-       $("#repw").on("keyup",function(){
-            if($("#pw").val()==$("#repw").val()){
-               $(".repw.regex").html("비밀번호가 일치합니다");
-               $(".repw.regex").css("color","black");
-            }else{
-             $(".repw.regex").html("비밀번호가 일치하지않습니다");
-             $(".repw.regex").css("color","red");
-            }
-       })
-    
-    //이름 유효성검사
-        $("#name").on("input",function(){
-            var regex = /[가-힣]{2,}/;
-            var result = regex.exec($("#name").val());
-            
-            if(result != null){
-               $(".name.regex").html("");  
-            }else{
-                $(".name.regex").html("한글만 입력 가능합니다.");
-            }
-            
-        })
-    
-    //전화번호 유효성검사
-        $("#mobile").on("input",function(){
-             var regex = /^01\d\d{3,4}\d{4}$/;
-             var result = regex.exec($("#mobile").val());
-            
-            if(result != null){
-               $(".mobile.regex").html("");  
-            }else{
-                $(".mobile.regex").html("올바른 번호가 아닙니다.('-' 를 빼고 입력해주세요.)");
-                $(".mobile.regex").css("color","red");
-            }
-            
-        })
-
-        
-       //이메일 유효성 검사
-	$("#email,#email2,#email3").on("click",function(){
-       var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-       var email =$("#email").val();
-       var email2 =$("#email2").val();
-       
-       if(!email){
-    	 $(".email.regex").html("이메일을 입력해주세요");
-       }
-       if(!email2){
-    	 $(".email.regex").html("도메인을 입력해주세요");
-       }
-       if(email != "" && email2 != ""){
-    	 $(".email.regex").html("");
-       }
+   //스터디명 빈칸 확인  
+	$("#studyName").on("input",function(){
+		
+		var regex = /^[A-Za-z\d]{8,12}$/;
+		var studyName = regex.exec($("#studyName").val());
+		console.log(studyName)
+		if(studyName == ""){
+			console.log("cc")
+			$(".nameChkView.regex").html("스터디명을 입력해주세요.");
+			$(".nameChkView.regex").css("color","red")
+			return;
+		}else{
+			
+		}
 	})
-})
-*/
+	$("#btnCheckOn").on("click",function(){
+		var chkWeekChk = $('input:checkbox[name=chkWeek]').is(':checked');
+		console.log(chkWeekChk)
+		if(chkWeekChk == false){
+			console.log("33")
+			$(".dayChkView").html("모일 요일을 체크해주세요.");
+			$(".dayChkView").css("color","red")
+			return;
+		}
+	})
+	 
+	//비밀번호 유효성검사
+	$("#studyTime").on("input",function(){
+		var regex = /^[A-Za-z\d]{8,12}$/;
+		var result = regex.exec($("#pw").val())
+		if(result != null){
+			$(".pw regex").html("");
+		}else{
+			$(".pw.regex").html("영어대소문자,숫자 8-11자리");
+			$(".pw.regex").css("color","red");
+		}
+	})
 	
+	//비밀번호 확인  
+	$("#repw").on("keyup",function(){
+		if($("#pw").val()==$("#repw").val()){
+			$(".repw.regex").html("비밀번호가 일치합니다");
+			$(".repw.regex").css("color","black");
+		}else{
+			$(".repw.regex").html("비밀번호가 일치하지않습니다");
+			$(".repw.regex").css("color","red");
+		}
+	})
+	//이름 유효성검사
+	$("#name").on("input",function(){
+		var regex = /[가-힣]{2,}/;
+		var result = regex.exec($("#name").val());
+		if(result != null){
+			$(".name.regex").html("");  
+		}else{
+			$(".name.regex").html("한글만 입력 가능합니다.");
+		}
+	})
+	    
+	//전화번호 유효성검사
+	$("#mobile").on("input",function(){
+		var regex = /^01\d\d{3,4}\d{4}$/;
+		var result = regex.exec($("#mobile").val());
+		if(result != null){
+			$(".mobile.regex").html("");  
+		}else{
+			$(".mobile.regex").html("올바른 번호가 아닙니다.('-' 를 빼고 입력해주세요.)");
+			$(".mobile.regex").css("color","red");
+		}
+	})
+	//이메일 유효성 검사
+	$("#email,#email2,#email3").on("click",function(){
+		var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+		var email =$("#email").val();
+		var email2 =$("#email2").val();
+		if(!email){
+			$(".email.regex").html("이메일을 입력해주세요");
+		}
+		if(!email2){
+			$(".email.regex").html("도메인을 입력해주세요");
+		}
+		if(email != "" && email2 != ""){
+			$(".email.regex").html("");
+		}
+		})
+	})
+*/
 /*--------------------------유효성 검사(임시)---------------------------------*/
- 	
- 
- 
- 
+
 /*---------------------------회원가입 AJAX 영역(json배열로 넘길예정)-------------------------*/	
 	
 function signupajax(){
 	/*-----주소------*/
 	var juso = $('#roadAddrPart1').val()+" "+$('#addrDetail').val();
+	var tmpStudyTime =  $('#studyTime').val()+':'+$('#studyMin').val();
+	var tmpPlayTime =  $('#playTime').val()+':'+$('#playMin').val();
 	/*-----주소------*/
 	//활동요일은 homeController에서 사용
 	$.ajax({
-    url: "sign.do",
+    url: "jsbCreate.do",
     type: "POST",
     data: {
-    	"uid" : $('#id').val(), // 아이디
-    	"uname" : $('#name').val(), // 이름
-    	"upw" : $('#pw').val(), // 비빌번호
-    	"unick" : $('#nick').val(), // 닉네임
-    	"umobile" : $('#mobile').val(), // 모바일번호
-    	"ugender" : $('#gender').val(), // 성별
-    	"uyear" : year, // 생년
-    	"ubirthday" : birthday, //월일
-    	"uemail" : mail, //이메일
+    	"studyName" : $('#studyName').val(), // 아이디
+    	"bigSel" : $('#bigSel').val(), // 이름
+    	"smSel" : $('#smSel').val(), // 비빌번호
+    	"studyTime" : tmpStudyTime, // 닉네임
+    	"playTime" : tmpPlayTime, // 모바일번호
+    	"lvlSel" : $('#lvlSel').val(), // 성별
+//		"uyear" : year, // 생년
+//    	"ubirthday" : birthday, //월일
+//    	"uemail" : mail, //이메일
     	"ujuso" : juso, // 주소
     	"ulati" : lati, // 위도
     	"ulongi" : longi //경도
     },
     success : function(data){
-      alert("회원가입 성공")
+      console.log("성공")
     },
     error : function(){
       alert("회원가입 실패")		
@@ -484,59 +425,36 @@ function signupajax(){
  
 /*--------------------------회원 가입 클릭시 유효성 검사(임시)---------------------------------*/
         
-	//회원가입 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행    
-   $("#signupbtn").on("click",function(){
-	   var id = $("#id").val();
-	   var pw = $("#pw").val();
-	   var name = $("#name").val();
-	   var mobile = $("#mobile").val();
-	   var email = $("#email").val();
-	   var email2 = $("#email2").val();
-	   var mail = email+"@"+email2;
-	   var addr1 = $("#zipNo").val();
-	   var addr2 = $("#roadAddrPart1").val();
-	   var addr3 = $("#addrDetail").val();
-	   var birth = $("#birth").val();
-	   var gender = $("#gender").val();
-	   
-	   var idregex = /^[a-z][a-z\d]{4,11}$/;
-	   var pwregex = /^[A-Za-z\d]{8,12}$/;
-	   var nameregex = /[가-힣]{2,}/;
-	   var phoneregex = /^01\d\d{3,4}\d{4}$/;
-	   
-	   var idregex = idregex.exec(id);
-	   if(idregex == null){ // 아이디
-		   alert("아이디양식을 다시 확인해주세요");
-		   return;
-	   }
-	   var nameregex = nameregex.exec(name);
-	   if(nameregex == null){ // 이름
-		   alert("이름양식을 다시 확인해주세요");
-		   retrun;
-	   }
-	   var pwregex = pwregex.exec(pw);
-	   if(pwregex == null){ // 비밀번호
-		   alert("비밀번호양식을 다시 확인해주세요");
-		   retrun;
-	   }
-	   var phoneregex = phoneregex.exec(mobile);
-	   if(phoneregex == null){ // 핸드폰 번호
-		   alert("핸드폰번호양식을 다시 확인해주세요");
-		   retrun;
-	   }
-	   if(addr1.length == 0 || addr2.length == 0 || addr3.length == 0 ){ // 주소
-	        alert("주소를 다시 확인해주세요");
-	        return false;
-	    }
-	   if(birth.length == 0){ // 생일
-	        alert("생일을 다시 확인해주세요");
-	        return false;
-	    }
-		if(gender.length == 0){ // 성별
-	        alert("성별을 다시 확인해주세요");
-	        return false;
-	    }
-	   signupajax();
+	//회원가입 버튼 눌렀을 때, 빈칸 있으면 다시 유효성 검사진행
+	//
+	//$('input:checkbox[name=chkWeek]').is(':checked');
+$("#signupbtn").on("click",function(){
+	var studyName=$("#studyName").val();
+	var bigSel=$("#bigSel").val(); //null일 가는ㅇ성이없음
+	var smSel=$("#smSel").val(); //null일 가는ㅇ성이없음
+	var chkweek=$('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
+	var studyTime=$("#studyTime").val();
+	var studyMin=$("#studyMin").val();
+	var playTime=$("#playTime").val();
+	var playMin=$("#playMin").val();
+	var lvlSel=$("#lvlSel").val();
+	
+//	var idregex = /^[a-z][a-z\d]{4,11}$/;
+//	var pwregex = /^[A-Za-z\d]{8,12}$/;
+//	var nameregex = /[가-힣]{2,}/;
+//	var phoneregex = /^01\d\d{3,4}\d{4}$/;
+
+
+	if(studyName == ""){ // 아이디
+		alert("스터디 확인해주세요.");
+		return;
+	}
+	if(chkweek == false){ // 아이디
+		alert("요일을 선택해주세요.");
+		return;
+	}
+
+	signupajax();
    
 })
 
@@ -558,15 +476,14 @@ function btnLevel(who){
 	if (who==1) $("#lvlSel").val("상");
 	if (who==2) $("#lvlSel").val("중");
 	if (who==3) $("#lvlSel").val("하");
-	console.log($("#lvlSel").val());
 }
  //카테고리 대 선택후 소 버튼 생성
  //bigSel, smSel, lvlSel hidden에 값들어감
 function btnBigSelect1(){
 	$("#bigSel").val($("#labelBig1").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
-   	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">인문학</label>');
+   	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off"><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">인문학</label>');
    	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12">심리학</label>');
    	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13">철학</label>');
    	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14">역사</label>');
@@ -574,12 +491,13 @@ function btnBigSelect1(){
    	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16">소설</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17">기타</label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-   }
+	$('#btnradio11').trigger('click');
+}
 function btnBigSelect2(){
 	$("#bigSel").val($("#labelBig2").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").show();
 	$('#btnGroupSm').empty();
-	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">뮤지컬/오페라</label>');
+	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off"><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">뮤지컬/오페라</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12">영화</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13">전시회</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14">파티/페스티벌</label>');
@@ -587,12 +505,13 @@ function btnBigSelect2(){
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-   }
+	$('#btnradio11').trigger('click');
+}
 function btnBigSelect3(){
 	$("#bigSel").val($("#labelBig3").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").show();
 	$('#btnGroupSm').empty();
-	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">영어</label>');
+	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off"><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">영어</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12">일본어</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13">중국어</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14">프랑스어</label>');
@@ -600,12 +519,13 @@ function btnBigSelect3(){
 	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16">기타</label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-   }
+	$('#btnradio11').trigger('click');
+}
 function btnBigSelect4(){
 	$("#bigSel").val($("#labelBig4").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").show();
 	$('#btnGroupSm').empty();
-	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">공무원</label>');
+	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off"><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">공무원</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12">토익/토플</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13">임용고시</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14">인적성검사</label>');
@@ -613,12 +533,13 @@ function btnBigSelect4(){
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-   }
+	$('#btnradio11').trigger('click');
+}
 function btnBigSelect5(){
 	$("#bigSel").val($("#labelBig5").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").show();
 	$('#btnGroupSm').empty();
-	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">경제</label>');
+	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off"><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">경제</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12">문화</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13">정치</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14">환경</label>');
@@ -626,12 +547,13 @@ function btnBigSelect5(){
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-   }
+	$('#btnradio11').trigger('click');
+}
 function btnBigSelect6(){
 	$("#bigSel").val($("#labelBig6").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").show();
 	$('#btnGroupSm').empty();
-	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">JAVA</label>');
+	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off"><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">JAVA</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12">C</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13">C#,C++</label>');
 	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14">Python</label>');
@@ -639,12 +561,13 @@ function btnBigSelect6(){
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-   }
+	$('#btnradio11').trigger('click');
+}
 function btnBigSelect7(){
 	$("#bigSel").val($("#labelBig7").text());
-	console.log($("#bigSel").val());
+	$("#btnGroupSm").hide();
 	$('#btnGroupSm').empty();
-//	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11"></label>');
+	$("#btnGroupSm").append('<input onclick=btnSmClick(1) type="radio" class="btn-check" name="btnradio2" id="btnradio11" autocomplete="off" checked><label id="labelSm1" class="btn btn-outline-success btn-sm" for="btnradio11">기타</label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(2) type="radio" class="btn-check" name="btnradio2" id="btnradio12" autocomplete="off"><label id="labelSm2" class="btn btn-outline-success btn-sm" for="btnradio12"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(3) type="radio" class="btn-check" name="btnradio2" id="btnradio13" autocomplete="off"><label id="labelSm3" class="btn btn-outline-success btn-sm" for="btnradio13"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(4) type="radio" class="btn-check" name="btnradio2" id="btnradio14" autocomplete="off"><label id="labelSm4" class="btn btn-outline-success btn-sm" for="btnradio14"></label>');
@@ -652,7 +575,8 @@ function btnBigSelect7(){
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(6) type="radio" class="btn-check" name="btnradio2" id="btnradio16" autocomplete="off"><label id="labelSm6" class="btn btn-outline-success btn-sm" for="btnradio16"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(7) type="radio" class="btn-check" name="btnradio2" id="btnradio17" autocomplete="off"><label id="labelSm7" class="btn btn-outline-success btn-sm" for="btnradio17"></label>');
 //	$("#btnGroupSm").append('<input onclick=btnSmClick(8) type="radio" class="btn-check" name="btnradio2" id="btnradio18" autocomplete="off"><label id="labelSm8" class="btn btn-outline-success btn-sm" for="btnradio18"></label>');
-	}
+	$('#btnradio11').trigger('click');
+}
 
 function btnSmClick(who){
 	if (who==1) $("#smSel").val($("#labelSm1").text());
@@ -663,9 +587,14 @@ function btnSmClick(who){
 	if (who==6) $("#smSel").val($("#labelSm6").text());
 	if (who==7) $("#smSel").val($("#labelSm7").text());
 	if (who==8) $("#smSel").val($("#labelSm8").text());
-	console.log($("#smSel").val())
+//	console.log($("#smSel").val())
 }
-
+$(document)
+.ready(function(){
+	$('#btnradio1').trigger('click');
+	$('#btncheck1').trigger('click');
+	$('#btnradio22').trigger('click');
+})
 /* 체크박스는 homeControl에서 확인합시다.
 var chk=[];
 $(document)
@@ -681,6 +610,12 @@ $(document)
 		})
 	
 })
+*/
+/*
+function btnTest(){
+	$('input:checkbox[name=chkWeek]').is(':checked');
+	console.log($('input:checkbox[name=chkWeek]').is(':checked'));
+}
 */
 
 </script>
