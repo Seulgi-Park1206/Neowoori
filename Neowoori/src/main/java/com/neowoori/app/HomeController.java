@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -276,27 +277,60 @@ public class HomeController {
 	//#############################################################
 	
 	/*---------------박슬기 영역----------------------*/
-	// 내 정보 출력 및 수정
+	// 로그아웃
+	@ResponseBody
+	@RequestMapping(value="/logout", method=RequestMethod.POST, produces="application/json")
+	public void logout(HttpServletRequest request, HttpSession session){
+		String state = request.getParameter("state");
+		if(state.equals("logout"))	session.invalidate();
+	}
+	// 내 정보
 	@RequestMapping("/mypage")
-    public String myPage(Model model, HttpServletRequest request, HttpSession session) {
-		session = request.getSession();
-		String usid = "human1";
-		session.setAttribute("usid", usid);
-		String uid = (String) session.getAttribute("usid");
-		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("uData", dao.psgUserInfo(uid));
+	public String myPage() {
 		return "psgMypage";
+	}
+	// 내 정보 가져오기
+	@ResponseBody
+	@RequestMapping(value="/mypage.do", method=RequestMethod.POST, produces="application/json")
+    public JSONObject myPageLoad(HttpServletRequest request, HttpSession session) {
+		session = request.getSession();
+		String uid = (String) session.getAttribute("userid");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		BMembers member = dao.psgUserInfo(uid);
+		JSONObject jo = new JSONObject();
+		jo.put("userid", member.getUserId());
+		jo.put("uname", member.getuName());
+		jo.put("uyear", member.getuYear());
+		jo.put("ubirthday", member.getuBirthday());
+		jo.put("ugender", member.getuGender());
+		jo.put("umail", member.getuMail());
+		
+		return jo;
     }
+	// 내 정보 닉네임 중복체크
+	@ResponseBody
+	@RequestMapping(value="/nick_check.do", method=RequestMethod.POST, produces="application/json")
+	public String myPageNickCheck(@RequestBody String nick) {
+		System.out.println("RequestBody: " + nick);
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int n = dao.psgNickCheck(nick);
+//		System.out.println("<닉네임 중복체크: "+n+">");
+		return Integer.toString(n);
+	}
+	//////// 여기부터 시쟉! ////////
+	// 내 정보 수정
+	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST, produces="application/json")
+	public String myPageUpdate(@RequestBody String pw, String nick, String mobile) {
+		return "redirect:/index";
+	}
+	
+	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
 		// session 설정(로그인 시 설정부분 제거 예정)
 		session = request.getSession();
-		String usid = "juhyck95";
-		// id = juhyck95
-		// pw = qkrwngur12
-		session.setAttribute("usid", usid);
 		// session_usid 가져오기
-		String uid = (String) session.getAttribute("usid");
+		String uid = (String) session.getAttribute("userid");
 		
 		// DB에서 해당 유저의 스터디 목록 조회
 		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
