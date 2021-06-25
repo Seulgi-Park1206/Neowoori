@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -184,7 +185,6 @@ public class HomeController {
 	public String ID_Check(@RequestBody String paramData){
 		//클라이언트가 보낸 ID값
 		String ID = paramData.trim();
-		System.out.println(ID);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhIdChk(ID);
 		
@@ -201,7 +201,6 @@ public class HomeController {
 	public String Nick_Check(@RequestBody String paramData){
 		//클라이언트가 보낸 Nick값
 		String Nick = paramData.trim();
-		System.out.println(Nick);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhNickChk(Nick);
 		
@@ -219,9 +218,6 @@ public class HomeController {
 		String ID = request.getParameter("uid");
 		String PW = request.getParameter("upw");
 		String today = request.getParameter("today");
-		System.out.println(ID);
-		System.out.println(PW);
-		System.out.println(today);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhlogin(ID, PW);
 		if(dto == 1) { //결과 값이 있으면 아이디 존재
@@ -239,8 +235,6 @@ public class HomeController {
 	public String adminlogin_Check(String uid, String upw ,HttpServletRequest request, HttpSession session){
 		String ID = request.getParameter("uid");
 		String PW = request.getParameter("upw");
-		System.out.println(ID);
-		System.out.println(PW);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhadminlogin(ID, PW);
 		
@@ -260,14 +254,30 @@ public class HomeController {
 		ArrayList<BMembersState> user_list = dao.pjhStatelist();
 		return user_list;
 	}
+	@ResponseBody // 유저수 count
+	@RequestMapping(value="/count.do",method=RequestMethod.POST, produces="application/json")
+	public int user_count(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int user_count = dao.pjhStateCount();
+		return user_count;
+	}
+	
 	@ResponseBody // 관리자 게시판(유저관리)(팝업,modal)
 	@RequestMapping(value="/usermodal.do",method=RequestMethod.POST, produces="application/json")
 	public ArrayList<BMembers> user_modal(HttpServletRequest request){
 		int unum = Integer.parseInt(request.getParameter("usernum"));
-		System.out.println(unum);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		ArrayList<BMembers> user_list = dao.pjhmemberlist1(unum);
 		return user_list;
+	}
+	
+	@ResponseBody // 관리자 게시판(유저관리)(페이징)
+	@RequestMapping(value="/btnnum.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembersState> btn_num(HttpServletRequest request){
+		int btnvalue = Integer.parseInt(request.getParameter("btnvalue"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembersState> btn_num = dao.pjhpaging(btnvalue);
+		return btn_num;
 	}
 	
 	/*---------------------------------------------*/
@@ -277,27 +287,60 @@ public class HomeController {
 	//#############################################################
 	
 	/*---------------박슬기 영역----------------------*/
-	// 내 정보 출력 및 수정
+	// 로그아웃
+	@ResponseBody
+	@RequestMapping(value="/logout", method=RequestMethod.POST, produces="application/json")
+	public void logout(HttpServletRequest request, HttpSession session){
+		String state = request.getParameter("state");
+		if(state.equals("logout"))	session.invalidate();
+	}
+	// 내 정보
 	@RequestMapping("/mypage")
-    public String myPage(Model model, HttpServletRequest request, HttpSession session) {
-		session = request.getSession();
-		String usid = "human1";
-		session.setAttribute("usid", usid);
-		String uid = (String) session.getAttribute("usid");
-		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("uData", dao.psgUserInfo(uid));
+	public String myPage() {
 		return "psgMypage";
+	}
+	// 내 정보 가져오기
+	@ResponseBody
+	@RequestMapping(value="/mypage.do", method=RequestMethod.POST, produces="application/json")
+    public JSONObject myPageLoad(HttpServletRequest request, HttpSession session) {
+		session = request.getSession();
+		String uid = (String) session.getAttribute("userid");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		BMembers member = dao.psgUserInfo(uid);
+		JSONObject jo = new JSONObject();
+		jo.put("userid", member.getUserId());
+		jo.put("uname", member.getuName());
+		jo.put("uyear", member.getuYear());
+		jo.put("ubirthday", member.getuBirthday());
+		jo.put("ugender", member.getuGender());
+		jo.put("umail", member.getuMail());
+		
+		return jo;
     }
+	// 내 정보 닉네임 중복체크
+	@ResponseBody
+	@RequestMapping(value="/nick_check.do", method=RequestMethod.POST, produces="application/json")
+	public String myPageNickCheck(@RequestBody String nick) {
+		System.out.println("RequestBody: " + nick);
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int n = dao.psgNickCheck(nick);
+//		System.out.println("<닉네임 중복체크: "+n+">");
+		return Integer.toString(n);
+	}
+	//////// 여기부터 시쟉! ////////
+	// 내 정보 수정
+	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST, produces="application/json")
+	public String myPageUpdate(@RequestBody String pw, String nick, String mobile) {
+		return "redirect:/index";
+	}
+	
+	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
 		// session 설정(로그인 시 설정부분 제거 예정)
 		session = request.getSession();
-		String usid = "juhyck95";
-		// id = juhyck95
-		// pw = qkrwngur12
-		session.setAttribute("usid", usid);
 		// session_usid 가져오기
-		String uid = (String) session.getAttribute("usid");
+		String uid = (String) session.getAttribute("userid");
 		
 		// DB에서 해당 유저의 스터디 목록 조회
 		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);

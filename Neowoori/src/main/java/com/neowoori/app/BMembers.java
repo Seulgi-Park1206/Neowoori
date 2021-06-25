@@ -6,10 +6,10 @@ public class BMembers {
 	String uPw;
 	String uName;
 	String uNick;
-	int uYear;
-	int uBirthday;
+	String uYear;
+	String uBirthday;
 	String uGender;
-	int uMobile;
+	String uMobile;
 	String uMail;
 	String address;
 	String lati;
@@ -18,8 +18,8 @@ public class BMembers {
 	public BMembers() {
 
 	}
-	public BMembers(int uNum, String userId, String uPw, String uName, String uNick, int uYear, int uBirthday,
-			String uGender, int uMobile, String uMail, String address, String lati, String longi) {
+	public BMembers(int uNum, String userId, String uPw, String uName, String uNick, String uYear, String uBirthday,
+			String uGender, String uMobile, String uMail, String address, String lati, String longi) {
 		//super();
 		this.uNum = uNum;
 		this.userId = userId;
@@ -65,16 +65,16 @@ public class BMembers {
 	public void setuNick(String uNick) {
 		this.uNick = uNick;
 	}
-	public int getuYear() {
+	public String getuYear() {
 		return uYear;
 	}
-	public void setuYear(int uYear) {
+	public void setuYear(String uYear) {
 		this.uYear = uYear;
 	}
-	public int getuBirthday() {
+	public String getuBirthday() {
 		return uBirthday;
 	}
-	public void setuBirthday(int uBirthday) {
+	public void setuBirthday(String uBirthday) {
 		this.uBirthday = uBirthday;
 	}
 	public String getuGender() {
@@ -83,10 +83,10 @@ public class BMembers {
 	public void setuGender(String uGender) {
 		this.uGender = uGender;
 	}
-	public int getuMobile() {
+	public String getuMobile() {
 		return uMobile;
 	}
-	public void setuMobile(int uMobile) {
+	public void setuMobile(String uMobile) {
 		this.uMobile = uMobile;
 	}
 	public String getuMail() {

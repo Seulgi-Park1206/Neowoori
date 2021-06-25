@@ -28,10 +28,8 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>비밀번호 확인:</td>
-					<td class=tdCenter>
-						<input type=text class=intext id=pwdCheck />
-					</td>
-					<td class=tdCheck><label id=yesNo></label></td>
+					<td class=tdCenter><input type=text class=intext id=pwdCheck /></td>
+					<td class=tdCheck><label class=intext id=yesNo></label></td>
 				</tr>
 				<tr>
 					<td class=tdLeft>이름:</td>
@@ -42,7 +40,7 @@
 					<td class=tdCenter><input type=text class=intext id=nick /></td>
 					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnNickCheck value="중복확인" /></td>
 				</tr>
-				<tr><td class=tdLeft></td><td class=tdCenter id=hiddenResult><label class=intext id=nickCheckResult></label>
+				<tr class=hidden><td class=tdLeft></td><td class=tdCenter id=hiddenResult><label class=intext id=nickCheckResult></label>
 				<tr>
 					<td class=tdLeft>생년월일:</td>
 					<td class=tdCenter><label class=intext id=birth></label></td>
@@ -57,31 +55,7 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>이메일:</td>
-					<td class=tdCenter>
-						<!-- <input type=text class=email id=email1 />&nbsp;
-						@&nbsp;
-						 <select class=email id=email2>
-							<option selected disabled>선택하시오</option>
-							<option value="">직접 입력</option>
-							<option value="gmail.com">gmail.com</option>
-							<option value="naver.com">naver.com</option>
-							<option value="nate.com">nate.com</option>
-							<option value="hanmail.net">hanmail.net</option>
-						</select>
-					</td> -->
-					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="Username" aria-label="Username">
-	  					<span class="input-group-text">@</span>
-	  					<input type="text" class="form-control" placeholder="Server" aria-label="Server">
-					</div>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnEmail value="이메일 인증" /></td>
-				</tr>
-				<tr id=hiddenTr>
-					<td class=tdLeft>이메일 인증번호:</td>
-					<td class=tdCenter>
-						<input type=text class=intext id=emailCheck/>
-					</td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnCheck value="인증확인" /><td>
+					<td class=tdCenter><label class=intext id=email></label></td>
 				</tr>
 			</table>
 			<br>
@@ -96,51 +70,28 @@
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
 function cancel(){
-	location.href='';
+	location.href='index';
 }
 $(document)
 .ready(function(){
 	// 세션값을 이용해 user_id를 얻어와서 db에서 해당 유저 정보 불러오기
 	$.ajax({
-		url='/mypage',
-		data={},
-		contentType : 'application/json; charset=UTF-8',
-		dataType='json',
-		method='post',
-		success=function(result){
-			$.each(result, function(index, e)){
-				$('#uid').text(e['userid']);
-				$('#uname').text(e['uname']);
-				$('#birth').text(e['uyear']+e['ubirthday']);
-				$('#gender').text(e['ugender']);
-				$('')
-			}
+		url:'${path}/mypage.do',
+		data:{},
+		contentType:'application/json; charset=UTF-8',
+		dataType:'json',
+		method:'post',
+		success:function(result){
+				$('#uid').text(result['userid']);
+				$('#uname').text(result['uname']);
+				$('#birth').text(result['uyear']+result['ubirthday']);
+				$('#gender').text(result['ugender']);
+				$('#email').text(result['umail']);
 		},
-		error=function(){
+		error:function(){
 			alert('error');
 		}
 	});
-	/* $.ajax({
-        url:"post.do"
-        , method : 'POST'
-        , data: {}
-        , contentType : 'application/json; charset=UTF-8'
-        , dataType : 'json'
-        , success :
-        	function output(resp){
-	        	var result = '';
-		        result +='<table border="1">'
-		        result +='<tr><th>게시물번호</th><th>작성자</th><th>제목</th></tr>'
-		        $.each(resp,function(index,item){
-		            result +='<tr><td>'+item["bId"]+'</td>'
-		            result +='<td>'+item["bName"]+'</td>'
-		            result +='<td>'+item["bTitle"]+'</td></tr>'
-		        })
-		        result +='</table>'
-		        $('#tbl').append(result)
-        	}
-	}) */
-	$('#hiddenTr').hide();
 })
 .on('change keyup paste','#pwdCheck',function(){
 	if($('#pwd').val() == $(this).val()){
@@ -152,27 +103,55 @@ $(document)
 	}
 })
 .on('click', '#btnNickCheck', function(){
-	/* $('#hiddenResult').show(); */
 	$('#nickCheckResult').css('background-color', '#ff9595');
-	console.log('닉네임 중복확인');
 	let nick = $('#nick').val();
 	// db에서 검색한 결과: 존재 여부(count)
-	let rst = 1;
-	if(rst == 1){
-		$('#nickCheckResult').text('이미 존재하는 닉네임입니다.');
-	} else {
-		$('#nickCheckResult').text('사용할 수 있는 닉네임입니다.');
-	}
-	
-})
-.on('click', '#btnEmail', function(){
-	$('#hiddenTr').show();
-	return false;
+	$.ajax({
+		url:'nick_check.do',
+		data:nick,
+		contentType:'text/plain; charset=utf-8;',
+		dataType:'text',
+		method:'post',
+		success:function(result){
+			console.log(result);
+			if(result == '1'){
+				$('#nickCheckResult').text('이미 존재하는 닉네임입니다.');
+			} else {
+				$('#nickCheckResult').text('사용할 수 있는 닉네임입니다.');
+			}
+		},
+		error:function(){
+			alert('Nick Error');
+		}
+	})
 })
 .on('click', '#btnUpdate', function(){
-	let result = confirm("정보를 수정하시겠습니까?");
-	if(result){
-		alert("수정이 완료되었습니다.");
+	if($('#yesno').text() == '불일치'){
+		alert('비밀번호를 확인해주세요!');
+	} else if($('#nickCheckResult').text() == '이미 존재하는 닉네임입니다.'){
+		alert('닉네임을 확인해주세요!');
+	} else {
+		let result = confirm("정보를 수정하시겠습니까?");
+		if(result){
+			$.ajax({
+				url:'update_myInfo.do',
+				data:{
+					'pw':$('#pwd').val(),
+					'nick':$('#nick').val(),
+					'mobile':$('#mobile').val()
+					},
+				contentType:'application/json; charset=UTF-8',
+				dataType:'json',
+				method:'post',
+				success:function(result){
+					console.log(result);
+					alert("수정이 완료되었습니다.");
+				},
+				error:function(){
+					alert('error');
+				}
+			});
+		}
 	}
 	return false;
 })

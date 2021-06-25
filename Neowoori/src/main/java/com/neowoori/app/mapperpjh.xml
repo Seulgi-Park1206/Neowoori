@@ -28,9 +28,19 @@
 		select * from members where unum=#{param1}
 	</select>
 	
-		<!-- 유저상태 정보가져오기 -->
+		<!-- 처음 유저상태 정보가져오기 -->
 	<select id="pjhStatelist" resultType="com.neowoori.app.BMembersState">
-		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum
+		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY
+	</select>
+	
+	<!-- 이후 유저상태 정보가져오기 -->
+	<select id="pjhpaging" resultType="com.neowoori.app.BMembersState">
+		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum OFFSET #{param1} ROWS FETCH FIRST 5 ROWS ONLY
+	</select>
+	
+	<!-- 유저상태 카운트 -->
+	<select id="pjhStateCount" resultType="Integer">
+		select count(*) from state
 	</select>
 	
 		<!-- 로그인시 접속시간 업데이트 -->
