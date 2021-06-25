@@ -11,6 +11,7 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.min.js" integrity="sha384-Atwg2Pkwv9vp0ygtn1JAojH0nYbwNJLPhwyoVbhoPwBhjQPR5VtM2+xf0Uwh9KtT" crossorigin="anonymous"></script>
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
+<input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
   <div class="wrap wd668">
       <div class="container">
         <div class="form_txtInput">
@@ -96,6 +97,7 @@
 					  <input type="checkbox" name="chkWeek" class="btn-check" id="btncheck7" value="7" />
 					  <label class="btn btn-outline-success btn-sm" for="btncheck7">일</label>
 					</div>
+					<input type=button onclick=checkboxArr()>
                   </td>
                 </tr>
                 <tr>
@@ -121,7 +123,7 @@
                 <tr>
                   <th><span>스터디 진행 시간</span></th>
                   <td>
- 					<div class="input-group mb-3" style="width:75%;">
+ 					<div class="input-group mb-3" style="width:100%;">
 					<input id="playTime" type="number" class="form-control" value="1" max="23" min="0">
 					<span class="input-group-text">시간</span>
 					<input id="playMin" type="number" class="form-control" value="20" max="59" min="0" step="10">
@@ -132,6 +134,14 @@
                 <tr>
                 	<th></th>
                	 	<td><div class="play regex" style="font-size: 10px;"></div></td>
+                </tr>
+                <tr>
+                  <th><span>최대 인원</span></th>
+                  <td>
+					<div class="input-group mb-3" style="width:30%;">
+					<input id="personnel" type="number" class="form-control" value="2" max="10" min="2">
+					</div>
+				  </td>
                 </tr>
                 <tr>
                   <th><span>난이도</span></th>
@@ -205,12 +215,12 @@
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881&libraries=LIBRARY"></script>
-<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881&libraries=services"></script>
 <script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=4b0f94866b0f233c25fbdc0d8ed3c881&libraries=services,clusterer,drawing"></script>
 <script language='javascript'>
 /*--------------------------카카오 주소 찾기---------------------------------*/
-
+var lati;
+var longi;
+var tmpAdd;
 function goPopup(){
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
     var pop = window.open("jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
@@ -225,196 +235,70 @@ function jusoCallBack(roadFullAddr,roadAddrPart1,addrDetail,roadAddrPart2,engAdd
 	document.form.zipNo.value = zipNo;
 	document.form.entX.value = entX;
 	document.form.entY.value = entY;
-	var coords = new kakao.maps.Coords($('#entX').val(),$('#entY').val()); 
-	coords.toLatLng().toString(); // (33.45067375096625, 126.5706721005115)
-	cut = coords.toLatLng().toString().replace(/\(/g,'').replace(/\)/g,'');
-	var arr = cut.split(','); // ","기점으로 두개로 나눔
-	var lati = arr[0]; //위도
-	var longi = arr[1]; //경도
-	console.log(lati);
-	console.log(longi);
+	var geocoder = new kakao.maps.services.Geocoder();
+	var callback = function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			console.log(result);
+			console.log(result[0].y+","+result[0].x)
+			lati=result[0].y;
+			longi=result[0].x;
+		}
+	};
+	geocoder.addressSearch($("#roadAddrPart1").val(), callback);
+//	console.log(lati);
+//	console.log(longi);
 }
 
 /*--------------------------카카오 주소 찾기---------------------------------*/
-
-
-/*--------------------------이메일 직접입력만 글쓰기 가능---------------------------------*/
-/*
-function selectEmail(ele){ 
-	var $ele = $(ele);
-	var $email2 = $('input[name=email2]');
-	// '1'인 경우 직접입력 
-	if($ele.val() == "1"){ 
-		$email2.attr('readonly', false);
-		$email2.val('');
-		} else { 
-			$email2.attr('readonly', true);
-			$email2.val($ele.val()); 
-		} 
-	}
-*/
-/*--------------------------이메일 직접입력만 글쓰기 가능---------------------------------*/
-
-
-/*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
-
-// $("#btn_con ").on("click",function(){ 
-// 	var email = $("#email").val();
-// 	var email2 = $("#email2").val();
-	
-// 	var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-	
-// 	var mail = email+"@"+email2;
-// 	   $("#mail").val(mail);  
-// 	   console.log(email);
-// 	   console.log(email2);
-// 	   console.log(mail);
-// 	   if(!email_rule.test(mail)){
-// 	       alert("이메일을 형식에 맞게 입력해주세요.");
-// 	     return false;
-// 	   }else{
-// 		   alert("해당 이메일로 인증번호를 발급했습니다.");
-// 		   $("#send_num").css("display","");
-// 	   }
-// })
-
-/*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
-
-
-/*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
-/*
-$("#btn_num ").on("click",function(){
-	if($("#send_number").val()==""){
-		alert("안증번호를 다시 입력해주세요");
-	}
-})
-*/
-/*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
-
-
-/*--------------------------유효성 검사 & 아이디,닉네임 중복검사(임시)---------------------------------*/
-/*
-$(function(){
-   //스터디명 빈칸 확인  
-	$("#studyName").on("input",function(){
-		
-		var regex = /^[A-Za-z\d]{8,12}$/;
-		var studyName = regex.exec($("#studyName").val());
-		console.log(studyName)
-		if(studyName == ""){
-			console.log("cc")
-			$(".nameChkView.regex").html("스터디명을 입력해주세요.");
-			$(".nameChkView.regex").css("color","red")
-			return;
-		}else{
-			
-		}
-	})
-	$("#btnCheckOn").on("click",function(){
-		var chkWeekChk = $('input:checkbox[name=chkWeek]').is(':checked');
-		console.log(chkWeekChk)
-		if(chkWeekChk == false){
-			console.log("33")
-			$(".dayChkView").html("모일 요일을 체크해주세요.");
-			$(".dayChkView").css("color","red")
-			return;
-		}
-	})
-	 
-	//비밀번호 유효성검사
-	$("#studyTime").on("input",function(){
-		var regex = /^[A-Za-z\d]{8,12}$/;
-		var result = regex.exec($("#pw").val())
-		if(result != null){
-			$(".pw regex").html("");
-		}else{
-			$(".pw.regex").html("영어대소문자,숫자 8-11자리");
-			$(".pw.regex").css("color","red");
-		}
-	})
-	
-	//비밀번호 확인  
-	$("#repw").on("keyup",function(){
-		if($("#pw").val()==$("#repw").val()){
-			$(".repw.regex").html("비밀번호가 일치합니다");
-			$(".repw.regex").css("color","black");
-		}else{
-			$(".repw.regex").html("비밀번호가 일치하지않습니다");
-			$(".repw.regex").css("color","red");
-		}
-	})
-	//이름 유효성검사
-	$("#name").on("input",function(){
-		var regex = /[가-힣]{2,}/;
-		var result = regex.exec($("#name").val());
-		if(result != null){
-			$(".name.regex").html("");  
-		}else{
-			$(".name.regex").html("한글만 입력 가능합니다.");
-		}
-	})
-	    
-	//전화번호 유효성검사
-	$("#mobile").on("input",function(){
-		var regex = /^01\d\d{3,4}\d{4}$/;
-		var result = regex.exec($("#mobile").val());
-		if(result != null){
-			$(".mobile.regex").html("");  
-		}else{
-			$(".mobile.regex").html("올바른 번호가 아닙니다.('-' 를 빼고 입력해주세요.)");
-			$(".mobile.regex").css("color","red");
-		}
-	})
-	//이메일 유효성 검사
-	$("#email,#email2,#email3").on("click",function(){
-		var email_rule =  /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-		var email =$("#email").val();
-		var email2 =$("#email2").val();
-		if(!email){
-			$(".email.regex").html("이메일을 입력해주세요");
-		}
-		if(!email2){
-			$(".email.regex").html("도메인을 입력해주세요");
-		}
-		if(email != "" && email2 != ""){
-			$(".email.regex").html("");
-		}
-		})
-	})
-*/
-/*--------------------------유효성 검사(임시)---------------------------------*/
 
 /*---------------------------회원가입 AJAX 영역(json배열로 넘길예정)-------------------------*/	
 	
 function signupajax(){
 	/*-----주소------*/
 	var juso = $('#roadAddrPart1').val()+" "+$('#addrDetail').val();
-	var tmpStudyTime =  $('#studyTime').val()+':'+$('#studyMin').val();
-	var tmpPlayTime =  $('#playTime').val()+':'+$('#playMin').val();
+	var tmpStudyTime =  $('#studyTime').val()+'시'+$('#studyMin').val()+"분";
+	var tmpPlayTime =  $('#playTime').val()+'시간'+$('#playMin').val()+"분";
+//	요일 배열화
+	chkWekkArry="";
+	var val = document.getElementsByName("chkWeek");
+	for(var i=0;i<val.length;i++){
+		if(val[i].checked){
+			if(val[i].value==1) chkWekkArry+="월";
+			if(val[i].value==2) chkWekkArry+="화";
+			if(val[i].value==3) chkWekkArry+="수";
+			if(val[i].value==4) chkWekkArry+="목";
+			if(val[i].value==5) chkWekkArry+="금";
+			if(val[i].value==6) chkWekkArry+="토";
+			if(val[i].value==7) chkWekkArry+="일";
+	}}
+//	console.log("로그인 아이디:"+$("#hid").val());
+	console.log(juso);
 	/*-----주소------*/
 	//활동요일은 homeController에서 사용
 	$.ajax({
     url: "jsbCreate.do",
     type: "POST",
     data: {
-    	"studyName" : $('#studyName').val(), // 아이디
-    	"bigSel" : $('#bigSel').val(), // 이름
-    	"smSel" : $('#smSel').val(), // 비빌번호
-    	"studyTime" : tmpStudyTime, // 닉네임
-    	"playTime" : tmpPlayTime, // 모바일번호
-    	"lvlSel" : $('#lvlSel').val(), // 성별
+    	"studyName" : $('#studyName').val(), // 스터디명
+    	"bigSel" : $('#bigSel').val(), // 카테고리1
+    	"smSel" : $('#smSel').val(), // 카테고리2
+    	"week" : chkWekkArry,
+    	"studyTime" : tmpStudyTime, // 시작시간
+    	"playTime" : tmpPlayTime, // 진행시간
+    	"lvlSel" : $('#lvlSel').val(), // 난이도
+    	"contents" : $("#Textarea").val(), //
+    	"personnel" : $("#personnel").val(), //
 //		"uyear" : year, // 생년
 //    	"ubirthday" : birthday, //월일
 //    	"uemail" : mail, //이메일
     	"ujuso" : juso, // 주소
     	"ulati" : lati, // 위도
-    	"ulongi" : longi //경도
+    	"ulongi" : longi, //경도
+    	"userId" : $("#hid").val()
     },
     success : function(data){
-      console.log("성공")
     },
-    error : function(){
-      alert("회원가입 실패")		
+    error : function(){	
     }
 	});
 }
@@ -430,8 +314,8 @@ function signupajax(){
 	//$('input:checkbox[name=chkWeek]').is(':checked');
 $("#signupbtn").on("click",function(){
 	var studyName=$("#studyName").val();
-	var bigSel=$("#bigSel").val(); //null일 가는ㅇ성이없음
-	var smSel=$("#smSel").val(); //null일 가는ㅇ성이없음
+	var bigSel=$("#bigSel").val(); //null일 가능성이없음
+	var smSel=$("#smSel").val(); //null일 가능성이없음
 	var chkweek=$('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
 	var studyTime=$("#studyTime").val();
 	var studyMin=$("#studyMin").val();
@@ -445,12 +329,29 @@ $("#signupbtn").on("click",function(){
 //	var phoneregex = /^01\d\d{3,4}\d{4}$/;
 
 
-	if(studyName == ""){ // 아이디
+	if(studyName==""){ // 아이디
 		alert("스터디 확인해주세요.");
 		return;
 	}
 	if(chkweek == false){ // 아이디
 		alert("요일을 선택해주세요.");
+		return;
+	}
+//	console.log(studyTime);
+	if(studyTime=="" || studyTime>"23"){
+		alert("스터디 시간 확인해주세요.1");
+		return;
+	}
+	if(studyMin=="" || studyMin>"59"){
+		alert("스터디 시간 확인해주세요.2");
+		return;
+	}
+	if(playTime==""){
+		alert("진행 시간 확인해주세요.1");
+		return;
+	}
+	if(playMin=="" || playMin>"59"){
+		alert("진행 시간 확인해주세요.2");
 		return;
 	}
 
@@ -594,6 +495,7 @@ $(document)
 	$('#btnradio1').trigger('click');
 	$('#btncheck1').trigger('click');
 	$('#btnradio22').trigger('click');
+	$("#hid").val("human1");
 })
 /* 체크박스는 homeControl에서 확인합시다.
 var chk=[];
@@ -611,6 +513,22 @@ $(document)
 	
 })
 */
+function checkboxArr(){
+	chkWekkArry="";
+	var val = document.getElementsByName("chkWeek");
+	for(var i=0;i<val.length;i++){
+		if(val[i].checked){
+			if(val[i].value==1) chkWekkArry+="월";
+			if(val[i].value==2) chkWekkArry+="화";
+			if(val[i].value==3) chkWekkArry+="수";
+			if(val[i].value==4) chkWekkArry+="목";
+			if(val[i].value==5) chkWekkArry+="금";
+			if(val[i].value==6) chkWekkArry+="토";
+			if(val[i].value==7) chkWekkArry+="일";
+		}
+	}
+	console.log(chkWekkArry);
+}
 /*
 function btnTest(){
 	$('input:checkbox[name=chkWeek]').is(':checked');

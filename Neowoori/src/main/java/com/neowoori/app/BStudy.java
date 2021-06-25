@@ -11,7 +11,7 @@ public class BStudy {
 	String mContents;
 	String mPersonnel;
 	String mTime;
-	int mPtime;
+	String mPtime;
 	String mLevel;
 	String Lati;
 	String Longi;
@@ -21,7 +21,7 @@ public class BStudy {
 	}
 	
 	public BStudy(int mNum, int uNum, String mName, String category1, String category2, String mWhere, String mDay,
-			String mContents, String mPersonnel, String mTime, int mPtime, String mLevel, String lati, String longi) {
+			String mContents, String mPersonnel, String mTime, String mPtime, String mLevel, String lati, String longi) {
 		//super();
 		this.mNum = mNum;
 		this.uNum = uNum;
@@ -106,10 +106,10 @@ public class BStudy {
 	public void setmDay(String mDay) {
 		this.mDay = mDay;
 	}
-	public int getmPtime() {
+	public String getmPtime() {
 		return mPtime;
 	}
-	public void setmPtime(int mPtime) {
+	public void setmPtime(String mPtime) {
 		this.mPtime = mPtime;
 	}
 	public String getmLevel() {

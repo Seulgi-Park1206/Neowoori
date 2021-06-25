@@ -54,6 +54,27 @@ $(document)
         	    map.setCenter(locPosition);      
         	};
 	        	$.each(resp, function (i, item){
+	        		
+	        		//테스트중
+	        		console.log("시작");
+	        		var geocoder = new kakao.maps.services.Geocoder(),
+	        	    wtmX = $('#entX').val(),
+	        	    wtmY = $('#entY').val();
+	        		console.log("시작2");
+	        		var callback = function(result, status) {
+	        		    if (status === kakao.maps.services.Status.OK) {
+	        		        console.log(result[0].x); // 126.570667
+	        		        console.log(result[0].y); // 33.45070100000001
+	        		    }
+	        		};
+	        		console.log("시작3");
+	        		// WTM 좌표를 WGS84 좌표계의 좌표로 변환한다
+	        		geocoder.transCoord(wtmX, wtmY, callback, {
+	        		    input_coord: kakao.maps.services.Coords.UTM-K,
+	        		    output_coord: kakao.maps.services.Coords.WGS84
+	        		});
+	        		//
+	        		
 	        		console.log(item.lati);
 	        		var positions = [
 			        		{

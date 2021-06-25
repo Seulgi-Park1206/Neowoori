@@ -9,4 +9,11 @@
 	<select id="jsbGetTest" resultType="com.neowoori.app.BStudy">
 		select * from study
 	</select>
+	<insert id="jsbCreateStudy">
+		insert into study
+		values(study_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12},#{param13})
+	</insert>
+	<select id="jsbGetUser" resultType="com.neowoori.app.BMembers">
+		select * from members where USERID=#{param1}
+	</select>
 </mapper>

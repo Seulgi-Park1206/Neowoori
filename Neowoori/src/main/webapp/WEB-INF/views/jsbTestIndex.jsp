@@ -166,11 +166,12 @@ function mapView(){
         	    infowindow.open(map, marker);
         	    */
         	    // 지도 중심좌표를 접속위치로 변경합니다
+        	    console.log(locPosition);
         	    map.setCenter(locPosition);      
         	};
         	
-	        	$.each(resp, function (i, item){
-	        		//console.log(item.lati);
+	        		$.each(resp, function (i, item){
+	        		console.log(item.mName);
 	        		var positions = [
 			        		{
 			        			content: '<div>'+item.mName+'</div>', 
