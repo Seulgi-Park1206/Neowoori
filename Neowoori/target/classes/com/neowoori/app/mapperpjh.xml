@@ -43,6 +43,23 @@
 		select count(*) from state
 	</select>
 	
+	<!-- 처음 내 스터디 게시판 가져오기 -->
+	<select id="pjhStudyPost" resultType="com.neowoori.app.BStudyPost">
+		select * from study_post order by posttype desc,postnum OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
+ 	</select>
+ 	
+ 	<!-- 이후 내 스터디 게시판 가져오기 -->
+	<select id="pjhStudyPostPaging" resultType="com.neowoori.app.BStudyPost">
+		select * from study_post order by posttype desc,postnum OFFSET #{param1} ROWS FETCH FIRST 10 ROWS ONLY
+ 	</select>
+ 	
+ 	<!-- 내 스터디 게시판 카운트 -->
+	<select id="pjsStudyPostCount" resultType="Integer">
+		select count(*) from study_post
+	</select>
+
+	
+	
 		<!-- 로그인시 접속시간 업데이트 -->
 	<update id="pjhstate">
 		update state set LASTJOIN=#{param1} where USERID=#{param2}

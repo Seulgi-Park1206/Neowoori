@@ -4,7 +4,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>스터디 게시판</title>
 </head>
 <body>
 <!-- 카테고리1, 카테고리2, 장소, 난이도 -->

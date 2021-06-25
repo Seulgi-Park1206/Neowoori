@@ -279,6 +279,32 @@ public class HomeController {
 		return btn_num;
 	}
 	
+	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
+	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BStudyPost> study_Post1(HttpServletRequest request){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BStudyPost> study_Post = dao.pjhStudyPost();
+		return study_Post;
+	}
+	
+	@ResponseBody // 유저수 count
+	@RequestMapping(value="/postcount.do",method=RequestMethod.POST, produces="application/json")
+	public int post_count(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int post_count = dao.pjsStudyPostCount();
+		return post_count;
+	}
+	
+	@ResponseBody // 내 스터디 게시판(페이징)
+	@RequestMapping(value="/studypostpaging.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BStudyPost> study_Post_Paging(HttpServletRequest request){
+		int studypostpaging = Integer.parseInt(request.getParameter("btnvalue"));
+		System.out.println(studypostpaging);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BStudyPost> study_Post_Paging = dao.pjhStudyPostPaging(studypostpaging);
+		return study_Post_Paging;
+	}
+	
 	/*---------------------------------------------*/
 	
 	//#############################################################
