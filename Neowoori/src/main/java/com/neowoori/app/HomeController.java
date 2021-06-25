@@ -288,7 +288,7 @@ public class HomeController {
 		return study_Post;
 	}
 	
-	@ResponseBody // 유저수 count
+	@ResponseBody // 내 스터디 게시판 count
 	@RequestMapping(value="/postcount.do",method=RequestMethod.POST, produces="application/json")
 	public int post_count(){
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
