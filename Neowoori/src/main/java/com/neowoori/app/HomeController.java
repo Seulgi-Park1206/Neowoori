@@ -1,6 +1,7 @@
 package com.neowoori.app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -308,31 +309,49 @@ public class HomeController {
 		BMembers member = dao.psgUserInfo(uid);
 		JSONObject jo = new JSONObject();
 		jo.put("userid", member.getUserId());
+		jo.put("unick", member.getuNick());
 		jo.put("uname", member.getuName());
 		jo.put("uyear", member.getuYear());
 		jo.put("ubirthday", member.getuBirthday());
 		jo.put("ugender", member.getuGender());
+		jo.put("umobile", member.getuMobile());
 		jo.put("umail", member.getuMail());
 		
 		return jo;
     }
 	// 내 정보 닉네임 중복체크
 	@ResponseBody
-	@RequestMapping(value="/nick_check.do", method=RequestMethod.POST, produces="application/json")
-	public String myPageNickCheck(@RequestBody String nick) {
-		System.out.println("RequestBody: " + nick);
+	@RequestMapping(value="/dup_check.do", method=RequestMethod.POST)
+	public String myPageDupCheck(@RequestBody HashMap<String, String> user) {
+		System.out.println("HomeController 진입");
+		String uid = user.get("uid");
+		String field = user.get("optype");
+		String value = user.get("val");
+		System.out.println("uid: "+uid);
+		System.out.println("field: "+field);
+		System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		int n = dao.psgNickCheck(nick);
-//		System.out.println("<닉네임 중복체크: "+n+">");
+		int n = dao.psgDupCheck(uid, field, value);
+		
 		return Integer.toString(n);
 	}
 	//////// 여기부터 시쟉! ////////
-	// 내 정보 수정
-	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST, produces="application/json")
-	public String myPageUpdate(@RequestBody String pw, String nick, String mobile) {
-		return "redirect:/index";
+	// 내 정보 변경
+	@ResponseBody
+	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST)
+	public String myPageUpdateInfo(@RequestBody HashMap<String, String> user) {
+		System.out.println("HomeController 진입");
+		String uid = user.get("uid");
+		String field = user.get("optype");
+		String value = user.get("val");
+		System.out.println("uid: "+uid);
+		System.out.println("field: "+field);
+		System.out.println("value: "+value);
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		dao.psgUpdateInfo(uid, field, value);
+		
+		return "ok";
 	}
-	
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {

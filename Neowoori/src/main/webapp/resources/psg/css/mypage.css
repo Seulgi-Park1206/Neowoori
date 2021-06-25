@@ -7,7 +7,7 @@
 } */
 table {
 	width: 100%;
-	height: 700px;
+	height: 800px;
 	border: 1px solid gray;
 	padding: 30px, 20px;
 }
@@ -16,30 +16,33 @@ tr {
 	line-height: 50px;
 	height: 10%;
 }
-.hidden {
-	height: 5%;
+.hidden label {
+	height: 80%;
 }
 .tdLeft {
-	width: 40%;
+	width: 30%;
 }
 .tdCenter {
-	width: 40%;
+	width: 50%;
 }
 .tdCenter * {
 	height: 70%;
 }
 .tdCheck {
 	width: 20%;
+	margin-left: 0;
+	text-align: left;
 	border-left: 0;
 }
 .intext {
 	width: 80%;
 	height: 60%;
+	text-align: center;
 }
 #yesno, #nickCheckResult {
 	height: 80%;
 }
-#nickCheckResult {
+#nickCheckResult, #mobileCheckResult {
 	color: white;
 }
 #yesNo {
@@ -55,13 +58,19 @@ tr {
 	padding: 5px;
 } */
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
-    /* .form {
-    	font-size: 10px;
-        width: 95%;
-    } */
-    /* .btnDiv {
-    	margin-top: 25px;
-    } */
+    .tdLeft {
+		width: 25%;
+	}
+	.tdCenter {
+		width: 50%;
+	}
+	/* .tdCenter * {
+		height: 70%;
+	} */
+	.tdCheck {
+		width: 25%;
+		margin-left: 0;
+	}
     .btn btn-outline-primary {
     	font-size: 17px;
     }
