@@ -346,34 +346,31 @@ public class HomeController {
 		
 		return jo;
     }
-	// 내 정보 닉네임 중복체크
+	// 내 정보 중복체크
 	@ResponseBody
 	@RequestMapping(value="/dup_check.do", method=RequestMethod.POST)
 	public String myPageDupCheck(@RequestBody HashMap<String, String> user) {
-		System.out.println("HomeController 진입");
 		String uid = user.get("uid");
 		String field = user.get("optype");
 		String value = user.get("val");
-		System.out.println("uid: "+uid);
-		System.out.println("field: "+field);
-		System.out.println("value: "+value);
+		//System.out.println("uid: "+uid);
+		//System.out.println("field: "+field);
+		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int n = dao.psgDupCheck(uid, field, value);
 		
 		return Integer.toString(n);
 	}
-	//////// 여기부터 시쟉! ////////
 	// 내 정보 변경
 	@ResponseBody
 	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST)
 	public String myPageUpdateInfo(@RequestBody HashMap<String, String> user) {
-		System.out.println("HomeController 진입");
 		String uid = user.get("uid");
 		String field = user.get("optype");
 		String value = user.get("val");
-		System.out.println("uid: "+uid);
-		System.out.println("field: "+field);
-		System.out.println("value: "+value);
+		//System.out.println("uid: "+uid);
+		//System.out.println("field: "+field);
+		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		dao.psgUpdateInfo(uid, field, value);
 		
