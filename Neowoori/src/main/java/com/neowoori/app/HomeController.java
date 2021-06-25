@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -375,6 +376,41 @@ public class HomeController {
 	      return "jsbTestIndex";
 	   }
 	
+	@ResponseBody /*스터디생성 ajax*/
+	@RequestMapping(value="/jsbCreate.do", method=RequestMethod.POST)
+	   public void createAjax(String studyName,String bigSel,String smSel,String week,
+			   String studyTime, String playTime,String lvlSel, String contents,String personnel,
+			   String mwhere,String ulati,String ulongi,String userId,HttpServletRequest request,Model model) {
+			String mName = request.getParameter("studyName");
+			String CATEGORY1 = request.getParameter("bigSel");
+			String CATEGORY2 = request.getParameter("smSel");
+			String mDay = request.getParameter("week");
+			String mTime = request.getParameter("studyTime");
+			String mPtime = request.getParameter("playTime");
+			String mLevel = request.getParameter("lvlSel");
+			String mContents = request.getParameter("contents");
+			String mPersonnel = request.getParameter("personnel");
+			String mWhere = request.getParameter("ujuso");
+			String lati = request.getParameter("ulati");
+			String longi = request.getParameter("ulongi");
+			String loginUId = request.getParameter("userId");
+			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			BMembers mem = dao.jsbGetUser(loginUId);
+			int mUserNum = mem.getuNum();
+//			System.out.println(mUserNum+","+mName+","+CATEGORY1+","+CATEGORY2+","+mWhere+","+mDay+","+mTime+","+mPtime+","+mLevel+","+mContents+","+mPersonnel+","+lati+","+longi);
+			dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi);
+	   }
+	
+	@ResponseBody
+	@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
+		public ArrayList<BStudy> reqList(HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			String one = req.getParameter("one");
+			String two = req.getParameter("two");
+			System.out.println(one+","+two);
+			ArrayList<BStudy> resp=dao.jsbGetTest();
+			return resp;
+	   }
 	
 	/*---------------------------------------------*/
 	
@@ -415,16 +451,7 @@ public class HomeController {
 		
 		
 	/*---------------전석봉 영역----------------------*/
-	@ResponseBody
-	   @RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
-	   public ArrayList<BStudy> reqList(HttpServletRequest req) {
-		   IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-		   String one = req.getParameter("one");
-		   String two = req.getParameter("two");
-		   System.out.println(one+","+two);
-		   ArrayList<BStudy> resp=dao.jsbGetTest();
-		   return resp;
-	   }
+
 			/*---------------------------------------------
 		   @ResponseBody
 		   @RequestMapping(value="/post.do", method=RequestMethod.POST,produces = "application/json")

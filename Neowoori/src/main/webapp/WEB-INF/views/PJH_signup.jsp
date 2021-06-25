@@ -431,12 +431,25 @@ $(function(){
 	function signupajax(){
 		
 		/*--------------------------카카오 경도 위도 찾기 ---------------------------------*/
+		/*
 		var coords = new kakao.maps.Coords($('#entX').val(),$('#entY').val()); 
 		coords.toLatLng().toString(); // (33.45067375096625, 126.5706721005115)
 		cut = coords.toLatLng().toString().replace(/\(/g,'').replace(/\)/g,'');
 		var arr = cut.split(','); // ","기점으로 두개로 나눔
 		var lati = arr[0]; //위도
 		var longi = arr[1]; //경도
+		console.log(lati);
+		console.log(longi);
+		*/
+		//210625 석봉수정
+		var geocoder = new kakao.maps.services.Geocoder();
+		var callback = function(result, status) {
+		if (status === kakao.maps.services.Status.OK) {
+			var lati=result[0].y;
+			var longi=result[0].x;
+		}
+	};
+	geocoder.addressSearch($("#roadAddrPart1").val(), callback);
 		/*--------------------------카카오 경도 위도 찾기 ---------------------------------*/
 		/*-----이메일------*/
 		var email = $("#email").val();
