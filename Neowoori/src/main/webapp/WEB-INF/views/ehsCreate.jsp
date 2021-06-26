@@ -495,7 +495,7 @@ $(document)
 	$('#btnradio1').trigger('click');
 	$('#btncheck1').trigger('click');
 	$('#btnradio22').trigger('click');
-	$("#hid").val("human1");
+	//$("#hid").val("human1");
 })
 /* 체크박스는 homeControl에서 확인합시다.
 var chk=[];

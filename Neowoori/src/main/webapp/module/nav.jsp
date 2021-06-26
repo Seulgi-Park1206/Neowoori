@@ -17,7 +17,7 @@
 		</div>
 		<nav>
 			<a class="link" id=searchLink href="">찾기</a>
-			<a class="link" href="">만들기</a>
+			<a class="link" href="${path}/create">만들기</a>
 			<a class="linklog" href="">쪽지함</a>
 			<a class="linklog" id=mystudy onclick="mystudy()">내스터디</a>
 			<a class="linklog" id=userid href="${path}/mypage">님</a>

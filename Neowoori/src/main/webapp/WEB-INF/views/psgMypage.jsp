@@ -28,12 +28,12 @@
 				</tr>
 				<tr class=hiddenTr>
 					<td class=tdLeft>새 비밀번호:</td>
-					<td class=tdCenter><input type=password class=intext id=upw1 /></td>
+					<td class=tdCenter><input type=password class=intext id=upw1 placeholder="새 비밀번호를 입력하세요." /></td>
 					<td class=tdCheck><label class=intext id=yesNo></label></td>
 				</tr>
 				<tr class=hiddenTr>
 					<td class=tdLeft>새 비밀번호 확인:</td>
-					<td class=tdCenter><input type=password class=intext id=upw /></td>
+					<td class=tdCenter><input type=password class=intext id=upw placeholder="새 비밀번호를 다시 입력하세요." /></td>
 					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnUpdatePw value="변경" /></td>
 				</tr>
 				<tr>
@@ -42,7 +42,7 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>닉네임:</td>
-					<td class=tdCenter><input type=text class=intext id=unick /></td>
+					<td class=tdCenter><input type=text class=intext id=unick placeholder="닉네임을 입력하세요." /></td>
 					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnNickCheck value="중복확인" />
 										<input type=button class="btn btn-outline-primary" id=btnUpdateNick value="변경" /></td>
 				</tr>
@@ -57,7 +57,7 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>연락처:</td>
-					<td class=tdCenter><input type=text class=intext id=umobile /></td>
+					<td class=tdCenter><input type=text class=intext id=umobile placeholder="연락처를 입력하세요." /></td>
 					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnMobileCheck value="중복확인" />
 										<input type=button class="btn btn-outline-primary" id=btnUpdateMobile value="변경" /></td>
 				</tr>

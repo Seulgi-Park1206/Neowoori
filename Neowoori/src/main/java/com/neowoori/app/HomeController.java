@@ -379,7 +379,6 @@ public class HomeController {
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
-		// session 설정(로그인 시 설정부분 제거 예정)
 		session = request.getSession();
 		// session_usid 가져오기
 		String uid = (String) session.getAttribute("userid");
