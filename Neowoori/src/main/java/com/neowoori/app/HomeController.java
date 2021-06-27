@@ -376,6 +376,18 @@ public class HomeController {
 		
 		return "ok";
 	}
+	// 스터디 게시판 글 보기
+	@RequestMapping("/postView/{post_num}")
+	public String postView(@PathVariable String post_num, HttpServletRequest request, HttpSession session) {
+		session = request.getSession();
+		// session_usid 가져오기
+		String uid = (String) session.getAttribute("userid");
+		
+		// DB에서 해당 유저의 스터디 목록 조회
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		
+		return "psgPostView";
+	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {

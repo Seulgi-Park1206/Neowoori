@@ -11,68 +11,46 @@
 </head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <link rel="stylesheet" href="${path}/resources/psg/css/form.css" type="text/css">
-<link rel="stylesheet" href="${path}/resources/psg/css/mypage.css" type="text/css">
+<link rel="stylesheet" href="${path}/resources/psg/css/postview.css" type="text/css">
 <body>
 	<jsp:include page="/module/nav.jsp" flush="false" />
 	<div class=form>
-		<a class=title>내 정보 수정</a>
+		<a class=title>게시글 보기</a>
 		<div class=contents>
-			<table>
+			<table id=tblPost>
 				<tr>
-					<td class=tdLeft>아이디:</td>
-					<td class=tdCenter><label class=intext id=uid></label></td>
-				</tr>
-				<tr class=trPw>
-					<td class=tdLeft>비밀번호:</td>
-					<td class=tdCenter><input type=button class="btn btn-outline-primary" id=btnShowHiddenTr value="변경" /></td>
-				</tr>
-				<tr class=hiddenTr>
-					<td class=tdLeft>새 비밀번호:</td>
-					<td class=tdCenter><input type=password class=intext id=upw1 placeholder="새 비밀번호를 입력하세요." /></td>
-					<td class=tdCheck><label class=intext id=yesNo></label></td>
-				</tr>
-				<tr class=hiddenTr>
-					<td class=tdLeft>새 비밀번호 확인:</td>
-					<td class=tdCenter><input type=password class=intext id=upw placeholder="새 비밀번호를 다시 입력하세요." /></td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnUpdatePw value="변경" /></td>
+					<td class=tdLeft>제목:</td>
+					<td class=tdCenter><label class=intext id=title></label></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>이름:</td>
-					<td class=tdCenter><label class=intext id=uname></label></td>
+					<td class=tdLeft>작성자:</td>
+					<td class=tdCenter><label class=intext id=writer></label></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>닉네임:</td>
-					<td class=tdCenter><input type=text class=intext id=unick placeholder="닉네임을 입력하세요." /></td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnNickCheck value="중복확인" />
-										<input type=button class="btn btn-outline-primary" id=btnUpdateNick value="변경" /></td>
-				</tr>
-				<tr class=hidden><td class=tdLeft></td><td class=tdCenter><label class=intext id=nickCheckResult></label>
-				<tr>
-					<td class=tdLeft>생년월일:</td>
-					<td class=tdCenter><label class=intext id=birth></label></td>
+					<td class=tdLeft>작성일자:</td>
+					<td class=tdCenter><label class=intext id=date></label></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>성별:</td>
-					<td class=tdCenter><label class=intext id=gender></label></td>
-				</tr>
-				<tr>
-					<td class=tdLeft>연락처:</td>
-					<td class=tdCenter><input type=text class=intext id=umobile placeholder="연락처를 입력하세요." /></td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnMobileCheck value="중복확인" />
-										<input type=button class="btn btn-outline-primary" id=btnUpdateMobile value="변경" /></td>
-				</tr>
-				<tr class=hidden><td class=tdLeft></td><td class=tdCenter><label class=intext id=mobileCheckResult></label>
-				<tr>
-					<td class=tdLeft>이메일:</td>
-					<td class=tdCenter><label class=intext id=email></label></td>
+					<td class=tdLeft>내용:</td>
+					<td class=tdCenter><textarea class=intext id=context readonly></textarea></td>
 				</tr>
 			</table>
+		</div>
+		<div class=reply>
+			<a class=title2>댓글목록</a>
+			<table id=tblReply>
+			</table>
+			<div class=replyWrite>
+				<textarea id=txtWrite></textarea>
+				<input type=button class="btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
+			</div>
 		</div>
 	</div>
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+/*
 function cancel(){
 	location.href='index';
 }
@@ -170,5 +148,6 @@ $(document)
 	}
 	return false;
 })
+*/
 </script>
 </html>
