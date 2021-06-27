@@ -7,7 +7,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>내 정보</title>
+<title>게시글 보기</title>
 </head>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <link rel="stylesheet" href="${path}/resources/psg/css/form.css" type="text/css">
@@ -37,12 +37,21 @@
 			</table>
 		</div>
 		<div class=reply>
-			<a class=title2>댓글목록</a>
+			<p class=title2>댓글목록</p>
+			<br>
 			<table id=tblReply>
 			</table>
+			<br>
 			<div class=replyWrite>
 				<textarea id=txtWrite></textarea>
-				<input type=button class="btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
+				<input type=button class="btn1 btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
+			</div>
+			<br>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="신고">
+				<input type=button class="btn btn-outline-primary" id=btnList value=목록>
+				<input type=button class="btn btn-outline-primary" id=btnUpdate value="수정">
+				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
 			</div>
 		</div>
 	</div>
@@ -50,14 +59,10 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
-/*
-function cancel(){
-	location.href='index';
-}
 $(document)
 .ready(function(){
-	$('.hiddenTr').hide();
-	// 세션값을 이용해 user_id를 얻어와서 db에서 해당 유저 정보 불러오기
+	// db에서 해당 게시물 및 댓글 불러오기
+	/*
 	$.ajax({
 		url:'${path}/mypage.do',
 		data:{},
@@ -77,7 +82,19 @@ $(document)
 			alert('error');
 		}
 	});
+	*/
+	let startTag = '<td><label>';
+	let result = '<tr>' + startTag;
+	let endTag = '</label></td>';
+	result += '작성자(작성일자)';
+	result += '</label><br>';
+	result += '<label>';
+	result += '댓글 내용';
+	result += endTag;
+	result += '</tr>';
+	$('#tblReply').append(result);
 })
+/*
 // 비밀번호 일치/불일치 판단
 .on('change keyup paste focus', '#upw, #upw1', function(){
 	if($('#upw1').val() != '' && $('#upw').val() != ''){
