@@ -15,6 +15,8 @@ public class BStudy {
 	String mLevel;
 	String Lati;
 	String Longi;
+	String mWhere2;
+	String mWhere3;
 	
 	public BStudy() {
 		//기본생성자
@@ -38,7 +40,27 @@ public class BStudy {
 		this.Lati = lati;
 		this.Longi = longi;
 	}
-
+	public BStudy(int mNum, int uNum, String mName, String category1, String category2, String mWhere, String mDay,
+			String mContents, String mPersonnel, String mTime, String mPtime, String mLevel, String lati, String longi,
+			String mWhere2, String mWhere3) {
+//		super();
+		this.mNum = mNum;
+		this.uNum = uNum;
+		this.mName = mName;
+		this.category1 = category1;
+		this.category2 = category2;
+		this.mWhere = mWhere;
+		this.mDay = mDay;
+		this.mContents = mContents;
+		this.mPersonnel = mPersonnel;
+		this.mTime = mTime;
+		this.mPtime = mPtime;
+		this.mLevel = mLevel;
+		Lati = lati;
+		Longi = longi;
+		this.mWhere2 = mWhere2;
+		this.mWhere3 = mWhere3;
+	}
 
 	public String getLati() {
 		return Lati;
@@ -130,5 +152,21 @@ public class BStudy {
 	public void setmPersonnel(String mPersonnel) {
 		this.mPersonnel = mPersonnel;
 	}
-	
+	public String getmWhere2() {
+		return mWhere2;
+	}
+
+	public void setmWhere2(String mWhere2) {
+		this.mWhere2 = mWhere2;
+	}
+
+	public String getmWhere3() {
+		return mWhere3;
+	}
+
+	public void setmWhere3(String mWhere3) {
+		this.mWhere3 = mWhere3;
+	}
+
+
 }

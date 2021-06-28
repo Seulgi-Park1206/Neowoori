@@ -601,11 +601,22 @@ public class HomeController {
 	      return "jsbTestIndex";
 	   }
 	
+	@ResponseBody /*스터디명 중복찾기*/
+	@RequestMapping(value="/jsbfindStudyName.do", method=RequestMethod.POST)
+	   public int findStudyNameAjax(String studyName,HttpServletRequest request,Model model) {
+			String mName = request.getParameter("studyName");
+			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			int mem = dao.jsbFindStudyName(mName);
+			return mem;
+//			System.out.println(mUserNum+","+mName+","+CATEGORY1+","+CATEGORY2+","+mWhere+","+mDay+","+mTime+","+mPtime+","+mLevel+","+mContents+","+mPersonnel+","+lati+","+longi);
+	   }
+	
 	@ResponseBody /*스터디생성 ajax*/
 	@RequestMapping(value="/jsbCreate.do", method=RequestMethod.POST)
 	   public void createAjax(String studyName,String bigSel,String smSel,String week,
 			   String studyTime, String playTime,String lvlSel, String contents,String personnel,
-			   String mwhere,String ulati,String ulongi,String userId,HttpServletRequest request,Model model) {
+			   String ujso,String ujso2,String ujso3,String ulati,String ulongi,String userId,
+			   HttpServletRequest request,Model model) {
 			String mName = request.getParameter("studyName");
 			String CATEGORY1 = request.getParameter("bigSel");
 			String CATEGORY2 = request.getParameter("smSel");
@@ -619,12 +630,28 @@ public class HomeController {
 			String lati = request.getParameter("ulati");
 			String longi = request.getParameter("ulongi");
 			String loginUId = request.getParameter("userId");
+			String mWhere2 = request.getParameter("ujuso2");
+			String mWhere3 = request.getParameter("ujuso3");
 			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
 			BMembers mem = dao.jsbGetUser(loginUId);
 			int mUserNum = mem.getuNum();
 //			System.out.println(mUserNum+","+mName+","+CATEGORY1+","+CATEGORY2+","+mWhere+","+mDay+","+mTime+","+mPtime+","+mLevel+","+mContents+","+mPersonnel+","+lati+","+longi);
-			dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi);
+			dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi,mWhere2,mWhere3);
 	   }
+	
+	@ResponseBody /*스터디생성후 meeting 생성 ajax*/
+	@RequestMapping(value="/jsbCreateToMeet.do", method=RequestMethod.POST)
+	   public void createToMeetAjax(String studyName,String userId,
+			   HttpServletRequest request,Model model) {
+			String mName = request.getParameter("studyName");
+			String loginUId = request.getParameter("userId");
+			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			BMembers mem = dao.jsbGetUser(loginUId);
+			int mUserNum = mem.getuNum();
+			int reqMNum = dao.jsbFindStudyMnum(mUserNum,mName);
+			System.out.println(reqMNum);
+			if(reqMNum < 1) dao.jsbCreateMeet(mUserNum,reqMNum,30);
+			}
 	
 	@ResponseBody
 	@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
