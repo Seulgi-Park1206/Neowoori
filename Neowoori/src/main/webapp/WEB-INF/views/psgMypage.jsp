@@ -121,31 +121,36 @@ $(document)
 		else if(inputId == 'unick') {alert('닉네임을 다시 입력해주세요.');}
 		else if(inputId == 'umobile') {alert('연락처를 다시 입력해주세요.');}
 	} else {
+		let check = $(this).parent().parent().next().find('td:eq(1) label');
 		if($(this).val() == '변경'){
 			if(inputId == 'btnShowHiddenTr'){
 				$('.hiddenTr').show();
 				$('.trPw').hide();
 			} else{
-				let update = {uid:$('#uid').text(), optype:inputId, val:data};
-				if(confirm("수정하시겠습니까?")){
-					$.ajax({
-						url:'update_myInfo.do',
-						data:JSON.stringify(update),
-						contentType:'application/json; charset=UTF-8',
-						dataType:'text',
-						method:'post',
-						success:function(result){
-							alert("수정이 완료되었습니다.");
-						},
-						error:function(){
-							alert('Update error');
-						}
-					});
+				if(check.text() == '이미 존재합니다.'){
+					alert('중복된 정보입니다. 다시 입력 바랍니다.')
+				} else {
+					let update = {uid:$('#uid').text(), optype:inputId, val:data};
+					if(confirm("수정하시겠습니까?")){
+						$.ajax({
+							url:'update_myInfo.do',
+							data:JSON.stringify(update),
+							contentType:'application/json; charset=UTF-8',
+							dataType:'text',
+							method:'post',
+							success:function(result){
+								alert("수정이 완료되었습니다.");
+							},
+							error:function(){
+								alert('Update error');
+							}
+						});
+					}					
 				}
 			}
 		} else if($(this).val() == '중복확인') {
 			let update = {uid:$('#uid').text(), optype:inputId, val:data};
-			let check = $(this).parent().parent().next().find('td:eq(1) label');
+			// let check = $(this).parent().parent().next().find('td:eq(1) label');
 			check.css('background-color', '#ff9595');
 			// db에서 검색한 결과: 존재 여부(count)
 			$.ajax({
