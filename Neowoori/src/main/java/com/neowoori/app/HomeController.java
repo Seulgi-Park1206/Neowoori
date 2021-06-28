@@ -461,15 +461,16 @@ public class HomeController {
 		String uid = (String) session.getAttribute("userid");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		BMembers member = dao.psgUserInfo(uid);
-		JSONObject jo = new JSONObject();
-		jo.put("userid", member.getUserId());
-		jo.put("unick", member.getuNick());
-		jo.put("uname", member.getuName());
-		jo.put("uyear", member.getuYear());
-		jo.put("ubirthday", member.getuBirthday());
-		jo.put("ugender", member.getuGender());
-		jo.put("umobile", member.getuMobile());
-		jo.put("umail", member.getuMail());
+		HashMap<String, Object> hashmap = new HashMap<String, Object>();
+		hashmap.put("userid", member.getUserId());
+		hashmap.put("unick", member.getuNick());
+		hashmap.put("uname", member.getuName());
+		hashmap.put("uyear", member.getuYear());
+		hashmap.put("ubirthday", member.getuBirthday());
+		hashmap.put("ugender", member.getuGender());
+		hashmap.put("umobile", member.getuMobile());
+		hashmap.put("umail", member.getuMail());
+		JSONObject jo = new JSONObject(hashmap);
 		
 		return jo;
     }
@@ -504,8 +505,9 @@ public class HomeController {
 		return "ok";
 	}
 	// 스터디 게시판 글 보기
-	@RequestMapping("/postView/{post_num}")
-	public String postView(@PathVariable String post_num, HttpServletRequest request, HttpSession session) {
+	@RequestMapping("/postView/{study_num}/{post_num}")
+	public String postView(@PathVariable String study_num, @PathVariable String post_num,
+			HttpServletRequest request, HttpSession session) {
 		session = request.getSession();
 		// session_usid 가져오기
 		String uid = (String) session.getAttribute("userid");
