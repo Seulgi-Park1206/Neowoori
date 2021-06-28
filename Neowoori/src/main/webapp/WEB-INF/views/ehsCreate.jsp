@@ -518,7 +518,7 @@ $(document)
 	$('#btnradio1').trigger('click');
 	$('#btncheck1').trigger('click');
 	$('#btnradio22').trigger('click');
-	$("#hid").val("human1");
+	//$("#hid").val("human1");
 })
 .on("click","#MNameeCheck",function(){
 	checkMName();

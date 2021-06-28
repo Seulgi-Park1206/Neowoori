@@ -1,6 +1,7 @@
 package com.neowoori.app;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -66,6 +67,14 @@ public class HomeController {
 		return "redirect:/notice";
 	   }
 	
+	@RequestMapping("/notice") //공지사항
+	   public String notice(Model model) {
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  ArrayList<BAdminPost> alData=dao.listNoticeDao();
+		  model.addAttribute("alData",alData);
+	      return "ygwnoticetest";
+	   }
+	
 	@RequestMapping("/qnawrite") //QnA글쓰기
 	   public String qnawrite() {
 	      return "ygwQnawrite";
@@ -75,10 +84,130 @@ public class HomeController {
 	   public String webstudy() {
 	      return "ygwWebstudy";
 	   }
-	/* 이메일 인증 */
+	
+	@RequestMapping("/findidPopup") //아이디찾기 팝업
+	   public String findidPopup() {
+	      return "ehsFindid";
+	   }
+	
+	@RequestMapping("/findpwPopup") //아이디찾기 팝업
+	   public String findpwPopup() {
+	      return "ehsFindpw";
+	   }
+	
+	
+	String check_id="";
+	@RequestMapping(value="/findidServer", method=RequestMethod.POST) //id찾기 서버
+	@ResponseBody
+	   public String checkfindidServer(String email,Model model) {
+		  System.out.println("email 테스트 : "+email); 
+	      IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+	      int check_email=dao.check_email(email);
+	      String final_check_email=Integer.toString(check_email);
+	      
+	      
+	      if(final_check_email.equals("1")) {
+	    	System.out.println("결과 있음");
+	    	check_id= findidServer(email,model);
+	    	System.out.println("id는 : "+check_id);
+	    	 	 
+	      }
+	      else {
+	    	  System.out.println("check 결과 없음 : "+final_check_email);
+	      }
+	      
+	     return final_check_email;
+	   }
+
+	   public String findidServer(String email,Model model) {
+	      IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+	      String id=dao.find_id(email);
+	    
+	      return id;
+	   }
+	   
+	   @RequestMapping("/findidfinal") //아이디찾기 팝업
+	   public String findidfinal(Model model) {
+		  model.addAttribute("id",check_id);
+		  
+	      return "ygwFindid_final";
+	   }   
+	   
+	/* 비밀번호 찾기 */
+	@RequestMapping(value="/findpwServer", method=RequestMethod.POST)
+	@ResponseBody
+	public String checkServer(String id,String email) throws Exception{
+		/* 뷰(View)로부터 넘어온 데이터 확인 */
+		System.out.println(id);
+		System.out.println(email);
+		//email,id 있는지 체크
+		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+		int count=dao.check_findpw(id,email);
+		String check_count=Integer.toString(count);
+		System.out.println("count 결과 : "+check_count);
+		
+		if(check_count.equals("1")) {
+			findpwServer(id,email);
+		}
+		else{
+			System.out.println("check 결과 없음");
+		}
+		
+		/* id,email 검색해서 있으면 1, 없으면 0을 반환*/
+		return check_count;
+		
+	}
+	
+	
+	/* 비밀번호 찾기 임시 비밀번호 발송 메소드*/
+	public void findpwServer(String id,String email) throws Exception{
+		
+		/* 뷰(View)로부터 넘어온 데이터 확인 */
+		System.out.println(id);
+		System.out.println(email);
+				
+		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+				
+		/* 인증번호(난수) 생성 */
+		Random random = new Random();
+		int tempPassword = random.nextInt(888888) + 111111;
+		String password = Integer.toString(tempPassword);
+		
+		/* 비밀번호 임시비밀번호로 update */
+		dao.updatePassword(password,id);
+		
+		
+		/* 이메일 보내기 */
+		String setFrom = "brokerdev99@gmail.com";
+		String toMail = email;
+		String title = "<비밀번호 찾기> 임시 비밀번호 발급 이메일 입니다.";
+		String content = 
+				"홈페이지를 방문해주셔서 감사합니다." +
+				"<br><br>" + 
+				"임시 비밀번호는 " + tempPassword + "입니다." + 
+				"<br>" + 
+				"임시 비밀번호로 로그인하여 주십시오.";		
+		
+		try {
+			
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			helper.setFrom(setFrom);
+			helper.setTo(toMail);
+			helper.setSubject(title);
+			helper.setText(content,true);
+			mailSender.send(message);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}		
+				
+	}
+	
+	/* 회원가입 이메일 인증 */
 	@RequestMapping(value="/mailCheck", method=RequestMethod.GET)
 	@ResponseBody
-	public String mailCheckGET(String email) throws Exception{
+	public void mailCheckGET(String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
 		System.out.println(email);
@@ -113,10 +242,7 @@ public class HomeController {
 			e.printStackTrace();
 		}		
 		
-		String num = Integer.toString(checkNum);
-		
-		return num;
-		
+				
 	}
 	/*---------------------------------------------*/
 	
@@ -145,10 +271,12 @@ public class HomeController {
 	   public String faq() {
 	      return "PJH_faq";
 	   }
+	/*
 	@RequestMapping("/notice") //공지사항
 	   public String notice() {
 	      return "PJH_notice";
 	   }
+	*/
 	@RequestMapping("/jusoPopup") //주소 팝업
 	   public String jusoPopup() {
 	      return "jusoPopup";
@@ -280,6 +408,32 @@ public class HomeController {
 		return btn_num;
 	}
 	
+	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
+	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BStudyPost> study_Post1(HttpServletRequest request){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BStudyPost> study_Post = dao.pjhStudyPost();
+		return study_Post;
+	}
+	
+	@ResponseBody // 내 스터디 게시판 count
+	@RequestMapping(value="/postcount.do",method=RequestMethod.POST, produces="application/json")
+	public int post_count(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int post_count = dao.pjsStudyPostCount();
+		return post_count;
+	}
+	
+	@ResponseBody // 내 스터디 게시판(페이징)
+	@RequestMapping(value="/studypostpaging.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BStudyPost> study_Post_Paging(HttpServletRequest request){
+		int studypostpaging = Integer.parseInt(request.getParameter("btnvalue"));
+		System.out.println(studypostpaging);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BStudyPost> study_Post_Paging = dao.pjhStudyPostPaging(studypostpaging);
+		return study_Post_Paging;
+	}
+	
 	/*---------------------------------------------*/
 	
 	//#############################################################
@@ -309,35 +463,61 @@ public class HomeController {
 		BMembers member = dao.psgUserInfo(uid);
 		JSONObject jo = new JSONObject();
 		jo.put("userid", member.getUserId());
+		jo.put("unick", member.getuNick());
 		jo.put("uname", member.getuName());
 		jo.put("uyear", member.getuYear());
 		jo.put("ubirthday", member.getuBirthday());
 		jo.put("ugender", member.getuGender());
+		jo.put("umobile", member.getuMobile());
 		jo.put("umail", member.getuMail());
 		
 		return jo;
     }
-	// 내 정보 닉네임 중복체크
+	// 내 정보 중복체크
 	@ResponseBody
-	@RequestMapping(value="/nick_check.do", method=RequestMethod.POST, produces="application/json")
-	public String myPageNickCheck(@RequestBody String nick) {
-		System.out.println("RequestBody: " + nick);
+	@RequestMapping(value="/dup_check.do", method=RequestMethod.POST)
+	public String myPageDupCheck(@RequestBody HashMap<String, String> user) {
+		String uid = user.get("uid");
+		String field = user.get("optype");
+		String value = user.get("val");
+		//System.out.println("uid: "+uid);
+		//System.out.println("field: "+field);
+		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		int n = dao.psgNickCheck(nick);
-//		System.out.println("<닉네임 중복체크: "+n+">");
+		int n = dao.psgDupCheck(uid, field, value);
+		
 		return Integer.toString(n);
 	}
-	//////// 여기부터 시쟉! ////////
-	// 내 정보 수정
-	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST, produces="application/json")
-	public String myPageUpdate(@RequestBody String pw, String nick, String mobile) {
-		return "redirect:/index";
+	// 내 정보 변경
+	@ResponseBody
+	@RequestMapping(value="/update_myInfo.do", method=RequestMethod.POST)
+	public String myPageUpdateInfo(@RequestBody HashMap<String, String> user) {
+		String uid = user.get("uid");
+		String field = user.get("optype");
+		String value = user.get("val");
+		//System.out.println("uid: "+uid);
+		//System.out.println("field: "+field);
+		//System.out.println("value: "+value);
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		dao.psgUpdateInfo(uid, field, value);
+		
+		return "ok";
 	}
-	
+	// 스터디 게시판 글 보기
+	@RequestMapping("/postView/{post_num}")
+	public String postView(@PathVariable String post_num, HttpServletRequest request, HttpSession session) {
+		session = request.getSession();
+		// session_usid 가져오기
+		String uid = (String) session.getAttribute("userid");
+		
+		// DB에서 해당 유저의 스터디 목록 조회
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		
+		return "psgPostView";
+	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
-		// session 설정(로그인 시 설정부분 제거 예정)
 		session = request.getSession();
 		// session_usid 가져오기
 		String uid = (String) session.getAttribute("userid");
@@ -493,6 +673,7 @@ public class HomeController {
 	   public String company() {
 	      return "ehsCompany";
 	   }
+/*
 	@RequestMapping("/findid") //아이디찾기
 	   public String findid() {
 	      return "ehsFindid";
@@ -501,6 +682,8 @@ public class HomeController {
 	   public String findpw() {
 	      return "ehsFindpw";
 	   }
+*/
+	
 	@RequestMapping("/create") //게시글만들기
 	   public String create() {
 	      return "ehsCreate";

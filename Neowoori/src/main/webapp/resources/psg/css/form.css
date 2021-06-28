@@ -1,4 +1,4 @@
-@charset "EUC-KR";
+@charset "utf-8";
 * {
     box-sizing: border-box;
 }
@@ -46,14 +46,14 @@ table {
 	padding: 5px;
 	border-collapse: collapse;
 	width: 100%;
-	height: 700px;
+	/* height: 700px; */
 	border: 1px solid gray;
 }
 td {
 	text-align: center;
 	border-left: 1px solid gray;
 }
-@media (max-width:1330px){ /*°¡·Î ³Êºñ°¡ 1330px ÀÌÇÏÀÏ ¶§ ¾Æ·¡ ½ºÅ¸ÀÏ Àû¿ë*/
+@media (max-width:1330px){ /*ê°€ë¡œ ë„ˆë¹„ê°€ 1330px ì´í•˜ì¼ ë•Œ ì•„ë˜ ìŠ¤íƒ€ì¼ ì ìš©*/
     .form {
         width: 95%;
     }

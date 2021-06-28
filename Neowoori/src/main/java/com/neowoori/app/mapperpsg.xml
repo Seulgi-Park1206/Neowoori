@@ -7,14 +7,15 @@
 	<select id="psgUserInfo" resultType="com.neowoori.app.BMembers">
 		select * from members where userid=#{param1}
 	</select>
-	<!-- 내 정보_닉네임 중복 체크 -->
-	<select id="psgNickCheck" resultType="Integer">
-		select count(*) from members where unick=#{param1}
-	</select>
 	<!-- 내 정보 수정 -->
-	<update id="psgUpdateUserInfo">
-		update members set upw=#{param2}, unick=#{param3}, umobile=#{param4}, umail=#{param5} where userid=#{param1}
+	<update id="psgUpdateInfo">
+		update members set ${param2}=#{param3} where userid=#{param1}
 	</update>
+	<!-- 내 정보_중복 체크 -->
+	<select id="psgDupCheck" resultType="Integer">
+		select count(*) from members where userid=#{param1} and ${param2}=#{param3}
+	</select>
+	<!--  -->
 	<select id="psgStudyInfo" resultType="com.neowoori.app.BStudy">
 		select * from study where userid=#{param1}
 	</select>
