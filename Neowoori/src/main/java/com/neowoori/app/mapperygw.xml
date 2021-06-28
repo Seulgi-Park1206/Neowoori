@@ -11,4 +11,30 @@
 		values(admin_post_seq.nextval,1,'notice',#{param1},#{param2},TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi'))
 	</insert>
 	
+	<!-- 아이디 있는지 없는지 체크 -->
+	<select id="check_email" resultType="Integer">
+	select count(*) from members where umail=#{param1}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="find_id" resultType="String">
+		select userid from members where umail = #{param1}
+	</select>
+	
+	<!-- 임시 비밀번호 발송 -->
+	<select id="select_find_pw" resultType="com.neowoori.app.BMembers">
+		select #{param1},#{param2} from members
+	</select>
+	
+	<!-- userid,umail 유효성 체크 -->
+	<select id="check_findpw" resultType="Integer">
+		select count(*) from members where userid=#{param1} and umail=#{param2}
+	</select>
+	
+	<!-- 임시 비밀번호로 비밀번호 변경 -->
+	<update id="updatePassword" >
+		update members set upw=#{param1} where userid=#{param2}
+	</update>
+	
+	
 </mapper>

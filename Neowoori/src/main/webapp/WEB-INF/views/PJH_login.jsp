@@ -36,8 +36,8 @@
                 </tr>
                 <tr>
                 <th></th>
-                  <td><a class="link" href="">아이디/비밀번호 찾기</a>
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                  <td><a class="link" id=findid onclick="find_id();" href="">아이디 찾기</a><a class="link" id=findpw onclick="find_pw();" href="">비밀번호 찾기</a>
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                   <a class="link" href="">회원가입</a></td>
                 </tr>
                 <tr>
@@ -100,6 +100,20 @@ $(document)
 	    }
 	  })
 });
+
+function find_id(){
+	var url = "findidPopup";
+	var name = "findidPopup";
+	var option = "width = 570, height = 200, left=300, top=180, location=no";
+	window.open(url,name,option);
+}
+
+function find_pw(){
+	var url = "findpwPopup";
+	var name = "findpwPopup";
+	var option = "width = 570, height = 280, left=300, top=180, location=no";
+	window.open(url,name,option);
+}
 
 </script>
 </html>
