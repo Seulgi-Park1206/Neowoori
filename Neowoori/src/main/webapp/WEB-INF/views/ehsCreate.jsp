@@ -99,7 +99,8 @@
 					  <input type="checkbox" name="chkWeek" class="btn-check" id="btncheck7" value="7" />
 					  <label class="btn btn-outline-success btn-sm" for="btncheck7">일</label>
 					</div>
-					<input type=button onclick=checkboxArr()>
+					<!-- 
+					<input type=button onclick=checkboxArr()> -->
                   </td>
                 </tr>
                 <tr>
@@ -223,7 +224,7 @@
 var lati;
 var longi;
 var tmpAdd;
-var chkName;
+var chkName=1;
 function goPopup(){
 	// 호출된 페이지(jusopopup.jsp)에서 실제 주소검색URL(https://www.juso.go.kr/addrlink/addrCoordUrl.do)를 호출하게 됩니다.
     var pop = window.open("jusoPopup","pop","width=570,height=420, scrollbars=yes, resizable=yes"); 
@@ -302,7 +303,7 @@ function signupajax(){
     	"userId" : $("#hid").val()
     },
     success : function(data){
-    	console.log(data);
+    	console.log("내부데이터:"+data);
     	//성공시 meeting 테이블 insert data
     	$.ajax({
     	    url: "jsbCreateToMeet.do",
@@ -310,6 +311,7 @@ function signupajax(){
     	    data: {
     	    	"studyName" : $('#studyName').val(), // 스터디명
     	    	"userId" : $("#hid").val()
+    	    	alert("생성완료(임시 alert)");
     	    },
     	    success : function(data){
     	    	
@@ -518,7 +520,7 @@ $(document)
 	$('#btnradio1').trigger('click');
 	$('#btncheck1').trigger('click');
 	$('#btnradio22').trigger('click');
-	//$("#hid").val("human1");
+	$("#hid").val("human1");
 })
 .on("click","#MNameeCheck",function(){
 	checkMName();
@@ -568,6 +570,7 @@ function checkMName(){
 	    success : function(data){
 	    	if(data==0) {
 	    		chkName=0;
+	    		alert("사용가능한 스티디명입니다.");
 	    	}else{
 	    		chkName=1;
 	    		alert("이미 존재하는 스티디명입니다.");

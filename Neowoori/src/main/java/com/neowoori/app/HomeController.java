@@ -647,8 +647,10 @@ public class HomeController {
 			BMembers mem = dao.jsbGetUser(loginUId);
 			int mUserNum = mem.getuNum();
 			int reqMNum = dao.jsbFindStudyMnum(mUserNum,mName);
-			System.out.println(reqMNum);
-			if(reqMNum < 1) dao.jsbCreateMeet(mUserNum,reqMNum,30);
+			int stateNum=30;
+//			System.out.println("reqNUM:"+reqMNum);
+//			System.out.println(mUserNum+","+reqMNum+","+stateNum);
+			if(reqMNum > 1) dao.jsbCreateMeet(mUserNum,reqMNum,stateNum);
 			}
 	
 	@ResponseBody
