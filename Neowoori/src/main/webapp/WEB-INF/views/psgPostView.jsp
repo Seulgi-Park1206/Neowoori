@@ -48,7 +48,7 @@
 			</div>
 			<br>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="신고">
+				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="글 신고">
 				<input type=button class="btn btn-outline-primary" id=btnList value=목록>
 				<input type=button class="btn btn-outline-primary" id=btnUpdate value="수정">
 				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
@@ -64,7 +64,7 @@ $(document)
 	var link = window.location.pathname;
 	link = link.split('/')[3];
 	console.log(link);
-	// db에서 해당 게시물 및 댓글 불러오기
+	// db에서 해당 게시물 불러오기
 	$.ajax({
 		url:'${path}/postView.do',
 		data:link,
@@ -79,20 +79,40 @@ $(document)
 			$('#contents').text(result['postContents']);
 		},
 		error:function(){
-			alert('error');
+			alert('Post error');
 		}
 	});
-	
-	let startTag = '<td><label>';
-	let result = '<tr>' + startTag;
-	let endTag = '</label></td>';
-	result += '작성자(작성일자)';
-	result += '</label><br>';
-	result += '<label>';
-	result += '댓글 내용';
-	result += endTag;
-	result += '</tr>';
-	$('#tblReply').append(result);
+	// 댓글 불러오기
+	$.ajax({
+		url:'${path}/postCmt.do',
+		data:link,
+		contentType:'text/plain; charset=UTF-8',
+		dataType:'json',
+		method:'post',
+		success:function(rData){
+			console.log(rData);
+			$.each(rData, function(idx, res){
+				console.log(res);
+				console.log(res['userid']);
+				let startTag = '<td><label>';
+				let result = '<tr>' + startTag;
+				let endTag = '</label></td>';
+				result += res['userid'];
+				result += '(';
+				result += res['cmtDate'];
+				result += ')</label><br>';
+				result += '<label>';
+				result += res['cmtContents'];
+				result += endTag;
+				result += '</tr>';
+				console.log(result);
+				$('#tblReply').append(result);
+			})
+		},
+		error:function(){
+			alert('Cmt error');
+		}
+	});
 })
 /*
 // 비밀번호 일치/불일치 판단

@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -558,13 +558,31 @@ public class HomeController {
 		
 		return jo;
 	}
+	// 스터디 게시판 댓글 쓰기/보기
+	@ResponseBody
+	@RequestMapping(value="/postCmt.do", method=RequestMethod.POST)
+	public JSONArray postCmt(@RequestBody String postNum) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(postNum);
+		System.out.println(pNum);
+		ArrayList<psgBViewCmt> cmt = dao.psgSelectCmt(pNum);
+		HashMap<String, Object> hashmap = new HashMap<String, Object>();
+		JSONArray jarr = new JSONArray();
+		for(int i=0; i<cmt.size();i++) {
+			hashmap.put("userid", cmt.get(i).getUserid());
+			hashmap.put("cmtDate", cmt.get(i).getCmt_date());
+			hashmap.put("cmtContents", cmt.get(i).getCmt_contents());
+			JSONObject jo = new JSONObject(hashmap);
+			System.out.println(jo);
+			jarr.add(jo);
+			System.out.println(jarr);
+		}
+		
+		return jarr;
+	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
-	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
-		session = request.getSession();
-		// session_usid 가져오기
-		String uid = (String) session.getAttribute("userid");
-		
+	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {		
 		// DB에서 해당 유저의 스터디 목록 조회
 		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		

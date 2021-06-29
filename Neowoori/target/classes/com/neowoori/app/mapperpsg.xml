@@ -21,6 +21,11 @@
 		from study_post sp, members m
 		where sp.postnum=#{param1} and sp.unum=m.unum
 	</select>
+	<!-- 해당 게시물의 댓글 조회 -->
+	<select id="psgSelectCmt" resultType="com.neowoori.app.psgBViewCmt">
+		select m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		where c.postnum=#{param1} and c.unum=m.unum
+	</select>
 	<!-- 가입한 스터디 목록 조회 -->
 	<select id="psgStudyInfo" resultType="com.neowoori.app.BStudy">
 		select * from study where userid=#{param1}

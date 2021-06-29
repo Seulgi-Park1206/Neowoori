@@ -54,9 +54,9 @@ tr {
 	margin-top: 25px; */
 	text-align: right;
 }
-/* input {
-	padding: 5px;
-} */
+.hiddenTr{
+	display: none;
+}
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
     .tdLeft {
 		width: 25%;
