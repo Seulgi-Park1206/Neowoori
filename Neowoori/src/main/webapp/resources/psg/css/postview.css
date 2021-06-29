@@ -59,7 +59,7 @@
 .title2 {
 	font-size: 23px;
 }
-#txtWrite, #context {
+#txtWrite, #contents {
 	resize: none;
 	margin: 0;
 	width: 88%;
@@ -87,7 +87,7 @@
 		font-size: 15px;
 	}
 	#txtWrite {
-		width: 85%;
+		width: 90%;
 	}
     .btn {
     	font-size: 17px;

@@ -505,17 +505,25 @@ public class HomeController {
 		return "ok";
 	}
 	// 스터디 게시판 글 보기
-	@RequestMapping("/postView/{study_num}/{post_num}")
-	public String postView(@PathVariable String study_num, @PathVariable String post_num,
-			HttpServletRequest request, HttpSession session) {
-		session = request.getSession();
-		// session_usid 가져오기
-		String uid = (String) session.getAttribute("userid");
-		
-		// DB에서 해당 유저의 스터디 목록 조회
-		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		
+	@RequestMapping("/postView/{post_num}")
+	public String postView(@PathVariable String post_num) {
 		return "psgPostView";
+	}
+	@ResponseBody
+	@RequestMapping(value="/postView.do", method=RequestMethod.POST)
+	public JSONObject postViewDo(@RequestBody String postNum) {
+		// 해당 스터디 게시글 조회
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(postNum);
+		psgBViewPost post = dao.psgSelectStudyPost(pNum);
+		HashMap<String, Object> hashmap = new HashMap<String, Object>();
+		hashmap.put("title", post.getTitle());
+		hashmap.put("userid", post.getUserid());
+		hashmap.put("postDate", post.getPost_date());
+		hashmap.put("postContents", post.getPost_contents());
+		JSONObject jo = new JSONObject(hashmap);
+		
+		return jo;
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
