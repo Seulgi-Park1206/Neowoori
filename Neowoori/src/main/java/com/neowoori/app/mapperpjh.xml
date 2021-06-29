@@ -44,23 +44,23 @@
 	</select>
 	
 	<!-- 유저num 가져오기 -->
-	<select id="pjhusernum">
+	<select id="pjhusernum" resultType="Integer">
 		SELECT unum FROM members where userid = #{param1}
 	</select>
 	
 	<!-- 처음 내 스터디 게시판 가져오기 -->
 	<select id="pjhStudyPost" resultType="com.neowoori.app.BStudyPost">
-		select * from study_post order by posttype desc,postnum OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
+		select * from study_post where mnum = #{param1} order by posttype desc,postnum OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
  	</select>
  	
  	<!-- 이후 내 스터디 게시판 가져오기 -->
 	<select id="pjhStudyPostPaging" resultType="com.neowoori.app.BStudyPost">
-		select * from study_post order by posttype desc,postnum OFFSET #{param1} ROWS FETCH FIRST 10 ROWS ONLY
+		select * from study_post where mnum = #{param1} order by posttype desc,postnum OFFSET #{param2} ROWS FETCH FIRST 10 ROWS ONLY
  	</select>
  	
  	<!-- 내 스터디 게시판 카운트 -->
 	<select id="pjsStudyPostCount" resultType="Integer">
-		select count(*) from study_post
+		select count(*) from study_post where mnum = #{param1}
 	</select>
 
 	
@@ -89,5 +89,14 @@
 	<insert id="pjhMeetWirte">
 		insert into study_post(POSTNUM,MNUM,UNUM,POSTTYPE,TITLE,POST_CONTENTS,POST_DATE) values (study_post_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6})
 	</insert>
+	
+	
+	<!-- (처음)내 가입한 스터디 가져오기 -->
+	<select id="pjhMeetingStudy" resultType="com.neowoori.app.PJH_BMeetingState">
+		select a.unum, a.mnum, b.mname, a.state, b.category1, b.category2, b.mwhere from study b, meeting_study a where a.mnum = b.mnum and a.unum = #{param1} order by #{param1} OFFSET 0 ROWS FETCH FIRST 6 ROWS ONLY
+ 	</select>
+ 	
+
+ 	
 	
 </mapper>

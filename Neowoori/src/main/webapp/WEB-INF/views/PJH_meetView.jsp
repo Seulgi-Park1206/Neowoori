@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -7,7 +9,7 @@
 <title>내 스터디 게시판</title>
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="resources/pjh/meetView.css" type="text/css" >
+<link rel="stylesheet" href="${path}/resources/pjh/meetView.css" type="text/css" >
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
 <div class="wrapper">
@@ -21,7 +23,7 @@
 			</td>
 			<td class=btn_div >
 				<input type="text" class=btn_su placeholder="검색어 입력">
-				<button class="btn_search"><img src="resources/img/search.PNG"></button>
+				<button class="btn_search"><img src="${path}/resources/img/search.PNG"></button>
 			</td>
 		</tr>
 	</table>
@@ -75,17 +77,20 @@
 var se = '<%=session.getAttribute("userid")%>';
 console.log(se);
 var hid = 0;
+var s_num = ${s_num};
+console.log(s_num);
+var form = {s_num:s_num};
 $(document)
 /*---------------------------------AJAX내 스터디 게시판 띄우는곳------------------------------------------*/
 
 .ready(function(){ // 처음 들어가면 내 스터디 다 보임
 	$('.stpost').remove(); //지우면서 다시 리로딩
 	$.ajax({
-        url:'studypost'
-        , method : 'POST'
-        , data: {}
-        , contentType : 'application/json; charset=UTF-8'
-        , dataType : 'json'
+        url:'${path}/studypost'
+	    , data: JSON.stringify(form)
+		, contentType:'application/json; charset=UTF-8'
+	    , dataType:'text'
+		, method:'post'
         , success :
         	function output(resp){
         	console.log(resp);
@@ -93,7 +98,7 @@ $(document)
         	var sum = 0;
         	var notice = 0;
         		result += '<tbody class=test)>'
-     			$.each(resp,function(index,item){
+     			$.each(JSON.parse(resp),function(index,item){
      				if(item["postType"] == "20"){
      				result += ' <tr class="stpost">'
    					result += ' <td><input type="checkbox"></td>'
@@ -121,12 +126,12 @@ $(document)
         }
 	})
 	/*---------------------------------페이징 띄우는곳------------------------------------------*/
-		$.ajax({
-        url:'postcount.do'
-        , method : 'POST'
-        , data: {}
-        , contentType : 'application/json; charset=UTF-8'
-        , dataType : 'json'
+	$.ajax({
+        url:'${path}/postcount.do'
+       	, data: JSON.stringify(form)
+   		, contentType:'application/json; charset=UTF-8'
+   	    , dataType:'text'
+   		, method:'post'
         , success :
         	function output(resp){
         	var test = parseInt(resp/10);  // 총 유저수 / 5 
@@ -158,11 +163,14 @@ $(document)
 	else{
 		btnnum = (btnnum * 10) - 10;
 	}
+	console.log("여기다아아아아"+s_num);
+	var sum = {btnvalue:btnvalue,s_num:s_num}
 	$.ajax({
-        url:'studypostpaging.do'
-        , method : 'POST'
-        , data: {btnvalue : btnvalue}
-        , dataType : 'json'
+        url:'${path}/studypostpaging.do'
+        , data: JSON.stringify(sum)
+       	, contentType:'application/json; charset=UTF-8'
+       	, dataType:'text'
+        , method:'post'
         , success :
         	function output(resp){
         	var result = '';
@@ -175,7 +183,7 @@ $(document)
         		posthid = 1*btnnum-miu; // ex) 1 * 10 - 공지 개수
         	}
 	        result +='<tbody class=test>'
-	        $.each(resp,function(index,item){
+	        $.each(JSON.parse(resp),function(index,item){
 	        	if(item["postType"] == "20"){
 		        	result += ' <tr class="stpost">'
 					result += ' <td><input type="checkbox"></td>'
@@ -205,7 +213,7 @@ $(document)
 })
 
 .on('click','#btn_create',function(){
-	location.href = 'meetwrite/'+se
+	location.href = '/app/meetwrite/'+se
 })
 </script>
 </html>
