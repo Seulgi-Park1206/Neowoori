@@ -83,8 +83,13 @@
 /* #btnReport{
 	margin-left: 0;
 } */
-.updateCmt, .deleteCmt {
-	margin-right: 0;
+.updateCmt {
+	margin-left: 50px;
+	color: #0000ff;
+}
+.deleteCmt {
+	margin-left: 20px;
+	color: #0000ff;
 }
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
     .reply {

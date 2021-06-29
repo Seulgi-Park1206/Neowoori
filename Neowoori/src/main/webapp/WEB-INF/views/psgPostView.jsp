@@ -103,7 +103,7 @@ $(document)
 				result += ')</label><br>';
 				result += '<label>';
 				result += res['cmtContents'];
-				result += '</label><br><a class=updateCmt>수정</a>&nbsp;<a class=deleteCmt>삭제</a>';
+				result += '</label><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a>';
 				result += endTag;
 				result += '</tr>';
 				console.log(result);
@@ -136,7 +136,7 @@ $(document)
 			result += ')</label><br>';
 			result += '<label>';
 			result += res['cmtContents'];
-			result += '</label><br><a class=updateCmt>수정</a>&nbsp;<a class=deleteCmt>삭제</a>';
+			result += '</label><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a>';
 			result += endTag;
 			console.log(result);
 			$('#tblReply').prepend(result);
