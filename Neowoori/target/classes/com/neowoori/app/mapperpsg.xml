@@ -15,7 +15,13 @@
 	<select id="psgDupCheck" resultType="Integer">
 		select count(*) from members where userid=#{param1} and ${param2}=#{param3}
 	</select>
-	<!--  -->
+	<!-- 스터디 게시물 상세정보 조회 -->
+	<select id="psgSelectStudyPost" resultType="com.neowoori.app.psgBViewPost">
+		select sp.title, m.userid, sp.post_date, sp.post_contents
+		from study_post sp, members m
+		where sp.postnum=#{param1} and sp.unum=m.unum
+	</select>
+	<!-- 가입한 스터디 목록 조회 -->
 	<select id="psgStudyInfo" resultType="com.neowoori.app.BStudy">
 		select * from study where userid=#{param1}
 	</select>

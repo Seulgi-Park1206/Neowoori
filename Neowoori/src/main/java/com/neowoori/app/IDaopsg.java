@@ -8,6 +8,7 @@ public interface IDaopsg {
 	public BMembers psgUserInfo(String uid);	// Select mypage_userInfo
 	public void psgUpdateInfo(String id, String field, String value);	// Update mypage
 	public int psgDupCheck(String id, String field, String value);	// Check Dup
+	public psgBViewPost psgSelectStudyPost(int pNum);	// Select Study Post
 	public ArrayList<BStudy> psgStudyInfo(String uid);	// Select meetList_studyList
 	
 }

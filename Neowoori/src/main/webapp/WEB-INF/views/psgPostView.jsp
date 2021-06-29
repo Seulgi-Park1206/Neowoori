@@ -32,7 +32,7 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>내용:</td>
-					<td class=tdCenter><textarea class=intext id=context readonly></textarea></td>
+					<td class=tdCenter><textarea class=intext id=contents readonly></textarea></td>
 				</tr>
 			</table>
 		</div>
@@ -61,28 +61,28 @@
 <script>
 $(document)
 .ready(function(){
+	var link = window.location.pathname;
+	link = link.split('/')[3];
+	console.log(link);
 	// db에서 해당 게시물 및 댓글 불러오기
-	/*
 	$.ajax({
-		url:'${path}/mypage.do',
-		data:{},
-		contentType:'application/json; charset=UTF-8',
+		url:'${path}/postView.do',
+		data:link,
+		contentType:'text/plain; charset=UTF-8',
 		dataType:'json',
 		method:'post',
 		success:function(result){
-				$('#uid').text(result['userid']);
-				$('#uname').text(result['uname']);
-				$('#unick').val(result['unick']);
-				$('#birth').text(result['uyear']+result['ubirthday']);
-				$('#gender').text(result['ugender']);
-				$('#umobile').val(result['umobile']);
-				$('#email').text(result['umail']);
+			console.log(result);
+			$('#title').text(result['title']);
+			$('#writer').text(result['userid']);
+			$('#date').text(result['postDate']);
+			$('#contents').text(result['postContents']);
 		},
 		error:function(){
 			alert('error');
 		}
 	});
-	*/
+	
 	let startTag = '<td><label>';
 	let result = '<tr>' + startTag;
 	let endTag = '</label></td>';
