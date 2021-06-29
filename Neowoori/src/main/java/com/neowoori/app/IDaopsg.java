@@ -14,7 +14,8 @@ public interface IDaopsg {
 	public void psgDeleteStudyPost(int pNum);	// Delete Study Post
 	// cmt of study post
 	public ArrayList<psgBViewCmt> psgSelectCmt(int pNum);	// Select cmt of Study Post
-	public void psgInsertCmt(int pNum, int cNum, String id, String contents, String state );	// Insert cmt
+	public void psgInsertCmt(int pNum, String id, String contents);	// Insert cmt
+	public psgBViewCmt psgAddCmtSelect();	// Recent comments added
 	public void psgDeleteCmt(int pNum, int cNum);	// Delete cmt of Study Post
 	//
 	public ArrayList<BStudy> psgStudyInfo(String uid);	// Select meetList_studyList

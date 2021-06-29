@@ -550,10 +550,10 @@ public class HomeController {
 	public String postView(@PathVariable String post_num) {
 		return "psgPostView";
 	}
+	// 해당 스터디 게시글 조회
 	@ResponseBody
 	@RequestMapping(value="/postView.do", method=RequestMethod.POST)
 	public JSONObject postViewDo(@RequestBody String postNum) {
-		// 해당 스터디 게시글 조회
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int pNum = Integer.parseInt(postNum);
 		psgBViewPost post = dao.psgSelectStudyPost(pNum);
@@ -566,7 +566,7 @@ public class HomeController {
 		
 		return jo;
 	}
-	// 스터디 게시판 댓글 쓰기/보기
+	// 스터디 게시판 댓글 보기
 	@ResponseBody
 	@RequestMapping(value="/postCmt.do", method=RequestMethod.POST)
 	public JSONArray postCmt(@RequestBody String postNum) {
@@ -577,6 +577,7 @@ public class HomeController {
 		HashMap<String, Object> hashmap = new HashMap<String, Object>();
 		JSONArray jarr = new JSONArray();
 		for(int i=0; i<cmt.size();i++) {
+			hashmap.put("cmtnum", cmt.get(i).getCmtnum());
 			hashmap.put("userid", cmt.get(i).getUserid());
 			hashmap.put("cmtDate", cmt.get(i).getCmt_date());
 			hashmap.put("cmtContents", cmt.get(i).getCmt_contents());
@@ -587,6 +588,31 @@ public class HomeController {
 		}
 		
 		return jarr;
+	}
+	// 댓글 쓰기
+	@ResponseBody
+	@RequestMapping(value="/insertCmt.do", method=RequestMethod.POST)
+	public JSONObject insertCmt(@RequestBody HashMap<String, String> hashmap,
+			HttpServletRequest request, HttpSession session) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(hashmap.get("pNum"));
+		System.out.println(pNum);
+		session = request.getSession();
+		String uid = (String) session.getAttribute("userid");
+		System.out.println(uid);
+		System.out.println(hashmap.get("contents"));
+		dao.psgInsertCmt(pNum, uid, hashmap.get("contents"));
+		
+		psgBViewCmt cmt = dao.psgAddCmtSelect();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cmtnum",cmt.getCmtnum());
+		map.put("userid", cmt.getUserid());
+		map.put("cmtDate", cmt.getCmt_date());
+		map.put("cmtContents", cmt.getCmt_contents());
+		JSONObject jo = new JSONObject(map);
+		System.out.println(jo);
+		
+		return jo;
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")

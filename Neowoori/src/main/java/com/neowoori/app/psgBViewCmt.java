@@ -1,6 +1,7 @@
 package com.neowoori.app;
 
 public class psgBViewCmt {
+	int cmtnum;
 	String userid;
 	String cmt_date;
 	String cmt_contents;
@@ -8,10 +9,17 @@ public class psgBViewCmt {
 	public psgBViewCmt() {
 		
 	}
-	public psgBViewCmt(String userid, String cmt_date, String cmt_contents) {
+	public psgBViewCmt(int cmtnum, String userid, String cmt_date, String cmt_contents) {
+		this.cmtnum = cmtnum;
 		this.userid = userid;
 		this.cmt_date = cmt_date;
 		this.cmt_contents = cmt_contents;
+	}
+	public int getCmtnum() {
+		return cmtnum;
+	}
+	public void setCmtnum(int cmtnum) {
+		this.cmtnum = cmtnum;
 	}
 	public String getUserid() {
 		return userid;

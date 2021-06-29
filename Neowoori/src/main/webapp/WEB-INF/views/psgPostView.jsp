@@ -35,6 +35,13 @@
 					<td class=tdCenter><textarea class=intext id=contents readonly></textarea></td>
 				</tr>
 			</table>
+			<br>
+			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
+				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="글 신고">
+				<input type=button class="btn btn-outline-primary" id=btnList value=목록>
+				<input type=button class="btn btn-outline-primary" id=btnUpdate value="수정">
+				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
+			</div>
 		</div>
 		<div class=reply>
 			<p class=title2>댓글목록</p>
@@ -46,23 +53,16 @@
 				<textarea id=txtWrite></textarea>
 				<input type=button class="btn1 btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
 			</div>
-			<br>
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="글 신고">
-				<input type=button class="btn btn-outline-primary" id=btnList value=목록>
-				<input type=button class="btn btn-outline-primary" id=btnUpdate value="수정">
-				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
-			</div>
 		</div>
 	</div>
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+let link = window.location.pathname;
+link = link.split('/')[3];
 $(document)
 .ready(function(){
-	var link = window.location.pathname;
-	link = link.split('/')[3];
 	console.log(link);
 	// db에서 해당 게시물 불러오기
 	$.ajax({
@@ -94,15 +94,16 @@ $(document)
 			$.each(rData, function(idx, res){
 				console.log(res);
 				console.log(res['userid']);
-				let startTag = '<td><label>';
+				let startTag = '<td><label class="writer">';
 				let result = '<tr>' + startTag;
-				let endTag = '</label></td>';
+				let endTag = '</td></tr>';
 				result += res['userid'];
-				result += '(';
+				result += ' (';
 				result += res['cmtDate'];
 				result += ')</label><br>';
 				result += '<label>';
 				result += res['cmtContents'];
+				result += '</label><br><a class=updateCmt>수정</a>&nbsp;<a class=deleteCmt>삭제</a>';
 				result += endTag;
 				result += '</tr>';
 				console.log(result);
@@ -113,6 +114,38 @@ $(document)
 			alert('Cmt error');
 		}
 	});
+})
+// 댓글 쓰기
+.on('click', '#btnReply', function(){
+	let cmt = {pNum:link, contents:$('#txtWrite').val()}
+	$.ajax({
+		url:'${path}/insertCmt.do',
+		data:JSON.stringify(cmt),
+		contentType:'application/json; charset=UTF-8',
+		dataType:'json',
+		method:'post',
+		success:function(res){
+			console.log(res);
+			console.log(res['userid']);
+			let startTag = '<td><label class="writer">';
+			let result = '<tr>' + startTag;
+			let endTag = '</td></tr>';
+			result += res['userid'];
+			result += ' (';
+			result += res['cmtDate'];
+			result += ')</label><br>';
+			result += '<label>';
+			result += res['cmtContents'];
+			result += '</label><br><a class=updateCmt>수정</a>&nbsp;<a class=deleteCmt>삭제</a>';
+			result += endTag;
+			console.log(result);
+			$('#tblReply').prepend(result);
+		},
+		error:function(){
+			alert('Cmt insert error');
+		}
+	});
+	return false;
 })
 /*
 // 비밀번호 일치/불일치 판단
