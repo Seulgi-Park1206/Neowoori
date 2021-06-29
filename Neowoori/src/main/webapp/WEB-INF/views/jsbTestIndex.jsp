@@ -28,7 +28,7 @@
 		    
 		    <div id="colOne" class="accordion-collapse collapse show" aria-labelledby="headingOne" data-bs-parent="#accordionExample">
 		      <div class="accordion-body">
-		      	<div class="btn-group-vertical" id=btnGroupBig>
+		      	<div class="btn-group" id=btnGroupBig>
 			    	<button id=selBig1 class="btn btn-outline-success btn-sm" onclick=btnBigClick(1)>전체</button>
 					<button id=selBig2 class="btn btn-outline-success btn-sm" onclick=btnBigClick(2)>독서</button>
 					<button id=selBig3 class="btn btn-outline-success btn-sm" onclick=btnBigClick(3)>문화생활</button>
@@ -56,7 +56,7 @@
 		    </h2>
 		    <div id="colTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#accordionExample">
 		      <div class="accordion-body">
-		        <div class="btn-group-vertical" id=btnGroupSm>
+		        <div class="btn-group" id=btnGroupSm>
 				 
 				</div>
 		      </div>

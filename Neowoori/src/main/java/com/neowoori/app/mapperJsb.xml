@@ -9,11 +9,30 @@
 	<select id="jsbGetTest" resultType="com.neowoori.app.BStudy">
 		select * from study
 	</select>
+		<!--Study 생성 -->
 	<insert id="jsbCreateStudy">
 		insert into study
-		values(study_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12},#{param13})
+		values(study_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6},#{param7},#{param8},#{param9},#{param10},#{param11},#{param12},#{param13},#{param14},#{param15})
 	</insert>
+	
+		<!-- UserID로 get User info -->
 	<select id="jsbGetUser" resultType="com.neowoori.app.BMembers">
 		select * from members where USERID=#{param1}
+	</select>
+	
+		<!-- UserId, StudyName으로 스터디장num확인-->
+	<select id="jsbFindStudyMnum" resultType="Integer">
+		select mNUM from study where uNUM=#{param1} and MNAME=#{param2}
+	</select>
+		
+		<!-- UserId, mnum으로 meeting 생성 unum,mnum,30삽입-->
+	<insert id="jsbCreateMeet">
+		insert into meeting_study
+		values(#{param1},#{param2},#{param3})
+	</insert>
+	
+		<!-- StudyName으로 중복확인 확인-->
+	<select id="jsbFindStudyName" resultType="Integer">
+		select count(*) from study where MNAME=#{param1}
 	</select>
 </mapper>

@@ -69,6 +69,14 @@ public class HomeController {
 		return "redirect:/notice";
 	   }
 	
+	@RequestMapping("/notice") //공지사항
+	   public String notice(Model model) {
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  ArrayList<BAdminPost> alData=dao.listNoticeDao();
+		  model.addAttribute("alData",alData);
+	      return "ygwnoticetest";
+	   }
+	
 	@RequestMapping("/qnawrite") //QnA글쓰기
 	   public String qnawrite() {
 	      return "ygwQnawrite";
@@ -78,10 +86,130 @@ public class HomeController {
 	   public String webstudy() {
 	      return "ygwWebstudy";
 	   }
-	/* 이메일 인증 */
+	
+	@RequestMapping("/findidPopup") //아이디찾기 팝업
+	   public String findidPopup() {
+	      return "ehsFindid";
+	   }
+	
+	@RequestMapping("/findpwPopup") //아이디찾기 팝업
+	   public String findpwPopup() {
+	      return "ehsFindpw";
+	   }
+	
+	
+	String check_id="";
+	@RequestMapping(value="/findidServer", method=RequestMethod.POST) //id찾기 서버
+	@ResponseBody
+	   public String checkfindidServer(String email,Model model) {
+		  System.out.println("email 테스트 : "+email); 
+	      IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+	      int check_email=dao.check_email(email);
+	      String final_check_email=Integer.toString(check_email);
+	      
+	      
+	      if(final_check_email.equals("1")) {
+	    	System.out.println("결과 있음");
+	    	check_id= findidServer(email,model);
+	    	System.out.println("id는 : "+check_id);
+	    	 	 
+	      }
+	      else {
+	    	  System.out.println("check 결과 없음 : "+final_check_email);
+	      }
+	      
+	     return final_check_email;
+	   }
+
+	   public String findidServer(String email,Model model) {
+	      IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+	      String id=dao.find_id(email);
+	    
+	      return id;
+	   }
+	   
+	   @RequestMapping("/findidfinal") //아이디찾기 팝업
+	   public String findidfinal(Model model) {
+		  model.addAttribute("id",check_id);
+		  
+	      return "ygwFindid_final";
+	   }   
+	   
+	/* 비밀번호 찾기 */
+	@RequestMapping(value="/findpwServer", method=RequestMethod.POST)
+	@ResponseBody
+	public String checkServer(String id,String email) throws Exception{
+		/* 뷰(View)로부터 넘어온 데이터 확인 */
+		System.out.println(id);
+		System.out.println(email);
+		//email,id 있는지 체크
+		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+		int count=dao.check_findpw(id,email);
+		String check_count=Integer.toString(count);
+		System.out.println("count 결과 : "+check_count);
+		
+		if(check_count.equals("1")) {
+			findpwServer(id,email);
+		}
+		else{
+			System.out.println("check 결과 없음");
+		}
+		
+		/* id,email 검색해서 있으면 1, 없으면 0을 반환*/
+		return check_count;
+		
+	}
+	
+	
+	/* 비밀번호 찾기 임시 비밀번호 발송 메소드*/
+	public void findpwServer(String id,String email) throws Exception{
+		
+		/* 뷰(View)로부터 넘어온 데이터 확인 */
+		System.out.println(id);
+		System.out.println(email);
+				
+		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+				
+		/* 인증번호(난수) 생성 */
+		Random random = new Random();
+		int tempPassword = random.nextInt(888888) + 111111;
+		String password = Integer.toString(tempPassword);
+		
+		/* 비밀번호 임시비밀번호로 update */
+		dao.updatePassword(password,id);
+		
+		
+		/* 이메일 보내기 */
+		String setFrom = "brokerdev99@gmail.com";
+		String toMail = email;
+		String title = "<비밀번호 찾기> 임시 비밀번호 발급 이메일 입니다.";
+		String content = 
+				"홈페이지를 방문해주셔서 감사합니다." +
+				"<br><br>" + 
+				"임시 비밀번호는 " + tempPassword + "입니다." + 
+				"<br>" + 
+				"임시 비밀번호로 로그인하여 주십시오.";		
+		
+		try {
+			
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
+			helper.setFrom(setFrom);
+			helper.setTo(toMail);
+			helper.setSubject(title);
+			helper.setText(content,true);
+			mailSender.send(message);
+			
+		}catch(Exception e) {
+			e.printStackTrace();
+		}		
+				
+	}
+	
+	/* 회원가입 이메일 인증 */
 	@RequestMapping(value="/mailCheck", method=RequestMethod.GET)
 	@ResponseBody
-	public String mailCheckGET(String email) throws Exception{
+	public void mailCheckGET(String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
 		System.out.println(email);
@@ -116,10 +244,7 @@ public class HomeController {
 			e.printStackTrace();
 		}		
 		
-		String num = Integer.toString(checkNum);
-		
-		return num;
-		
+				
 	}
 	/*---------------------------------------------*/
 	
@@ -148,10 +273,12 @@ public class HomeController {
 	   public String faq() {
 	      return "PJH_faq";
 	   }
+	/*
 	@RequestMapping("/notice") //공지사항
 	   public String notice() {
 	      return "PJH_notice";
 	   }
+	*/
 	@RequestMapping("/jusoPopup") //주소 팝업
 	   public String jusoPopup() {
 	      return "jusoPopup";
@@ -367,15 +494,16 @@ public class HomeController {
 		String uid = (String) session.getAttribute("userid");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		BMembers member = dao.psgUserInfo(uid);
-		JSONObject jo = new JSONObject();
-		jo.put("userid", member.getUserId());
-		jo.put("unick", member.getuNick());
-		jo.put("uname", member.getuName());
-		jo.put("uyear", member.getuYear());
-		jo.put("ubirthday", member.getuBirthday());
-		jo.put("ugender", member.getuGender());
-		jo.put("umobile", member.getuMobile());
-		jo.put("umail", member.getuMail());
+		HashMap<String, Object> hashmap = new HashMap<String, Object>();
+		hashmap.put("userid", member.getUserId());
+		hashmap.put("unick", member.getuNick());
+		hashmap.put("uname", member.getuName());
+		hashmap.put("uyear", member.getuYear());
+		hashmap.put("ubirthday", member.getuBirthday());
+		hashmap.put("ugender", member.getuGender());
+		hashmap.put("umobile", member.getuMobile());
+		hashmap.put("umail", member.getuMail());
+		JSONObject jo = new JSONObject(hashmap);
 		
 		return jo;
     }
@@ -410,8 +538,9 @@ public class HomeController {
 		return "ok";
 	}
 	// 스터디 게시판 글 보기
-	@RequestMapping("/postView/{post_num}")
-	public String postView(@PathVariable String post_num, HttpServletRequest request, HttpSession session) {
+	@RequestMapping("/postView/{study_num}/{post_num}")
+	public String postView(@PathVariable String study_num, @PathVariable String post_num,
+			HttpServletRequest request, HttpSession session) {
 		session = request.getSession();
 		// session_usid 가져오기
 		String uid = (String) session.getAttribute("userid");
@@ -505,11 +634,22 @@ public class HomeController {
 	      return "jsbTestIndex";
 	   }
 	
+	@ResponseBody /*스터디명 중복찾기*/
+	@RequestMapping(value="/jsbfindStudyName.do", method=RequestMethod.POST)
+	   public int findStudyNameAjax(String studyName,HttpServletRequest request,Model model) {
+			String mName = request.getParameter("studyName");
+			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			int mem = dao.jsbFindStudyName(mName);
+			return mem;
+//			System.out.println(mUserNum+","+mName+","+CATEGORY1+","+CATEGORY2+","+mWhere+","+mDay+","+mTime+","+mPtime+","+mLevel+","+mContents+","+mPersonnel+","+lati+","+longi);
+	   }
+	
 	@ResponseBody /*스터디생성 ajax*/
 	@RequestMapping(value="/jsbCreate.do", method=RequestMethod.POST)
 	   public void createAjax(String studyName,String bigSel,String smSel,String week,
 			   String studyTime, String playTime,String lvlSel, String contents,String personnel,
-			   String mwhere,String ulati,String ulongi,String userId,HttpServletRequest request,Model model) {
+			   String ujso,String ujso2,String ujso3,String ulati,String ulongi,String userId,
+			   HttpServletRequest request,Model model) {
 			String mName = request.getParameter("studyName");
 			String CATEGORY1 = request.getParameter("bigSel");
 			String CATEGORY2 = request.getParameter("smSel");
@@ -523,12 +663,30 @@ public class HomeController {
 			String lati = request.getParameter("ulati");
 			String longi = request.getParameter("ulongi");
 			String loginUId = request.getParameter("userId");
+			String mWhere2 = request.getParameter("ujuso2");
+			String mWhere3 = request.getParameter("ujuso3");
 			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
 			BMembers mem = dao.jsbGetUser(loginUId);
 			int mUserNum = mem.getuNum();
 //			System.out.println(mUserNum+","+mName+","+CATEGORY1+","+CATEGORY2+","+mWhere+","+mDay+","+mTime+","+mPtime+","+mLevel+","+mContents+","+mPersonnel+","+lati+","+longi);
-			dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi);
+			dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi,mWhere2,mWhere3);
 	   }
+	
+	@ResponseBody /*스터디생성후 meeting 생성 ajax*/
+	@RequestMapping(value="/jsbCreateToMeet.do", method=RequestMethod.POST)
+	   public void createToMeetAjax(String studyName,String userId,
+			   HttpServletRequest request,Model model) {
+			String mName = request.getParameter("studyName");
+			String loginUId = request.getParameter("userId");
+			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			BMembers mem = dao.jsbGetUser(loginUId);
+			int mUserNum = mem.getuNum();
+			int reqMNum = dao.jsbFindStudyMnum(mUserNum,mName);
+			int stateNum=30;
+//			System.out.println("reqNUM:"+reqMNum);
+//			System.out.println(mUserNum+","+reqMNum+","+stateNum);
+			if(reqMNum > 1) dao.jsbCreateMeet(mUserNum,reqMNum,stateNum);
+			}
 	
 	@ResponseBody
 	@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
@@ -552,6 +710,7 @@ public class HomeController {
 	   public String company() {
 	      return "ehsCompany";
 	   }
+/*
 	@RequestMapping("/findid") //아이디찾기
 	   public String findid() {
 	      return "ehsFindid";
@@ -560,6 +719,8 @@ public class HomeController {
 	   public String findpw() {
 	      return "ehsFindpw";
 	   }
+*/
+	
 	@RequestMapping("/create") //게시글만들기
 	   public String create() {
 	      return "ehsCreate";
