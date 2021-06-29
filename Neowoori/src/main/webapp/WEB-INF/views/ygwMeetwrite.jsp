@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
@@ -26,27 +28,27 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
-var userid = "human1";
+var userid = '<%=session.getAttribute("userid")%>';
 var usernum = 0;
 
 $(document)
-.ready(function(){
-	console.log(userid);
-	$.ajax({
-	    url: 'pjhusernum.do',
+.ready(function(){ // 아이디로 유저번호 가져오기
+$.ajax({
+	    url: '${path}/pjhusernum.do',
 	    type: 'POST',
-	    data: {"userid":userid}, 
+	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
+	    contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
+	    data:userid,
 	    success: function(data){
-	    	console.log(data);
-	    	alert("성공");
+	    	usernum = data;
 	    },
-	    error: function (){
-	    	alert("실패");
+	    error: function (){  
 	    }
 	  })
+	
 })
 .on('click','#btn_cl',function(){ // 취소 누를시 게시판으로
-	location.href = '/app/meetView'
+	location.href = '/app/meetView'// 여기 스터디 아이디 추가해야함
 })
 .on('click','#btn_cr',function(){ // 글쓰기 누를시 제목&내용 확인 / 있으면 값 전송
 	if($('#postTitle').val()== ""){
@@ -73,26 +75,18 @@ $(document)
 	    }
 	/*------공시사항 여부------*/
 
-	var uid = "${s_id}"; // 유저 아이디 세션 (스터디 아이디로 바꿔야 함)
-	var s_id = 142;
-	console.log(uid);
-	console.log(s_id);
-	console.log($('#postTitle').val());
-	console.log($('#postContent').val());
-	console.log(today);
-	console.log(result);
-	
+	var s_id = 147;
+	var title = $('#postTitle').val();
+	var Content = $('#postContent').val();
+	var form = {usernum:usernum,s_id:s_id,title:title,Content:Content,today:today,result:result};
+	console.log(form);
 	$.ajax({
-		    url: "MeetWirte",
-		    type: "POST",
-		    data: {
-		    	"uid" : uid,
-		    	"s_id" : s_id,
-		    	"title" : $('#postTitle').val(), // 제목
-		    	"Content" : $('#postContent').val(), // 내용
-		    	"today" : today, // 날짜
-		    	"result" : result // 체크
-		    },
+		    url: "${path}/MeetWirte",
+		    data: JSON.stringify(form),
+		    contentType:'application/json; charset=UTF-8',
+			dataType:'text',
+			method:'post',
+		    
 		    success : function(data){
 		      alert("글쓰기 성공")
 // 		      location.href = '/app/meetView'
