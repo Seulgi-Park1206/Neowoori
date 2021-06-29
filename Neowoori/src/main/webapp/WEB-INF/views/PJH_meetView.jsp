@@ -33,7 +33,7 @@
      	<td width="120px" style="background-color:white;"></td>
         <th width="120px"><span>번호</span></th>
         <th width="400px"><span>제목</span></th>
-        <th><span>작성자</span></th>
+        <th><span>작성내용</span></th>
         <th><span>작성 일자</span></th>
         <th><span></span></th>
       </tr>
@@ -46,7 +46,7 @@
 	<table>
 		<tr>
 			<td><button class="btn_list">화상스터디</button></td>
-			<td><button class="btn_list" style="margin:0 130px 30px 15px;">글쓰기</button></td>
+			<td><button class="btn_list" id=btn_create style="margin:0 130px 30px 15px;">글쓰기</button></td>
 		</tr>
 	</table>
 </div>
@@ -143,6 +143,8 @@ $(document)
         }
         })
 })  
+
+
 /*---------------------------------페이징 클릭시------------------------------------------*/
 
 .on('click','.page-item',function(){
@@ -200,6 +202,10 @@ $(document)
     	}
 	})
 	
+})
+
+.on('click','#btn_create',function(){
+	location.href = 'meetwrite/'+se
 })
 </script>
 </html>
