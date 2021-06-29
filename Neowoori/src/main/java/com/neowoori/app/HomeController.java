@@ -48,10 +48,12 @@ public class HomeController {
 	      return "email";
 	   }
 	
-	@RequestMapping("/meetwrite") //게시판 글쓰기
-	   public String meetwrite() {
-	      return "ygwMeetwrite";
+	@RequestMapping("/meetwrite/{study_id}") //게시판 글쓰기 // 유저 아이디& 스터디 아이디 같이 보내야함
+	   public String meetwrite(@PathVariable String study_id, Model model) {
+		model.addAttribute("s_id", study_id);
+		return "ygwMeetwrite";
 	   }
+	
 	@RequestMapping("/noticewrite") //공지사항 글쓰기
 	   public String noticewrite() {
 		
@@ -162,7 +164,7 @@ public class HomeController {
 
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
-	   public void birthajax(String uid, String uname,String upw, String unick, String umobile, String ugender, 
+	   public void signup(String uid, String uname,String upw, String unick, String umobile, String ugender, 
 			   				 String uyear, String ubirthday, String uemail, String ujuso, String ulati, String ulongi,  HttpServletRequest request) {
 			String id = request.getParameter("uid");
 			String name = request.getParameter("uname");
@@ -263,6 +265,18 @@ public class HomeController {
 		return user_count;
 	}
 	
+	@ResponseBody // 유저 num 받아오기
+	@RequestMapping(value="/pjhusernum.do",method=RequestMethod.POST)
+	public int user_num(String userid, HttpServletRequest request, HttpSession session){
+//		session = request.getSession();
+//		String user_id = (String) session.getAttribute("userid");
+		String user_id = request.getParameter("userid");
+		IDaojsb pjhdao = sqlSession.getMapper(IDaojsb.class);
+		BMembers mem = pjhdao.jsbGetUser(user_id);
+		int UserNum = mem.getuNum();
+		return UserNum;
+	}
+	
 	@ResponseBody // 관리자 게시판(유저관리)(팝업,modal)
 	@RequestMapping(value="/usermodal.do",method=RequestMethod.POST, produces="application/json")
 	public ArrayList<BMembers> user_modal(HttpServletRequest request){
@@ -306,6 +320,25 @@ public class HomeController {
 		ArrayList<BStudyPost> study_Post_Paging = dao.pjhStudyPostPaging(studypostpaging);
 		return study_Post_Paging;
 	}
+	
+	@ResponseBody /*스터디 게시물 쓰기 ajax*/
+	@RequestMapping(value="/MeetWirte", method=RequestMethod.POST)
+	   public void MeetWirte(String uid, String  s_id, String title, String Content, String today, String result, HttpServletRequest request) {
+			String p_uid = request.getParameter("uid");
+			String p_sid = request.getParameter("s_id");
+			String p_title = request.getParameter("title");
+			String p_Content = request.getParameter("Content");
+			String p_today = request.getParameter("today");
+			String p_result = request.getParameter("result");
+			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+			System.out.println(p_uid);
+			System.out.println(p_sid);
+			System.out.println(p_title);
+			System.out.println(p_Content);
+			System.out.println(p_today);
+			System.out.println(p_result);
+			dao.pjhMeetWirte(p_uid, p_sid, p_result, p_title, p_Content, p_today);
+	   }
 	
 	/*---------------------------------------------*/
 	

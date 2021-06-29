@@ -27,5 +27,11 @@ public interface IDaopjh {
 	public int pjhlogin(String id, String pw);//유저 로그인
 	public int pjhadminlogin(String id, String pw); //관리자 로그인
 	
+	public String pjhusernum(String id); // 유저 아이디로 num 찾기
+	
+	
+	// 게시판 글쓰기
+	public void pjhMeetWirte(String uid, String  s_id,  String result, String title, String Content, String today);
+	
 }
 
