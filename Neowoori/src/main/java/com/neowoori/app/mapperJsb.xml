@@ -6,8 +6,8 @@
 	<select id="jsbSelectlocation" resultType="com.neowoori.app.BStudy">
 		select * from study
 	</select>
-	<select id="jsbGetTest" resultType="com.neowoori.app.BStudy">
-		select * from study
+	<select id="jsbGetStudyInfo" resultType="com.neowoori.app.BJsbStudyInfo">
+		select b.unick,a.* from study a, members b where a.unum=b.unum
 	</select>
 		<!--Study 생성 -->
 	<insert id="jsbCreateStudy">
@@ -34,5 +34,44 @@
 		<!-- StudyName으로 중복확인 확인-->
 	<select id="jsbFindStudyName" resultType="Integer">
 		select count(*) from study where MNAME=#{param1}
+	</select>
+	
+			<!-- 스터디에 가입되었는지 확인-->
+	<select id="jsbFindStudySignon" resultType="Integer">
+		select count(*) from meeting_study where mNum=#{param1} and uNum=#{param2}
+	</select>
+		<!-- 0=가입안함,10=가입신청중,20=가입완료,30=해당 스터디장 -->
+			<!-- 가입되었다면 state확인 -->
+	<select id="jsbFindUserStateMeeting" resultType="Integer">
+		select STATE from meeting_study where mNum=#{param1} and uNum=#{param2}
+	</select>
+		
+			<!-- UserId, mnum으로 meeting 생성 unum,mnum,10삽입-->
+	<insert id="jsbJoinStudy">
+		insert into meeting_study
+		values(#{param1},#{param2},10)
+	</insert>
+	
+			<!-- UserId, mnum으로 meeting 제거 unum,mnum,10으로 검색-->
+	<delete id="jsbCancelJoin">
+		delete from meeting_study
+		where unum=#{param1} and mnum=#{param2} and state=10
+	</delete>
+	
+				<!-- UserId, mnum으로 meeting 제거 unum,mnum,10으로 검색-->
+	<delete id="jsbJoinOut">
+		delete from meeting_study
+		where unum=#{param1} and mnum=#{param2} and state=20
+	</delete>
+	
+				<!-- UserId, mnum으로 meeting 생성 unum,mnum,10삽입-->
+	<insert id="jsbSendModalMsg"> <!-- msgNum,보낸Num,받는Num,내용,보낸날짜,상태=0 -->
+		insert into message
+		values(msg_seq.nextval,#{param1},#{param2},#{param3},sysdate,0)
+	</insert>
+	
+			<!-- UserID로 get User Nick -->
+	<select id="jsbGetUserNick" resultType="com.neowoori.app.BMembers">
+		select * from members where uNick=#{param1}
 	</select>
 </mapper>

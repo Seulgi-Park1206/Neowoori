@@ -659,11 +659,78 @@ public class HomeController {
 	@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
 		public ArrayList<BStudy> reqList(HttpServletRequest req) {
 			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-			String one = req.getParameter("one");
-			String two = req.getParameter("two");
-			System.out.println(one+","+two);
-			ArrayList<BStudy> resp=dao.jsbGetTest();
+//			String one = req.getParameter("one");
+//			String two = req.getParameter("two");		
+//			System.out.println(one+","+two);
+			ArrayList<BStudy> resp=dao.jsbGetStudyInfo();
 			return resp;
+	   }
+	
+	@ResponseBody	/*가입신청 상태인지 아닌지 확인*/
+	@RequestMapping(value="/jsbFindMeetStudy.do", method=RequestMethod.POST,produces = "application/json")
+		public int jsbFindMeetStudy(String mNumHid, String userId, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			int mNum = Integer.parseInt(req.getParameter("mNumHid"));
+			String uId = req.getParameter("userId");
+			BMembers mem = dao.jsbGetUser(uId);
+			int uNum = mem.getuNum();
+//			System.out.println("unum: "+uNum);
+//			System.out.println(mNum+","+mUserNum);
+			int signOn=dao.jsbFindStudySignon(mNum, uNum);
+			if (signOn==0) {
+				return 0;
+			}else {
+				int state = dao.jsbFindUserStateMeeting(mNum,uNum);
+				return state;
+			}
+	   }
+	
+	@ResponseBody	/*스터디 가입신청*/
+	@RequestMapping(value="/jsbJoinStudy.do", method=RequestMethod.POST,produces = "application/json")
+		public void jsbJoinStudy(String mNumHid, String userId, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			int mNum = Integer.parseInt(req.getParameter("mNumHid"));
+			String uId = req.getParameter("userId");
+			BMembers mem = dao.jsbGetUser(uId);
+			int uNum = mem.getuNum();
+			dao.jsbJoinStudy(uNum,mNum);
+	   }
+	
+	@ResponseBody	/*스터디 가입취소*/
+	@RequestMapping(value="/jsbCancelJoin.do", method=RequestMethod.POST,produces = "application/json")
+		public void jsbCancelJoin(String mNumHid, String userId, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			int mNum = Integer.parseInt(req.getParameter("mNumHid"));
+			String uId = req.getParameter("userId");
+			BMembers mem = dao.jsbGetUser(uId);
+			int uNum = mem.getuNum();
+			dao.jsbCancelJoin(uNum,mNum);
+	   }
+	
+	@ResponseBody	/*스터디 탈퇴*/
+	@RequestMapping(value="/jsbJoinOut.do", method=RequestMethod.POST,produces = "application/json")
+		public void jsbJoinOut(String mNumHid, String userId, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			int mNum = Integer.parseInt(req.getParameter("mNumHid"));
+			String uId = req.getParameter("userId");
+			BMembers mem = dao.jsbGetUser(uId);
+			int uNum = mem.getuNum();
+			dao.jsbJoinOut(uNum,mNum);
+	   }
+	
+	@ResponseBody	/*Modal Send MSG*/
+	@RequestMapping(value="/jsbSendModalMsg.do", method=RequestMethod.POST,produces = "application/json")
+		public void jsbSendModalMsg(String userId, String cont, String mAdminNick, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			//int mNum = Integer.parseInt(req.getParameter("mNumHid"));
+			String uId = req.getParameter("userId");
+			String contents = req.getParameter("cont");
+			String adminNick = req.getParameter("mAdminNick");
+			BMembers mem1 = dao.jsbGetUser(uId);
+			int uNum = mem1.getuNum();
+			BMembers mem2 = dao.jsbGetUserNick(adminNick);
+			int recNum = mem2.getuNum();
+			dao.jsbSendModalMsg(uNum,recNum,contents);
 	   }
 	
 	/*---------------------------------------------*/
