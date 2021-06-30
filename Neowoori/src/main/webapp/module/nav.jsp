@@ -31,14 +31,14 @@
 <script>
 function mystudy(){
 	var uid = '${userid}';
-	location.href='meetList/'+uid;
+	location.href='${path}/meetList/'+uid;
 }
 function islogin(){
-	var uid = '${userid}';
+	let uid = '${userid}';
 	console.log(uid+'님');
 	if(uid != ""){
 		console.log('login');
-		var u = uid + '님';
+		let u = uid + '님';
 		$('#userid').text(u);
 		$('.linklog').show();
 		$('#login').hide();

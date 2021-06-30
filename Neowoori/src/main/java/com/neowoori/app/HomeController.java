@@ -522,9 +522,6 @@ public class HomeController {
 		String uid = user.get("uid");
 		String field = user.get("optype");
 		String value = user.get("val");
-		//System.out.println("uid: "+uid);
-		//System.out.println("field: "+field);
-		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int n = dao.psgDupCheck(uid, field, value);
 		
@@ -537,9 +534,6 @@ public class HomeController {
 		String uid = user.get("uid");
 		String field = user.get("optype");
 		String value = user.get("val");
-		//System.out.println("uid: "+uid);
-		//System.out.println("field: "+field);
-		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		dao.psgUpdateInfo(uid, field, value);
 		
@@ -548,6 +542,7 @@ public class HomeController {
 	// 스터디 게시판 글 보기
 	@RequestMapping("/postView/{post_num}")
 	public String postView(@PathVariable String post_num) {
+		
 		return "psgPostView";
 	}
 	// 해당 스터디 게시글 조회
@@ -614,11 +609,21 @@ public class HomeController {
 		
 		return jo;
 	}
+	// 게시물 삭제
+	@ResponseBody
+	@RequestMapping(value="/deletePost.do", method=RequestMethod.POST)
+	public String deletePost(@RequestBody String postNum ) {
+		int pNum = Integer.parseInt(postNum);
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		System.out.println("--"+pNum+"들어옴");
+		dao.psgDeleteStudyPost(pNum);
+		System.out.println("--삭제");
+		
+		return "success";
+	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
-	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {		
-		// DB에서 해당 유저의 스터디 목록 조회
-		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
 		
 		return "psgMeetList";
 	}
