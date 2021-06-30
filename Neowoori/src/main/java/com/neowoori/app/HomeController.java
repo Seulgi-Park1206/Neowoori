@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.apache.ibatis.session.SqlSession;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -48,10 +48,12 @@ public class HomeController {
 	      return "email";
 	   }
 	
-	@RequestMapping("/meetwrite") //게시판 글쓰기
-	   public String meetwrite() {
-	      return "ygwMeetwrite";
+	@RequestMapping("/meetwrite/{study_id}") //게시판 글쓰기 //  스터디 아이디 
+	   public String meetwrite(@PathVariable String study_id, Model model) {
+		model.addAttribute("s_id", study_id);
+		return "ygwMeetwrite";
 	   }
+	
 	@RequestMapping("/noticewrite") //공지사항 글쓰기
 	   public String noticewrite() {
 		
@@ -263,10 +265,12 @@ public class HomeController {
 	   public String adminlogin() {
 	      return "PJH_adminlogin";
 	   }
-	@RequestMapping("/meetView") //내 스터디 모임
-	   public String meetView() {
+	
+	@RequestMapping("/meetView/{s_num}") //내 스터디 모임
+	   public String meetView(@PathVariable String s_num, Model model) {
+		model.addAttribute("s_num", s_num);
 	      return "PJH_meetView";
-	   }
+	  }
 	@RequestMapping("/faq") //자주 묻는 질문
 	   public String faq() {
 	      return "PJH_faq";
@@ -289,7 +293,7 @@ public class HomeController {
 
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
-	   public void birthajax(String uid, String uname,String upw, String unick, String umobile, String ugender, 
+	   public void signup(String uid, String uname,String upw, String unick, String umobile, String ugender, 
 			   				 String uyear, String ubirthday, String uemail, String ujuso, String ulati, String ulongi,  HttpServletRequest request) {
 			String id = request.getParameter("uid");
 			String name = request.getParameter("uname");
@@ -410,29 +414,66 @@ public class HomeController {
 	
 	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
 	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
-	public ArrayList<BStudyPost> study_Post1(HttpServletRequest request){
+	public ArrayList<BStudyPost> study_Post1(@RequestBody HashMap<String, String> study_Post){
+		String s_num = String.valueOf(study_Post.get("s_num"));
+		System.out.println("여기다아아아아"+s_num);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-		ArrayList<BStudyPost> study_Post = dao.pjhStudyPost();
-		return study_Post;
+		ArrayList<BStudyPost> study__Post = dao.pjhStudyPost(Integer.parseInt(s_num));
+		return study__Post;
 	}
 	
 	@ResponseBody // 내 스터디 게시판 count
 	@RequestMapping(value="/postcount.do",method=RequestMethod.POST, produces="application/json")
-	public int post_count(){
+	public int post_count(@RequestBody HashMap<String, String> study_count){
+		String s_num = String.valueOf(study_count.get("s_num"));
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-		int post_count = dao.pjsStudyPostCount();
+		int post_count = dao.pjsStudyPostCount(Integer.parseInt(s_num));
 		return post_count;
 	}
 	
 	@ResponseBody // 내 스터디 게시판(페이징)
 	@RequestMapping(value="/studypostpaging.do",method=RequestMethod.POST, produces="application/json")
-	public ArrayList<BStudyPost> study_Post_Paging(HttpServletRequest request){
-		int studypostpaging = Integer.parseInt(request.getParameter("btnvalue"));
-		System.out.println(studypostpaging);
+	public ArrayList<BStudyPost> study_Post_Paging(@RequestBody HashMap<String, String> study_paging){
+		String s_num = String.valueOf(study_paging.get("s_num"));
+		String btnvalue = String.valueOf(study_paging.get("btnvalue"));
+		System.out.println(s_num);
+		System.out.println(btnvalue);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-		ArrayList<BStudyPost> study_Post_Paging = dao.pjhStudyPostPaging(studypostpaging);
+		ArrayList<BStudyPost> study_Post_Paging = dao.pjhStudyPostPaging(Integer.parseInt(s_num),Integer.parseInt(btnvalue));
 		return study_Post_Paging;
 	}
+	
+	@ResponseBody /*스터디 게시물 쓰기 ajax*/
+	@RequestMapping(value="/MeetWirte", method=RequestMethod.POST)
+	   public void MeetWirte(@RequestBody HashMap<String, String> user) {
+			String p_uid = String.valueOf(user.get("usernum"));
+			String p_sid = String.valueOf(user.get("s_id"));
+			String p_title = String.valueOf(user.get("title"));
+			String p_Content = String.valueOf(user.get("Content"));
+			String p_today = String.valueOf(user.get("today"));
+			String p_result = String.valueOf(user.get("result"));
+			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+			System.out.println(p_uid);
+			System.out.println(p_sid);
+			System.out.println(p_title);
+			System.out.println(p_Content);
+			System.out.println(p_today);
+			System.out.println(p_result);
+			dao.pjhMeetWirte(p_sid, p_uid, p_result, p_title, p_Content, p_today);
+	   }
+	
+	@ResponseBody // 유저 num 받아오기
+	@RequestMapping(value="/pjhusernum.do",method=RequestMethod.POST, produces="text/plane1")
+	public String user_num(@RequestBody String paramData){
+		//클라이언트가 보낸 Nick값
+		String uid = paramData.trim();
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int dto = dao.pjhusernum(uid);
+		
+		return Integer.toString(dto);
+	}
+	
+	
 	
 	/*---------------------------------------------*/
 	
@@ -481,9 +522,6 @@ public class HomeController {
 		String uid = user.get("uid");
 		String field = user.get("optype");
 		String value = user.get("val");
-		//System.out.println("uid: "+uid);
-		//System.out.println("field: "+field);
-		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int n = dao.psgDupCheck(uid, field, value);
 		
@@ -496,47 +534,112 @@ public class HomeController {
 		String uid = user.get("uid");
 		String field = user.get("optype");
 		String value = user.get("val");
-		//System.out.println("uid: "+uid);
-		//System.out.println("field: "+field);
-		//System.out.println("value: "+value);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		dao.psgUpdateInfo(uid, field, value);
 		
 		return "ok";
 	}
 	// 스터디 게시판 글 보기
-	@RequestMapping("/postView/{study_num}/{post_num}")
-	public String postView(@PathVariable String study_num, @PathVariable String post_num,
-			HttpServletRequest request, HttpSession session) {
-		session = request.getSession();
-		// session_usid 가져오기
-		String uid = (String) session.getAttribute("userid");
-		
-		// DB에서 해당 유저의 스터디 목록 조회
-		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+	@RequestMapping("/postView/{post_num}")
+	public String postView(@PathVariable String post_num) {
 		
 		return "psgPostView";
+	}
+	// 해당 스터디 게시글 조회
+	@ResponseBody
+	@RequestMapping(value="/postView.do", method=RequestMethod.POST)
+	public JSONObject postViewDo(@RequestBody String postNum) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(postNum);
+		psgBViewPost post = dao.psgSelectStudyPost(pNum);
+		HashMap<String, Object> hashmap = new HashMap<String, Object>();
+		hashmap.put("title", post.getTitle());
+		hashmap.put("userid", post.getUserid());
+		hashmap.put("postDate", post.getPost_date());
+		hashmap.put("postContents", post.getPost_contents());
+		JSONObject jo = new JSONObject(hashmap);
+		
+		return jo;
+	}
+	// 스터디 게시판 댓글 보기
+	@ResponseBody
+	@RequestMapping(value="/postCmt.do", method=RequestMethod.POST)
+	public JSONArray postCmt(@RequestBody String postNum) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(postNum);
+		System.out.println(pNum);
+		ArrayList<psgBViewCmt> cmt = dao.psgSelectCmt(pNum);
+		HashMap<String, Object> hashmap = new HashMap<String, Object>();
+		JSONArray jarr = new JSONArray();
+		for(int i=0; i<cmt.size();i++) {
+			hashmap.put("cmtnum", cmt.get(i).getCmtnum());
+			hashmap.put("userid", cmt.get(i).getUserid());
+			hashmap.put("cmtDate", cmt.get(i).getCmt_date());
+			hashmap.put("cmtContents", cmt.get(i).getCmt_contents());
+			JSONObject jo = new JSONObject(hashmap);
+			System.out.println(jo);
+			jarr.add(jo);
+			System.out.println(jarr);
+		}
+		
+		return jarr;
+	}
+	// 댓글 쓰기
+	@ResponseBody
+	@RequestMapping(value="/insertCmt.do", method=RequestMethod.POST)
+	public JSONObject insertCmt(@RequestBody HashMap<String, String> hashmap,
+			HttpServletRequest request, HttpSession session) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(hashmap.get("pNum"));
+		System.out.println(pNum);
+		session = request.getSession();
+		String uid = (String) session.getAttribute("userid");
+		System.out.println(uid);
+		System.out.println(hashmap.get("contents"));
+		dao.psgInsertCmt(pNum, uid, hashmap.get("contents"));
+		
+		psgBViewCmt cmt = dao.psgAddCmtSelect();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cmtnum",cmt.getCmtnum());
+		map.put("userid", cmt.getUserid());
+		map.put("cmtDate", cmt.getCmt_date());
+		map.put("cmtContents", cmt.getCmt_contents());
+		JSONObject jo = new JSONObject(map);
+		System.out.println(jo);
+		
+		return jo;
+	}
+	// 게시물 삭제
+	@ResponseBody
+	@RequestMapping(value="/deletePost.do", method=RequestMethod.POST)
+	public String deletePost(@RequestBody String postNum ) {
+		int pNum = Integer.parseInt(postNum);
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		System.out.println("--"+pNum+"들어옴");
+		dao.psgDeleteStudyPost(pNum);
+		System.out.println("--삭제");
+		
+		return "success";
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
-		session = request.getSession();
-		// session_usid 가져오기
-		String uid = (String) session.getAttribute("userid");
-		
-		// DB에서 해당 유저의 스터디 목록 조회
-		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		
 		return "psgMeetList";
 	}
 	@ResponseBody // 내 스터디 목록 검색
 	@RequestMapping(value="/meetList.do",method=RequestMethod.POST, produces="application/json")
-	public String meetListDo(Model model, HttpServletRequest request, HttpSession session){
+	public ArrayList<BMeetingStudy> meetListDo(Model model, HttpServletRequest request, HttpSession session){
 		String user_id = request.getParameter("uid");
+		System.out.println(user_id);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int dto = dao.pjhusernum(user_id);
+		System.out.println(dto);
+		ArrayList<BMeetingStudy> meetingstudy = dao.pjhMeetingStudy(dto);
 		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		//model.addAttribute("mystudy", dao.psgStudyInfo(user_id));
-		model.addAttribute("data", user_id);
-		return "psgmeetList";
+		//model.addAttribute("data", user_id);
+		return meetingstudy;
 	}
 	// meetadmin
 	@RequestMapping("/meetadmin/{study_id}")

@@ -32,26 +32,26 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>내용:</td>
-					<td class=tdCenter><textarea class=intext id=context readonly></textarea></td>
+					<td class=tdCenter><textarea class=intext id=contents readonly></textarea></td>
 				</tr>
 			</table>
-		</div>
-		<div class=reply>
-			<p class=title2>댓글목록</p>
-			<br>
-			<table id=tblReply>
-			</table>
-			<br>
-			<div class=replyWrite>
-				<textarea id=txtWrite></textarea>
-				<input type=button class="btn1 btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
-			</div>
 			<br>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="신고">
-				<input type=button class="btn btn-outline-primary" id=btnList value=목록>
+				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="글 신고">
+				<input type=button class="btn btn-outline-primary" id=btnList onclick="goList()" value=목록>
 				<input type=button class="btn btn-outline-primary" id=btnUpdate value="수정">
 				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
+			</div>
+			<div class=reply>
+				<p class=title2>댓글목록</p>
+				<br>
+				<table id=tblReply>
+				</table>
+				<br>
+				<div class=replyWrite>
+					<textarea id=txtWrite></textarea>
+					<input type=button class="btn1 btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
+				</div>
 			</div>
 		</div>
 	</div>
@@ -59,51 +59,115 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+let link = window.location.pathname;
+link = link.split('/')[3];
+function goList(){
+	//window.location="${path}/studypost/${s_num}";
+	window.location="${path}/studypost";
+}
+function addComment(res){
+	console.log(res);
+	console.log(res['userid']);
+	let startTag = '<td><label class="writer">';
+	let result = '<tr>' + startTag;
+	let endTag = '</td></tr>';
+	result += res['userid'];
+	result += ' (';
+	result += res['cmtDate'];
+	result += ')</label><br>';
+	result += '<label>';
+	result += res['cmtContents'];
+	result += '</label><td class=cmtAbout><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a></td>';
+	result += endTag;
+	console.log(result);
+	
+	return result;
+}
 $(document)
 .ready(function(){
-	// db에서 해당 게시물 및 댓글 불러오기
-	/*
+	console.log(link);
+	let uid = '${userid}';
+	uid = 'human1';
+	// db에서 해당 게시물 불러오기
 	$.ajax({
-		url:'${path}/mypage.do',
-		data:{},
-		contentType:'application/json; charset=UTF-8',
+		url:'${path}/postView.do',
+		data:link,
+		contentType:'text/plain; charset=UTF-8',
 		dataType:'json',
 		method:'post',
 		success:function(result){
-				$('#uid').text(result['userid']);
-				$('#uname').text(result['uname']);
-				$('#unick').val(result['unick']);
-				$('#birth').text(result['uyear']+result['ubirthday']);
-				$('#gender').text(result['ugender']);
-				$('#umobile').val(result['umobile']);
-				$('#email').text(result['umail']);
+			console.log(result);
+			$('#title').text(result['title']);
+			$('#writer').text(result['userid']);
+			$('#date').text(result['postDate']);
+			$('#contents').text(result['postContents']);
+			if($('#writer').text() == uid) {
+				$('#btnUpdate, #btnDelete').show();
+			}
 		},
 		error:function(){
-			alert('error');
+			alert('Post error');
 		}
 	});
-	*/
-	let startTag = '<td><label>';
-	let result = '<tr>' + startTag;
-	let endTag = '</label></td>';
-	result += '작성자(작성일자)';
-	result += '</label><br>';
-	result += '<label>';
-	result += '댓글 내용';
-	result += endTag;
-	result += '</tr>';
-	$('#tblReply').append(result);
+	// 댓글 불러오기
+	$.ajax({
+		url:'${path}/postCmt.do',
+		data:link,
+		contentType:'text/plain; charset=UTF-8',
+		dataType:'json',
+		method:'post',
+		success:function(rData){
+			console.log(rData);
+			$.each(rData, function(idx, res){
+				$('#tblReply').append(addComment(res));
+			})
+		},
+		error:function(){
+			alert('Cmt error');
+		}
+	});
 })
-/*
-// 비밀번호 일치/불일치 판단
-.on('change keyup paste focus', '#upw, #upw1', function(){
-	if($('#upw1').val() != '' && $('#upw').val() != ''){
-		if($('#upw1').val() == $('#upw').val()) $('#yesNo').text('일치');
-		else $('#yesNo').text('불일치');
-	} else $('#yesNo').text('');
-	
+// 댓글 쓰기
+.on('click', '#btnReply', function(){
+	let cmt = {pNum:link, contents:$('#txtWrite').val()}
+	$.ajax({
+		url:'${path}/insertCmt.do',
+		data:JSON.stringify(cmt),
+		contentType:'application/json; charset=UTF-8',
+		dataType:'json',
+		method:'post',
+		success:function(res){
+			$('#tblReply').prepend(addComment(res));
+			$('#txtWrite').val('');
+		},
+		error:function(){
+			alert('Cmt insert error');
+		}
+	});
 	return false;
 })
+// 게시물 삭제
+.on('click', '#btnDelete', function(){
+	$.ajax({
+		url:'${path}/deletePost.do',
+		data:link,
+		contentType:'text/plain; charset=UTF-8',
+		method:'post',
+		dataType:'text',
+		success:function(result){
+			console.log(result);
+			alert('Succeed to delete (no.'+link+' post)');
+			goList();
+		},
+		error:function(){
+			alert('Post delete error');
+		}
+	});
+	return false;
+})
+// 게시물 수정
+
+/*
 // 변경
 .on('click', 'input[type=button]', function(){
 	let data = $(this).parent().parent().find('td:eq(1) input').val();

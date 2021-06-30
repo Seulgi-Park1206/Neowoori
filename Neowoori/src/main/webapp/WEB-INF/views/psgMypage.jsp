@@ -78,7 +78,7 @@ function cancel(){
 }
 $(document)
 .ready(function(){
-	$('.hiddenTr').hide();
+	//$('.hiddenTr').hide();
 	// 세션값을 이용해 user_id를 얻어와서 db에서 해당 유저 정보 불러오기
 	$.ajax({
 		url:'${path}/mypage.do',
