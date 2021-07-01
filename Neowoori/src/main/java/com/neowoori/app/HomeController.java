@@ -27,7 +27,16 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class HomeController {
+	//전역 변수 영역
+	//유건우
 	
+	//박주혁
+	
+	//박슬기
+	
+	//전석봉
+	
+	//--------------------------------------------------------
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -37,6 +46,10 @@ public class HomeController {
 	
 	@RequestMapping("/") //
 	public String toIndex() {
+		//전역변수 선언
+		
+		
+		//
 		return "redirect:/index";
 	}
 	
@@ -50,9 +63,8 @@ public class HomeController {
 	      return "email";
 	   }
 	
-	@RequestMapping("/meetwrite/{study_id}") //게시판 글쓰기 //  스터디 아이디 
-	   public String meetwrite(@PathVariable String study_id, Model model) {
-		model.addAttribute("s_id", study_id);
+	@RequestMapping("/meetwrite") //게시판 글쓰기 //  스터디 아이디 
+	   public String meetwrite() {
 		return "ygwMeetwrite";
 	   }
 	
@@ -292,7 +304,6 @@ public class HomeController {
 	      return "PJH_adminpage";
 	   }
 
-
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
 	   public void signup(String uid, String uname,String upw, String unick, String umobile, String ugender, 
@@ -325,7 +336,6 @@ public class HomeController {
 		if(dto == 1) {//결과 값이 있으면 아이디 존재	
 			return "1";
 		} else {		//없으면 아이디 존재 X
-			System.out.println("null");
 			return "0";
 		}
 	}
@@ -341,7 +351,6 @@ public class HomeController {
 		if(dto == 1) {//결과 값이 있으면 닉네임 존재	
 			return "1";
 		} else {		//없으면 닉네임 존재 X
-			System.out.println("null");
 			return "0";
 		}
 	}
@@ -351,15 +360,13 @@ public class HomeController {
 	public String login_Check(HttpServletRequest request, HttpSession session){
 		String ID = request.getParameter("uid");
 		String PW = request.getParameter("upw");
-		String today = request.getParameter("today");
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhlogin(ID, PW);
 		if(dto == 1) { //결과 값이 있으면 아이디 존재
-			dao.pjhstate(today,ID); // 마지막 접속날짜
+			dao.pjhstate(ID); // 마지막 접속날짜
 			session.setAttribute("userid", ID);
 			return "1";
 		} else {		//없으면 아이디 존재 X
-			System.out.println("null");
 			return "0";
 		}
 	}
@@ -376,7 +383,6 @@ public class HomeController {
 			session.setAttribute("adminid", ID);
 			return "1";
 		} else {		//없으면 아이디 존재 X
-			System.out.println("null");
 			return "0";
 		}
 	}
@@ -416,10 +422,10 @@ public class HomeController {
 	
 	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
 	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
-	public ArrayList<BStudyPost> study_Post1(@RequestBody HashMap<String, String> study_Post){
+	public ArrayList<BStudyPost> study_Post1(@RequestBody HashMap<String, String> study_Post,HttpSession session){
 		String s_num = String.valueOf(study_Post.get("s_num"));
-		System.out.println("여기다아아아아"+s_num);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		session.setAttribute("s_num", s_num);
 		ArrayList<BStudyPost> study__Post = dao.pjhStudyPost(Integer.parseInt(s_num));
 		return study__Post;
 	}
@@ -438,11 +444,50 @@ public class HomeController {
 	public ArrayList<BStudyPost> study_Post_Paging(@RequestBody HashMap<String, String> study_paging){
 		String s_num = String.valueOf(study_paging.get("s_num"));
 		String btnvalue = String.valueOf(study_paging.get("btnvalue"));
-		System.out.println(s_num);
-		System.out.println(btnvalue);
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		ArrayList<BStudyPost> study_Post_Paging = dao.pjhStudyPostPaging(Integer.parseInt(s_num),Integer.parseInt(btnvalue));
 		return study_Post_Paging;
+	}
+	@ResponseBody // 내 스터디 게시판 (제목 검색)
+	@RequestMapping(value="/pjhtitle.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BStudyPost> study_title(@RequestBody HashMap<String, String> title,HttpSession session){
+		String post_title = String.valueOf(title.get("title_writer"));
+		String post_s_num = String.valueOf(title.get("s_num"));
+		String post_btnvalue = String.valueOf(title.get("btnvalue"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BStudyPost> study_title = dao.pjhtitle(post_title,Integer.parseInt(post_s_num),Integer.parseInt(post_btnvalue));
+		return study_title;
+	}
+	
+	@ResponseBody // 내 스터디 게시판 (제목 검색)count
+	@RequestMapping(value="/pjhtitlecount.do",method=RequestMethod.POST, produces="application/json")
+	public int title_count(@RequestBody HashMap<String, String> title_count){
+		String count_title = String.valueOf(title_count.get("title_writer"));
+		String count_s_num = String.valueOf(title_count.get("s_num"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int post_count = dao.pjhtitlecount(count_title,Integer.parseInt(count_s_num));
+		return post_count;
+	}
+	
+	@ResponseBody // 내 스터디 게시판 (작성자 검색)
+	@RequestMapping(value="/pjhwriter.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BStudyPost> study_writer(@RequestBody HashMap<String, String> writer,HttpSession session){
+		String post_writer = String.valueOf(writer.get("title_writer"));
+		String post_s_num = String.valueOf(writer.get("s_num"));
+		String post_btnvalue = String.valueOf(writer.get("btnvalue"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BStudyPost> study_writer = dao.pjhwriter(post_writer,Integer.parseInt(post_s_num),Integer.parseInt(post_btnvalue));
+		return study_writer;
+	}
+	
+	@ResponseBody // 내 스터디 게시판 (제목 검색)count
+	@RequestMapping(value="/pjhwritercount.do",method=RequestMethod.POST, produces="application/json")
+	public int writer_count(@RequestBody HashMap<String, String> writer_count){
+		String count_writer = String.valueOf(writer_count.get("title_writer"));
+		String count_s_num = String.valueOf(writer_count.get("s_num"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int post_count = dao.pjhwritercount(count_writer,Integer.parseInt(count_s_num));
+		return post_count;
 	}
 	
 	@ResponseBody /*스터디 게시물 쓰기 ajax*/
@@ -452,16 +497,10 @@ public class HomeController {
 			String p_sid = String.valueOf(user.get("s_id"));
 			String p_title = String.valueOf(user.get("title"));
 			String p_Content = String.valueOf(user.get("Content"));
-			String p_today = String.valueOf(user.get("today"));
+//			String p_today = String.valueOf(user.get("today"));
 			String p_result = String.valueOf(user.get("result"));
 			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-			System.out.println(p_uid);
-			System.out.println(p_sid);
-			System.out.println(p_title);
-			System.out.println(p_Content);
-			System.out.println(p_today);
-			System.out.println(p_result);
-			dao.pjhMeetWirte(p_sid, p_uid, p_result, p_title, p_Content, p_today);
+			dao.pjhMeetWirte(p_sid, p_uid, p_result, p_title, p_Content);
 	   }
 	
 	@ResponseBody // 유저 num 받아오기
