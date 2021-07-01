@@ -166,7 +166,7 @@ function mapView(){
         	    infowindow.open(map, marker);
         	    */
         	    // 지도 중심좌표를 접속위치로 변경합니다
-        	    console.log(locPosition);
+				//console.log(locPosition);
         	    map.setCenter(locPosition);      
         	};
         	
