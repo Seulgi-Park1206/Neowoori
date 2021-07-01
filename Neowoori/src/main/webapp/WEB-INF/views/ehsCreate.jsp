@@ -311,10 +311,9 @@ function signupajax(){
     	    data: {
     	    	"studyName" : $('#studyName').val(), // 스터디명
     	    	"userId" : $("#hid").val()
-    	    	alert("생성완료(임시 alert)");
     	    },
     	    success : function(data){
-    	    	
+    	    	alert("생성완료(임시 alert)");
     	    },
     	    error : function(){	
     	    }
@@ -361,19 +360,19 @@ $("#signupbtn").on("click",function(){
 	}
 //	console.log(studyTime);
 	if(studyTime=="" || studyTime>"23"){
-		alert("스터디 시간 확인해주세요.1");
+		alert("스터디 시간(시) 확인해주세요.");
 		return;
 	}
 	if(studyMin=="" || studyMin>"59"){
-		alert("스터디 시간 확인해주세요.2");
+		alert("스터디 시간(분) 확인해주세요.");
 		return;
 	}
 	if(playTime==""){
-		alert("진행 시간 확인해주세요.1");
+		alert("진행 시간(시) 확인해주세요.");
 		return;
 	}
 	if(playMin=="" || playMin>"59"){
-		alert("진행 시간 확인해주세요.2");
+		alert("진행 시간(분) 확인해주세요.");
 		return;
 	}
 	if(chkName==1){
@@ -520,7 +519,8 @@ $(document)
 	$('#btnradio1').trigger('click');
 	$('#btncheck1').trigger('click');
 	$('#btnradio22').trigger('click');
-	$("#hid").val("human1");
+	$("#hid").val("seulgi");
+	console.log($("#hid").val());
 })
 .on("click","#MNameeCheck",function(){
 	checkMName();
@@ -575,7 +575,7 @@ function checkMName(){
 	    		chkName=1;
 	    		alert("이미 존재하는 스티디명입니다.");
 	    	}
-	    	console.log(chkName);
+	    	console.log("chkName 0 & 1:"+chkName);
 	    },
 	    error : function(){	
 	    }

@@ -30,10 +30,11 @@
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
 var userid = '<%=session.getAttribute("userid")%>';
+var s_num = '<%=session.getAttribute("s_num")%>';
 var usernum = 0;
-
 $(document)
 .ready(function(){ // 아이디로 유저번호 가져오기
+<<<<<<< HEAD
 	let pNum = '${pNum}';
 	$('hiddenPnum').val(pNum);
 	console.log($('#hiddenPnum').val());
@@ -61,6 +62,23 @@ $(document)
 		$('#btnUpdate').show();		
 	}
 )}
+=======
+$.ajax({
+	    url: '${path}/pjhusernum.do',
+	    type: 'POST',
+	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
+	    contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
+	    data:userid,
+	    success: function(data){
+	    	usernum = data;
+	    	console.log(usernum);
+	    },
+	    error: function (){  
+	    }
+	  })
+	
+})
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 .on('click','#btn_cl',function(){ // 취소 누를시 게시판으로
 	location.href = '/app/meetView'// 여기 스터디 아이디 추가해야함
 })
@@ -72,14 +90,6 @@ $(document)
 		alert("내용을 입력해주세요.");
 	}
 	
-	/*------날짜------*/
-	var date = new Date();
-	var year = date.getFullYear(); // 년도
-	var month = date.getMonth() + 1;  // 월
-	var date = date.getDate();  // 날짜
-	var today = year + '-' + month + '-' + date;
-	/*------날짜------*/
-	
 	/*------공시사항 여부------*/
 	var result = 0;
 	 if($('input').is(":checked") == true){
@@ -89,10 +99,10 @@ $(document)
 	    }
 	/*------공시사항 여부------*/
 
-	var s_id = 147;
+	var s_id = s_num;
 	var title = $('#postTitle').val();
 	var Content = $('#postContent').val();
-	var form = {usernum:usernum,s_id:s_id,title:title,Content:Content,today:today,result:result};
+	var form = {usernum:usernum,s_id:s_id,title:title,Content:Content,result:result};
 	console.log(form);
 	$.ajax({
 		    url: "${path}/MeetWirte",

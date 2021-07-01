@@ -8,12 +8,13 @@ public class BStudyPost {
 	String  title;
 	String post_Contents;
 	String post_Date;
+	String unick;
 	
 	public BStudyPost() {
 
 	}
 	public BStudyPost(int postNum, int mNum, int uNum, String postType, String title, String post_Contents,
-			String post_Date) {
+			String post_Date,String unick) {
 		//super();
 		this.postNum = postNum;
 		this.mNum = mNum;
@@ -22,6 +23,15 @@ public class BStudyPost {
 		this.title = title;
 		this.post_Contents = post_Contents;
 		this.post_Date = post_Date;
+		this.unick = unick;
+	}
+	
+	
+	public String getUnick() {
+		return unick;
+	}
+	public void setUnick(String unick) {
+		this.unick = unick;
 	}
 	public int getPostNum() {
 		return postNum;

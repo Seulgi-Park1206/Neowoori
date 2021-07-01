@@ -72,12 +72,6 @@ $(document)
 //로그인 체크
 .on('click','#btn_login',function(){
 	
-	var date = new Date();
-	var year = date.getFullYear(); // 년도
-	var month = date.getMonth() + 1;  // 월
-	var date = date.getDate();  // 날짜
-	var today = year + '-' + month + '-' + date;
-	console.log(today);
 	$.ajax({
 	    url: 'login.do',
 	    type: 'POST',
@@ -85,7 +79,6 @@ $(document)
 	    data: {
 	    	   uid : $('#id').val(),
 	    	   upw : $('#pw').val(),
-	    	   today : today
 	    		}, 
 	    success: function(data){
 	    	var se = '<%=session.getAttribute("userid")%>';
