@@ -37,6 +37,13 @@ public class HomeController {
 	//전석봉
 	
 	//--------------------------------------------------------
+	public HomeController() {
+		//전역변수 선언
+		
+		
+		//
+	}
+	
 	
 	@Autowired
 	private JavaMailSender mailSender;
@@ -46,10 +53,6 @@ public class HomeController {
 	
 	@RequestMapping("/") //
 	public String toIndex() {
-		//전역변수 선언
-		
-		
-		//
 		return "redirect:/index";
 	}
 	
