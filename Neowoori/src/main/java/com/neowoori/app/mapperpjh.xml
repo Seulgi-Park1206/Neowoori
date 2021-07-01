@@ -50,24 +50,60 @@
 	
 	<!-- 처음 내 스터디 게시판 가져오기 -->
 	<select id="pjhStudyPost" resultType="com.neowoori.app.BStudyPost">
-		select * from study_post where mnum = #{param1} order by posttype desc,postnum OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
+	 	select a.*,b.unick
+		from study_post a, members b
+		where a.unum = b.unum and a.mnum=#{param1}
+		order by posttype desc,postnum OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
  	</select>
  	
  	<!-- 이후 내 스터디 게시판 가져오기 -->
 	<select id="pjhStudyPostPaging" resultType="com.neowoori.app.BStudyPost">
-		select * from study_post where mnum = #{param1} order by posttype desc,postnum OFFSET #{param2} ROWS FETCH FIRST 10 ROWS ONLY
+		select a.*,b.unick
+		from study_post a, members b
+		where a.unum = b.unum and a.mnum=#{param1}
+		order by posttype desc,postnum OFFSET #{param2} ROWS FETCH FIRST 10 ROWS ONLY
  	</select>
  	
  	<!-- 내 스터디 게시판 카운트 -->
 	<select id="pjsStudyPostCount" resultType="Integer">
 		select count(*) from study_post where mnum = #{param1}
 	</select>
+	
+	 <!-- 제목 검색 내 스터디 게시판 가져오기 -->
+	<select id="pjhtitle" resultType="com.neowoori.app.BStudyPost">
+	 	select a.*,b.unick
+		from study_post a, members b
+		where a.unum = b.unum and a.title like #{param1}||'%' and a.mnum=#{param2}
+		order by posttype desc,postnum OFFSET #{param3} ROWS FETCH FIRST 10 ROWS ONLY
+ 	</select>
+ 	
+ 	<!--제목 검색 내 스터디 게시판 카운트 -->
+	<select id="pjhtitlecount" resultType="Integer">
+		select count(*)
+		from study_post a, members b
+		where a.unum = b.unum and a.title like #{param1}||'%' and a.mnum=#{param2}
+	</select>
+	
+	<!--작성자 검색 내 스터디 게시판 카운트 -->
+	<select id="pjhwritercount" resultType="Integer">
+		select count(*)
+		from study_post a, members b
+		where a.unum = b.unum and b.unick like #{param1}||'%' and a.mnum=#{param2}
+	</select>
+ 	
 
+	 <!-- 작성자 검색 내 스터디 게시판 가져오기 -->
+	<select id="pjhwriter" resultType="com.neowoori.app.BStudyPost">
+	 	select a.*,b.unick
+		from study_post a, members b
+		where a.unum = b.unum and b.unick like #{param1}||'%' and a.mnum=#{param2}
+		order by posttype desc,postnum OFFSET #{param3} ROWS FETCH FIRST 10 ROWS ONLY
+ 	</select>
 	
 	
 		<!-- 로그인시 접속시간 업데이트 -->
 	<update id="pjhstate">
-		update state set LASTJOIN=#{param1} where USERID=#{param2}
+		update state set LASTJOIN=TO_CHAR(SYSDATE, 'YYYY-MM-DD') where USERID=#{param1}
 	</update>
 
 
@@ -87,7 +123,7 @@
 	
 	<!-- 스터디 게시판 글쓰기 -->
 	<insert id="pjhMeetWirte">
-		insert into study_post(POSTNUM,MNUM,UNUM,POSTTYPE,TITLE,POST_CONTENTS,POST_DATE) values (study_post_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},#{param6})
+		insert into study_post(POSTNUM,MNUM,UNUM,POSTTYPE,TITLE,POST_CONTENTS,POST_DATE) values (study_post_seq.nextval,#{param1},#{param2},#{param3},#{param4},#{param5},TO_CHAR(SYSDATE, 'YYYY-MM-DD'))
 	</insert>
 	
 	
