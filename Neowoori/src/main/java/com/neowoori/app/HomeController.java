@@ -684,14 +684,32 @@ public class HomeController {
 	// 게시물 삭제
 	@ResponseBody
 	@RequestMapping(value="/deletePost.do", method=RequestMethod.POST)
-	public String deletePost(@RequestBody String postNum ) {
+	public String deletePost(@RequestBody String postNum) {
 		int pNum = Integer.parseInt(postNum);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		System.out.println("--"+pNum+"들어옴");
 		dao.psgDeleteStudyPost(pNum);
-		System.out.println("--삭제");
 		
 		return "success";
+	}
+	// 게시물 수정 버튼 클릭
+	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
+	public String UpdatePost(@RequestBody HashMap<String, String> hashmap, Model model) {
+		if(hashmap.get("type").equals("view")) {
+			model.addAttribute("pNum", hashmap.get("pNum"));
+			model.addAttribute("title", hashmap.get("title"));
+			model.addAttribute("contents", hashmap.get("contents"));
+			
+			return "ygwMeetwrite";
+		} else {
+			System.out.println("-- 게시물 수정 시작 --");
+			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+			int pNum = Integer.parseInt(hashmap.get("pNum"));
+			dao.psgUpdateStudyPost(0, hashmap.get("title"), hashmap.get("contents"));
+			System.out.println("-- 수정 완료 --");
+			return "redirect:/postView/"+pNum;
+		}
+		
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")

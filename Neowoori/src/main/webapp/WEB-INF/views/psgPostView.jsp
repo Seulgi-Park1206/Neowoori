@@ -49,7 +49,7 @@
 				</table>
 				<br>
 				<div class=replyWrite>
-					<textarea id=txtWrite></textarea>
+					<textarea id=txtWrite placeholder="댓글을 입력하세요." cols="20" wrap="hard"></textarea>
 					<input type=button class="btn1 btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
 				</div>
 			</div>
@@ -61,6 +61,7 @@
 <script>
 let link = window.location.pathname;
 link = link.split('/')[3];
+
 function goList(){
 	//window.location="${path}/studypost/${s_num}";
 	window.location="${path}/studypost";
@@ -83,12 +84,7 @@ function addComment(res){
 	
 	return result;
 }
-$(document)
-.ready(function(){
-	console.log(link);
-	let uid = '${userid}';
-	uid = 'human1';
-	// db에서 해당 게시물 불러오기
+function loadView(){
 	$.ajax({
 		url:'${path}/postView.do',
 		data:link,
@@ -97,6 +93,7 @@ $(document)
 		method:'post',
 		success:function(result){
 			console.log(result);
+			loadView();
 			$('#title').text(result['title']);
 			$('#writer').text(result['userid']);
 			$('#date').text(result['postDate']);
@@ -109,6 +106,34 @@ $(document)
 			alert('Post error');
 		}
 	});
+}
+$(document)
+.ready(function(){
+	console.log(link);
+	let uid = '${userid}';
+	uid = 'human1';
+	// db에서 해당 게시물 불러오기
+	/* $.ajax({
+		url:'${path}/postView.do',
+		data:link,
+		contentType:'text/plain; charset=UTF-8',
+		dataType:'json',
+		method:'post',
+		success:function(result){
+			console.log(result);
+			loadView();
+			$('#title').text(result['title']);
+			$('#writer').text(result['userid']);
+			$('#date').text(result['postDate']);
+			$('#contents').text(result['postContents']);
+			if($('#writer').text() == uid) {
+				$('#btnUpdate, #btnDelete').show();
+			}
+		},
+		error:function(){
+			alert('Post error');
+		}
+	}); */
 	// 댓글 불러오기
 	$.ajax({
 		url:'${path}/postCmt.do',
@@ -129,21 +154,25 @@ $(document)
 })
 // 댓글 쓰기
 .on('click', '#btnReply', function(){
-	let cmt = {pNum:link, contents:$('#txtWrite').val()}
-	$.ajax({
-		url:'${path}/insertCmt.do',
-		data:JSON.stringify(cmt),
-		contentType:'application/json; charset=UTF-8',
-		dataType:'json',
-		method:'post',
-		success:function(res){
-			$('#tblReply').prepend(addComment(res));
-			$('#txtWrite').val('');
-		},
-		error:function(){
-			alert('Cmt insert error');
-		}
-	});
+	if('${userid}' != ""){ // 로그인을 하지 않은 경우 실행 x
+		let cmt = {pNum:link, contents:$('#txtWrite').val()}
+		$.ajax({
+			url:'${path}/insertCmt.do',
+			data:JSON.stringify(cmt),
+			contentType:'application/json; charset=UTF-8',
+			dataType:'json',
+			method:'post',
+			success:function(res){
+				$('#tblReply').prepend(addComment(res));
+				$('#txtWrite').val('');
+			},
+			error:function(){
+				alert('Cmt insert error');
+			}
+		});		
+	} else {
+		alert('로그인 해!!');
+	}
 	return false;
 })
 // 게시물 삭제
@@ -166,69 +195,23 @@ $(document)
 	return false;
 })
 // 게시물 수정
-
-/*
-// 변경
-.on('click', 'input[type=button]', function(){
-	let data = $(this).parent().parent().find('td:eq(1) input').val();
-	console.log(data);
-	let inputId = $(this).parent().parent().find('td:eq(1) input').attr('id');
-	console.log(inputId);
-	
-	if(data == ''){
-		if(inputId == 'upw') {alert('비밀번호를 다시 입력해주세요.');}
-		else if(inputId == 'unick') {alert('닉네임을 다시 입력해주세요.');}
-		else if(inputId == 'umobile') {alert('연락처를 다시 입력해주세요.');}
-	} else {
-		if($(this).val() == '변경'){
-			if(inputId == 'btnShowHiddenTr'){
-				$('.hiddenTr').show();
-				$('.trPw').hide();
-			} else{
-				let update = {uid:$('#uid').text(), optype:inputId, val:data};
-				if(confirm("수정하시겠습니까?")){
-					$.ajax({
-						url:'update_myInfo.do',
-						data:JSON.stringify(update),
-						contentType:'application/json; charset=UTF-8',
-						dataType:'text',
-						method:'post',
-						success:function(result){
-							alert("수정이 완료되었습니다.");
-						},
-						error:function(){
-							alert('Update error');
-						}
-					});
-				}
-			}
-		} else if($(this).val() == '중복확인') {
-			let update = {uid:$('#uid').text(), optype:inputId, val:data};
-			let check = $(this).parent().parent().next().find('td:eq(1) label');
-			check.css('background-color', '#ff9595');
-			// db에서 검색한 결과: 존재 여부(count)
-			$.ajax({
-				url:'dup_check.do',
-				data:JSON.stringify(update),
-				contentType:'application/json; charset=UTF-8',
-				dataType:'text',
-				method:'post',
-				success:function(result){
-					console.log(result);
-					if(result == '1'){
-						check.text('이미 존재합니다.');
-					} else {
-						check.text('사용할 수 있습니다.');
-					}
-				},
-				error:function(){
-					alert('Dup Error');
-				}
-			});
+.on('click', '#btnUpdate', function(){
+	sessionStorage.setItem('pNum',link);
+	let update = {type:"view", pNum:link, title:$('#title').val(), contents:$('#contents').val()};
+	$.ajax({
+		url:'${path}/UpdatePost.do',
+		data:JSON.stringify(update),
+		contentType:'application/json; charset=UTF-8',
+		dataType:'text',
+		method:'post',
+		success:function(result){
+			//alert("수정이 완료되었습니다.");
+			//loadView();
+		},
+		error:function(){
+			alert('Update error');
 		}
-	}
-	return false;
+	});
 })
-*/
 </script>
 </html>
