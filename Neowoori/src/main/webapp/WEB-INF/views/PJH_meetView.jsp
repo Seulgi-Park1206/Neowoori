@@ -48,7 +48,8 @@
 	<table>
 		<tr>
 			<td><button class="btn_list">화상스터디</button></td>
-			<td><button class="btn_list" id=btn_create style="margin:0 130px 30px 15px;">글쓰기</button></td>
+			<td><button class="btn_list" id=btn_create style="margin:0 150px 30px 15px;">글쓰기</button></td>
+			<td><button class="btn_list" id=btn_delete>삭제</button></td>
 		</tr>
 	</table>
 </div>
@@ -76,7 +77,8 @@
 <script>
 //아이디 세션
 var se = '<%=session.getAttribute("userid")%>';
-
+//유저num 세션
+var usernum = '<%=session.getAttribute("u_num")%>';
 
 var hid = 0; //공지 개수 히든값 (공지 - 게시물 해야지 순차적인 번호 가능)
 
@@ -86,11 +88,38 @@ var s_num1; // 페이지 들어왔을때 ready이벤트로 스터디번호 세�
 
 var form = {s_num:s_num}; //스터디번호 저장
 
+
 $(document)
 
-/*---------------------------------처음 화면------------------------------------------*/
+	/*---------------------------------처음 화면------------------------------------------*/
 
 .ready(function(){ // 처음 들어가면 내 스터디 다 보임
+	  
+	/*-------------------------스터디 장 & 일반 유저 & 가입 승인중 마다 다른 이벤트 -------------------------*/
+	
+	var s_state = {u_num:usernum,s_num:s_num}; // 회원 상태 찾기위한 json
+	$.ajax({
+        url:'${path}/studystate'
+	    , data: JSON.stringify(s_state) 
+		, contentType:'application/json; charset=UTF-8'
+	    , dataType:'text'
+		, method:'post'
+        , success :
+        	function output(resp){
+        	console.log(resp);
+        	if(resp == 30){
+        		return;
+        	}else{
+        		$('#btn_delete').hide();
+        	}
+        }
+	})
+	
+		
+	/*--------------------------------------------------------------------------------------------*/
+	
+	
+	
 	$('.stpost').remove(); //지우면서 다시 리로딩
 	$.ajax({
         url:'${path}/studypost'
@@ -108,7 +137,7 @@ $(document)
      			$.each(JSON.parse(resp),function(index,item){
      				if(item["postType"] == "20"){
      				result += ' <tr class="stpost">'
-   					result += ' <td><input type="checkbox"></td>'
+   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">공지</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
@@ -119,7 +148,7 @@ $(document)
      				}
      				else{
      					result += ' <tr class="stpost">'
-   	   					result += ' <td><input type="checkbox"></td>'
+   	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
    						result += ' <td class="lalign">'+(index-(sum-1))+'</td>'
    						result += ' <td>'+item["title"]+'</td>'
    						result += ' <td>'+item["unick"]+'</td>'
@@ -210,7 +239,7 @@ $(document)
 	        $.each(JSON.parse(resp),function(index,item){
 	        	if(item["postType"] == "20"){
 		        	result += ' <tr class="stpost">'
-					result += ' <td><input type="checkbox"></td>'
+					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">공지</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
@@ -219,7 +248,7 @@ $(document)
 		        	miu++;
  				}else{
  					result += ' <tr class="stpost">'
-   					result += ' <td><input type="checkbox"></td>'
+   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
@@ -263,7 +292,7 @@ $(document)
 		        $.each(JSON.parse(resp),function(index,item){
 		        	if(item["postType"] == "20"){
 			        	result += ' <tr class="stpost">'
-						result += ' <td><input type="checkbox"></td>'
+						result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -272,7 +301,7 @@ $(document)
 			        	miu++;
 	 				}else{
 	 					result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox"></td>'
+	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -341,7 +370,7 @@ $(document)
 		        $.each(JSON.parse(resp),function(index,item){
 		        	if(item["postType"] == "20"){
 			        	result += ' <tr class="stpost">'
-						result += ' <td><input type="checkbox"></td>'
+						result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -350,7 +379,7 @@ $(document)
 			        	miu++;
 	 				}else{
 	 					result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox"></td>'
+	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -422,7 +451,7 @@ $(document)
 	     			$.each(JSON.parse(resp),function(index,item){
 	     				if(item["postType"] == "20"){
 	     				result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox"></td>'
+	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -433,7 +462,7 @@ $(document)
 	     				}
 	     				else{
 	     					result += ' <tr class="stpost">'
-	   	   					result += ' <td><input type="checkbox"></td>'
+	   	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 	   						result += ' <td class="lalign">'+(index-(sum-1))+'</td>'
 	   						result += ' <td>'+item["title"]+'</td>'
 	   						result += ' <td>'+item["unick"]+'</td>'
@@ -523,7 +552,7 @@ $(document)
 	        $.each(JSON.parse(resp),function(index,item){
 	        	if(item["postType"] == "20"){
 		        	result += ' <tr class="stpost">'
-					result += ' <td><input type="checkbox"></td>'
+					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">공지</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
@@ -532,7 +561,7 @@ $(document)
 		        	miu++;
  				}else{
  					result += ' <tr class="stpost">'
-   					result += ' <td><input type="checkbox"></td>'
+   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
@@ -601,7 +630,7 @@ $(document)
 		        $.each(JSON.parse(resp),function(index,item){
 		        	if(item["postType"] == "20"){
 			        	result += ' <tr class="stpost">'
-						result += ' <td><input type="checkbox"></td>'
+						result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -610,7 +639,7 @@ $(document)
 			        	miu++;
 	 				}else{
 	 					result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox"></td>'
+	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
@@ -665,5 +694,43 @@ $(document)
 })
 
 /*------------------------------------------------------------------*/
+
+
+/*-------------------------스터디 장 삭제 클릭시 이벤트 -------------------------*/
+
+.on('click','#btn_delete',function(){ // 삭제
+	$('.ch_Box').css("display","");
+	var cnt = $("input[class='ch_Box']:checked").length; // 체크 개수
+	console.log(cnt);
+    var arr = new Array(); // 저장할 array
+    $("input[class='ch_Box']:checked").each(function() {
+        arr.push($(this).attr('id'));
+    });
+    console.log(arr);
+    var cnt_arr = {arr:arr,cnt:cnt};
+    if(cnt == 0){
+        alert("선택 후 다시 삭제를 눌러주세요.");
+    }
+    else{
+    	 $.ajax({
+                 type: "POST"
+                 ,url: "${path}/pjhpostdelete.do"
+                 ,data: JSON.stringify(cnt_arr)
+            	 ,contentType:'application/json; charset=UTF-8'
+                 ,dataType:"text"
+                 ,success: function(jdata){
+                    	alert(cnt+"개의 게시물을 삭제했습니다.");
+                    	location.reload();
+                     }
+             })
+    
+    }
+    
+})
+
+/*------------------------------------------------------------------------*/
+
+
+
 </script>
 </html>

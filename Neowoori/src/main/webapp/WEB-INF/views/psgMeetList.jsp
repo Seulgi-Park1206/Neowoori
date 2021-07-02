@@ -159,6 +159,20 @@
 $(document)
 .ready(function(){
 	var userid = '<%=session.getAttribute("userid")%>';
+	
+	// 아이디로 유저num 가져와서 세션저장
+	$.ajax({
+	    url: '${path}/pjhusernum.do',
+	    type: 'POST',
+	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
+	    contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
+	    data:userid,
+	    success: function(data){
+	    },
+	    error: function (){  
+	    }
+	  })
+	
 	// uid를 이용해 db에서 스터디 목록 불러오기
 	$.ajax({
 		url: '${path}/meetList.do', // 내 스터디 목록 보여주는 AJAX
