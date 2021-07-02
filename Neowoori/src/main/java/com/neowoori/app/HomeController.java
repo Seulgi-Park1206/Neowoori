@@ -2,6 +2,7 @@ package com.neowoori.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -506,14 +507,44 @@ public class HomeController {
 	
 	@ResponseBody // 유저 num 받아오기
 	@RequestMapping(value="/pjhusernum.do",method=RequestMethod.POST, produces="text/plane1")
-	public String user_num(@RequestBody String paramData){
-		//클라이언트가 보낸 Nick값
+	public String user_num(@RequestBody String paramData,HttpSession session){
 		String uid = paramData.trim();
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhusernum(uid);
-		
+		session.setAttribute("u_num", dto);
 		return Integer.toString(dto);
 	}
+	
+	@ResponseBody // 스터디장 & 일반회원 확인
+	@RequestMapping(value="/studystate",method=RequestMethod.POST, produces="application/json")
+	public int study_state(@RequestBody HashMap<String, String> state){
+		String u_num = String.valueOf(state.get("u_num"));
+		String s_num = String.valueOf(state.get("s_num"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int s_state = dao.pjhstudystate(Integer.parseInt(u_num),Integer.parseInt(s_num));
+		return s_state;
+	}
+	
+	
+	@ResponseBody // 스터디장 게시물 삭제
+	@RequestMapping(value="/pjhpostdelete.do",method=RequestMethod.POST, produces="application/json")
+	public int post_delete(@RequestBody HashMap<String, String> post_delete) throws Exception{
+		int result=1;
+            int cnt = Integer.parseInt(String.valueOf(post_delete.get("cnt")));
+            String rprtOdr = String.valueOf(post_delete.get("arr"));
+            String str1 = rprtOdr.replace(" ", ""); // 공백 자르기
+            String str2 = str1.substring(1, str1.length()-1 ); // 앞뒤 [] 자르기
+            String [] strArray = str2.split(",");
+            System.out.println(cnt);
+            System.out.println(rprtOdr);
+            for(int i=0; i<cnt; i++) {
+                int temp = Integer.parseInt((String)strArray[i]);
+                IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+                dao.pjhPostdelete(temp);
+            }
+        return result;
+       }
+
 	
 	
 	
