@@ -40,6 +40,10 @@
 	<delete id="psgDeleteStudyPost">
 		delete from study_post where postnum=#{param1}
 	</delete>
+	<!-- 댓글 삭제 -->
+	<delete id="psgDeleteCmt">
+		delete from cmt where postnum=#{param1} and cmtnum=#{param2}
+	</delete>
 	<!-- 게시글 수정 -->
 	<update id="psgUpdateStudyPost">
 		update study_post set title=#{param2}, post_contents=#{param3} where postnum=#{param1}

@@ -1,10 +1,5 @@
 @charset "utf-8";
-/* .form{
-	width: 70%;
-	height: 700px;
-	margin-left: auto;
-	margin-right: auto;
-} */
+
 #tblPost {
 	width: 100%;
 	height: 400px;
@@ -17,6 +12,15 @@
 	line-height: 50px;
 	height: 10%;
 	border-bottom: 1px solid gray;
+}
+textarea {
+	border-radius:5px;
+	resize: none;
+	word-break: break-all;
+	overflow:hidden;
+}
+.trContxt {
+	height: 50%;
 }
 .tdLeft {
 	width: 30%;
@@ -32,7 +36,10 @@
 	height: 60%;
 	text-align: center;
 }
-#btnUpdate, #btnDelete {
+#btnUpdate, #btnDelete, #btnComplete {
+	display: none;
+}
+.hidCnum {
 	display: none;
 }
 .reply {
@@ -50,7 +57,8 @@
 }
 #tblReply tr {
 	border-bottom: 1px solid rgb(192, 192, 192);
-	height: 60px;
+	min-height: 60px;
+	height: auto;
 }
 .writer {
 	margin-bottom: 5px;
@@ -63,15 +71,13 @@
 }
 .replyWrite {
 	width: 100%;
-	height: 60px;
+	height: auto;
 }
 .title2 {
 	font-size: 23px;
 }
 #txtWrite, #contents {
-	resize: none;
 	height: 95%;
-	word-break: break-all;
 	font-size: 17px;
 }
 #contents {
@@ -93,14 +99,24 @@
 /* #btnReport{
 	margin-left: 0;
 } */
+.tdView {
+	width: 100%;
+}
+.cmtTxt {
+	resize:none;
+	width: 100%;
+	padding: 5px;
+	height: auto;
+	min-height: 30px;
+}
 .cmtAbout {
-	width: 90px;
+	min-width: 60px;
 }
 .updateCmt {
 	color: #0000ff;
 }
-.deleteCmt {
-	margin-left: 20px;
+.deleteCmt, .reCmt {
+	margin-left: 10px;
 	color: #0000ff;
 }
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/

@@ -20,7 +20,7 @@
 			<table>
 				<tr>
 					<td class=tdLeft>아이디:</td>
-					<td class=tdCenter><label class=intext id=uid></label></td>
+					<td class=tdCenter><label class=intext id=uid>${member.userId}</label></td>
 				</tr>
 				<tr class=trPw>
 					<td class=tdLeft>비밀번호:</td>
@@ -38,7 +38,7 @@
 				</tr>
 				<tr>
 					<td class=tdLeft>이름:</td>
-					<td class=tdCenter><label class=intext id=uname></label></td>
+					<td class=tdCenter><label class=intext id=uname>${member.uName}</label></td>
 				</tr>
 				<tr>
 					<td class=tdLeft>닉네임:</td>
@@ -49,11 +49,11 @@
 				<tr class=hidden><td class=tdLeft></td><td class=tdCenter><label class=intext id=nickCheckResult></label>
 				<tr>
 					<td class=tdLeft>생년월일:</td>
-					<td class=tdCenter><label class=intext id=birth></label></td>
+					<td class=tdCenter><label class=intext id=birth>${member.uYear}${member.uBirthday}</label></td>
 				</tr>
 				<tr>
 					<td class=tdLeft>성별:</td>
-					<td class=tdCenter><label class=intext id=gender></label></td>
+					<td class=tdCenter><label class=intext id=gender>${member.uGender}</label></td>
 				</tr>
 				<tr>
 					<td class=tdLeft>연락처:</td>
@@ -64,7 +64,7 @@
 				<tr class=hidden><td class=tdLeft></td><td class=tdCenter><label class=intext id=mobileCheckResult></label>
 				<tr>
 					<td class=tdLeft>이메일:</td>
-					<td class=tdCenter><label class=intext id=email></label></td>
+					<td class=tdCenter><label class=intext id=email>${member.uMail}</label></td>
 				</tr>
 			</table>
 		</div>
@@ -78,7 +78,9 @@ function cancel(){
 }
 $(document)
 .ready(function(){
-	//$('.hiddenTr').hide();
+	$('#unick').val('${member.uNick}');
+	$('#umobile').val('${member.uMobile}');
+	/*
 	// 세션값을 이용해 user_id를 얻어와서 db에서 해당 유저 정보 불러오기
 	$.ajax({
 		url:'${path}/mypage.do',
@@ -98,7 +100,7 @@ $(document)
 		error:function(){
 			alert('error');
 		}
-	});
+	});*/
 })
 // 비밀번호 일치/불일치 판단
 .on('change keyup paste focus', '#upw, #upw1', function(){

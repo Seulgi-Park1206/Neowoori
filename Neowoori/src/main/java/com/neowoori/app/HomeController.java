@@ -16,6 +16,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -524,17 +525,22 @@ public class HomeController {
 	
 	/*---------------박슬기 영역----------------------*/
 	// 로그아웃
-	@ResponseBody
 	@RequestMapping(value="/logout", method=RequestMethod.POST, produces="application/json")
-	public void logout(HttpServletRequest request, HttpSession session){
+	public String logout(HttpServletRequest request, HttpSession session){
 		String state = request.getParameter("state");
 		if(state.equals("logout"))	session.invalidate();
+		return "redirect:/index";
 	}
 	// 내 정보
 	@RequestMapping("/mypage")
-	public String myPage() {
+	public String myPage(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String uid = (String) session.getAttribute("userid");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("member", dao.psgUserInfo(uid));
 		return "psgMypage";
 	}
+	/*
 	// 내 정보 가져오기
 	@ResponseBody
 	@RequestMapping(value="/mypage.do", method=RequestMethod.POST, produces="application/json")
@@ -555,7 +561,7 @@ public class HomeController {
 		JSONObject jo = new JSONObject(hashmap);
 		
 		return jo;
-    }
+    }*/
 	// 내 정보 중복체크
 	@ResponseBody
 	@RequestMapping(value="/dup_check.do", method=RequestMethod.POST)
@@ -580,12 +586,15 @@ public class HomeController {
 		
 		return "ok";
 	}
-	// 스터디 게시판 글 보기
+	// 스터디 게시판 게시글 및 댓글 보기
 	@RequestMapping("/postView/{post_num}")
-	public String postView(@PathVariable String post_num) {
-		
+	public String postView(@PathVariable int post_num, Model model) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("post", dao.psgSelectStudyPost(post_num));
+		model.addAttribute("cmt", dao.psgSelectCmt(post_num));
 		return "psgPostView";
 	}
+	/*
 	// 해당 스터디 게시글 조회
 	@ResponseBody
 	@RequestMapping(value="/postView.do", method=RequestMethod.POST)
@@ -602,6 +611,8 @@ public class HomeController {
 		
 		return jo;
 	}
+	*/
+	/*
 	// 스터디 게시판 댓글 보기
 	@ResponseBody
 	@RequestMapping(value="/postCmt.do", method=RequestMethod.POST)
@@ -624,7 +635,7 @@ public class HomeController {
 		}
 		
 		return jarr;
-	}
+	}*/
 	// 댓글 쓰기
 	@ResponseBody
 	@RequestMapping(value="/insertCmt.do", method=RequestMethod.POST)
@@ -636,8 +647,9 @@ public class HomeController {
 		session = request.getSession();
 		String uid = (String) session.getAttribute("userid");
 		System.out.println(uid);
+		String content = hashmap.get("contents");
 		System.out.println(hashmap.get("contents"));
-		dao.psgInsertCmt(pNum, uid, hashmap.get("contents"));
+		dao.psgInsertCmt(pNum, uid, content);
 		
 		psgBViewCmt cmt = dao.psgAddCmtSelect();
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -661,21 +673,40 @@ public class HomeController {
 		
 		return "success";
 	}
+	// 댓글 삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteCmt.do", method=RequestMethod.POST)
+	public String deleteComment(@RequestBody HashMap<String, String> hashmap) {
+		int pNum = Integer.parseInt(hashmap.get("postNum"));
+		int cNum = Integer.parseInt(hashmap.get("coNum"));
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		System.out.println("--"+pNum+"들어옴");
+		System.out.println("--"+cNum+"들어옴");
+		dao.psgDeleteCmt(pNum, cNum);
+		
+		return "success";
+	}
 	// 게시물 수정 버튼 클릭
 	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
-	public String UpdatePost(@RequestBody HashMap<String, String> hashmap, Model model) {
+	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap, Model model,
+			HttpServletRequest request, HttpSession session) {
+		System.out.println("-- 게시물 수정 -- ");
+		System.out.println("type: " + hashmap.get("type"));
 		if(hashmap.get("type").equals("view")) {
+			System.out.println("-- view --");
 			model.addAttribute("pNum", hashmap.get("pNum"));
 			model.addAttribute("title", hashmap.get("title"));
 			model.addAttribute("contents", hashmap.get("contents"));
 			
-			return "ygwMeetwrite";
+			return "redirect:/meetwrite";
 		} else {
 			System.out.println("-- 게시물 수정 시작 --");
 			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 			int pNum = Integer.parseInt(hashmap.get("pNum"));
 			dao.psgUpdateStudyPost(0, hashmap.get("title"), hashmap.get("contents"));
 			System.out.println("-- 수정 완료 --");
+			session = request.getSession();
+			session.setAttribute("pNum", "");
 			return "redirect:/postView/"+pNum;
 		}
 		
