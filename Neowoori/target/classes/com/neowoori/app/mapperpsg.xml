@@ -48,8 +48,5 @@
 	<update id="psgUpdateStudyPost">
 		update study_post set title=#{param2}, post_contents=#{param3} where postnum=#{param1}
 	</update>
-	<!-- 가입한 스터디 목록 조회 -->
-	<!-- <select id="psgStudyInfo" resultType="com.neowoori.app.BStudy">
-		select * from study where userid=#{param1}
-	</select> -->
+	
 </mapper>

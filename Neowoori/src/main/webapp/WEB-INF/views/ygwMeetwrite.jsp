@@ -102,25 +102,5 @@ $.ajax({
 		    }
 		  });
 })
-.on('click', '#btnUpdate', function(){
-	if(confirm('수정하시겠습니까?')){
-		let update = {type:"write", pNum:$('hiddenPnum').val(), title:$('#postTitle').val(), contents:$('#postContent').val()};
-		$.ajax({
-			url:'${path}/UpdatePost.do',
-			data:JSON.stringify(update),
-			contentType:'application/json; charset=UTF-8',
-			dataType:'text',
-			method:'post',
-			success:function(result){
-				//check
-				alert("수정이 완료되었습니다.");
-			},
-			error:function(){
-				alert('Update error');
-			}
-		});
-	}
-	return false;
-})
 </script>
 </html>

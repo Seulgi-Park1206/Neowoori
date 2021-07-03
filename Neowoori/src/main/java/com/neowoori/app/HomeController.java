@@ -717,7 +717,16 @@ public class HomeController {
 		
 		return "success";
 	}
-	// 게시물 수정 버튼 클릭
+
+	/*
+	 * // 게시물 수정 버튼 클릭
+	 * 
+	 * @RequestMapping(value="/updatePost", method=RequestMethod.POST) public void
+	 * UpdatePost(Model model) {
+	 * 
+	 * }
+	 */
+	// 게시물 수정
 	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
 	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap, Model model,
 			HttpServletRequest request, HttpSession session) {
