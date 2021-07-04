@@ -7,8 +7,9 @@
 
 ## 진행상황
 XXXXXXXXXXXXXXXXXX
-- 회사소개
+회사소개
 XXXXXXXXXXXXXXXXXX
+---
 * 유건우
   - 진행중인 작업
     - 공지사항
