@@ -72,6 +72,7 @@
 	</div>
 	<!-- 게시글 수정 modal -->
 	<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <!-- <div class="modal-dialog modal-dialog-scrollable myscrollbar"> -->
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -85,7 +86,7 @@
 	        </div>
 	        <div class="mb-3">
 	          <label for="message-text" class="col-form-label">내용:</label>
-	          <textarea class="form-control" id="postContents" rows=5 placeholder="내용을 입력하세요."></textarea>
+	          <textarea class="form-control myscrollbar" id="postContents" placeholder="내용을 입력하세요."></textarea>
 	        </div>
 	      </div>
 	      <div class="modal-footer">
@@ -100,9 +101,10 @@
 	  <div class="modal-dialog modal-dialog-centered">
 	    <div class="modal-content">
 	      <div class="modal-header">
+	      	<label class="modal-title" id=alertTitle></label>
 	      </div>
 	      <div class="modal-body">
-	        <label id=alertLbl></label>
+	        <label id=lblAlert></label>
 	      </div>
 	      <div class="modal-footer">
 	        <button class="btn btn-primary" data-bs-dismiss="modal">확인</button>
@@ -115,22 +117,16 @@
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="updateModalLabel">게시물 수정</h5>
-	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      	<label class="modal-title" id=confirmTitle></label>
 	      </div>
 	      <div class="modal-body">
 	      	<div class="mb-3">
-	          <label for="recipient-name" class="col-form-label">제목:</label>
-	          <input type="text" class="form-control" id="postTitle" placeholder="제목을 입력하세요.">
-	        </div>
-	        <div class="mb-3">
-	          <label for="message-text" class="col-form-label">내용:</label>
-	          <textarea class="form-control" id="postContents" rows=5 placeholder="내용을 입력하세요."></textarea>
+	          <label id=lblConfirm></label>
 	        </div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
-	        <button type="button" class="btn btn-primary" id=btnUpdateComplete data-bs-dismiss="modal">수정 완료</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnNo>취소</button>
+	        <button type="button" class="btn btn-primary" id=btnYes data-bs-dismiss="modal">확인</button>
 	      </div>
 	    </div>
 	  </div>
@@ -187,6 +183,7 @@ function adjustModalHeight() {
 	var contents = $('#postContents');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
+    console.log('postContents: ' + contentsHeight);
     contents.css('height', contentsHeight);
 }
 
@@ -207,6 +204,20 @@ function Check(){
 function clearCmt() {
 	$('#txtWrite').val('');
 	$('#test_cnt').html("(0 / 100)");
+}
+
+// alert Modal show
+function alertModal(title, comment){
+	$('#alertTitle').text(title);
+	$('#lblAlert').text(comment);
+	$('#alertModal').modal('show');
+}
+
+// confirm Modal show
+function confirmModal(title, comment){
+	$('#confirmTitle').text(title);
+	$('#lblConfirm').text(comment);
+	$('#confirmModal').modal('show');
 }
 
 $(document)
@@ -239,8 +250,7 @@ $(document)
 			dataType:'json',
 			method:'post',
 			success:function(res){
-				$('#alertLbl').text('댓글이 등록되었습니다.');
-				$('#alertModal').modal('show');
+				alertModal('댓글 등록', '댓글이 등록되었습니다.');
 				$('#tblReply').prepend(addComment(res));
 				clearCmt();
 			},
@@ -249,59 +259,76 @@ $(document)
 			}
 		});		
 	} else {
-		$('#alertLbl').text('로그인이 필요합니다.');
-		$('#alertModal').modal('show');
+		alertModal('댓글 등록', '로그인이 필요합니다.');
 		clearCmt();
 		location.href='${path}/login';
 	}
 	return false;
 })
-// 게시물 삭제
+// 게시물 삭제 버튼 클릭
 .on('click', '#btnDelete', function(){
-	$.ajax({
-		url:'${path}/deletePost.do',
-		data:link,
-		contentType:'text/plain; charset=UTF-8',
-		method:'post',
-		dataType:'text',
-		success:function(result){
-			console.log(result);
-			$('#alertLbl').text('Succeed to delete (no.'+link+' post)');
-			$('#alertModal').modal('show');
-			goList();
-		},
-		error:function(){
-			alert('Post delete error');
-		}
-	});
+	confirmModal('게시물 삭제', '정말 게시물을 삭제하시겠습니까?');
+})
+// 댓글 삭제 클릭
+.on('click', '.deleteCmt', function(){
+	var writer = $(this).siblings('.writer').text();
+	var modalTitle = '댓글 삭제';
+	if('${userid}' == writer){
+		confirmModal(modalTitle, '정말 댓글을 삭제하시겠습니까?');
+	} else {
+		alertModal(modalTitle, '작성자가 아닙니다.');
+	}
+	
 	return false;
 })
-// 댓글 삭제
-.on('click', '.deleteCmt', function(){
-	if('${userid}' == $('#writer').text()){
-		console.log('writer');
+// 삭제 기능
+.on('click', '#btnYes', function(){
+	var th = $(this).parent().siblings('.modal-header').children().text();
+	console.log('th: ' + th);
+	if(th == '게시물 삭제'){
+		$.ajax({
+			url:'${path}/deletePost.do',
+			data:link,
+			contentType:'text/plain; charset=UTF-8',
+			method:'post',
+			dataType:'text',
+			success:function(result){
+				console.log(result);
+				$('#lblAlert').text('Succeed to delete (no.'+link+' post)');
+				$('#alertTitle').text('게시물 삭제');
+				$('#alertModal').modal('show');
+				goList();
+			},
+			error:function(){
+				alert('Post delete error');
+			}
+		});		
+	} else {
+		let cNum = $(this).parents('tr').find('td:eq(0)').text();
+		console.log(cNum);
+		let delCmt = {postNum:link, coNum:cNum};
+		console.log(delCmt);
+		$.ajax({
+			url:'${path}/deleteCmt.do',
+			data:JSON.stringify(delCmt),
+			contentType:'application/json; charset=UTF-8',
+			method:'post',
+			dataType:'text',
+			success:function(result){
+				// 댓글 부분만 새로 불러오기
+				var url = '${path}/postView/' + link + ' #reply';
+				$('#reply').load(url);
+				// alert
+				$('#alertTitle').text('댓글 삭제');
+				$('#lblAlert').text('댓글이 삭제되었습니다.');
+				$('#alertModal').modal('show');
+			},
+			error:function(){
+				alert('Cmt delete error');
+			}
+		});
 	}
-	let cNum = $(this).parents('tr').find('td:eq(0)').text();
-	console.log(cNum);
-	let delCmt = {postNum:link, coNum:cNum};
-	console.log(delCmt);
-	$.ajax({
-		url:'${path}/deleteCmt.do',
-		data:JSON.stringify(delCmt),
-		contentType:'application/json; charset=UTF-8',
-		method:'post',
-		dataType:'text',
-		success:function(result){
-			$('#alertLbl').text('댓글이 삭제되었습니다.');
-			$('#alertModal').modal('show');
-			// 댓글 부분만 새로 불러오기
-			var url = '${path}/postView/' + link + ' #reply';
-			$('#reply').load(url);
-		},
-		error:function(){
-			alert('Cmt delete error');
-		}
-	});
+
 	return false;
 })
 // 게시물 수정
@@ -320,11 +347,10 @@ $(document)
 		contentType:'application/json; charset=UTF-8',
 		method:'post',
 		success:function(){
-			$('#alertLbl').text('수정이 완료되었습니다.');
-			$('#alertModal').modal('show');
+			alertModal('게시물 수정', '수정이 완료되었습니다.');
 			$('#title').text($('#postTitle').val());
 			$('#contents').text($('#postContents').val());
-			adjustHeight();
+			adjustModalHeight();
 		},
 		error:function(){
 			alert('Update error');
