@@ -717,39 +717,18 @@ public class HomeController {
 		
 		return "success";
 	}
-
-	/*
-	 * // 게시물 수정 버튼 클릭
-	 * 
-	 * @RequestMapping(value="/updatePost", method=RequestMethod.POST) public void
-	 * UpdatePost(Model model) {
-	 * 
-	 * }
-	 */
 	// 게시물 수정
+	@ResponseBody
 	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
 	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap, Model model,
 			HttpServletRequest request, HttpSession session) {
-		System.out.println("-- 게시물 수정 -- ");
-		System.out.println("type: " + hashmap.get("type"));
-		if(hashmap.get("type").equals("view")) {
-			System.out.println("-- view --");
-			model.addAttribute("pNum", hashmap.get("pNum"));
-			model.addAttribute("title", hashmap.get("title"));
-			model.addAttribute("contents", hashmap.get("contents"));
-			
-			return "redirect:/meetwrite";
-		} else {
-			System.out.println("-- 게시물 수정 시작 --");
-			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-			int pNum = Integer.parseInt(hashmap.get("pNum"));
-			dao.psgUpdateStudyPost(0, hashmap.get("title"), hashmap.get("contents"));
-			System.out.println("-- 수정 완료 --");
-			session = request.getSession();
-			session.setAttribute("pNum", "");
-			return "redirect:/postView/"+pNum;
-		}
+		System.out.println("-- 게시물 수정 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(hashmap.get("pNum"));
+		dao.psgUpdateStudyPost(pNum, hashmap.get("title"), hashmap.get("contents"));
+		System.out.println("-- 수정 완료 --");
 		
+		return "success";
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")

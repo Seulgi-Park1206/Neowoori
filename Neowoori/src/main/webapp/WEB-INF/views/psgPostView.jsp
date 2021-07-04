@@ -38,11 +38,10 @@
 				</tr>
 			</table>
 			<br>
-			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="pull-left btn btn-outline-danger" id=btnReport value="글 신고">
+			<div class="gap-2 d-md-flex justify-content-md-end">
+				<input type=button class="btn btn-outline-danger" id=btnReport value="글 신고">
 				<input type=button class="btn btn-outline-primary" id=btnList onclick="goList()" value=목록>
-				<input type=button class="btn btn-outline-primary" id=btnUpdate data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-whatever="@mdo" value="수정">
-				<input type=button class="btn btn-outline-primary" id=btnComplete value="수정 완료">
+				<input type=button class="btn btn-outline-primary" id=btnUpdate data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-whatever="@mdo" value="수정">
 				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
 			</div>
 			<div class=reply>
@@ -72,32 +71,76 @@
 		</div>
 	</div>
 	<!-- 게시글 수정 modal -->
-	<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="exampleModalLabel">New message</h5>
+	        <h5 class="modal-title" id="updateModalLabel">게시물 수정</h5>
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	        <form>
-	          <div class="mb-3">
-	            <label for="recipient-name" class="col-form-label">Recipient:</label>
-	            <input type="text" class="form-control" id="recipient-name">
-	          </div>
-	          <div class="mb-3">
-	            <label for="message-text" class="col-form-label">Message:</label>
-	            <textarea class="form-control" id="message-text"></textarea>
-	          </div>
-	        </form>
+	      	<div class="mb-3">
+	          <label for="recipient-name" class="col-form-label">제목:</label>
+	          <input type="text" class="form-control" id="postTitle" placeholder="제목을 입력하세요.">
+	        </div>
+	        <div class="mb-3">
+	          <label for="message-text" class="col-form-label">내용:</label>
+	          <textarea class="form-control" id="postContents" rows=5 placeholder="내용을 입력하세요."></textarea>
+	        </div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-primary">Send message</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
+	        <button type="button" class="btn btn-primary" id=btnUpdateComplete data-bs-dismiss="modal">수정 완료</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
+	<!-- alert -->
+	<div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+	  <div class="modal-dialog modal-dialog-centered">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	      </div>
+	      <div class="modal-body">
+	        <label id=alertLbl></label>
+	      </div>
+	      <div class="modal-footer">
+	        <button class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- confirm -->
+	<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="updateModalLabel">게시물 수정</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+	      	<div class="mb-3">
+	          <label for="recipient-name" class="col-form-label">제목:</label>
+	          <input type="text" class="form-control" id="postTitle" placeholder="제목을 입력하세요.">
+	        </div>
+	        <div class="mb-3">
+	          <label for="message-text" class="col-form-label">내용:</label>
+	          <textarea class="form-control" id="postContents" rows=5 placeholder="내용을 입력하세요."></textarea>
+	        </div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
+	        <button type="button" class="btn btn-primary" id=btnUpdateComplete data-bs-dismiss="modal">수정 완료</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- <div class="alert alert-success d-flex align-items-center alert-dismissible" role="alert" id=alertSucceed>
+	  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
+	  <div>
+	    수정이 완료되었습니다.
+	  </div>
+	</div> -->
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -122,7 +165,7 @@ function addComment(res){
 	result += res['userid'];
 	result += ' (';
 	result += res['cmtDate'];
-	result += ')</label><div class=cmtAbout><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a></div>';
+	result += ')</label><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a>';
 	result += '<textarea class=cmtTxt readonly>';
 	result += res['cmtContents'];
 	result += '</textarea></td></tr>';
@@ -134,6 +177,14 @@ function addComment(res){
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
 	var contents = $('#contents');
+	contents[0].style.height = 'auto';
+    var contentsHeight = contents.prop('scrollHeight');
+    contents.css('height', contentsHeight);
+}
+
+// modal 본문 내용 크기에 맞게 높이 자동 조절
+function adjustModalHeight() {
+	var contents = $('#postContents');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
     contents.css('height', contentsHeight);
@@ -188,6 +239,8 @@ $(document)
 			dataType:'json',
 			method:'post',
 			success:function(res){
+				$('#alertLbl').text('댓글이 등록되었습니다.');
+				$('#alertModal').modal('show');
 				$('#tblReply').prepend(addComment(res));
 				clearCmt();
 			},
@@ -196,7 +249,8 @@ $(document)
 			}
 		});		
 	} else {
-		alert('로그인이 필요합니다.');
+		$('#alertLbl').text('로그인이 필요합니다.');
+		$('#alertModal').modal('show');
 		clearCmt();
 		location.href='${path}/login';
 	}
@@ -212,7 +266,8 @@ $(document)
 		dataType:'text',
 		success:function(result){
 			console.log(result);
-			alert('Succeed to delete (no.'+link+' post)');
+			$('#alertLbl').text('Succeed to delete (no.'+link+' post)');
+			$('#alertModal').modal('show');
 			goList();
 		},
 		error:function(){
@@ -237,8 +292,11 @@ $(document)
 		method:'post',
 		dataType:'text',
 		success:function(result){
-			alert('댓글이 삭제되었습니다.');
-			location.reload();
+			$('#alertLbl').text('댓글이 삭제되었습니다.');
+			$('#alertModal').modal('show');
+			// 댓글 부분만 새로 불러오기
+			var url = '${path}/postView/' + link + ' #reply';
+			$('#reply').load(url);
 		},
 		error:function(){
 			alert('Cmt delete error');
@@ -250,41 +308,29 @@ $(document)
 .on('click', '#btnUpdate', function(){
 	console.log('수정 버튼 클릭');
 	// 모달창으로 게시글 수정
-	//$('div.modal').modal({remote : 'psgUpdatePost.html'});
-	
-	//*
-	// bs code
-	var exampleModal = document.getElementById('exampleModal');
-	exampleModal.addEventListener('show.bs.modal', function (event) {
-		// Button that triggered the modal
-		var button = event.relatedTarget
-		// Extract info from data-bs-* attributes
-		var recipient = button.getAttribute('data-bs-whatever')
-		// If necessary, you could initiate an AJAX request here
-		// and then do the updating in a callback.
-		//
-		// Update the modal's content.
-		var modalTitle = exampleModal.querySelector('.modal-title')
-		var modalBodyInput = exampleModal.querySelector('.modal-body input')
-		
-		modalTitle.textContent = 'New message to ' + recipient
-		modalBodyInput.value = recipient
-	});
-	//*/
-	/*
-	var update = {type:"view", pNum:link, title:$('#title').text(), contents:$('#contents').val()};
+	$('#postTitle').val($('#title').text());
+	$('#postContents').val($('#contents').text());
+	$('#updateModal').modal('show');
+})
+.on('click', '#btnUpdateComplete', function(){
+	var update = {pNum:link, title:$('#postTitle').val(), contents:$('#postContents').val()};
 	$.ajax({
 		url:'${path}/updatePost.do',
 		data:JSON.stringify(update),
 		contentType:'application/json; charset=UTF-8',
 		method:'post',
 		success:function(){
+			$('#alertLbl').text('수정이 완료되었습니다.');
+			$('#alertModal').modal('show');
+			$('#title').text($('#postTitle').val());
+			$('#contents').text($('#postContents').val());
+			adjustHeight();
 		},
 		error:function(){
 			alert('Update error');
 		}
 	});
-	*/
+	return false;
 })
 </script>
 </html>

@@ -118,6 +118,9 @@ textarea {
 	margin-left: 10px;
 	color: #0000ff;
 }
+/* #postContents {
+	overflow: 
+} */
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
     .reply {
 		font-size: 17px;
