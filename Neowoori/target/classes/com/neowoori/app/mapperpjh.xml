@@ -149,4 +149,14 @@
 		delete members where unum = #{param1}
 	</delete>
 	
+	<!-- 회사 소개 수정 -->
+	<update id="pjhCompany">
+		update Company set contents=#{param1} where c_num = 1
+	</update>
+	
+	<!-- (처음)내 가입한 스터디 가져오기 -->
+	<select id="pjhCompanylist" resultType="com.neowoori.app.PJH_Company">
+		select * from Company
+ 	</select>
+	
 </mapper>

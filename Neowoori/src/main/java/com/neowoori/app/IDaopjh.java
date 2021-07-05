@@ -92,5 +92,13 @@ public interface IDaopjh {
 	public ArrayList<BMeetingStudy> pjhMeetingStudy(int id); // 내 스터디 리스트 가져오기
 	
 	/*-----가입&내 스터디 리스트 IDao (MeetList)-----*/
+	
+	/*-----회사 소개 수정 IDao (Company)-----*/
+	
+	public void pjhCompany(String contents); // 내 스터디 리스트 가져오기
+	
+	public ArrayList<PJH_Company> pjhCompanylist();
+	
+	/*-----회사 소개 수정 IDao (Company)-----*/
 }
 
