@@ -15,7 +15,7 @@
 <body>
 <!-- 카테고리1, 카테고리2, 장소, 난이도 -->
 <jsp:include page="/module/nav.jsp" flush="false" />
-
+<input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
 <div class="container">
 	검색어 설정
 	<div class="btn-group">
@@ -77,9 +77,53 @@
 	  </tbody>
 	</table>
 </div>
-
-<div id=page>
+<div class="d-flex justify-content-center">
+	<div id=page>
+	</div>
 </div>
+
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalToggleLabel">Modal 1</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body1">
+        
+      </div>
+      <div class="modal-footer" id=modal-footerBtn1>
+      	
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalToggleLabel2">쪽지보내기</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body2">
+		<form>
+			<div class="form-floating">
+			  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea1" disabled></textarea>
+			  <label for="floatingTextarea2" id=studyAdminNick>닉네임</label>
+			</div>
+			<div class="form-floating">
+			  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+			  <label for="floatingTextarea2">쪽지 내용</label>
+			</div>
+        </form>
+      </div>
+      <div class="modal-footer" id=modal-footerBtn2>
+       </div>
+    </div>
+  </div>
+</div>
+<a id="bbtn" class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button" style="display:none;">modal</a>
+
 
 
 <jsp:include page="/module/footer.jsp" flush="false" />
@@ -87,6 +131,8 @@
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script language='javascript'>
 let datas;
+let selectTr;
+let selectTr2;
 $(document)
 .ready(function(){
 	$.ajax({
@@ -102,7 +148,7 @@ $(document)
 	    	//console.log(datas[0][0].mName);
 	    	let tblStr='';
 	    	$.each(data, function(e, item){
-	    		tblStr +='<tr><td></td><td>'+item.mName+'</td><td>'+item.adrCounty+' '+item.adrCity+'</td><td>'+item.category1+' - '+item.category2+'</td><td>'+item.cnt+'/'+item.mPersonnel+'</td><td>'+item.uNick+'</td><td></td><td style="display:none;">'+item.mNum+'</td></tr>'
+	    		tblStr +='<tr><td>'+(e+1)+'</td><td>'+item.mName+'</td><td>'+item.adrCounty+' '+item.adrCity+'</td><td>'+item.category1+' - '+item.category2+'</td><td>'+item.cnt+'/'+item.mPersonnel+'</td><td>'+item.uNick+'</td><td></td><td style="display:none;">'+item.mNum+'</td></tr>'
 	    		if(e==9) return false;
 	    	})
 	    	$('#viewTable tbody').html(tblStr);
@@ -112,6 +158,56 @@ $(document)
 	    error : function(){	
 	    }
 		});
+})
+.on("click","#viewTable tbody tr",function(){
+	$('#modal-footerBtn1').empty();
+	$('#modal-footerBtn2').empty();
+	$('#modal-body1').empty();
+	var tr = $(this);
+	var td = tr.children();
+	selectTr=td.eq(7).text()
+	selectTr2=td;
+	//console.log($(this).find('td:eq(0)').text());
+	var tmpVal = $(this).find('td:eq(0)').text()-1;
+	//console.log(datas[0][tmpVal]);
+	var path=datas[0][tmpVal];
+	//console.log(td.eq(6).text());
+	var tmpTextVal = td.eq(6).text();
+	//console.log(tmpTextVal);
+	if (tmpTextVal=="신청가능"){
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	}
+	if (tmpTextVal=="신청중"){
+		console.log("신청중인데");
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	}
+	if(tmpTextVal=="가입상태"){
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnOutStudy() >스터디탈퇴</button>");
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	}
+	if(tmpTextVal=="스터디장"){
+		//해당 스터디장인데 버튼 추가해야될까?
+	};
+	$("#modal-footerBtn2").append("<button type='button' class='btn btn-primary' onclick=btnSendMsg() >메시지 보내기</button>");
+	$("#modal-footerBtn2").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle' data-bs-toggle='modal' data-bs-dismiss='modal'>정보보기</button>");
+	
+	$('#exampleModalToggleLabel').text(path.mName);
+   	$("#modal-body1").append("<input type='hidden' name='mNum' id='mNumHid'>");
+   	$("#mNumHid").val(path.mNum);
+   	$("#modal-body1").append("<table border='2'>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>카테고리&nbsp</p></td><td>&nbsp"+path.category1+"-"+path.category2+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>스터디장&nbsp</p></td><td>&nbsp"+path.uNick+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>주소&nbsp</p></td><td>&nbsp"+path.mWhere+" "+path.mWhere3+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>활동요일</p></td><td>&nbsp"+path.mDay+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>시작시간</p></td><td>&nbsp"+path.mTime+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>진행시간</p></td><td>&nbsp"+path.mPtime+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>난이도</p></td><td>&nbsp"+path.mLevel+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>소개</p></td><td></td></tr><tr><td colspan='2'>"+path.mContents+"</td></tr>");
+	$("#modal-body1").append("</table>");
+	$("#studyAdminNick").text(path.uNick);
+	$('#bbtn').get(0).click();
 })
 
 function setPage(who){
@@ -151,10 +247,10 @@ function viewState(){
                 async:false,
                 success:function(result){
                 	//console.log(i);
-                	if (result==0) td.eq(6).text("신청가능");
-                	else if(result==10) td.eq(6).text("신청중");
-                	else if(result==20) td.eq(6).text("가입상태");
-                	else if(result==30) td.eq(6).text("관리자");
+                	if (result==0) td.eq(6).html("<h5><span class='badge bg-secondary' id='0'>신청가능</span></h5>");
+                	else if(result==10) td.eq(6).html("<h5><span class='badge bg-secondary' id='10'>신청중</span></h5>");
+                	else if(result==20) td.eq(6).html("<h5><span class='badge bg-secondary' id='20'>가입상태</span></h5>");
+                	else if(result==30) td.eq(6).html("<h5><span class='badge bg-secondary' id='30'>스터디장</span></h5>");
                  },
                  error: function(xhr,status,error){
                     console.log(xhr+status+error);
@@ -172,7 +268,7 @@ function pageBtnFuc(who){
 	//console.log($('#pageUl li').length);
 	if (pageVal==0){
 		for (var x=0;x<=9;x++){
-			tblStr +='<tr><td></td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:;">'+datas[0][x].mNum+'</td></tr>'
+			tblStr +='<tr><td>'+(x+1)+'</td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:none;">'+datas[0][x].mNum+'</td></tr>'
 		};
 		$('#viewTable tbody').html(tblStr);
 		viewState();
@@ -182,7 +278,7 @@ function pageBtnFuc(who){
 		var tmpPageMax=datas[0].length-1;
 		//console.log(tmpPageVal+","+tmpPageMax);
 		for (var x=tmpPageVal;x<=tmpPageMax;x++){
-			tblStr +='<tr><td></td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:;">'+datas[0][x].mNum+'</td></tr>'
+			tblStr +='<tr><td>'+(x+1)+'</td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:none;">'+datas[0][x].mNum+'</td></tr>'
 		};
 		$('#viewTable tbody').html(tblStr);
 		viewState();
@@ -190,7 +286,7 @@ function pageBtnFuc(who){
 		var tmpPageVal=pageVal*10;
 		var tmpPageMax=tmpPageVal+9;
 		for (var x=tmpPageVal;x<=tmpPageMax;x++){
-			tblStr +='<tr><td></td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:;">'+datas[0][x].mNum+'</td></tr>'
+			tblStr +='<tr><td>'+(x+1)+'</td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:none;">'+datas[0][x].mNum+'</td></tr>'
 		};
 		$('#viewTable tbody').html(tblStr);
 		viewState();
@@ -367,6 +463,85 @@ function searchBtn(){
 	    	$('#viewTable tbody').html(tblStr);
 	    	setPage(data.length);
 	    	viewState();
+	    },
+	    error : function(){	
+	    }
+		});
+}
+
+function btnJoinStudy(){ //가입신청
+	$.ajax({
+		url: "jsbJoinStudy.do",
+		type: "POST",
+		data: {
+			"mNumHid" : selectTr, // 
+			"userId" : $("#hid").val()	    	
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    	$('#modal-footerBtn1').empty();
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    	selectTr2.eq(6).html("<h5><span class='badge bg-secondary' id='10'>신청중</span></h5>");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+function btnCancelJoin(){ // 가입신청취소
+	$.ajax({
+		url: "jsbCancelJoin.do",
+		type: "POST",
+		data: {
+			"mNumHid" : selectTr, // 스터디명
+			"userId" : $("#hid").val()	    	
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    	$('#modal-footerBtn1').empty();
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    	selectTr2.eq(6).html("<h5><span class='badge bg-secondary' id='0'>신청가능</span></h5>");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+function btnOutStudy(){ // 스터디탈되
+	$.ajax({
+		url: "jsbJoinOut.do",
+		type: "POST",
+		data: {
+			"mNumHid" : selectTr, // 스터디명
+			"userId" : $("#hid").val()	    	
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    	$('#modal-footerBtn1').empty();
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    	selectTr2.eq(6).html("<h5><span class='badge bg-secondary' id='0'>신청가능</span></h5>");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+
+function btnSendMsg(){ // 메시지보내기
+	//floatingTextarea1 , floatingTextarea2
+	console.log($("#hid").val());
+	console.log($("#floatingTextarea2").val());
+	console.log($("#studyAdminNick").text());
+	$.ajax({
+		url: "jsbSendModalMsg.do",
+		type: "POST",
+		data: {
+			"userId" : $("#hid").val(), // 보내는 사람 id
+			"cont" : $("#floatingTextarea2").val(),
+			"mAdminNick" : $("#studyAdminNick").text() // 닉네임으로 받는사람 num구해야됨
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
 	    },
 	    error : function(){	
 	    }

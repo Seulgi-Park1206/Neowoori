@@ -117,8 +117,8 @@
 	    on d.mnum = c.mnum
 	    order by d.mnum desc) f
 	    on e.unum=f.unum
-	where f.mName LIKE %#{param1}%
-	order by e.uName desc
+	where f.mName LIKE '%'||#{param1}||'%'
+	order by f.mnum desc
 	</select>
 	
 		<!-- 카테고리1만 -->
@@ -139,7 +139,7 @@
 	    order by d.mnum desc) f
 	    on e.unum=f.unum
 	where f.category1=#{param1}
-	order by e.uName desc
+	order by f.mnum desc
 	</select>
 	
 		<!-- 카테고리 12 -->
@@ -160,7 +160,7 @@
 	    order by d.mnum desc) f
 	    on e.unum=f.unum
 	where f.category1=#{param1} and f.category2=#{param2}
-	order by e.uName desc
+	order by f.mnum desc
 	</select>
 	
 		<!-- 모두다 입력 -->
@@ -180,8 +180,8 @@
 	    on d.mnum = c.mnum
 	    order by d.mnum desc) f
 	    on e.unum=f.unum
-	where f.category1=#{param1} and f.category2=#{param2} and f.mName LIKE %#{param3}%
-	order by e.uName desc
+	where f.category1=#{param1} and f.category2=#{param2} and f.mName LIKE '%'||#{param3}||'%'
+	order by f.mnum desc
 	</select>
 	
 </mapper>

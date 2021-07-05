@@ -1012,11 +1012,12 @@ public class HomeController {
 			String cate1 = req.getParameter("menuLink1");
 			String cate2 = req.getParameter("menuLink2");
 			String word = req.getParameter("searchWord");
-			System.out.println("실행1");
+			//System.out.println(word);
+			//System.out.println("실행1");
 			/*0*/
 			if (cate1.equals("") && cate2.equals("") && word.equals("")) {
 				//word만 입력시에
-					System.out.println("word");
+					//System.out.println("word");
 					ArrayList<jsbBListStudy> list = dao.jsbListTypeOne();
 					for (int i=0;i<list.size();i++) {
 						String[] tempAddress=list.get(i).getmWhere().split(" ");
@@ -1028,7 +1029,7 @@ public class HomeController {
 			/*1*/
 			if (cate1.equals("") && cate2.equals("") && !word.equals("")) {
 			//word만 입력시에
-				System.out.println("word");
+				//System.out.println("word");
 				ArrayList<jsbBListStudy> list = dao.jsbListTypeTwo(word);
 				for (int i=0;i<list.size();i++) {
 					String[] tempAddress=list.get(i).getmWhere().split(" ");
@@ -1040,7 +1041,7 @@ public class HomeController {
 			/*2*/
 			if (!cate1.equals("") && cate2.equals("") && word.equals("")) {
 			//cate1만 입력시에	
-				System.out.println("cate1");
+				//System.out.println("cate1");
 				ArrayList<jsbBListStudy> list = dao.jsbListTypethr(cate1);
 				for (int i=0;i<list.size();i++) {
 					String[] tempAddress=list.get(i).getmWhere().split(" ");
@@ -1052,7 +1053,7 @@ public class HomeController {
 			/*3*/
 			if (!cate1.equals("") && !cate2.equals("") && word.equals("")) {
 			//cate1,2만 입력시에
-				System.out.println("cate1,cate2");
+				//System.out.println("cate1,cate2");
 				ArrayList<jsbBListStudy> list = dao.jsbListTypefor(cate1,cate2);
 				for (int i=0;i<list.size();i++) {
 					String[] tempAddress=list.get(i).getmWhere().split(" ");
@@ -1064,7 +1065,7 @@ public class HomeController {
 			/*4*/
 			if (!cate1.equals("") && !cate2.equals("") && !word.equals("")) {
 			//모두다 입력되었다면
-				System.out.println("all");
+				//System.out.println("all");
 				ArrayList<jsbBListStudy> list = dao.jsbListTypefiv(cate1,cate2,word);
 				for (int i=0;i<list.size();i++) {
 					String[] tempAddress=list.get(i).getmWhere().split(" ");
@@ -1122,16 +1123,6 @@ public class HomeController {
 		
 		
 	/*---------------전석봉 영역----------------------*/
-
-			/*---------------------------------------------
-		   @ResponseBody
-		   @RequestMapping(value="/post.do", method=RequestMethod.POST,produces = "application/json")
-		   public ArrayList<BDto> reqList() {
-			   IDao_jsb dao=sqlSession.getMapper(IDao_jsb.class);
-			   ArrayList<BDto> alData=dao.getMap();
-			   return alData;
-		   }
-		   */
 }
 	
 
