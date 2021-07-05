@@ -7,6 +7,8 @@ public interface IDaopjh {
 	
 	/*-----유저 정보 IDao (adminpeag)-----*/
 	
+	public void pjhUserdelete(int usernum); // 게시물 삭제
+	
 	public ArrayList<BMembers> pjhmemberlist(); //유저 정보 가져오기
 	
 	public ArrayList<BMembers> pjhmemberlist1(int unum); //유저번호로 유저 정보 가져오기

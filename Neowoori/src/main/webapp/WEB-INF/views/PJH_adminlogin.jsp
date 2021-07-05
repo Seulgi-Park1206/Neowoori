@@ -61,9 +61,9 @@ $(document)
 	    		}, 
 	    success: function(data){
 	    	var se = '<%=session.getAttribute("adminid")%>';
-	    	console.log(se);
 	    	if(data == 1){
-	        	 alert(se+" 님 환영합니다.");
+	        	 alert("admin 님 환영합니다.");
+	        	 location.href = '/app/adminpage'
 	         }else{
 	        	 alert("아이디를 다시 입력해주세요.");
 	         }

@@ -54,7 +54,7 @@
 	</table>
 </div>
 <!-- ---------------------------------페이징 띄우는곳------------------------------------------ -->
-<div id=paging>
+<div id=paging style="width:100px; margin: 0 auto;">
 <!-- <nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;"> -->
 <!--   <ul class="pagination"> -->
 <!--     <li class="page-item"><a class="page-link" href="#">Previous</a></li> -->
@@ -694,6 +694,8 @@ $(document)
 })
 
 /*------------------------------------------------------------------*/
+
+
 
 
 /*-------------------------스터디 장 삭제 클릭시 이벤트 -------------------------*/

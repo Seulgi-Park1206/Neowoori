@@ -304,6 +304,10 @@ public class HomeController {
 	   public String adminpage() {
 	      return "PJH_adminpage";
 	   }
+	@RequestMapping("/adminpage1") //관리자 페이지
+	   public String adminpage1() {
+	      return "testadminpage";
+	   }
 
 	@ResponseBody /*회원가입 ajax*/
 	@RequestMapping(value="/sign.do", method=RequestMethod.POST)
@@ -420,6 +424,25 @@ public class HomeController {
 		ArrayList<BMembersState> btn_num = dao.pjhpaging(btnvalue);
 		return btn_num;
 	}
+	
+	@ResponseBody // 관리자 유저관리 게시물 삭제
+	@RequestMapping(value="/pjhuserdelete.do",method=RequestMethod.POST, produces="application/json")
+	public int user_delete(@RequestBody HashMap<String, String> user_delete) throws Exception{
+		int result=1;
+            int cnt = Integer.parseInt(String.valueOf(user_delete.get("cnt")));
+            String rprtOdr = String.valueOf(user_delete.get("arr"));
+            String str1 = rprtOdr.replace(" ", ""); // 공백 자르기
+            String str2 = str1.substring(1, str1.length()-1 ); // 앞뒤 [] 자르기
+            String [] strArray = str2.split(",");
+            System.out.println(cnt);
+            System.out.println(rprtOdr);
+            for(int i=0; i<cnt; i++) {
+                int temp = Integer.parseInt((String)strArray[i]);
+                IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+                dao.pjhUserdelete(temp);
+            }
+        return result;
+       }
 	
 	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
 	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
@@ -575,7 +598,7 @@ public class HomeController {
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		BMembers member = dao.psgUserInfo(uid);
 		HashMap<String, Object> hashmap = new HashMap<String, Object>();
-		hashmap.put("userid", member.getUserId());
+		hashmap.put("userid", member.getUserId()); 
 		hashmap.put("unick", member.getuNick());
 		hashmap.put("uname", member.getuName());
 		hashmap.put("uyear", member.getuYear());
