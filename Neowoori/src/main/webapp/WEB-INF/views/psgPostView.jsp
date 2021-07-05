@@ -143,7 +143,7 @@ var cmtMenu1 = '<a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a cla
 var cmtMenu2 = '<a class=cmtComplete>수정완료</a>';
 // 스터디 게시판 목록으로 가기
 function goList(){
-	window.location="${path}/studypost/${s_num}";
+	window.location="${path}/meetView/${s_num}";
 }
 
 // 댓글 추가
@@ -269,9 +269,9 @@ $(document)
 .on('click', '.deleteCmt', function(){
 	var writer = $(this).parent().siblings('.writer').text();
 	var modalTitle = '댓글 삭제';
-	console.log('${userid} ' + writer);
+	//console.log('댓글 삭제: ${userid} /' + writer);
 	if('${userid}' == writer){
-		$('#hiddenCnum').text($(this).parent('td').siblings('.hidCnum').text());
+		$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
 		confirmModal(modalTitle, '정말 댓글을 삭제하시겠습니까?');
 	} else {
 		alertModal(modalTitle, '작성자가 아닙니다.');
@@ -355,6 +355,7 @@ $(document)
 			alert('Update error');
 		}
 	});
+	
 	return false;
 })
 // 댓글 수정 클릭
@@ -363,8 +364,8 @@ $(document)
 	var modalTitle = '댓글 수정';
 	//console.log('${userid} ' + writer);
 	if('${userid}' == writer){
+		// 수정 삭제 댓글 -> 수정완료
 		var txt = $(this).parent().siblings('textarea');
-		
 		$(this).parent('.cmtAbout').html(cmtMenu2);
 		// 수정 가능 상태로 전환
 		txt.attr('readonly', false);
@@ -387,10 +388,29 @@ $(document)
 	
 	return false;
 })
-// 댓글 수정 완료
+// 댓글 수정 완료 클릭
 .on('click', '.cmtComplete', function(){
-	$(this).parent('.cmtAbout').html(cmtMenu1);
+	// 수정한 댓글이 있는 textarea
+	var txt = $(this).parent().siblings('textarea');
+	// 수정한 댓글 번호
+	$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
+	// 수정한 댓글 정보
+	var cmt = {pNum:link, cNum:$('#hiddenCnum').text(), contents:txt.val().trim()};
 	
+	$.ajax({
+		url:'${path}/updateCmt.do',
+		data:JSON.stringify(cmt),
+		contentType:'application/json; charset=UTF-8',
+		method:'post',
+		success:function(){
+			// 수정완료 -> 수정 삭제 댓글
+			$(this).parent('.cmtAbout').html(cmtMenu1);
+			alertModal('댓글 수정', '수정이 완료되었습니다.');
+		},
+		error:function(){
+			alert('Update error');
+		}
+	});
 	
 	return false;
 })

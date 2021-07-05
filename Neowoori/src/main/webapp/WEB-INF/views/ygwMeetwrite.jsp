@@ -20,7 +20,11 @@
 	<input type=text style="width:600px; height:30px;" id=postTitle name=postTitle placeholder="제목을 입력하세요."><br><br>
 	<textarea id=postContent name=postContent style="resize:none; width:600px; height:350px;" placeholder="내용을 입력하세요."></textarea><br>
 	<div style="text-align:center;">
+<<<<<<< HEAD
+	<input type="checkbox" id=noticeCheckbox name=noticeCheckbox> 공지사항 <input type=button id=btn_cr value=글쓰기>&nbsp;&nbsp;<input type=button  id=btn_cl  value=취소>
+=======
 	<input type="checkbox" id=noticeCheckbox name=noticeCheckbox> 공지사항 <input type=button id=btn_cr value=글쓰기>&nbsp;&nbsp;<input type=button id=btn_cl value=취소>
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 	</div>
 </div>
 
@@ -33,6 +37,8 @@ var s_num = '<%=session.getAttribute("s_num")%>';
 var usernum = 0;
 $(document)
 .ready(function(){ // 아이디로 유저번호 가져오기
+<<<<<<< HEAD
+=======
 	$.ajax({
 		url: '${path}/pjhusernum.do',
 		type: 'POST',
@@ -46,6 +52,7 @@ $(document)
 		}
 	})
 )}
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 $.ajax({
 	    url: '${path}/pjhusernum.do',
 	    type: 'POST',
@@ -84,7 +91,7 @@ $.ajax({
 	var s_id = s_num;
 	var title = $('#postTitle').val();
 	var Content = $('#postContent').val();
-	var form = {usernum:usernum,s_id:s_id,title:title,Content:Content,result:result};
+	var form = {usernum:usernum,s_id:s_id,title:title,Content:Content.trim(),result:result};
 	console.log(form);
 	$.ajax({
 		    url: "${path}/MeetWirte",
@@ -102,5 +109,9 @@ $.ajax({
 		    }
 		  });
 })
+<<<<<<< HEAD
+
+=======
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 </script>
 </html>

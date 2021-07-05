@@ -74,4 +74,50 @@
 	<select id="jsbGetUserNick" resultType="com.neowoori.app.BMembers">
 		select * from members where uNick=#{param1}
 	</select>
+	
+			<!-- Search ALL -->
+	<select id="jsbListTypeOne" resultType="com.neowoori.app.jsbBListStudy">
+		select e.uNick,f.*
+		from members e right outer join(
+		    select d.*, c.cnt
+		    from study d left outer join(
+		        select distinct a.mnum,nvl(b.cnts,'1') cnt
+		        from meeting_study a left outer join(
+		            select mnum, count(mnum)+1 cnts
+		            from meeting_study
+		            where state=20
+		            group by mnum) b
+		        on a.mnum = b.mnum
+		        order by a.mnum) c
+		    on d.mnum = c.mnum
+		    order by d.mnum desc) f
+		    on e.unum=f.unum
+		order by f.mnum desc
+		<!--select d.*, c.cnt from study d left outer join( select distinct a.mnum,nvl(b.cnt,'1') cnt from meeting_study a left outer join( select mnum, count(mnum)+1 as cnt from meeting_study where state=20 group by mnum) b on a.mnum = b.mnum order by a.mnum) c on d.mnum = c.mnum order by d.mnum desc -->
+	</select>
+	
+	<select id="jsbListFindMeetState" resultType="Integer">
+	select nvl(STATE,'0') state from meeting_study right outer join dual on mNum=#{param1} and uNum=#{param2}
+	</select>
+	
+	<select id="jsbListTypeTwo" resultType="com.neowoori.app.jsbBListStudy">
+	select e.uNick,f.*
+	from members e right outer join(
+	    select d.*, c.cnt
+	    from study d left outer join(
+	        select distinct a.mnum,nvl(b.cnts,'1') cnt
+	        from meeting_study a left outer join(
+	            select mnum, count(mnum)+1 cnts
+	            from meeting_study
+	            where state=20
+	            group by mnum) b
+	        on a.mnum = b.mnum
+	        order by a.mnum) c
+	    on d.mnum = c.mnum
+	    order by d.mnum desc) f
+	    on e.unum=f.unum
+	where f.mName LIKE '%#{param1}%'
+	order by e.uName desc
+	</select>
+	
 </mapper>

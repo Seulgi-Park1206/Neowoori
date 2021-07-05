@@ -46,7 +46,10 @@ function go_adminUser(){
 	location.href = '';
 }
 function go_adminBoard(){
-	location.href = '';
+	var link = window.location.pathname;
+	s_num = link.split('/')[3];
+	console.log(s_num);
+	location.href = '${path}/meetView/'+s_num;
 }
 function cancel(){
 	window.history.back();
@@ -83,10 +86,13 @@ $(document)
 	location.href='';
 	return false;
 }) */
-/* .on('click', '#btnAdminBoard', function(){
-	location.href='';
-	return false;
-}) */
+// .on('click', '#btnAdminBoard', function(){
+// 	var link = window.location.pathname;
+// 	s_num = link.split('/')[3];
+// 	console.log(s_num);
+// 	location.href = '${path}/meetView/'+s_num;
+// 	return false;
+// }) 
 .on('click', '#btnDeleteStudy', function(){
 	// 스터디 폐쇄
 	return false;

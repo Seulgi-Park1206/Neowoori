@@ -82,9 +82,9 @@ $(document)
 	    		}, 
 	    success: function(data){
 	    	var se = '<%=session.getAttribute("userid")%>';
-	    	console.log(se);
 	    	if(data == 1){
-	        	 alert(se+" 님 환영합니다.");
+	        	 alert($('#id').val()+" 님 환영합니다.");
+	        	 location.href = document.referrer;
 	         }else{
 	        	 alert("아이디를 다시 입력해주세요.");
 	         }
