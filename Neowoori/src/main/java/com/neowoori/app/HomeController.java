@@ -705,29 +705,27 @@ public class HomeController {
 		
 		return "success";
 	}
-
-	/*
-	 * // 내 스터디 조회
-	 * 
-	 * @RequestMapping("/meetList/{user_id}") public String meetList(@PathVariable
-	 * String user_id, HttpServletRequest request, HttpSession session) {
-	 * 
-	 * return "psgMeetList"; }
-	 */
-	/*
-	 * @ResponseBody // 내 스터디 목록 검색
-	 * 
-	 * @RequestMapping(value="/meetList.do",method=RequestMethod.POST,
-	 * produces="application/json") public ArrayList<BMeetingStudy> meetListDo(Model
-	 * model, HttpServletRequest request, HttpSession session){ String user_id =
-	 * request.getParameter("uid"); System.out.println(user_id); IDaopjh dao =
-	 * sqlSession.getMapper(IDaopjh.class); int dto = dao.pjhusernum(user_id);
-	 * System.out.println(dto); ArrayList<BMeetingStudy> meetingstudy =
-	 * dao.pjhMeetingStudy(dto); //IDaopsg dao =
-	 * sqlSession.getMapper(IDaopsg.class); //model.addAttribute("mystudy",
-	 * dao.psgStudyInfo(user_id)); //model.addAttribute("data", user_id); return
-	 * meetingstudy; }
-	 */
+	// 내 스터디 조회 
+	@RequestMapping("/meetList/{user_id}")
+	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
+	 	
+	return "psgMeetList";
+	}
+	// 내 스터디 목록 검색
+	@ResponseBody 
+	@RequestMapping(value="/meetList.do",method=RequestMethod.POST,produces="application/json")
+	public ArrayList<BMeetingStudy> meetListDo(Model model, HttpServletRequest request, HttpSession session){
+		String user_id = request.getParameter("uid");
+		System.out.println(user_id);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int dto = dao.pjhusernum(user_id);
+		System.out.println(dto);
+		ArrayList<BMeetingStudy> meetingstudy = dao.pjhMeetingStudy(dto);
+		//IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		//model.addAttribute("mystudy", dao.psgStudyInfo(user_id));
+		//model.addAttribute("data", user_id);
+		return meetingstudy;
+	}
 	// meetadmin
 	@RequestMapping("/meetadmin/{study_id}")
 	public String meetAdmin(@PathVariable String study_id, Model model) {
