@@ -749,13 +749,17 @@ public class HomeController {
 		//model.addAttribute("data", user_id);
 		return meetingstudy;
 	}
-	// meetadmin
+	// 스터디장 페이지(스터디관리)
 	@RequestMapping("/meetadmin/{study_id}")
-	public String meetAdmin(@PathVariable String study_id, Model model) {
-		model.addAttribute("s_id", study_id);
+	public String meetAdmin(@PathVariable int study_id, Model model) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		System.out.println(study_id);
+		System.out.println(dao.psgStudyInfo(study_id));
+		model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
+		
 		return "psgMeetadmin";
 	}
-	// meetuser
+	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
 	public String meetUser(@PathVariable String study_id, Model model) {
 		model.addAttribute("s_id", study_id);

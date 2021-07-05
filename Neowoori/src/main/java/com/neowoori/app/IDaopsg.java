@@ -19,4 +19,7 @@ public interface IDaopsg { // DB 데이터 이용 관련 함수 작성
 	public psgBViewCmt psgAddCmtSelect();	// Recent comments added
 	public void psgDeleteCmt(int pNum, int cNum);	// Delete cmt of Study Post
 	public void psgUpdateCmt(int pNum, int cNum, String contents);	// Update cmt
+	
+	// study management
+	public psgBStudyInfoView psgStudyInfo(int mnum);	// Select study information
 }

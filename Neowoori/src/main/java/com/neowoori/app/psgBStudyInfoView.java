@@ -1,6 +1,8 @@
 package com.neowoori.app;
 
-public class BStudy {
+public class psgBStudyInfoView {
+	String uNick;
+	int cMcount;	// 현재 가입 인원
 	int mNum;
 	int uNum;
 	String mName;
@@ -9,41 +11,23 @@ public class BStudy {
 	String mWhere;
 	String mDay;
 	String mContents;
-	String mPersonnel;
-	String mTime;
-	String mPtime;
-	String mLevel;
-	String Lati;
-	String Longi;
-	String mWhere2;	
+	String mPersonnel; // 최대 인원
+	String mTime;	// 시작 시간
+	String mPtime;	// 진행 시간
+	String mLevel;	// 난이도
+	String Lati;	// 위도
+	String Longi;	// 경도
+	String mWhere2;
 	String mWhere3;
 	
-	public BStudy() {
-		//기본생성자
+	public psgBStudyInfoView() {
+		
 	}
-	
-	public BStudy(int mNum, int uNum, String mName, String category1, String category2, String mWhere, String mDay,
-			String mContents, String mPersonnel, String mTime, String mPtime, String mLevel, String lati, String longi) {
-		//super();
-		this.mNum = mNum;
-		this.uNum = uNum;
-		this.mName = mName;
-		this.category1 = category1;
-		this.category2 = category2;
-		this.mWhere = mWhere;
-		this.mDay = mDay;
-		this.mContents = mContents;
-		this.mPersonnel = mPersonnel;
-		this.mTime = mTime;
-		this.mPtime = mPtime;
-		this.mLevel = mLevel;
-		this.Lati = lati;
-		this.Longi = longi;
-	}
-	public BStudy(int mNum, int uNum, String mName, String category1, String category2, String mWhere, String mDay,
-			String mContents, String mPersonnel, String mTime, String mPtime, String mLevel, String lati, String longi,
-			String mWhere2, String mWhere3) {
-//		super();
+	public psgBStudyInfoView(String uNick, int cMcount, int mNum, int uNum, String mName, String category1,
+			String category2, String mWhere, String mDay, String mContents, String mPersonnel, String mTime,
+			String mPtime, String mLevel, String lati, String longi, String mWhere2, String mWhere3) {
+		this.uNick = uNick;
+		this.cMcount = cMcount;
 		this.mNum = mNum;
 		this.uNum = uNum;
 		this.mName = mName;
@@ -61,31 +45,18 @@ public class BStudy {
 		this.mWhere2 = mWhere2;
 		this.mWhere3 = mWhere3;
 	}
-
-	public String getLati() {
-		return Lati;
+	public String getuNick() {
+		return uNick;
 	}
-
-	public void setLati(String lati) {
-		Lati = lati;
+	public void setuNick(String uNick) {
+		this.uNick = uNick;
 	}
-
-	public String getLongi() {
-		return Longi;
+	public int getcMcount() {
+		return cMcount;
 	}
-
-	public void setLongi(String longi) {
-		Longi = longi;
+	public void setcMcount(int cMcount) {
+		this.cMcount = cMcount;
 	}
-
-	public void setmTime(String mTime) {
-		this.mTime = mTime;
-	}
-
-	public String getmTime() {
-		return mTime;
-	}
-
 	public int getmNum() {
 		return mNum;
 	}
@@ -128,18 +99,6 @@ public class BStudy {
 	public void setmDay(String mDay) {
 		this.mDay = mDay;
 	}
-	public String getmPtime() {
-		return mPtime;
-	}
-	public void setmPtime(String mPtime) {
-		this.mPtime = mPtime;
-	}
-	public String getmLevel() {
-		return mLevel;
-	}
-	public void setmLevel(String mLevel) {
-		this.mLevel = mLevel;
-	}
 	public String getmContents() {
 		return mContents;
 	}
@@ -152,21 +111,46 @@ public class BStudy {
 	public void setmPersonnel(String mPersonnel) {
 		this.mPersonnel = mPersonnel;
 	}
+	public String getmTime() {
+		return mTime;
+	}
+	public void setmTime(String mTime) {
+		this.mTime = mTime;
+	}
+	public String getmPtime() {
+		return mPtime;
+	}
+	public void setmPtime(String mPtime) {
+		this.mPtime = mPtime;
+	}
+	public String getmLevel() {
+		return mLevel;
+	}
+	public void setmLevel(String mLevel) {
+		this.mLevel = mLevel;
+	}
+	public String getLati() {
+		return Lati;
+	}
+	public void setLati(String lati) {
+		Lati = lati;
+	}
+	public String getLongi() {
+		return Longi;
+	}
+	public void setLongi(String longi) {
+		Longi = longi;
+	}
 	public String getmWhere2() {
 		return mWhere2;
 	}
-
 	public void setmWhere2(String mWhere2) {
 		this.mWhere2 = mWhere2;
 	}
-
 	public String getmWhere3() {
 		return mWhere3;
 	}
-
 	public void setmWhere3(String mWhere3) {
 		this.mWhere3 = mWhere3;
 	}
-
-
 }

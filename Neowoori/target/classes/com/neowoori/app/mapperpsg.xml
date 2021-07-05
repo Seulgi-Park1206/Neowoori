@@ -52,4 +52,8 @@
 	<update id="psgUpdateCmt">
 		update cmt set cmt_contents=#{param3} where postnum=#{param1} and cmtnum=#{param2}
 	</update>
+	<!-- 스터디 정보 조회 -->
+	<select id="psgStudyInfo" resultType="com.neowoori.app.psgBStudyInfoView">
+		select b.unick, (select count(*) from meeting_study where mnum=#{param1}) cmcount, a.* from study a, members b where a.unum=b.unum and a.mnum=#{param1}
+	</select>
 </mapper>

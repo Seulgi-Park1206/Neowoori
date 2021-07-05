@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="${path}/resources/psg/css/form.css" type="text/css">
 <link rel="stylesheet" href="${path}/resources/psg/css/postview.css" type="text/css">
 <body>
+	<!-- header -->
 	<jsp:include page="/module/nav.jsp" flush="false" />
 	<div class=form>
 		<a class=title>게시글 보기</a>
@@ -96,54 +97,12 @@
 	  </div>
 	</div>
 	<!-- alert -->
-	<div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<label class="modal-title" id=alertTitle></label>
-	      </div>
-	      <div class="modal-body">
-	        <label id=lblAlert></label>
-	      </div>
-	      <div class="modal-footer">
-	        <button class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<jsp:include page="/module/alertModal.jsp" flush="false" />
 	<!-- confirm -->
-	<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<label class="modal-title" id=confirmTitle></label>
-	      </div>
-	      <div class="modal-body">
-	      	<div class="mb-3">
-	          <label id=lblConfirm></label>
-	        </div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnNo>취소</button>
-	        <button type="button" class="btn btn-primary" id=btnYes data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<jsp:include page="/module/confirmModal.jsp" flush="false" />
 	<!-- 댓글 번호 -->
 	<input type=hidden id=hiddenCnum />
-	<!-- 대댓글 화살표 -->
-	<div class=arrow>
-		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
-	  		<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
-		</svg>
-	</div>
-	<!-- 대댓글 쓰기 -->
-	<div class=replyWrite>
-		<textarea class=txtWrite rows=2 placeholder="댓글을 입력하세요."></textarea>
-		<input type=button class="btn1 btn btn-outline-primary" id=btnReCmt value="댓글 쓰기" />
-	</div>
-	<div id="test_cnt">(0 / 100)</div>
+	
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -267,7 +226,7 @@ function clearCmt() {
 	$('#test_cnt').html("(0 / 100)");
 }
 
-// alert Modal show
+/* // alert Modal show
 function alertModal(title, comment){
 	$('#alertTitle').text(title);
 	$('#lblAlert').text(comment);
@@ -279,7 +238,7 @@ function confirmModal(title, comment){
 	$('#confirmTitle').text(title);
 	$('#lblConfirm').text(comment);
 	$('#confirmModal').modal('show');
-}
+} */
 
 $(document)
 .ready(function(){
