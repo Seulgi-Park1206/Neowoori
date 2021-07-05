@@ -144,6 +144,31 @@ textarea {
 .modal-title {
 	font-weight: bold;
 }
+.divReCmtWhole {
+	width: 100%;
+	background-color: #b8fea0;
+	height: 100px;
+}
+.divReCmt {
+	background-color: pink;
+	width: 95%;
+	/* margin-left: 5%; */
+	height: 100%;
+	float: left;
+}
+.arrow {
+	width: 5%;
+	height: 100%;
+	margin-left: 0;
+	display: inline;
+	float: left;
+}
+.bi-arrow-return-right {
+	width: 100%;
+}
+.hidPCnum, .hidReCnum {
+	display: none;
+}
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
     .reply {
 		font-size: 17px;

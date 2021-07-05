@@ -130,7 +130,20 @@
 	    </div>
 	  </div>
 	</div>
+	<!-- 댓글 번호 -->
 	<input type=hidden id=hiddenCnum />
+	<!-- 대댓글 화살표 -->
+	<div class=arrow>
+		<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-arrow-return-right" viewBox="0 0 16 16">
+	  		<path fill-rule="evenodd" d="M1.5 1.5A.5.5 0 0 0 1 2v4.8a2.5 2.5 0 0 0 2.5 2.5h9.793l-3.347 3.346a.5.5 0 0 0 .708.708l4.2-4.2a.5.5 0 0 0 0-.708l-4-4a.5.5 0 0 0-.708.708L13.293 8.3H3.5A1.5 1.5 0 0 1 2 6.8V2a.5.5 0 0 0-.5-.5z"/>
+		</svg>
+	</div>
+	<!-- 대댓글 쓰기 -->
+	<div class=replyWrite>
+		<textarea class=txtWrite rows=2 placeholder="댓글을 입력하세요."></textarea>
+		<input type=button class="btn1 btn btn-outline-primary" id=btnReCmt value="댓글 쓰기" />
+	</div>
+	<div id="test_cnt">(0 / 100)</div>
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -166,6 +179,50 @@ function addComment(res){
 	return result;
 }
 
+// 대댓글 쓰기
+function writeReComment(){
+	var result = '<div class=replyWrite>';
+	result += '<textarea class=txtWrite rows=2 placeholder="댓글을 입력하세요."></textarea>';
+	result += '<input type=button class="btn1 btn btn-outline-primary" id=btnReCmt value="댓글 쓰기" />';
+	result += '</div><div id="test_cnt">(0 / 100)</div>';
+	
+	return result;
+}
+
+// 대댓글 추가
+function addReComment(){
+	//console.log(res);
+	//console.log(res['userid']);
+	var result = '<a class=hidPCnum>PCmtNum </a><a class=hidReCnum>Cmt Num</a>';
+	result += '<div class=tdView><label class="writer">userid';
+	result += '</label><label> (reCmtDate';
+	result += ')</label><div class=cmtAbout>'
+	result += cmtMenu1;
+	result += '</div><textarea class=cmtTxt readonly>reCmtContents';
+	result += '</textarea></div></div>';
+	console.log(result);
+	
+	return result;
+}
+/* function addReComment(res){
+	//console.log(res);
+	//console.log(res['userid']);
+	var result = '<div class=hidPCnum><div class=hidReCnum>';
+	result += res['cmtnum'];
+	result += '</div><div class=tdView><label class="writer">';
+	result += res['userid'];
+	result += '</label><label> (';
+	result += res['cmtDate'];
+	result += ')</label><div class=cmtAbout>'
+	result += cmtMenu1;
+	result += '</div><textarea class=cmtTxt readonly>';
+	result += res['cmtContents'];
+	result += '</textarea></div></div>';
+	console.log(result);
+	
+	return result;
+} */
+
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
 	var contents = $('#content');
@@ -179,8 +236,16 @@ function adjustModalHeight() {
 	var contents = $('#postContents');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
-    console.log('postContents: ' + contentsHeight);
+    //console.log('postContents: ' + contentsHeight);
     contents.css('height', contentsHeight);
+}
+
+// 대댓글 div 댓글 개수에 따라 높이 자동 조절
+function adjustDivReCmtHeight(div) {
+	div[0].style.height = 'auto';
+    var divHeight = div.prop('scrollHeight');
+    console.log('divCmt: ' + divHeight);
+    div.css('height', divHeight);
 }
 
 // 댓글 줄바꿈 체크
@@ -220,6 +285,7 @@ $(document)
 .ready(function(){
 	console.log(link);
 	var uid = '${userid}';
+	uid='human1';
 	if($('#writer').text() == uid) {
 		$('#btnUpdate, #btnDelete').show();
 	}
@@ -414,6 +480,22 @@ $(document)
 		}
 	});
 	
+	return false;
+})
+// 댓글 클릭(대댓글 쓰기) 클릭
+.on('click', '.reCmt', function(){
+	// 대댓글 div가 없으면 1, 있으면 2
+	var divCount = $(this).parents('td div').length;
+	console.log('divCount: '+divCount);
+	if(divCount == 1){	// 대댓글 없음
+		var td = $(this).parents('td');
+		td.append('<div class=divReCmtWhole></div>');
+		var reCmtWhole = td.children('.divReCmtWhole');
+		reCmtWhole.append($('.arrow'));
+		reCmtWhole.append('<div class=divReCmt></div>');
+		reCmtWhole.children('.divReCmt').html(addReComment());
+	}
+	//adjustDivReCmtHeight(div)
 	return false;
 })
 </script>
