@@ -20,10 +20,9 @@
 	<input type=text style="width:600px; height:30px;" id=postTitle name=postTitle placeholder="제목을 입력하세요."><br><br>
 	<textarea id=postContent name=postContent style="resize:none; width:600px; height:350px;" placeholder="내용을 입력하세요."></textarea><br>
 	<div style="text-align:center;">
-	<input type="checkbox" id=noticeCheckbox name=noticeCheckbox> 공지사항 <input type=button id=btn_cr value=글쓰기><input type=button style='display:none;' id=btnUpdate value=수정>&nbsp;&nbsp;<input type=button id=btn_cl value=취소>
+	<input type="checkbox" id=noticeCheckbox name=noticeCheckbox> 공지사항 <input type=button id=btn_cr value=글쓰기>&nbsp;&nbsp;<input type=button id=btn_cl value=취소>
 	</div>
 </div>
-<input type=text id=hiddenPnum />
 
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -34,35 +33,19 @@ var s_num = '<%=session.getAttribute("s_num")%>';
 var usernum = 0;
 $(document)
 .ready(function(){ // 아이디로 유저번호 가져오기
-<<<<<<< HEAD
-	let pNum = '${pNum}';
-	$('hiddenPnum').val(pNum);
-	console.log($('#hiddenPnum').val());
-	if($('#hiddenPnum').val() != ''){
-		$.ajax({
-			    url: '${path}/pjhusernum.do',
-			    type: 'POST',
-			    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
-			    contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
-			    data:userid,
-			    success: function(data){
-			    	usernum = data;
-			    },
-			    error: function (){  
-			    }
-			  })
-			
-		})
-	} else {
-		let title = '${title}';
-		let contents = '${contents}';
-		$('#postTitle').val(title);
-		$('#postContent').val(contents);
-		$('#btn_cr').css('display', 'none');
-		$('#btnUpdate').show();		
-	}
+	$.ajax({
+		url: '${path}/pjhusernum.do',
+		type: 'POST',
+		dataType: 'text', //서버로부터 내가 받는 데이터의 타입
+		contentType : 'text/plain; charset=utf-8;',//내가 서버로 보내는 데이터의 타입
+		data:userid,
+		success: function(data){
+			usernum = data;
+		},
+		error: function (){  
+		}
+	})
 )}
-=======
 $.ajax({
 	    url: '${path}/pjhusernum.do',
 	    type: 'POST',
@@ -78,7 +61,6 @@ $.ajax({
 	  })
 	
 })
->>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 .on('click','#btn_cl',function(){ // 취소 누를시 게시판으로
 	location.href = '/app/meetView'// 여기 스터디 아이디 추가해야함
 })
@@ -119,26 +101,6 @@ $.ajax({
 		      alert("글쓰기 실패")		
 		    }
 		  });
-})
-.on('click', '#btnUpdate', function(){
-	if(confirm('수정하시겠습니까?')){
-		let update = {type:"write", pNum:$('hiddenPnum').val(), title:$('#postTitle').val(), contents:$('#postContent').val()};
-		$.ajax({
-			url:'${path}/UpdatePost.do',
-			data:JSON.stringify(update),
-			contentType:'application/json; charset=UTF-8',
-			dataType:'text',
-			method:'post',
-			success:function(result){
-				//check
-				alert("수정이 완료되었습니다.");
-			},
-			error:function(){
-				alert('Update error');
-			}
-		});
-	}
-	return false;
 })
 </script>
 </html>

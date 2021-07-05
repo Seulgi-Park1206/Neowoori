@@ -133,6 +133,15 @@
  	</select>
  	
 
- 	
+ 	<!-- 회원 종류 정보가져오기 -->
+	<select id="pjhstudystate" resultType="Integer">
+		select state from meeting_study where unum = #{param1} and mnum = #{param2}
+	</select>
+	
+	
+	<!-- 스터디장 게시물 삭제 -->
+	<delete id="pjhPostdelete">
+		delete study_post where postnum = #{param1}
+	</delete>
 	
 </mapper>

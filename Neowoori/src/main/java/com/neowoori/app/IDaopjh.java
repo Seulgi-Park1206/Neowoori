@@ -22,6 +22,10 @@ public interface IDaopjh {
 	
 	/*-----내 스터디 정보 IDao (meetView)-----*/
 	
+	public void pjhPostdelete(int postnum); // 게시물 삭제
+	
+	public int pjhstudystate(int uNum, int mNum); // 회원 종류
+	
 	public int pjhtitlecount(String title, int s_num); // 내 스터디 제목 검색 총 개수
 	
 	public int pjhwritercount(String unick, int s_num); // 내 스터디 작성자 검색 총 개수

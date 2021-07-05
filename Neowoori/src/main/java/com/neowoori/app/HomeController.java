@@ -2,6 +2,7 @@ package com.neowoori.app;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Random;
 
 import javax.mail.internet.MimeMessage;
@@ -16,6 +17,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -508,14 +510,44 @@ public class HomeController {
 	
 	@ResponseBody // 유저 num 받아오기
 	@RequestMapping(value="/pjhusernum.do",method=RequestMethod.POST, produces="text/plane1")
-	public String user_num(@RequestBody String paramData){
-		//클라이언트가 보낸 Nick값
+	public String user_num(@RequestBody String paramData,HttpSession session){
 		String uid = paramData.trim();
 		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
 		int dto = dao.pjhusernum(uid);
-		
+		session.setAttribute("u_num", dto);
 		return Integer.toString(dto);
 	}
+	
+	@ResponseBody // 스터디장 & 일반회원 확인
+	@RequestMapping(value="/studystate",method=RequestMethod.POST, produces="application/json")
+	public int study_state(@RequestBody HashMap<String, String> state){
+		String u_num = String.valueOf(state.get("u_num"));
+		String s_num = String.valueOf(state.get("s_num"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		int s_state = dao.pjhstudystate(Integer.parseInt(u_num),Integer.parseInt(s_num));
+		return s_state;
+	}
+	
+	
+	@ResponseBody // 스터디장 게시물 삭제
+	@RequestMapping(value="/pjhpostdelete.do",method=RequestMethod.POST, produces="application/json")
+	public int post_delete(@RequestBody HashMap<String, String> post_delete) throws Exception{
+		int result=1;
+            int cnt = Integer.parseInt(String.valueOf(post_delete.get("cnt")));
+            String rprtOdr = String.valueOf(post_delete.get("arr"));
+            String str1 = rprtOdr.replace(" ", ""); // 공백 자르기
+            String str2 = str1.substring(1, str1.length()-1 ); // 앞뒤 [] 자르기
+            String [] strArray = str2.split(",");
+            System.out.println(cnt);
+            System.out.println(rprtOdr);
+            for(int i=0; i<cnt; i++) {
+                int temp = Integer.parseInt((String)strArray[i]);
+                IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+                dao.pjhPostdelete(temp);
+            }
+        return result;
+       }
+
 	
 	
 	
@@ -527,17 +559,22 @@ public class HomeController {
 	
 	/*---------------박슬기 영역----------------------*/
 	// 로그아웃
-	@ResponseBody
 	@RequestMapping(value="/logout", method=RequestMethod.POST, produces="application/json")
-	public void logout(HttpServletRequest request, HttpSession session){
+	public String logout(HttpServletRequest request, HttpSession session){
 		String state = request.getParameter("state");
 		if(state.equals("logout"))	session.invalidate();
+		return "redirect:/index";
 	}
 	// 내 정보
 	@RequestMapping("/mypage")
-	public String myPage() {
+	public String myPage(HttpServletRequest request, Model model) {
+		HttpSession session = request.getSession();
+		String uid = (String) session.getAttribute("userid");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("member", dao.psgUserInfo(uid));
 		return "psgMypage";
 	}
+	/*
 	// 내 정보 가져오기
 	@ResponseBody
 	@RequestMapping(value="/mypage.do", method=RequestMethod.POST, produces="application/json")
@@ -558,7 +595,7 @@ public class HomeController {
 		JSONObject jo = new JSONObject(hashmap);
 		
 		return jo;
-    }
+    }*/
 	// 내 정보 중복체크
 	@ResponseBody
 	@RequestMapping(value="/dup_check.do", method=RequestMethod.POST)
@@ -583,12 +620,15 @@ public class HomeController {
 		
 		return "ok";
 	}
-	// 스터디 게시판 글 보기
+	// 스터디 게시판 게시글 및 댓글 보기
 	@RequestMapping("/postView/{post_num}")
-	public String postView(@PathVariable String post_num) {
-		
+	public String postView(@PathVariable int post_num, Model model) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		model.addAttribute("post", dao.psgSelectStudyPost(post_num));
+		model.addAttribute("cmt", dao.psgSelectCmt(post_num));
 		return "psgPostView";
 	}
+	/*
 	// 해당 스터디 게시글 조회
 	@ResponseBody
 	@RequestMapping(value="/postView.do", method=RequestMethod.POST)
@@ -605,6 +645,8 @@ public class HomeController {
 		
 		return jo;
 	}
+	*/
+	/*
 	// 스터디 게시판 댓글 보기
 	@ResponseBody
 	@RequestMapping(value="/postCmt.do", method=RequestMethod.POST)
@@ -627,7 +669,7 @@ public class HomeController {
 		}
 		
 		return jarr;
-	}
+	}*/
 	// 댓글 쓰기
 	@ResponseBody
 	@RequestMapping(value="/insertCmt.do", method=RequestMethod.POST)
@@ -639,8 +681,9 @@ public class HomeController {
 		session = request.getSession();
 		String uid = (String) session.getAttribute("userid");
 		System.out.println(uid);
+		String content = hashmap.get("contents");
 		System.out.println(hashmap.get("contents"));
-		dao.psgInsertCmt(pNum, uid, hashmap.get("contents"));
+		dao.psgInsertCmt(pNum, uid, content);
 		
 		psgBViewCmt cmt = dao.psgAddCmtSelect();
 		HashMap<String, Object> map = new HashMap<String, Object>();
@@ -664,24 +707,31 @@ public class HomeController {
 		
 		return "success";
 	}
-	// 게시물 수정 버튼 클릭
-	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
-	public String UpdatePost(@RequestBody HashMap<String, String> hashmap, Model model) {
-		if(hashmap.get("type").equals("view")) {
-			model.addAttribute("pNum", hashmap.get("pNum"));
-			model.addAttribute("title", hashmap.get("title"));
-			model.addAttribute("contents", hashmap.get("contents"));
-			
-			return "ygwMeetwrite";
-		} else {
-			System.out.println("-- 게시물 수정 시작 --");
-			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-			int pNum = Integer.parseInt(hashmap.get("pNum"));
-			dao.psgUpdateStudyPost(0, hashmap.get("title"), hashmap.get("contents"));
-			System.out.println("-- 수정 완료 --");
-			return "redirect:/postView/"+pNum;
-		}
+	// 댓글 삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteCmt.do", method=RequestMethod.POST)
+	public String deleteComment(@RequestBody HashMap<String, String> hashmap) {
+		int pNum = Integer.parseInt(hashmap.get("postNum"));
+		int cNum = Integer.parseInt(hashmap.get("coNum"));
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		System.out.println("--"+pNum+"들어옴");
+		System.out.println("--"+cNum+"들어옴");
+		dao.psgDeleteCmt(pNum, cNum);
 		
+		return "success";
+	}
+	// 게시물 수정
+	@ResponseBody
+	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
+	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap, Model model,
+			HttpServletRequest request, HttpSession session) {
+		System.out.println("-- 게시물 수정 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(hashmap.get("pNum"));
+		dao.psgUpdateStudyPost(pNum, hashmap.get("title"), hashmap.get("contents"));
+		System.out.println("-- 수정 완료 --");
+		
+		return "success";
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")

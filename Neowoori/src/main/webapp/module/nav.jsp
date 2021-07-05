@@ -48,26 +48,12 @@ function islogin(){
 		$('#login').show();
 	}
 }
+function logout(){
+	window.href="${path}/logout";
+}
 $(document)
 .ready(function(){
 	islogin();
-})
-.on('click', '#logout', function(){
-	// 세션 종료
-	$.ajax({
-		url:'${path}/logout',
-		data:{state:'logout'},
-		dataType:'text',
-		method:'post',
-		success:function(){
-			islogin();
-			location.href='index';
-		},
-		error:function(){
-			alert('Logout Error');
-		}
-	});
-	return false;
 })
 </script>
 </html>
