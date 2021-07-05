@@ -55,7 +55,7 @@
     </div>
   </div>
 </div>
-<a id="bbtn" class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button">Open first modal</a>
+<a id="bbtn" class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button" style="display:none;">Open first modal</a>
 <input type=button onclick=btnTest()>
 </body>
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>

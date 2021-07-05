@@ -17,5 +17,6 @@ public interface IDaojsb {
 	public void jsbCancelJoin(int uNum, int mNum);
 	public void jsbJoinOut(int uNum, int mNum);
 	public void jsbSendModalMsg(int sendNum, int recNum,String cont);
-	
+	public ArrayList<jsbBListStudy> jsbListTypeOne();
+	public int jsbListFindMeetState(int mNum,int uNum);
 }

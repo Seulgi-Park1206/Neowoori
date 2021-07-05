@@ -656,14 +656,32 @@ public class HomeController {
 	// 게시물 삭제
 	@ResponseBody
 	@RequestMapping(value="/deletePost.do", method=RequestMethod.POST)
-	public String deletePost(@RequestBody String postNum ) {
+	public String deletePost(@RequestBody String postNum) {
 		int pNum = Integer.parseInt(postNum);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		System.out.println("--"+pNum+"들어옴");
 		dao.psgDeleteStudyPost(pNum);
-		System.out.println("--삭제");
 		
 		return "success";
+	}
+	// 게시물 수정 버튼 클릭
+	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
+	public String UpdatePost(@RequestBody HashMap<String, String> hashmap, Model model) {
+		if(hashmap.get("type").equals("view")) {
+			model.addAttribute("pNum", hashmap.get("pNum"));
+			model.addAttribute("title", hashmap.get("title"));
+			model.addAttribute("contents", hashmap.get("contents"));
+			
+			return "ygwMeetwrite";
+		} else {
+			System.out.println("-- 게시물 수정 시작 --");
+			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+			int pNum = Integer.parseInt(hashmap.get("pNum"));
+			dao.psgUpdateStudyPost(0, hashmap.get("title"), hashmap.get("contents"));
+			System.out.println("-- 수정 완료 --");
+			return "redirect:/postView/"+pNum;
+		}
+		
 	}
 	// 내 스터디 조회
 	@RequestMapping("/meetList/{user_id}")
@@ -733,7 +751,35 @@ public class HomeController {
 	      return "jsbMsgBox";
 	   }
 	@RequestMapping("/search") //get
-	   public String search() {
+	   public String search(Model model,HttpSession session) {
+		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+		//model.addAttribute("SearchData",dao.jsbListTypeOne());
+		//System.out.println(dao.jsbListTypeOne().getClass().getName());
+		//System.out.println(dao.jsbListTypeOne());
+		ArrayList<jsbBListStudy> list = dao.jsbListTypeOne();
+		//System.out.println(list.get(0).getmWhere());
+		//System.out.println(list.size());
+		//dd
+		//session.setAttribute("userid","human1");
+		//String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		
+		//BMembers mem = dao.jsbGetUser(sessionUserId);
+		//int mUserNum = mem.getuNum();
+		//System.out.println(mUserNum);
+		
+		for (int i=0;i<list.size();i++) {
+			String[] tempAddress=list.get(i).getmWhere().split(" ");
+			//String adrCounty=tempAddress[0];
+			//String adrCity=tempAddress[1];
+			list.get(i).setAdrCounty(tempAddress[0]);
+			list.get(i).setAdrCity(tempAddress[1]);
+			
+			//int meetUser=dao.jsbListFindMeetState(list.get(i).getmNum(), mUserNum);
+			//System.out.println(meetUser);
+			//list.get(i).setState(meetUser);
+			//System.out.println(list.get(i).getCnt());
+		}
+		model.addAttribute("SearchData",list);
 	      return "jsbSearch";
 	   }
 	
@@ -878,6 +924,20 @@ public class HomeController {
 			BMembers mem2 = dao.jsbGetUserNick(adminNick);
 			int recNum = mem2.getuNum();
 			dao.jsbSendModalMsg(uNum,recNum,contents);
+	   }
+	
+	@ResponseBody	/*Search study btn*/
+	@RequestMapping(value="/jsbSearchPageBtn.do", method=RequestMethod.POST,produces = "application/json")
+		public int jsbSearchPageBtn(String mNum, HttpServletRequest req,HttpSession session) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			int mNums = Integer.parseInt(req.getParameter("mNum"));
+			session.setAttribute("userid","human1");
+			String sessionUserId = String.valueOf(session.getAttribute("userid"));
+			BMembers mem = dao.jsbGetUser(sessionUserId);
+			int mUserNum = mem.getuNum();
+			//System.out.println(mUserNum);
+			//System.out.println(mNums);
+			return dao.jsbListFindMeetState(mNums,mUserNum);
 	   }
 	
 	/*---------------------------------------------*/
