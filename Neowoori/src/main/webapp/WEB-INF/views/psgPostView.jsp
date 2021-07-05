@@ -220,7 +220,6 @@ $(document)
 .ready(function(){
 	console.log(link);
 	var uid = '${userid}';
-	uid = 'human1';
 	if($('#writer').text() == uid) {
 		$('#btnUpdate, #btnDelete').show();
 	}
