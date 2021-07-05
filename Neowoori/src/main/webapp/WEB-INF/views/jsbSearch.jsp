@@ -41,8 +41,8 @@
 		</div>
 		&nbsp;
 		<div class="input-group mb-3">
-			<input type="text" class="form-control" placeholder="스터디명을 입력해주세요." aria-label="Recipient's username" aria-describedby="button-addon2">
-			<button class="btn btn-outline-secondary" type="button" id="button-addon2">검색</button>
+			<input id="searchWord" type="text" class="form-control" placeholder="스터디명을 입력해주세요." aria-label="Recipient's username" aria-describedby="button-addon2">
+			<button class="btn btn-outline-secondary" type="button" id="button-addon2" onclick=searchBtn() >검색</button>
 		</div>
 	</div>
 </div>
@@ -60,6 +60,7 @@
 	    </tr>
 	  </thead>
 	  <tbody>
+	  <!-- 
 	  	<c:forEach items="${SearchData}" var="rec">
 		    <tr>
 		      <td></td>
@@ -72,19 +73,69 @@
 		      <td style="display:none;">${rec.mNum}</td>
 		    </tr>
 	    </c:forEach>
+	  -->
 	  </tbody>
 	</table>
 </div>
+
+<div id=page>
+</div>
+
 
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 <script language='javascript'>
+let datas;
 $(document)
 .ready(function(){
-	console.log($('#dropdownMenuLink').text());
+	$.ajax({
+	    url: "jsbSearchPageFirst.do",
+	    type: "POST",
+	    data: {
+	    	//"studyName" : $('#studyName').val() // 스터디명
+	    },
+	    success : function(data){
+	    	//console.log(data);
+	    	datas= new Array(data);
+	    	//console.log(datas[0]);
+	    	//console.log(datas[0][0].mName);
+	    	let tblStr='';
+	    	$.each(data, function(e, item){
+	    		tblStr +='<tr><td></td><td>'+item.mName+'</td><td>'+item.adrCounty+' '+item.adrCity+'</td><td>'+item.category1+' - '+item.category2+'</td><td>'+item.cnt+'/'+item.mPersonnel+'</td><td>'+item.uNick+'</td><td></td><td style="display:none;">'+item.mNum+'</td></tr>'
+	    		if(e==9) return false;
+	    	})
+	    	$('#viewTable tbody').html(tblStr);
+	    	setPage(data.length);
+	    	viewState();
+	    },
+	    error : function(){	
+	    }
+		});
+})
+
+function setPage(who){
+	//console.log(who);
+	$('#page').empty();
+	var pageHow = parseInt(who/10);  // 총 유저수 / 5 
+	if(who%10 != 0){ // 나머지가 0이 아니면 + 1
+		pageHow = pageHow + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
+    	}
+	var result = '';
+	result += '<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">'
+	result += '<ul class="pagination" id="pageUl">'
+	for(var i = 1; i <= pageHow; i++){
+		result +='<li class="page-item" onclick=pageBtnFuc('+i+')><a class="page-link" href="#">'+i+'</a></li>'
+	}
+	result += '</ul>'
+	result += '</nav>'
+	$('#page').append(result);
+}
+
+function viewState(){
+	//console.log($('#dropdownMenuLink').text());
 	var i=0;
-	console.log($('#viewTable tbody tr').length);
+	//console.log($('#viewTable tbody tr').length);
 	
 	$('#viewTable tbody tr').each(function(){
 		var tr = $(this);
@@ -99,6 +150,7 @@ $(document)
                 },
                 async:false,
                 success:function(result){
+                	//console.log(i);
                 	if (result==0) td.eq(6).text("신청가능");
                 	else if(result==10) td.eq(6).text("신청중");
                 	else if(result==20) td.eq(6).text("가입상태");
@@ -111,8 +163,40 @@ $(document)
     	})(i);
 	i++;
 	});
-	
-})
+}
+
+function pageBtnFuc(who){
+	var pageVal=who-1;
+	//console.log(pageVal);
+	let tblStr='';
+	//console.log($('#pageUl li').length);
+	if (pageVal==0){
+		for (var x=0;x<=9;x++){
+			tblStr +='<tr><td></td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:;">'+datas[0][x].mNum+'</td></tr>'
+		};
+		$('#viewTable tbody').html(tblStr);
+		viewState();
+	}else if (pageVal==$('#pageUl li').length-1){
+		//console.log("maxPage");
+		var tmpPageVal=pageVal*10;
+		var tmpPageMax=datas[0].length-1;
+		//console.log(tmpPageVal+","+tmpPageMax);
+		for (var x=tmpPageVal;x<=tmpPageMax;x++){
+			tblStr +='<tr><td></td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:;">'+datas[0][x].mNum+'</td></tr>'
+		};
+		$('#viewTable tbody').html(tblStr);
+		viewState();
+	}else{
+		var tmpPageVal=pageVal*10;
+		var tmpPageMax=tmpPageVal+9;
+		for (var x=tmpPageVal;x<=tmpPageMax;x++){
+			tblStr +='<tr><td></td><td>'+datas[0][x].mName+'</td><td>'+datas[0][x].adrCounty+' '+datas[0][x].adrCity+'</td><td>'+datas[0][x].category1+' - '+datas[0][x].category2+'</td><td>'+datas[0][x].cnt+'/'+datas[0][x].mPersonnel+'</td><td>'+datas[0][x].uNick+'</td><td></td><td style="display:;">'+datas[0][x].mNum+'</td></tr>'
+		};
+		$('#viewTable tbody').html(tblStr);
+		viewState();
+	};
+}
+
 
 function btnBigClick(who){
 	if (who==1) btnBigSelect1();	//독서
@@ -122,13 +206,16 @@ function btnBigClick(who){
 	if (who==5) btnBigSelect5();
 	if (who==6) btnBigSelect6();
 	if (who==7) btnBigSelect7();
-	if (who==8) $('#dropdownMenuLink').text("카테고리 ");
+	if (who==8) {
+		$('#dropdownMenuLink').text("카테고리");
+		$('#dropdownMenuLink2').text("상세 카테고리");
+	}
 }
 //독서,문화생활,어학,취업,토론,코딩,기타
 function btnBigSelect1(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("독서");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">인문학</a></li>');
@@ -145,7 +232,7 @@ function btnBigSelect1(){
 function btnBigSelect2(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("문화생활");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">뮤지컬/오페라</a></li>');
@@ -161,7 +248,7 @@ function btnBigSelect2(){
 function btnBigSelect3(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("어학");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">영어</a></li>');
@@ -178,7 +265,7 @@ function btnBigSelect3(){
 function btnBigSelect4(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("취업");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">공무원</a></li>');
@@ -195,7 +282,7 @@ function btnBigSelect4(){
 function btnBigSelect5(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("토론");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">경제</a></li>');
@@ -211,7 +298,7 @@ function btnBigSelect5(){
 function btnBigSelect6(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("코딩");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">JAVA</a></li>');
@@ -227,7 +314,7 @@ function btnBigSelect6(){
 function btnBigSelect7(){
 	//$("#bigSel").val($("#labelBig1").text());
 	$('#dropdownMenuLink').text("기타");
-	$('#dropdownMenuLink2').text("상세 카테고리 ");
+	$('#dropdownMenuLink2').text("상세 카테고리");
 	//$("#btnGroupSm").show();
    	$('#btnGroupSm').empty();
    	$("#btnGroupSm").append('<li><a onclick=btnSmClick(1) id="btnSm1" class="dropdown-item" href="#">기타</a></li>');
@@ -248,10 +335,43 @@ function btnSmClick(who){
 	if (who==5) $("#dropdownMenuLink2").text($("#btnSm5").text());
 	if (who==6) $("#dropdownMenuLink2").text($("#btnSm6").text());
 	if (who==7) $("#dropdownMenuLink2").text($("#btnSm7").text());
-	if (who==8) $('#dropdownMenuLink2').text("상세 카테고리 ");
+	if (who==8) $('#dropdownMenuLink2').text("상세 카테고리");
 //	console.log($("#smSel").val())
 }
 
+function searchBtn(){
+	//console.log($('#dropdownMenuLink').text());
+	//console.log($('#dropdownMenuLink2').text());
+	//console.log($('#searchWord').text());
+	let menuLink1 =	'';
+	let menuLink2 = '';
+	let searchWord = '';
+	if ($('#dropdownMenuLink').text() != "카테고리") menuLink1 = $('#dropdownMenuLink').text();
+	if ($('#dropdownMenuLink2').text() != "상세 카테고리") menuLink2 = $('#dropdownMenuLink2').text();
+	if ($('#searchWord').val() != "") searchWord = $('#searchWord').val();
+	$.ajax({
+	    url: "jsbClickToSearchBtn.do",
+	    type: "POST",
+	    data: {
+	    	"menuLink1" : menuLink1, // 카테고리1
+	    	"menuLink2" : menuLink2, // 카테고리2
+	    	"searchWord" : searchWord // 검색어
+	    },
+	    success : function(data){
+	    	datas= new Array(data);
+	    	let tblStr='';
+	    	$.each(data, function(e, item){
+	    		tblStr +='<tr><td></td><td>'+item.mName+'</td><td>'+item.adrCounty+' '+item.adrCity+'</td><td>'+item.category1+' - '+item.category2+'</td><td>'+item.cnt+'/'+item.mPersonnel+'</td><td>'+item.uNick+'</td><td></td><td style="display:none;">'+item.mNum+'</td></tr>'
+	    		if(e==9) return false;
+	    	})
+	    	$('#viewTable tbody').html(tblStr);
+	    	setPage(data.length);
+	    	viewState();
+	    },
+	    error : function(){	
+	    }
+		});
+}
 
 </script>
 </html>
