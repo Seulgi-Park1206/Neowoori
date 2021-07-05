@@ -48,5 +48,8 @@
 	<update id="psgUpdateStudyPost">
 		update study_post set title=#{param2}, post_contents=#{param3} where postnum=#{param1}
 	</update>
-	
+	<!-- 댓글 수정 -->
+	<update id="psgUpdateCmt">
+		update cmt set cmt_contents=#{param3} where postnum=#{param1} and cmtnum=#{param2}
+	</update>
 </mapper>
