@@ -137,22 +137,24 @@ $(document)
      			$.each(JSON.parse(resp),function(index,item){
      				if(item["postType"] == "20"){
      				result += ' <tr class="stpost">'
-   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">공지</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
+					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 		 			result += ' </tr>'
 		 			sum++;
 		 			notice++;
      				}
      				else{
      					result += ' <tr class="stpost">'
-   	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+   	   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
    						result += ' <td class="lalign">'+(index-(sum-1))+'</td>'
    						result += ' <td>'+item["title"]+'</td>'
    						result += ' <td>'+item["unick"]+'</td>'
    						result += ' <td>'+item["post_Date"]+'</td>'
+   						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
    			 			result += ' </tr>'
      				}
      			})
@@ -239,20 +241,22 @@ $(document)
 	        $.each(JSON.parse(resp),function(index,item){
 	        	if(item["postType"] == "20"){
 		        	result += ' <tr class="stpost">'
-					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">공지</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
+					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 		 			result += ' </tr>'
 		        	miu++;
  				}else{
  					result += ' <tr class="stpost">'
-   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
+					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 		 			result += ' </tr>'
 		 			posthid++;
  				}
@@ -292,20 +296,22 @@ $(document)
 		        $.each(JSON.parse(resp),function(index,item){
 		        	if(item["postType"] == "20"){
 			        	result += ' <tr class="stpost">'
-						result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+						result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			        	miu++;
 	 				}else{
 	 					result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+	   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			 			posthid++;
 	 				}
@@ -370,20 +376,22 @@ $(document)
 		        $.each(JSON.parse(resp),function(index,item){
 		        	if(item["postType"] == "20"){
 			        	result += ' <tr class="stpost">'
-						result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+						result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			        	miu++;
 	 				}else{
 	 					result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+	   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			 			posthid++;
 	 				}
@@ -451,22 +459,24 @@ $(document)
 	     			$.each(JSON.parse(resp),function(index,item){
 	     				if(item["postType"] == "20"){
 	     				result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+	   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			 			sum++;
 			 			notice++;
 	     				}
 	     				else{
 	     					result += ' <tr class="stpost">'
-	   	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+	   	   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 	   						result += ' <td class="lalign">'+(index-(sum-1))+'</td>'
 	   						result += ' <td>'+item["title"]+'</td>'
 	   						result += ' <td>'+item["unick"]+'</td>'
 	   						result += ' <td>'+item["post_Date"]+'</td>'
+	   						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 	   			 			result += ' </tr>'
 	     				}
 	     			})
@@ -552,20 +562,22 @@ $(document)
 	        $.each(JSON.parse(resp),function(index,item){
 	        	if(item["postType"] == "20"){
 		        	result += ' <tr class="stpost">'
-					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">공지</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
+					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 		 			result += ' </tr>'
 		        	miu++;
  				}else{
  					result += ' <tr class="stpost">'
-   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 					result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
+					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 		 			result += ' </tr>'
 		 			posthid++;
  				}
@@ -630,20 +642,22 @@ $(document)
 		        $.each(JSON.parse(resp),function(index,item){
 		        	if(item["postType"] == "20"){
 			        	result += ' <tr class="stpost">'
-						result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+						result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">공지</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			        	miu++;
 	 				}else{
 	 					result += ' <tr class="stpost">'
-	   					result += ' <td><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
+	   					result += ' <td onclick="event.cancelBubble=true"><input type="checkbox" id='+item["postNum"]+' class=ch_Box style="display:none"></td>'
 						result += ' <td class="lalign">'+(parseInt(posthid)+1)+'</td>'
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
+						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
 			 			result += ' </tr>'
 			 			posthid++;
 	 				}
@@ -732,6 +746,12 @@ $(document)
 
 /*------------------------------------------------------------------------*/
 
+// 해당 게시물 클릭할때 이벤트
+.on('click','.stpost',function(){
+	var post_num = $(this).find($("input[type='hidden']")).val();
+	console.log(post_num);
+	location.href = '${path}/postView/'+post_num
+})
 
 
 </script>

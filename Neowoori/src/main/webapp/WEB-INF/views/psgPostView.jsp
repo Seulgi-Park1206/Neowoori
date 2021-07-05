@@ -148,7 +148,7 @@ link = link.split('/')[3];
 
 // 스터디 게시판 목록으로 가기
 function goList(){
-	window.location="${path}/studypost/${s_num}";
+	window.location="${path}/meetView/${s_num}";
 }
 
 // 댓글 추가
