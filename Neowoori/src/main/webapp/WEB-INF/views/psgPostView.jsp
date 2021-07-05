@@ -34,7 +34,7 @@
 				</tr>
 				<tr class=trContxt>
 					<td class=tdLeft>내용:</td>
-					<td class=tdCenter><textarea class=intext id=contents readonly>${post.post_contents}</textarea></td>
+					<td class=tdCenter><textarea class=intext id=content readonly>${post.post_contents}</textarea></td>
 				</tr>
 			</table>
 			<br>
@@ -168,7 +168,7 @@ function addComment(res){
 
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
-	var contents = $('#contents');
+	var contents = $('#content');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
     contents.css('height', contentsHeight);
@@ -317,9 +317,7 @@ $(document)
 					}
 				});
 				// alert
-				$('#alertTitle').text('댓글 삭제');
-				$('#lblAlert').text('댓글이 삭제되었습니다.');
-				$('#alertModal').modal('show');
+				alertModal(th, '댓글이 삭제되었습니다.');
 			},
 			error:function(){
 				alert('Cmt delete error');
@@ -334,7 +332,7 @@ $(document)
 	console.log('수정 버튼 클릭');
 	// 모달창으로 게시글 수정
 	$('#postTitle').val($('#title').text());
-	$('#postContents').val($('#contents').text());
+	$('#postContents').val($('#content').text());
 	$('#updateModal').modal('show');
 })
 // 게시물 수정 기능
@@ -348,7 +346,7 @@ $(document)
 		success:function(){
 			alertModal('게시물 수정', '수정이 완료되었습니다.');
 			$('#title').text($('#postTitle').val());
-			$('#contents').text($('#postContents').val());
+			$('#content').text($('#postContents').val());
 			adjustModalHeight();
 		},
 		error:function(){
@@ -360,52 +358,57 @@ $(document)
 })
 // 댓글 수정 클릭
 .on('click', '.updateCmt', function(){
+	var flag = false;
 	var writer = $(this).parent().siblings('.writer').text();
+	console.log('writer: '+writer);
 	var modalTitle = '댓글 수정';
-	//console.log('${userid} ' + writer);
-	if('${userid}' == writer){
-		// 수정 삭제 댓글 -> 수정완료
-		var txt = $(this).parent().siblings('textarea');
-		$(this).parent('.cmtAbout').html(cmtMenu2);
-		// 수정 가능 상태로 전환
-		txt.attr('readonly', false);
-		// 댓글의 마지막으로 커서 focus
-		txt.focus();
-		txt[0].setSelectionRange(txt.val().length, txt.val().length);
-	} else {
-		alertModal(modalTitle, '작성자가 아닙니다.');
+	// 수정 중인 댓글 체크
+	$('.cmtAbout').each(function(index, upCmt){
+		console.log(index+'-children: '+$(this).children(':first').text());
+		if($(this).children(':first').text() == '수정완료'){ // 수정 중인 댓글 있음
+			flag = true;
+			alertModal(modalTitle, '수정 중인 댓글이 있습니다.');
+			return false;
+		}
+	});
+	if(!flag){
+		console.log('${userid} ' + writer);
+		if('${userid}' == writer){
+			// 수정 삭제 댓글 -> 수정완료
+			var txt = $(this).parent().siblings('textarea');
+			$(this).parent('.cmtAbout').html(cmtMenu2);
+			// 수정 가능 상태로 전환
+			txt.attr('readonly', false);
+			// 댓글의 마지막으로 커서 focus
+			txt.focus();
+			//txt[0].setSelectionRange(txt.val().length, txt.val().length);
+		} else {
+			alertModal(modalTitle, '작성자가 아닙니다.');
+		}
 	}
-	
-	return false;
-})
-// 수정 중인 댓글이 아닌 다른 곳에 focus 되는 경우 수정 불가 상태로 전환
-.on('focusout', '.cmtTxt', function(){
-	if($(this).prop('readonly') == '' || $(this).prop('readonly') == false){
-		console.log('focusout');
-		$(this).attr('readonly', true);
-		$(this).siblings('.cmtAbout').html(cmtMenu1);
-	}
-	
+		
 	return false;
 })
 // 댓글 수정 완료 클릭
 .on('click', '.cmtComplete', function(){
+	console.log('수정 완료 클릭');
 	// 수정한 댓글이 있는 textarea
 	var txt = $(this).parent().siblings('textarea');
 	// 수정한 댓글 번호
 	$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
 	// 수정한 댓글 정보
 	var cmt = {pNum:link, cNum:$('#hiddenCnum').text(), contents:txt.val().trim()};
-	
+	console.log('cmt: '+cmt);
 	$.ajax({
 		url:'${path}/updateCmt.do',
 		data:JSON.stringify(cmt),
 		contentType:'application/json; charset=UTF-8',
 		method:'post',
 		success:function(){
-			// 수정완료 -> 수정 삭제 댓글
-			$(this).parent('.cmtAbout').html(cmtMenu1);
 			alertModal('댓글 수정', '수정이 완료되었습니다.');
+			// 수정완료 -> 수정 삭제 댓글
+			txt.siblings('.cmtAbout').html(cmtMenu1);
+			txt.attr('readonly', true);
 		},
 		error:function(){
 			alert('Update error');

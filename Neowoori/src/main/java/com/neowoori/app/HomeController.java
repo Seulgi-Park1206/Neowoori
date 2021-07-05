@@ -683,7 +683,7 @@ public class HomeController {
 	// 게시물 수정
 	@ResponseBody
 	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
-	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap, Model model) {
+	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap) {
 		//System.out.println("-- 게시물 수정 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int pNum = Integer.parseInt(hashmap.get("pNum"));
@@ -695,7 +695,7 @@ public class HomeController {
 	// 댓글 수정
 	@ResponseBody
 	@RequestMapping(value="/updateCmt.do", method=RequestMethod.POST)
-	public String UpdateCmtDo(@RequestBody HashMap<String, String> hashmap, Model model) {
+	public String UpdateCmtDo(@RequestBody HashMap<String, String> hashmap) {
 		System.out.println("-- 댓글 수정 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int pNum = Integer.parseInt(hashmap.get("pNum"));

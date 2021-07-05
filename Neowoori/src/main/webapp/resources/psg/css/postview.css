@@ -43,10 +43,6 @@ textarea {
 .hidCnum {
 	display: none;
 }
-.AboutCmt {
-	display: inline;
-	margin-left:
-}
 .reply {
 	text-align: left;
 	width: 100%;
@@ -81,11 +77,11 @@ textarea {
 .title2 {
 	font-size: 23px;
 }
-#txtWrite, #contents {
+#txtWrite, #content {
 	height: 95%;
 	font-size: 17px;
 }
-#contents {
+#content {
 	width: 90%;
 	margin: auto;
 	border: 0;
@@ -156,10 +152,15 @@ textarea {
 		font-size: 15px;
 	}
 	#txtWrite {
-		width: 85%;
+		width: 90%;
 	}
     .btn {
     	font-size: 17px;
     	width: 100px;
     }
+}
+@media (max-width:800px){
+	#txtWrite {
+		width: 83%;
+	}
 }
