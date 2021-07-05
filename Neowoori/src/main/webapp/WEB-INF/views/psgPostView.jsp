@@ -52,11 +52,11 @@
 						<tr><td class=hidCnum>${c.cmtnum}</td>
 						<td class=tdView><label class="writer">${c.userid}</label>
 							<label> (${c.cmt_date})</label>
-							<!-- <div class=cmtAbout> -->
+							<div class=cmtAbout>
 								<a class=updateCmt>수정</a>
 								<a class=deleteCmt>삭제</a>
 								<a class=reCmt>댓글</a>
-							<!-- </div> -->
+							</div>
 							<textarea class=cmtTxt readonly>${c.cmt_contents}</textarea></td>
 						</tr>
 					</c:forEach>
@@ -72,7 +72,6 @@
 	</div>
 	<!-- 게시글 수정 modal -->
 	<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <!-- <div class="modal-dialog modal-dialog-scrollable myscrollbar"> -->
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -131,12 +130,7 @@
 	    </div>
 	  </div>
 	</div>
-	<!-- <div class="alert alert-success d-flex align-items-center alert-dismissible" role="alert" id=alertSucceed>
-	  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-	  <div>
-	    수정이 완료되었습니다.
-	  </div>
-	</div> -->
+	<input type=hidden id=hiddenCnum />
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -145,7 +139,8 @@
 // 스터디 게시글 번호
 var link = window.location.pathname;
 link = link.split('/')[3];
-
+var cmtMenu1 = '<a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a>';
+var cmtMenu2 = '<a class=cmtComplete>수정완료</a>';
 // 스터디 게시판 목록으로 가기
 function goList(){
 	window.location="${path}/studypost/${s_num}";
@@ -159,10 +154,11 @@ function addComment(res){
 	result += res['cmtnum'];
 	result += '</td><td class=tdView><label class="writer">';
 	result += res['userid'];
-	result += ' (';
+	result += '</label><label> (';
 	result += res['cmtDate'];
-	result += ')</label><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a>';
-	result += '<textarea class=cmtTxt readonly>';
+	result += ')</label><div class=cmtAbout>'
+	result += cmtMenu1;
+	result += '</div><textarea class=cmtTxt readonly>';
 	result += res['cmtContents'];
 	result += '</textarea></td></tr>';
 	console.log(result);
@@ -271,9 +267,11 @@ $(document)
 })
 // 댓글 삭제 클릭
 .on('click', '.deleteCmt', function(){
-	var writer = $(this).siblings('.writer').text();
+	var writer = $(this).parent().siblings('.writer').text();
 	var modalTitle = '댓글 삭제';
+	console.log('${userid} ' + writer);
 	if('${userid}' == writer){
+		$('#hiddenCnum').text($(this).parent('td').siblings('.hidCnum').text());
 		confirmModal(modalTitle, '정말 댓글을 삭제하시겠습니까?');
 	} else {
 		alertModal(modalTitle, '작성자가 아닙니다.');
@@ -293,21 +291,18 @@ $(document)
 			method:'post',
 			dataType:'text',
 			success:function(result){
-				console.log(result);
-				$('#lblAlert').text('Succeed to delete (no.'+link+' post)');
-				$('#alertTitle').text('게시물 삭제');
-				$('#alertModal').modal('show');
+				alertModal(th, 'Succeed to delete (no.'+link+' post)');
 				goList();
 			},
 			error:function(){
 				alert('Post delete error');
 			}
-		});		
+		});	
 	} else {
-		let cNum = $(this).parents('tr').find('td:eq(0)').text();
-		console.log(cNum);
+		let cNum = $('#hiddenCnum').text();
+		//console.log('cNum: '+cNum);
 		let delCmt = {postNum:link, coNum:cNum};
-		console.log(delCmt);
+		//console.log(delCmt);
 		$.ajax({
 			url:'${path}/deleteCmt.do',
 			data:JSON.stringify(delCmt),
@@ -315,9 +310,12 @@ $(document)
 			method:'post',
 			dataType:'text',
 			success:function(result){
-				// 댓글 부분만 새로 불러오기
-				var url = '${path}/postView/' + link + ' #reply';
-				$('#reply').load(url);
+				// 해당 댓글 삭제
+				$('#tblReply tr').each(function(index, tr){
+					if($(this).find('td:eq(0)').text() == cNum){
+						$(this).remove();
+					}
+				});
 				// alert
 				$('#alertTitle').text('댓글 삭제');
 				$('#lblAlert').text('댓글이 삭제되었습니다.');
@@ -331,7 +329,7 @@ $(document)
 
 	return false;
 })
-// 게시물 수정
+// 게시물 수정 버튼 클릭
 .on('click', '#btnUpdate', function(){
 	console.log('수정 버튼 클릭');
 	// 모달창으로 게시글 수정
@@ -339,6 +337,7 @@ $(document)
 	$('#postContents').val($('#contents').text());
 	$('#updateModal').modal('show');
 })
+// 게시물 수정 기능
 .on('click', '#btnUpdateComplete', function(){
 	var update = {pNum:link, title:$('#postTitle').val(), contents:$('#postContents').val()};
 	$.ajax({
@@ -356,6 +355,43 @@ $(document)
 			alert('Update error');
 		}
 	});
+	return false;
+})
+// 댓글 수정 클릭
+.on('click', '.updateCmt', function(){
+	var writer = $(this).parent().siblings('.writer').text();
+	var modalTitle = '댓글 수정';
+	//console.log('${userid} ' + writer);
+	if('${userid}' == writer){
+		var txt = $(this).parent().siblings('textarea');
+		
+		$(this).parent('.cmtAbout').html(cmtMenu2);
+		// 수정 가능 상태로 전환
+		txt.attr('readonly', false);
+		// 댓글의 마지막으로 커서 focus
+		txt.focus();
+		txt[0].setSelectionRange(txt.val().length, txt.val().length);
+	} else {
+		alertModal(modalTitle, '작성자가 아닙니다.');
+	}
+	
+	return false;
+})
+// 수정 중인 댓글이 아닌 다른 곳에 focus 되는 경우 수정 불가 상태로 전환
+.on('focusout', '.cmtTxt', function(){
+	if($(this).prop('readonly') == '' || $(this).prop('readonly') == false){
+		console.log('focusout');
+		$(this).attr('readonly', true);
+		$(this).siblings('.cmtAbout').html(cmtMenu1);
+	}
+	
+	return false;
+})
+// 댓글 수정 완료
+.on('click', '.cmtComplete', function(){
+	$(this).parent('.cmtAbout').html(cmtMenu1);
+	
+	
 	return false;
 })
 </script>

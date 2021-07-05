@@ -43,6 +43,10 @@ textarea {
 .hidCnum {
 	display: none;
 }
+.AboutCmt {
+	display: inline;
+	margin-left:
+}
 .reply {
 	text-align: left;
 	width: 100%;
@@ -97,9 +101,6 @@ textarea {
 	margin-left: 9px;
 	margin-right: 0;
 }
-/* #btnReport{
-	margin-left: 0;
-} */
 .tdView {
 	width: 100%;
 }
@@ -113,9 +114,14 @@ textarea {
 }
 .cmtAbout {
 	min-width: 60px;
+	display: inline;
+	margin-left: 10px;
 }
 .updateCmt, .deleteCmt, .reCmt {
 	margin-left: 10px;
+	color: #0000ff;
+}
+.cmtComplete {
 	color: #0000ff;
 }
 #postContents {

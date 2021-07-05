@@ -680,8 +680,9 @@ public class HomeController {
 		System.out.println(uid);
 		String content = hashmap.get("contents");
 		System.out.println(hashmap.get("contents"));
+		// 댓글 추가
 		dao.psgInsertCmt(pNum, uid, content);
-		
+		// 추가한 댓글 조회
 		psgBViewCmt cmt = dao.psgAddCmtSelect();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("cmtnum",cmt.getCmtnum());
