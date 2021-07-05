@@ -300,6 +300,10 @@ public class HomeController {
 	      return "PJH_notice";
 	   }
 	*/
+	@RequestMapping("/CompanyWrite") //회사소개 수정
+	   public String CompanyWrite() {
+	      return "PJH_CompanyWrite";
+	   }
 	@RequestMapping("/jusoPopup") //주소 팝업
 	   public String jusoPopup() {
 	      return "jusoPopup";
@@ -570,7 +574,26 @@ public class HomeController {
             }
         return result;
        }
-
+	
+	@ResponseBody // 회사 소개 수정
+	@RequestMapping(value="/Company_write.do",method=RequestMethod.POST, produces="application/json")
+	public String Company_write(String contents,HttpServletRequest request, HttpSession session){
+		
+		String Company_write = request.getParameter("contents");
+		System.out.println(Company_write);
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		dao.pjhCompany(Company_write);
+		
+		return "complete";
+	}
+	
+	@ResponseBody // 회사 소개 출력
+	@RequestMapping(value="/Company_list.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<PJH_Company> Company_list(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<PJH_Company> Company_list = dao.pjhCompanylist();
+		return Company_list;
+	}
 	
 	
 	
