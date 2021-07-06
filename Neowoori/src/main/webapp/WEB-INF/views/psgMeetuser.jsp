@@ -70,10 +70,19 @@
 			<a id=msg>쪽지 보내기</a>
 		</div>
 	</div>
+	<!--  팝업창 띄우고 위한 코드
+	<input type="button" value="팝업창" onclick="click_add();"><br>
+	-->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script type="text/javascript">
+/* function click_add(){
+	var url = "pop_message";
+	var name = "메시지";
+	var option = "width=600, height=600, left=100,top=50,location=no";
+	window.open(url,name,option)
+}; */
 $(document)
 .ready(function(){
 	let study_id = ${s_id};

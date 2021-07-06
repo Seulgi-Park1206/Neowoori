@@ -15,6 +15,7 @@
 <link rel="stylesheet" href="${path}/resources/psg/css/form.css" type="text/css">
 <link rel="stylesheet" href="${path}/resources/psg/css/postview.css" type="text/css">
 <body>
+	<!-- header -->
 	<jsp:include page="/module/nav.jsp" flush="false" />
 	<div class=form>
 		<a class=title>게시글 보기</a>
@@ -34,7 +35,7 @@
 				</tr>
 				<tr class=trContxt>
 					<td class=tdLeft>내용:</td>
-					<td class=tdCenter><textarea class=intext id=contents readonly>${post.post_contents}</textarea></td>
+					<td class=tdCenter><textarea class=intext id=content readonly>${post.post_contents}</textarea></td>
 				</tr>
 			</table>
 			<br>
@@ -52,11 +53,11 @@
 						<tr><td class=hidCnum>${c.cmtnum}</td>
 						<td class=tdView><label class="writer">${c.userid}</label>
 							<label> (${c.cmt_date})</label>
-							<!-- <div class=cmtAbout> -->
+							<div class=cmtAbout>
 								<a class=updateCmt>수정</a>
 								<a class=deleteCmt>삭제</a>
 								<a class=reCmt>댓글</a>
-							<!-- </div> -->
+							</div>
 							<textarea class=cmtTxt readonly>${c.cmt_contents}</textarea></td>
 						</tr>
 					</c:forEach>
@@ -72,7 +73,6 @@
 	</div>
 	<!-- 게시글 수정 modal -->
 	<div class="modal fade" id="updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <!-- <div class="modal-dialog modal-dialog-scrollable myscrollbar"> -->
 	  <div class="modal-dialog">
 	    <div class="modal-content">
 	      <div class="modal-header">
@@ -97,46 +97,12 @@
 	  </div>
 	</div>
 	<!-- alert -->
-	<div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<label class="modal-title" id=alertTitle></label>
-	      </div>
-	      <div class="modal-body">
-	        <label id=lblAlert></label>
-	      </div>
-	      <div class="modal-footer">
-	        <button class="btn btn-primary" data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<jsp:include page="/module/alertModal.jsp" flush="false" />
 	<!-- confirm -->
-	<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
-	  <div class="modal-dialog">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<label class="modal-title" id=confirmTitle></label>
-	      </div>
-	      <div class="modal-body">
-	      	<div class="mb-3">
-	          <label id=lblConfirm></label>
-	        </div>
-	      </div>
-	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnNo>취소</button>
-	        <button type="button" class="btn btn-primary" id=btnYes data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
-	<!-- <div class="alert alert-success d-flex align-items-center alert-dismissible" role="alert" id=alertSucceed>
-	  <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Success:"><use xlink:href="#check-circle-fill"/></svg>
-	  <div>
-	    수정이 완료되었습니다.
-	  </div>
-	</div> -->
+	<jsp:include page="/module/confirmModal.jsp" flush="false" />
+	<!-- 댓글 번호 -->
+	<input type=hidden id=hiddenCnum />
+	
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -145,10 +111,11 @@
 // 스터디 게시글 번호
 var link = window.location.pathname;
 link = link.split('/')[3];
-
+var cmtMenu1 = '<a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a>';
+var cmtMenu2 = '<a class=cmtComplete>수정완료</a>';
 // 스터디 게시판 목록으로 가기
 function goList(){
-	window.location="${path}/studypost/${s_num}";
+	window.location="${path}/meetView/${s_num}";
 }
 
 // 댓글 추가
@@ -159,10 +126,11 @@ function addComment(res){
 	result += res['cmtnum'];
 	result += '</td><td class=tdView><label class="writer">';
 	result += res['userid'];
-	result += ' (';
+	result += '</label><label> (';
 	result += res['cmtDate'];
-	result += ')</label><a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a>';
-	result += '<textarea class=cmtTxt readonly>';
+	result += ')</label><div class=cmtAbout>'
+	result += cmtMenu1;
+	result += '</div><textarea class=cmtTxt readonly>';
 	result += res['cmtContents'];
 	result += '</textarea></td></tr>';
 	console.log(result);
@@ -170,9 +138,53 @@ function addComment(res){
 	return result;
 }
 
+// 대댓글 쓰기
+function writeReComment(){
+	var result = '<div class=replyWrite>';
+	result += '<textarea class=txtWrite rows=2 placeholder="댓글을 입력하세요."></textarea>';
+	result += '<input type=button class="btn1 btn btn-outline-primary" id=btnReCmt value="댓글 쓰기" />';
+	result += '</div><div id="test_cnt">(0 / 100)</div>';
+	
+	return result;
+}
+
+// 대댓글 추가
+function addReComment(){
+	//console.log(res);
+	//console.log(res['userid']);
+	var result = '<a class=hidPCnum>PCmtNum </a><a class=hidReCnum>Cmt Num</a>';
+	result += '<div class=tdView><label class="writer">userid';
+	result += '</label><label> (reCmtDate';
+	result += ')</label><div class=cmtAbout>'
+	result += cmtMenu1;
+	result += '</div><textarea class=cmtTxt readonly>reCmtContents';
+	result += '</textarea></div></div>';
+	console.log(result);
+	
+	return result;
+}
+/* function addReComment(res){
+	//console.log(res);
+	//console.log(res['userid']);
+	var result = '<div class=hidPCnum><div class=hidReCnum>';
+	result += res['cmtnum'];
+	result += '</div><div class=tdView><label class="writer">';
+	result += res['userid'];
+	result += '</label><label> (';
+	result += res['cmtDate'];
+	result += ')</label><div class=cmtAbout>'
+	result += cmtMenu1;
+	result += '</div><textarea class=cmtTxt readonly>';
+	result += res['cmtContents'];
+	result += '</textarea></div></div>';
+	console.log(result);
+	
+	return result;
+} */
+
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
-	var contents = $('#contents');
+	var contents = $('#content');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
     contents.css('height', contentsHeight);
@@ -183,8 +195,16 @@ function adjustModalHeight() {
 	var contents = $('#postContents');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
-    console.log('postContents: ' + contentsHeight);
+    //console.log('postContents: ' + contentsHeight);
     contents.css('height', contentsHeight);
+}
+
+// 대댓글 div 댓글 개수에 따라 높이 자동 조절
+function adjustDivReCmtHeight(div) {
+	div[0].style.height = 'auto';
+    var divHeight = div.prop('scrollHeight');
+    console.log('divCmt: ' + divHeight);
+    div.css('height', divHeight);
 }
 
 // 댓글 줄바꿈 체크
@@ -206,7 +226,7 @@ function clearCmt() {
 	$('#test_cnt').html("(0 / 100)");
 }
 
-// alert Modal show
+/* // alert Modal show
 function alertModal(title, comment){
 	$('#alertTitle').text(title);
 	$('#lblAlert').text(comment);
@@ -218,13 +238,13 @@ function confirmModal(title, comment){
 	$('#confirmTitle').text(title);
 	$('#lblConfirm').text(comment);
 	$('#confirmModal').modal('show');
-}
+} */
 
 $(document)
 .ready(function(){
 	console.log(link);
 	var uid = '${userid}';
-	uid = 'human1';
+	uid='human1';
 	if($('#writer').text() == uid) {
 		$('#btnUpdate, #btnDelete').show();
 	}
@@ -271,9 +291,11 @@ $(document)
 })
 // 댓글 삭제 클릭
 .on('click', '.deleteCmt', function(){
-	var writer = $(this).siblings('.writer').text();
+	var writer = $(this).parent().siblings('.writer').text();
 	var modalTitle = '댓글 삭제';
+	//console.log('댓글 삭제: ${userid} /' + writer);
 	if('${userid}' == writer){
+		$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
 		confirmModal(modalTitle, '정말 댓글을 삭제하시겠습니까?');
 	} else {
 		alertModal(modalTitle, '작성자가 아닙니다.');
@@ -293,21 +315,18 @@ $(document)
 			method:'post',
 			dataType:'text',
 			success:function(result){
-				console.log(result);
-				$('#lblAlert').text('Succeed to delete (no.'+link+' post)');
-				$('#alertTitle').text('게시물 삭제');
-				$('#alertModal').modal('show');
+				alertModal(th, 'Succeed to delete (no.'+link+' post)');
 				goList();
 			},
 			error:function(){
 				alert('Post delete error');
 			}
-		});		
+		});	
 	} else {
-		let cNum = $(this).parents('tr').find('td:eq(0)').text();
-		console.log(cNum);
+		let cNum = $('#hiddenCnum').text();
+		//console.log('cNum: '+cNum);
 		let delCmt = {postNum:link, coNum:cNum};
-		console.log(delCmt);
+		//console.log(delCmt);
 		$.ajax({
 			url:'${path}/deleteCmt.do',
 			data:JSON.stringify(delCmt),
@@ -315,13 +334,14 @@ $(document)
 			method:'post',
 			dataType:'text',
 			success:function(result){
-				// 댓글 부분만 새로 불러오기
-				var url = '${path}/postView/' + link + ' #reply';
-				$('#reply').load(url);
+				// 해당 댓글 삭제
+				$('#tblReply tr').each(function(index, tr){
+					if($(this).find('td:eq(0)').text() == cNum){
+						$(this).remove();
+					}
+				});
 				// alert
-				$('#alertTitle').text('댓글 삭제');
-				$('#lblAlert').text('댓글이 삭제되었습니다.');
-				$('#alertModal').modal('show');
+				alertModal(th, '댓글이 삭제되었습니다.');
 			},
 			error:function(){
 				alert('Cmt delete error');
@@ -331,14 +351,15 @@ $(document)
 
 	return false;
 })
-// 게시물 수정
+// 게시물 수정 버튼 클릭
 .on('click', '#btnUpdate', function(){
 	console.log('수정 버튼 클릭');
 	// 모달창으로 게시글 수정
 	$('#postTitle').val($('#title').text());
-	$('#postContents').val($('#contents').text());
+	$('#postContents').val($('#content').text());
 	$('#updateModal').modal('show');
 })
+// 게시물 수정 기능
 .on('click', '#btnUpdateComplete', function(){
 	var update = {pNum:link, title:$('#postTitle').val(), contents:$('#postContents').val()};
 	$.ajax({
@@ -349,13 +370,91 @@ $(document)
 		success:function(){
 			alertModal('게시물 수정', '수정이 완료되었습니다.');
 			$('#title').text($('#postTitle').val());
-			$('#contents').text($('#postContents').val());
+			$('#content').text($('#postContents').val());
 			adjustModalHeight();
 		},
 		error:function(){
 			alert('Update error');
 		}
 	});
+	
+	return false;
+})
+// 댓글 수정 클릭
+.on('click', '.updateCmt', function(){
+	var flag = false;
+	var writer = $(this).parent().siblings('.writer').text();
+	console.log('writer: '+writer);
+	var modalTitle = '댓글 수정';
+	// 수정 중인 댓글 체크
+	$('.cmtAbout').each(function(index, upCmt){
+		console.log(index+'-children: '+$(this).children(':first').text());
+		if($(this).children(':first').text() == '수정완료'){ // 수정 중인 댓글 있음
+			flag = true;
+			alertModal(modalTitle, '수정 중인 댓글이 있습니다.');
+			return false;
+		}
+	});
+	if(!flag){
+		console.log('${userid} ' + writer);
+		if('${userid}' == writer){
+			// 수정 삭제 댓글 -> 수정완료
+			var txt = $(this).parent().siblings('textarea');
+			$(this).parent('.cmtAbout').html(cmtMenu2);
+			// 수정 가능 상태로 전환
+			txt.attr('readonly', false);
+			// 댓글의 마지막으로 커서 focus
+			txt.focus();
+			//txt[0].setSelectionRange(txt.val().length, txt.val().length);
+		} else {
+			alertModal(modalTitle, '작성자가 아닙니다.');
+		}
+	}
+		
+	return false;
+})
+// 댓글 수정 완료 클릭
+.on('click', '.cmtComplete', function(){
+	console.log('수정 완료 클릭');
+	// 수정한 댓글이 있는 textarea
+	var txt = $(this).parent().siblings('textarea');
+	// 수정한 댓글 번호
+	$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
+	// 수정한 댓글 정보
+	var cmt = {pNum:link, cNum:$('#hiddenCnum').text(), contents:txt.val().trim()};
+	console.log('cmt: '+cmt);
+	$.ajax({
+		url:'${path}/updateCmt.do',
+		data:JSON.stringify(cmt),
+		contentType:'application/json; charset=UTF-8',
+		method:'post',
+		success:function(){
+			alertModal('댓글 수정', '수정이 완료되었습니다.');
+			// 수정완료 -> 수정 삭제 댓글
+			txt.siblings('.cmtAbout').html(cmtMenu1);
+			txt.attr('readonly', true);
+		},
+		error:function(){
+			alert('Update error');
+		}
+	});
+	
+	return false;
+})
+// 댓글 클릭(대댓글 쓰기) 클릭
+.on('click', '.reCmt', function(){
+	// 대댓글 div가 없으면 1, 있으면 2
+	var divCount = $(this).parents('td div').length;
+	console.log('divCount: '+divCount);
+	if(divCount == 1){	// 대댓글 없음
+		var td = $(this).parents('td');
+		td.append('<div class=divReCmtWhole></div>');
+		var reCmtWhole = td.children('.divReCmtWhole');
+		reCmtWhole.append($('.arrow'));
+		reCmtWhole.append('<div class=divReCmt></div>');
+		reCmtWhole.children('.divReCmt').html(addReComment());
+	}
+	//adjustDivReCmtHeight(div)
 	return false;
 })
 </script>

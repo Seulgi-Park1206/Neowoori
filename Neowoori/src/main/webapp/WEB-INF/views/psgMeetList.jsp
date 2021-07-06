@@ -259,7 +259,7 @@ $(document)
 })
 .on('click','.tblBlock',function(){
 	var s_num = $(this).find('input').val();
-	location.href = '${path}/meetView/'+s_num
+	location.href = '${path}/meetadmin/'+s_num
 })
 </script>
 </html>

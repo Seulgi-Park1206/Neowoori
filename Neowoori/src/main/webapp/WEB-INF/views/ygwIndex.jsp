@@ -50,7 +50,7 @@
 </div>
 <br>
 <div>
-<div id="map" style="width:750px;height:350px; margin:0 auto; text-align:center; display:none;" ></div>
+<div id="map" style="width:750px;height:550px; margin:0 auto;display:none;" ></div>
 </div>
 
 
@@ -169,6 +169,20 @@ function makeOutListener(infowindow) {
     return function() {
         infowindow.close();
     };
+}
+
+function resizeMap() {
+    var mapContainer = document.getElementById('map');
+    mapContainer.style.width = '750px';
+    mapContainer.style.height = '550px'; 
+}
+
+function relayout() {    
+    
+    // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
+    // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다 
+    // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
+    map.relayout();
 }
 
 function btnTest(){
@@ -439,6 +453,7 @@ function btnSmClick(who){
 	if (who==7) $("#dropdownMenuLink2").text($("#btnSm7").text());
 	if (who==8) $('#dropdownMenuLink2').text("상세 카테고리");
 	$("#map").show();
+	relayout();
 //	console.log($("#smSel").val())
 }
 </script>

@@ -30,12 +30,12 @@
 	
 		<!-- 처음 유저상태 정보가져오기 -->
 	<select id="pjhStatelist" resultType="com.neowoori.app.BMembersState">
-		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum OFFSET 0 ROWS FETCH FIRST 5 ROWS ONLY
+		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum OFFSET 0 ROWS FETCH FIRST 10 ROWS ONLY
 	</select>
 	
 	<!-- 이후 유저상태 정보가져오기 -->
 	<select id="pjhpaging" resultType="com.neowoori.app.BMembersState">
-		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum OFFSET #{param1} ROWS FETCH FIRST 5 ROWS ONLY
+		select s.unum, m.unick, s.lastjoin from state s, members m where s.unum = m.unum ORDER BY s.unum OFFSET #{param1} ROWS FETCH FIRST 10 ROWS ONLY
 	</select>
 	
 	<!-- 유저상태 카운트 -->
@@ -143,5 +143,20 @@
 	<delete id="pjhPostdelete">
 		delete study_post where postnum = #{param1}
 	</delete>
+	
+	<!-- 유저관리 게시물 삭제 -->
+	<delete id="pjhUserdelete">
+		delete members where unum = #{param1}
+	</delete>
+	
+	<!-- 회사 소개 수정 -->
+	<update id="pjhCompany">
+		update Company set contents=#{param1} where c_num = 1
+	</update>
+	
+	<!-- (처음)내 가입한 스터디 가져오기 -->
+	<select id="pjhCompanylist" resultType="com.neowoori.app.PJH_Company">
+		select * from Company
+ 	</select>
 	
 </mapper>

@@ -7,6 +7,8 @@ public interface IDaopjh {
 	
 	/*-----유저 정보 IDao (adminpeag)-----*/
 	
+	public void pjhUserdelete(int usernum); // 게시물 삭제
+	
 	public ArrayList<BMembers> pjhmemberlist(); //유저 정보 가져오기
 	
 	public ArrayList<BMembers> pjhmemberlist1(int unum); //유저번호로 유저 정보 가져오기
@@ -90,5 +92,13 @@ public interface IDaopjh {
 	public ArrayList<BMeetingStudy> pjhMeetingStudy(int id); // 내 스터디 리스트 가져오기
 	
 	/*-----가입&내 스터디 리스트 IDao (MeetList)-----*/
+	
+	/*-----회사 소개 수정 IDao (Company)-----*/
+	
+	public void pjhCompany(String contents); // 내 스터디 리스트 가져오기
+	
+	public ArrayList<PJH_Company> pjhCompanylist();
+	
+	/*-----회사 소개 수정 IDao (Company)-----*/
 }
 
