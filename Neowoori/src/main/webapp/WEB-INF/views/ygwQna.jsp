@@ -57,7 +57,7 @@ th, td {
 </c:forEach>
 </table>
 <div style="text-align:right;">
-	<input type=button value=새글쓰기 onclick="document.location='http://localhost:8080/app/qnawrite'">
+	<input id=qnanewpost type=button value=새글쓰기  onclick="document.location='http://localhost:8080/app/qnawrite'">
 </div>
 <div class=pagenumber>
 	<a href= # value=previous name=page>이전</a><div id="divPage"><span id="paging">${paging}</span></div><a href= # value=next name=page>다음</a>
@@ -69,6 +69,9 @@ th, td {
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+let prePageNum=1; //이전 페이지 번호
+let lastPage="${lastPage}"; 
+let userid='${userid}';
 
 $(document)
 .ready(function(){
@@ -169,17 +172,23 @@ $(document)
 })
 
 
-.on('click','#tbl1 tr',function(){
+.on('click','#tbl1 tr:not(:first)',function(){
 	let qnapostid=$(this).find("td:eq(0)").find("input[name=qnapostid]").val();
-	//alert("qnapostid : "+qnapostid);
 	document.location="http://localhost:8080/app/qna/"+qnapostid;
 	
 	//return false;
 })
 
+.on('click','#test',function(){
+	alert("userid"+userid+"dddddddddd");
+	//alert("세션값"+a);
+})
 
-let prePageNum=1; //이전 페이지 번호
-let lastPage="${lastPage}"; 
+if(userid==""){
+	$('#qnanewpost').hide();
+}
+
+
 
 //var faqcnt='${faqcnt}';
 

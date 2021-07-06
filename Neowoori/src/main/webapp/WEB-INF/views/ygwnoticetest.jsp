@@ -38,7 +38,7 @@
 	    <button type="button" class="btn btn-outline-secondary">5</button>
 	  	</div>-->
 	  	<div style="text-align:right;">
-	  	<input type=button value="새글쓰기" onclick="document.location='http://localhost:8080/app/noticewrite'">
+	  	<input id=noticenewpost type=button value="새글쓰기" onclick="document.location='http://localhost:8080/app/noticewrite'">
 	  	</div>
 	 <div class=pagenumber style="text-align:center;">
 	<a href= # value=previous name=page>이전</a>${paging}<a href= # value=next name=page>다음</a>
@@ -51,8 +51,11 @@
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
-$(document)
+let userid='${userid}';
+let prePageNum=1; //이전 페이지 번호
+let lastPage="${lastPage}"; 
 
+$(document)
 .ready(function(){
 	   $('.accordion-button').hide();
 	   $(".accordion-button").slice(0, 10).show();
@@ -100,7 +103,10 @@ $(document)
    }
 })
 
-let prePageNum=1; //이전 페이지 번호
-let lastPage="${lastPage}"; 
+//notice 공지사항 작성 버튼 => 로그인 id human 아니면 버튼 숨김
+if(userid!='human'){ 
+	$('#noticenewpost').hide();
+}
+
 </script>
 </html>

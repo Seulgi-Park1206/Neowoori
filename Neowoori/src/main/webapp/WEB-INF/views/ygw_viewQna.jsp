@@ -45,40 +45,42 @@ table,td{
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
-$(document)
-.on('click','#btnUpdate',function(){
-	let qnapostnum=$('#viewqnatable').find('td:eq(1)').text();
-	let id=$("#viewqnatable").find('td:eq(5)').text();
-	//document.location="http://localhost:8080/edu/modify/"+bId+"/"+bName;
-
-	return false;
-})
-/*
-.on('click','#btnDelete',function(){
-	var bId=$('#viewtable').find('td:eq(1)').text();
-	var seldelete=confirm("정말 삭제하시겠습니까?");
-	
-	if(seldelete==true){
-		document.location="http://localhost:8080/edu/delete/"+bId;	
-	}
-	else{
-		return false;	
-	}
-})*/
-/*
-.on('click','#btnNew',function(){
-	document.location="http://localhost:8080/edu/newpost";
-	return false;
-})
-*/
-
-
 <%
-	String writer=(String)session.getAttribute("userid");
+String writer=(String)session.getAttribute("userid");
 %>
 
 let dbwriter='${qnalist.writer}';
 let writer= '<%=writer%>';
+
+$(document)
+.on('click','#btnUpdate',function(){
+	let qnapostnum=$('#viewqnatable').find('td:eq(1)').text();
+	let qnawriter=$("#viewqnatable").find('td:eq(5)').text();
+	document.location="http://localhost:8080/app/qnamodify/"+qnapostnum+"/"+qnawriter;
+
+	return false;
+})
+
+.on('click','#btnDelete',function(){
+	let qnapostnum=$('#viewqnatable').find('td:eq(1)').text();
+	let seldelete=confirm("정말 삭제하시겠습니까?");
+	
+	if(seldelete==true){
+		document.location="http://localhost:8080/app/qnadelete/"+qnapostnum;	
+	}
+	else{
+		return false;	
+	}
+})
+
+.on('click','#btnNew',function(){
+	document.location="http://localhost:8080/edu/newpost";
+	return false;
+})
+
+
+
+
 
 if(writer==null || writer!=dbwriter){
 	$('#btnUpdate').hide();

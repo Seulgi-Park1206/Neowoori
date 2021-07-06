@@ -24,6 +24,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+
+
+
 /**
  * Handles requests for the application home page.
  */
@@ -141,7 +145,7 @@ public class HomeController {
 	      return "ygwQna";
 	}
 	
-	@RequestMapping("/qna/{qnapostid}") //자주 묻는 질문
+	@RequestMapping("/qna/{qnapostid}") //qna
 	   public String viewQna(@PathVariable int qnapostid,Model model) {
 		System.out.println("qnaid 값 : "+qnapostid);
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
@@ -152,6 +156,27 @@ public class HomeController {
 	}
 	
 	// qna 수정
+	@RequestMapping("/qnamodify/{qnapostnum}/{qnawriter}")
+	public String modify(@PathVariable int qnapostnum,@PathVariable String qnawriter, Model model) {
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		BFaq viewqna=dao.viewqna(qnapostnum);
+		model.addAttribute("modifyqna",viewqna);
+		
+		return "ygwupdateQna";
+	}
+	
+	@RequestMapping(value="/modifyqna",method=RequestMethod.POST)
+	public String modifymethod(HttpServletRequest request,Model model) {
+		
+		int qnapostnum=Integer.parseInt(request.getParameter("qnapostnum"));
+		String qnatitle=request.getParameter("qnatitle");
+		String qnacontent=request.getParameter("qnacontent");
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		dao.modifyqna(qnatitle,qnacontent,qnapostnum);
+		return "redirect:/qna/"+qnapostnum;
+	}
+	
+	
 		/*
 		@RequestMapping("/modify/{qnapostid}/{id}")
 		public String modify(@PathVariable int qnapostid,@PathVariable String id,Model model) {
@@ -162,7 +187,16 @@ public class HomeController {
 		}
 		*/
 	
-	//qna 삭제
+//	//qna 삭제
+	@RequestMapping("/qnadelete/{qnapostnum}") //qna 삭제
+	   public String deleteQna(@PathVariable int qnapostnum,Model model) {
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		dao.deleteqna(qnapostnum);
+		
+	    return "redirect:/qna";
+	}
+	
+	
 	
 		@RequestMapping(value="/Qnaserver",method=RequestMethod.POST) //Qna 게시판 글쓰기
 		   public String faqserver(HttpServletRequest request,Model model,HttpSession session) {
