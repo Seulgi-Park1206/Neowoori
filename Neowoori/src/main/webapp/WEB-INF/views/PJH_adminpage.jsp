@@ -32,7 +32,7 @@
       <a class="nav-link" href="#">신고관리</a>
     </li>
     <li class="nav-item">
-      <a class="nav-link" href="#">문의사항</a>
+      <a class="nav-link" href="#" id=btnradio3>문의사항</a>
     </li>
   </ul>
 </div>
@@ -201,11 +201,10 @@ $(document)
 	// 클릭 한 유저의 NO를 가져와서 label에 넣기(수정해야됨)
 	
 })
-
-
 /*---------------------------------페이징 클릭시------------------------------------------*/
 
-/*---------------------------------팝업창 띄우는곳------------------------------------------*/
+
+/*---------------------------------유저 관리 팝업창 띄우는곳------------------------------------------*/
 .on('click','.list tr',function(){
 	$('.close').remove();
 	$('.tableLeft').remove();
@@ -238,6 +237,53 @@ $(document)
 	
 })
 /*---------------------------------팝업창 띄우는곳------------------------------------------*/
+
+
+/*---------------------------------QnA 띄우는곳------------------------------------------*/
+
+
+.on('click','#btnradio3',function(){
+	$('.usermodal').remove(); //지우면서 다시 리로딩
+ 	$('.test2').remove();
+	$.ajax({
+        url:'Qnalist.do'
+        , method : 'POST'
+        , data: {}
+        , contentType : 'application/json; charset=UTF-8'
+        , dataType : 'json'
+        , success :
+        	function output(resp){
+	        	var result = '';
+		        result +='<thead id=list_th>'
+		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
+				+"<th><span>마지막 접속</span></th>"
+		        +"</th>"
+		        result +='<tbody id=list></tbody>'
+		        $.each(resp,function(index,item){
+		        	//data-toggle="modal" data-target="#myModal == 파업창 띄우기
+		        	 result +='<tr class=usermodal data-toggle="modal" data-target="#myModal"><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["uNum"]+'></td>'
+		        	 result +='<td >'+item["uNum"]+'</td>'
+		        	 result +='<td >'+item["uNick"]+'</td>'
+		        	 result +='<td >'+item["lastJoin"]+'</td>'
+		        	 result +='<input type=hidden id=unummodal value="'+item["uNum"]+'">'
+		        })
+		        result +='</tbody>'
+		        result +='</thead>'
+		        $('.list').append(result)
+        	}
+	})
+	
+})
+
+
+
+
+
+
+
+
+
+
 
 
 

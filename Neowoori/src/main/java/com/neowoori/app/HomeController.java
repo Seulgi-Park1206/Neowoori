@@ -451,6 +451,13 @@ public class HomeController {
             }
         return result;
        }
+	@ResponseBody // 관리자 게시판(QnA)
+	@RequestMapping(value="/Qnalist.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BMembersState> QnA_list(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BMembersState> user_list = dao.pjhStatelist();
+		return user_list;
+	}
 	
 	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
 	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
