@@ -93,14 +93,130 @@ public class HomeController {
 		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
 		  ArrayList<BAdminPost> alData=dao.listNoticeDao();
 		  model.addAttribute("alData",alData);
+		  String paging="";
+		  float noticecnt=dao.noticepostcount();
+		  for(int i=0; i<Math.ceil(noticecnt/10); i++) {
+			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+		  }
+		  model.addAttribute("paging",paging);
+		  model.addAttribute("lastpage",Math.ceil(noticecnt/10));
+		  
 	      return "ygwnoticetest";
 	   }
 	
-	@RequestMapping("/qnawrite") //QnA글쓰기
-	   public String qnawrite() {
-	      return "ygwQnawrite";
-	   }
+	/*
+	@RequestMapping("/faqserver") //자주 묻는 질문 검색 페이징
+	@ResponseBody
+	   public void faqserver(String category, String keyword) {
+		  //String category=request.getParameter("category");
+		  //String keyword=request.getParameter("keyword");
+		System.out.println("category : "+category);
+		System.out.println("keyword : "+keyword);
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  dao.categorySelResultCnt(category,keyword);
+	      //return "ygwFaw";
+	}*/
 	
+	@RequestMapping("/qnawrite") //자주 묻는 질문
+	   public String Qnawrite() {
+	      return "ygw_Qnawrite";
+	}
+	
+	@RequestMapping("/qna") //자주 묻는 질문
+	   public String faq(Model model) {
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  ArrayList<BFaq> faqData=dao.listFaqDao(); //faq의 faqnum,faqtitle,faqcontent,faqdate 정보가져옴
+		  model.addAttribute("faqData",faqData);
+		  
+		  String paging="";
+		  float faqcnt=dao.faqpostcount(); //faq 게시글 총갯수 가져옴
+		  
+		  for(int i=0; i<Math.ceil(faqcnt/10); i++){
+			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+		  }
+		  
+		  model.addAttribute("paging",paging);
+		  model.addAttribute("lastPage",Math.ceil(faqcnt/10));
+		  
+	      return "ygwQna";
+	}
+	
+	@RequestMapping("/qna/{qnapostid}") //자주 묻는 질문
+	   public String viewQna(@PathVariable int qnapostid,Model model) {
+		System.out.println("qnaid 값 : "+qnapostid);
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		BFaq viewqna=dao.viewqna(qnapostid);
+		model.addAttribute("qnalist",viewqna);
+		
+	    return "ygw_viewQna";
+	}
+	
+	// qna 수정
+		/*
+		@RequestMapping("/modify/{qnapostid}/{id}")
+		public String modify(@PathVariable int qnapostid,@PathVariable String id,Model model) {
+			IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
+			//BDto data=dao.viewDao(bId);
+			//model.addAttribute("rec",data);
+			return "update";
+		}
+		*/
+	
+	//qna 삭제
+	
+		@RequestMapping(value="/Qnaserver",method=RequestMethod.POST) //Qna 게시판 글쓰기
+		   public String faqserver(HttpServletRequest request,Model model,HttpSession session) {
+		      String faqtitle=request.getParameter("faqTitle");
+		      String faqcontent=request.getParameter("faqContent");
+		      String writer=(String)session.getAttribute("userid");
+		      String state="답변대기중";
+		      String answer="";
+		      IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		      dao.writefaqDao(faqtitle,faqcontent,state,answer,writer);
+			return "redirect:/qna";
+		   }
+	
+/////////////////////////////////////////////검색 페이징///////////////////////////////////////////
+
+			float n = 0;
+
+			@RequestMapping("/faqserver2") // faq 검색 페이징
+			@ResponseBody
+			public ArrayList<BFaq> faqserver2(Model model, HttpServletRequest request) {
+				String category = request.getParameter("category");
+				String keyword = request.getParameter("keyword");
+				ArrayList<BFaq> faqSelResult = new ArrayList<BFaq>();
+				IDaoygw dao = sqlSession.getMapper(IDaoygw.class);
+
+				if (category != null && category != "") {
+					System.out.println("카테고리" + category);
+					if (keyword != null && keyword != "") {
+						System.out.println("키워드" + keyword);
+						faqSelResult = dao.categorySelResult(category, keyword);
+						System.out.println("사이즈 : " + faqSelResult.size());
+					}
+				}
+
+				return faqSelResult;
+			}
+	
+			@RequestMapping("/faqserver3") // 자주 묻는 질문
+			public String faqserver3() {
+
+				return "ygw_Faq";
+			}		
+			
+			/*
+			@ResponseBody // 내 스터디 게시판 count
+			@RequestMapping(value="/faqcount.do",method=RequestMethod.POST, produces="application/json")
+			public int faq_count(@RequestBody HashMap<String, String> study_count){
+				String s_num = String.valueOf(study_count.get("s_num"));
+				IDaoygw dao = sqlSession.getMapper(IDaoygw.class);
+				int post_count = dao.faqpostcount(Integer.parseInt(s_num));
+				return post_count;
+			}
+			*/
+			
 	@RequestMapping("/webstudy") //webRTC
 	   public String webstudy() {
 	      return "ygwWebstudy";
@@ -265,6 +381,7 @@ public class HomeController {
 		
 				
 	}
+	
 	/*---------------------------------------------*/
 	
 	//#############################################################
