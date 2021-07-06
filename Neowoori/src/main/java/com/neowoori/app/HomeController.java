@@ -802,34 +802,7 @@ public class HomeController {
 	   }
 	@RequestMapping("/search") //get
 	   public String search(Model model,HttpSession session) {
-		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-		//model.addAttribute("SearchData",dao.jsbListTypeOne());
-		//System.out.println(dao.jsbListTypeOne().getClass().getName());
-		//System.out.println(dao.jsbListTypeOne());
-		ArrayList<jsbBListStudy> list = dao.jsbListTypeOne();
-		//System.out.println(list.get(0).getmWhere());
-		//System.out.println(list.size());
-		//dd
-		//session.setAttribute("userid","human1");
-		//String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		
-		//BMembers mem = dao.jsbGetUser(sessionUserId);
-		//int mUserNum = mem.getuNum();
-		//System.out.println(mUserNum);
-		
-		for (int i=0;i<list.size();i++) {
-			String[] tempAddress=list.get(i).getmWhere().split(" ");
-			//String adrCounty=tempAddress[0];
-			//String adrCity=tempAddress[1];
-			list.get(i).setAdrCounty(tempAddress[0]);
-			list.get(i).setAdrCity(tempAddress[1]);
-			
-			//int meetUser=dao.jsbListFindMeetState(list.get(i).getmNum(), mUserNum);
-			//System.out.println(meetUser);
-			//list.get(i).setState(meetUser);
-			//System.out.println(list.get(i).getCnt());
-		}
-		model.addAttribute("SearchData",list);
+	
 	      return "jsbSearch";
 	   }
 	
@@ -990,6 +963,93 @@ public class HomeController {
 			return dao.jsbListFindMeetState(mNums,mUserNum);
 	   }
 	
+	@ResponseBody	/*Search study first page*/
+	@RequestMapping(value="/jsbSearchPageFirst.do", method=RequestMethod.POST,produces = "application/json")
+		public ArrayList<jsbBListStudy> jsbSearchPagefirst(String mNum, HttpServletRequest req,HttpSession session) {
+		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+		ArrayList<jsbBListStudy> list = dao.jsbListTypeOne();
+		for (int i=0;i<list.size();i++) {
+			String[] tempAddress=list.get(i).getmWhere().split(" ");
+			list.get(i).setAdrCounty(tempAddress[0]);
+			list.get(i).setAdrCity(tempAddress[1]);
+		}
+		return list;
+	   }
+		
+	@ResponseBody	/*검색버튼 눌렀다~*/
+	@RequestMapping(value="/jsbClickToSearchBtn.do", method=RequestMethod.POST,produces = "application/json")
+		public ArrayList<jsbBListStudy> jsbClickToSearchBtn(String menuLink1, String menuLink2, String searchWord, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			String cate1 = req.getParameter("menuLink1");
+			String cate2 = req.getParameter("menuLink2");
+			String word = req.getParameter("searchWord");
+			//System.out.println(word);
+			//System.out.println("실행1");
+			/*0*/
+			if (cate1.equals("") && cate2.equals("") && word.equals("")) {
+				//word만 입력시에
+					//System.out.println("word");
+					ArrayList<jsbBListStudy> list = dao.jsbListTypeOne();
+					for (int i=0;i<list.size();i++) {
+						String[] tempAddress=list.get(i).getmWhere().split(" ");
+						list.get(i).setAdrCounty(tempAddress[0]);
+						list.get(i).setAdrCity(tempAddress[1]);
+					};
+					return list;
+				}
+			/*1*/
+			if (cate1.equals("") && cate2.equals("") && !word.equals("")) {
+			//word만 입력시에
+				//System.out.println("word");
+				ArrayList<jsbBListStudy> list = dao.jsbListTypeTwo(word);
+				for (int i=0;i<list.size();i++) {
+					String[] tempAddress=list.get(i).getmWhere().split(" ");
+					list.get(i).setAdrCounty(tempAddress[0]);
+					list.get(i).setAdrCity(tempAddress[1]);
+				};
+				return list;
+			}
+			/*2*/
+			if (!cate1.equals("") && cate2.equals("") && word.equals("")) {
+			//cate1만 입력시에	
+				//System.out.println("cate1");
+				ArrayList<jsbBListStudy> list = dao.jsbListTypethr(cate1);
+				for (int i=0;i<list.size();i++) {
+					String[] tempAddress=list.get(i).getmWhere().split(" ");
+					list.get(i).setAdrCounty(tempAddress[0]);
+					list.get(i).setAdrCity(tempAddress[1]);
+				};
+				return list;
+			}
+			/*3*/
+			if (!cate1.equals("") && !cate2.equals("") && word.equals("")) {
+			//cate1,2만 입력시에
+				//System.out.println("cate1,cate2");
+				ArrayList<jsbBListStudy> list = dao.jsbListTypefor(cate1,cate2);
+				for (int i=0;i<list.size();i++) {
+					String[] tempAddress=list.get(i).getmWhere().split(" ");
+					list.get(i).setAdrCounty(tempAddress[0]);
+					list.get(i).setAdrCity(tempAddress[1]);
+				};
+				return list;
+			}
+			/*4*/
+			if (!cate1.equals("") && !cate2.equals("") && !word.equals("")) {
+			//모두다 입력되었다면
+				//System.out.println("all");
+				ArrayList<jsbBListStudy> list = dao.jsbListTypefiv(cate1,cate2,word);
+				for (int i=0;i<list.size();i++) {
+					String[] tempAddress=list.get(i).getmWhere().split(" ");
+					list.get(i).setAdrCounty(tempAddress[0]);
+					list.get(i).setAdrCity(tempAddress[1]);
+				};
+				return list;
+			}
+			return null;
+	   }
+		
+
+	
 	/*---------------------------------------------*/
 	
 	//#############################################################
@@ -1032,16 +1092,6 @@ public class HomeController {
 		
 		
 	/*---------------전석봉 영역----------------------*/
-
-			/*---------------------------------------------
-		   @ResponseBody
-		   @RequestMapping(value="/post.do", method=RequestMethod.POST,produces = "application/json")
-		   public ArrayList<BDto> reqList() {
-			   IDao_jsb dao=sqlSession.getMapper(IDao_jsb.class);
-			   ArrayList<BDto> alData=dao.getMap();
-			   return alData;
-		   }
-		   */
 }
 	
 
