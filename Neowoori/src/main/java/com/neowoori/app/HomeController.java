@@ -802,36 +802,7 @@ public class HomeController {
 	   }
 	@RequestMapping("/search") //get
 	   public String search(Model model,HttpSession session) {
-		/*
-		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-		//model.addAttribute("SearchData",dao.jsbListTypeOne());
-		//System.out.println(dao.jsbListTypeOne().getClass().getName());
-		//System.out.println(dao.jsbListTypeOne());
-		ArrayList<jsbBListStudy> list = dao.jsbListTypeOne();
-		//System.out.println(list.get(0).getmWhere());
-		//System.out.println(list.size());
-		//dd
-		//session.setAttribute("userid","human1");
-		//String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		
-		//BMembers mem = dao.jsbGetUser(sessionUserId);
-		//int mUserNum = mem.getuNum();
-		//System.out.println(mUserNum);
-		
-		for (int i=0;i<list.size();i++) {
-			String[] tempAddress=list.get(i).getmWhere().split(" ");
-			//String adrCounty=tempAddress[0];
-			//String adrCity=tempAddress[1];
-			list.get(i).setAdrCounty(tempAddress[0]);
-			list.get(i).setAdrCity(tempAddress[1]);
-			
-			//int meetUser=dao.jsbListFindMeetState(list.get(i).getmNum(), mUserNum);
-			//System.out.println(meetUser);
-			//list.get(i).setState(meetUser);
-			//System.out.println(list.get(i).getCnt());
-		}
-		model.addAttribute("SearchData",list);
-		*/
+	
 	      return "jsbSearch";
 	   }
 	
@@ -1074,9 +1045,7 @@ public class HomeController {
 				};
 				return list;
 			}
-			
 			return null;
-			
 	   }
 		
 
