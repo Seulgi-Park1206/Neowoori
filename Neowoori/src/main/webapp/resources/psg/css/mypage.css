@@ -48,7 +48,7 @@ tr {
 #yesNo {
 	color: red;
 }
-.btn btn-outline-primary {
+.btn{
 	/* width: 100%;
 	height: 10%;
 	margin-top: 25px; */
@@ -61,7 +61,4 @@ tr {
 	.tdCheck {
 		margin-left: 0;
 	}
-    .btn btn-outline-primary {
-    	font-size: 17px;
-    }
 }

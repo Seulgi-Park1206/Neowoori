@@ -754,7 +754,6 @@ public class HomeController {
 	public String meetAdmin(@PathVariable int study_id, Model model) {
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		System.out.println(study_id);
-		System.out.println(dao.psgStudyInfo(study_id));
 		model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
 		
 		return "psgMeetadmin";

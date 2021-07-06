@@ -35,7 +35,7 @@ nav {
 	margin: 0 15px;
 	color: #000000;
 }
-/* 모바일에서도 더 줄이긴 해야할듯ㄴ */
+/* 모바일에서도 더 줄이긴 해야할듯 */
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
     .class-main {
     	margin: 15px 0;
@@ -44,14 +44,21 @@ nav {
     	height: 80px;
     }
     .logo {
-    	width: 100%;
+    	width: 80%;
     }
     nav {
     	margin-top: 15px;
-        width: 100%;
+        width: 80%;
+        margin: 0 10%;
         text-align: center;
+        height: 55px;
     }
-    .link {
+    .link, .linklog {
         font-size: 15px;    
     }
+}
+@media (max-width:768px){ /*가로 너비가 768px 이하일 때 아래 스타일 적용*/
+	*, div {
+		font-size: 11px;
+	}
 }
