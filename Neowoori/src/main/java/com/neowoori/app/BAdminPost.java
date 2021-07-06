@@ -5,12 +5,12 @@ public class BAdminPost {
 	String posttype;
 	String title;
 	String admin_contents;
-	int admin_date;
+	String admin_date;
 	
 	public BAdminPost() {
 		//super();
 	}
-	public BAdminPost(int postnum, String posttype, String title, String admin_contents, int admin_date) {
+	public BAdminPost(int postnum, String posttype, String title, String admin_contents, String admin_date) {
 		//super();
 		this.postnum = postnum;
 		this.posttype = posttype;
@@ -42,10 +42,10 @@ public class BAdminPost {
 	public void setAdmin_contents(String admin_contents) {
 		this.admin_contents = admin_contents;
 	}
-	public int getAdmin_date() {
+	public String getAdmin_date() {
 		return admin_date;
 	}
-	public void setAdmin_date(int admin_date) {
+	public void setAdmin_date(String admin_date) {
 		this.admin_date = admin_date;
 	}
 }
