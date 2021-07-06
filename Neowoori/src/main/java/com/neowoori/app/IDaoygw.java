@@ -17,5 +17,7 @@ public interface IDaoygw {
 	public ArrayList<BFaq> categorySelResult(String category,String keyword);
 	public float categorySelResultCnt(String category,String keyword);
 	public BFaq viewqna(int postnumber);
+	public void deleteqna(int qnapostnumber);
+	public void modifyqna(String qnatitle, String qnacontent,int qnapostnumber);
 	
 }

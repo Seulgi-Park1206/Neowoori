@@ -46,6 +46,15 @@
 		select faqnum,faqtitle,faqcontent,faqdate,state,answer,writer from faq order by faqdate desc
 	</select>
 	
+	<!-- faq 게시물 삭제 -->
+	<delete id="deleteqna">
+		delete from faq where faqnum=#{param1}
+	</delete>
+	
+	<update id="modifyqna">
+		update faq set faqtitle=#{param1}, faqcontent=#{param2}, faqdate=TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi') where faqnum=#{param3}
+	</update>
+	
 	<!--  faq 게시글 갯수--> 
 	<select id="faqpostcount" resultType="Float">
 		select count(*) from faq

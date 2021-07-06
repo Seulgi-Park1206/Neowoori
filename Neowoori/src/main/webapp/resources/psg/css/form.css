@@ -2,6 +2,9 @@
 * {
     box-sizing: border-box;
 }
+html {
+	margin: 0;
+}
 .form {
 	padding: 5px;
 	margin-top: 5px;
@@ -53,21 +56,33 @@ td {
 	border-left: 1px solid gray;
 }
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
+    * {
+		font-size: 13px;
+	}
     .form {
-        width: 95%;
+        width: 90%;
     }
     .title {
-    	font-size: 25px;
+    	font-size: 20px;
     }
     .contents {
 		width: 90%;
-		font-size: 17px;
+		font-size: 15px;
 	}
 	.btnDiv {
     	margin: 25px 3px 0 0;
     }
     .btn{
-    	font-size: 17px;
+    	font-size: 15px;
+    	margin: 0 0 0 4px;
+    }
+}
+@media (max-width:768px){ /*가로 너비가 768px 이하일 때 아래 스타일 적용*/
+	*, textarea, div {
+		font-size: 11px;
+	}
+	.btn{
+    	font-size: 11px;
     	margin: 0 0 0 4px;
     }
 }

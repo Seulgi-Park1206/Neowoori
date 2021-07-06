@@ -5,9 +5,9 @@ import java.util.ArrayList;
 
 public interface IDaopjh {
 	
-	/*-----유저 정보 IDao (adminpeag)-----*/
+	/*-----어드민 페이지 정보 IDao (adminpeag)-----*/
 	
-	public void pjhUserdelete(int usernum); // 게시물 삭제
+	public void pjhUserdelete(int usernum); // 유저 삭제
 	
 	public ArrayList<BMembers> pjhmemberlist(); //유저 정보 가져오기
 	
@@ -19,7 +19,17 @@ public interface IDaopjh {
 	
 	public int pjhStateCount(); //유저상태 총 개수
 	
-	/*-----유저 정보 IDao-----*/
+	public ArrayList<BFaq> pjhQnAlist(); //QnA 정보 가져오기
+	
+	public ArrayList<BFaq> pjhQnAlistnext(int number); //이후 QnA 정보 가져오기
+	
+	public ArrayList<BFaq> pjhQnamodal(int qnanum); //Qna번호로 유저 정보 가져오기
+	
+	public void pjhQnaanswer(String answer, String state, int qnanum);
+	
+	public void pjhQnAdelete(int faqnum); // QnA 삭제
+	
+	/*-----어드민 페이지 정보 IDao-----*/
 	
 	
 	/*-----내 스터디 정보 IDao (meetView)-----*/

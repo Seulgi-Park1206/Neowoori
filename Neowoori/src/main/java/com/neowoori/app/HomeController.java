@@ -602,6 +602,64 @@ public class HomeController {
             }
         return result;
        }
+	@ResponseBody // 관리자 게시판(QnA)
+	@RequestMapping(value="/Qnalist.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BFaq> QnA_list(){
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BFaq> qna_list = dao.pjhQnAlist();
+		return qna_list;
+	}
+	
+	@ResponseBody // 관리자 게시판(QnA)(페이징)
+	@RequestMapping(value="/btnqna.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BFaq> btn_qna(HttpServletRequest request){
+		int btnvalue = Integer.parseInt(request.getParameter("btnvalue"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BFaq> btn_num = dao.pjhQnAlistnext(btnvalue);
+		return btn_num;
+	}
+	
+	@ResponseBody // 관리자 게시판(QnA)(팝업,modal)
+	@RequestMapping(value="/Qnamodal.do",method=RequestMethod.POST, produces="application/json")
+	public ArrayList<BFaq> qna_modal(HttpServletRequest request){
+		int Qnum = Integer.parseInt(request.getParameter("qnanum"));
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		ArrayList<BFaq> Qna_list = dao.pjhQnamodal(Qnum);
+		return Qna_list;
+	}
+	
+	@ResponseBody // QnA 답변 (수정)
+	@RequestMapping(value="/Qnaanswer.do",method=RequestMethod.POST, produces="application/json")
+	public String Qna_answer(@RequestBody HashMap<String, String> Qna_answer){
+		String Qnaanswer = String.valueOf(Qna_answer.get("answer"));
+		String qnanum = String.valueOf(Qna_answer.get("qnanum"));
+		System.out.println(Qnaanswer);
+		System.out.println(qnanum);
+		String state = "답변 완료";
+		IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+		dao.pjhQnaanswer(Qnaanswer,state,Integer.parseInt(qnanum));
+		
+		return "complete";
+	}
+	
+	@ResponseBody // 관리자 QnA 게시물 삭제
+	@RequestMapping(value="/pjhqnadelete.do",method=RequestMethod.POST, produces="application/json")
+	public int qna_delete(@RequestBody HashMap<String, String> qna_delete) throws Exception{
+		int result=1;
+            int cnt = Integer.parseInt(String.valueOf(qna_delete.get("cnt")));
+            String rprtOdr = String.valueOf(qna_delete.get("arr"));
+            String str1 = rprtOdr.replace(" ", ""); // 공백 자르기
+            String str2 = str1.substring(1, str1.length()-1 ); // 앞뒤 [] 자르기
+            String [] strArray = str2.split(",");
+            System.out.println(cnt);
+            System.out.println(rprtOdr);
+            for(int i=0; i<cnt; i++) {
+                int temp = Integer.parseInt((String)strArray[i]);
+                IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
+                dao.pjhQnAdelete(temp);
+            }
+        return result;
+       }
 	
 	@ResponseBody // 내 스터디 게시판 (공지타입 불러오기)
 	@RequestMapping(value="/studypost",method=RequestMethod.POST, produces="application/json")
@@ -905,7 +963,6 @@ public class HomeController {
 	public String meetAdmin(@PathVariable int study_id, Model model) {
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		System.out.println(study_id);
-		System.out.println(dao.psgStudyInfo(study_id));
 		model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
 		
 		return "psgMeetadmin";
