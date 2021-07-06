@@ -605,11 +605,11 @@ public class HomeController {
 	
 	/*---------------박슬기 영역----------------------*/
 	// 로그아웃
+	@ResponseBody
 	@RequestMapping(value="/logout", method=RequestMethod.POST, produces="application/json")
-	public String logout(HttpServletRequest request, HttpSession session){
+	public void logout(HttpServletRequest request, HttpSession session){
 		String state = request.getParameter("state");
 		if(state.equals("logout"))	session.invalidate();
-		return "redirect:/index";
 	}
 	// 내 정보
 	@RequestMapping("/mypage")
