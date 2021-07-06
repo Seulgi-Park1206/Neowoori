@@ -173,7 +173,7 @@ public class HomeController {
 		String qnacontent=request.getParameter("qnacontent");
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
 		dao.modifyqna(qnatitle,qnacontent,qnapostnum);
-		return "redirect:/qna";
+		return "redirect:/qna/"+qnapostnum;
 	}
 	
 	

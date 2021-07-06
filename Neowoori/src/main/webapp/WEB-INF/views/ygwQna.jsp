@@ -172,9 +172,8 @@ $(document)
 })
 
 
-.on('click','#tbl1 tr',function(){
+.on('click','#tbl1 tr:not(:first)',function(){
 	let qnapostid=$(this).find("td:eq(0)").find("input[name=qnapostid]").val();
-	//alert("qnapostid : "+qnapostid);
 	document.location="http://localhost:8080/app/qna/"+qnapostid;
 	
 	//return false;
