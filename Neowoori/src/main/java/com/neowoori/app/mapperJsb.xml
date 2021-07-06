@@ -100,6 +100,7 @@
 	select nvl(STATE,'0') state from meeting_study right outer join dual on mNum=#{param1} and uNum=#{param2}
 	</select>
 	
+	<!-- 제목만 입력 -->
 	<select id="jsbListTypeTwo" resultType="com.neowoori.app.jsbBListStudy">
 	select e.uNick,f.*
 	from members e right outer join(
@@ -116,8 +117,71 @@
 	    on d.mnum = c.mnum
 	    order by d.mnum desc) f
 	    on e.unum=f.unum
-	where f.mName LIKE '%#{param1}%'
-	order by e.uName desc
+	where f.mName LIKE '%'||#{param1}||'%'
+	order by f.mnum desc
+	</select>
+	
+		<!-- 카테고리1만 -->
+	<select id="jsbListTypethr" resultType="com.neowoori.app.jsbBListStudy">
+	select e.uNick,f.*
+	from members e right outer join(
+	    select d.*, c.cnt
+	    from study d left outer join(
+	        select distinct a.mnum,nvl(b.cnts,'1') cnt
+	        from meeting_study a left outer join(
+	            select mnum, count(mnum)+1 cnts
+	            from meeting_study
+	            where state=20
+	            group by mnum) b
+	        on a.mnum = b.mnum
+	        order by a.mnum) c
+	    on d.mnum = c.mnum
+	    order by d.mnum desc) f
+	    on e.unum=f.unum
+	where f.category1=#{param1}
+	order by f.mnum desc
+	</select>
+	
+		<!-- 카테고리 12 -->
+	<select id="jsbListTypefor" resultType="com.neowoori.app.jsbBListStudy">
+	select e.uNick,f.*
+	from members e right outer join(
+	    select d.*, c.cnt
+	    from study d left outer join(
+	        select distinct a.mnum,nvl(b.cnts,'1') cnt
+	        from meeting_study a left outer join(
+	            select mnum, count(mnum)+1 cnts
+	            from meeting_study
+	            where state=20
+	            group by mnum) b
+	        on a.mnum = b.mnum
+	        order by a.mnum) c
+	    on d.mnum = c.mnum
+	    order by d.mnum desc) f
+	    on e.unum=f.unum
+	where f.category1=#{param1} and f.category2=#{param2}
+	order by f.mnum desc
+	</select>
+	
+		<!-- 모두다 입력 -->
+	<select id="jsbListTypefiv" resultType="com.neowoori.app.jsbBListStudy">
+	select e.uNick,f.*
+	from members e right outer join(
+	    select d.*, c.cnt
+	    from study d left outer join(
+	        select distinct a.mnum,nvl(b.cnts,'1') cnt
+	        from meeting_study a left outer join(
+	            select mnum, count(mnum)+1 cnts
+	            from meeting_study
+	            where state=20
+	            group by mnum) b
+	        on a.mnum = b.mnum
+	        order by a.mnum) c
+	    on d.mnum = c.mnum
+	    order by d.mnum desc) f
+	    on e.unum=f.unum
+	where f.category1=#{param1} and f.category2=#{param2} and f.mName LIKE '%'||#{param3}||'%'
+	order by f.mnum desc
 	</select>
 	
 </mapper>

@@ -19,4 +19,15 @@ public interface IDaojsb {
 	public void jsbSendModalMsg(int sendNum, int recNum,String cont);
 	public ArrayList<jsbBListStudy> jsbListTypeOne();
 	public int jsbListFindMeetState(int mNum,int uNum);
+	
+	//검색부분
+	//제목만
+	public ArrayList<jsbBListStudy> jsbListTypeTwo(String word);
+	//카테1만
+	public ArrayList<jsbBListStudy> jsbListTypethr(String cate1);
+	//카테1,2만
+	public ArrayList<jsbBListStudy> jsbListTypefor(String cate1, String cate2);
+	//모두 입력
+	public ArrayList<jsbBListStudy> jsbListTypefiv(String cate1, String cate2, String word);
+	
 }

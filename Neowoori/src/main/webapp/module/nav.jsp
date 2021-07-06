@@ -12,8 +12,7 @@
 <body>
 	<header>
 		<div class=class-main>
-			<a href="${path}/index"><img class=logo
-				src="${path}/resources/img/logo.png"></a>
+			<a href="${path}/index"><img class=logo src="${path}/resources/img/logo.png"></a>
 		</div>
 		<nav>
 			<a class="link" id=searchLink href="">찾기</a>
@@ -33,6 +32,7 @@ function mystudy(){
 	var uid = '${userid}';
 	location.href='${path}/meetList/'+uid;
 }
+
 function islogin(){
 	let uid = '${userid}';
 	console.log(uid+'님');
@@ -48,12 +48,27 @@ function islogin(){
 		$('#login').show();
 	}
 }
-function logout(){
-	window.href="${path}/logout";
-}
 $(document)
 .ready(function(){
 	islogin();
+})
+.on('click', '#logout', function(){
+	// 세션 종료
+	$.ajax({
+		url:'${path}/logout',
+		data:{state:'logout'},
+		dataType:'text',
+		method:'post',
+		success:function(){
+			islogin();
+			alert('로그아웃되어 메인 페이지로 이동합니다.');
+			location.href='${path}/index';
+		},
+		error:function(){
+			alert('Logout Error');
+		}
+	});
+	return false;
 })
 </script>
 </html>
