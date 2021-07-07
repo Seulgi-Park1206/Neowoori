@@ -9,6 +9,8 @@
 <style>
 </style>
 <script src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>
+<!--<script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>-->
+
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
 <div>
@@ -17,18 +19,21 @@
 
 <form action="/app/noticeserver" method="post">
 <div style="text-align:center;">
-	<input type=text style="width:600px; height:30px;" id=postTitle name=postTitle value="제목을 입력하세요.""><br><br>
-	<textarea id=postContent name=postContent style="resize:none; width:600px; height:350px;">내용을 입력하세요.</textarea>
+	<input type=text style="width:600px; height:30px;" id=postTitle name=postTitle placeholder="제목을 입력하세요.""><br><br>
+	<textarea id=postContent name=postContent placeholder="내용을 입력하세요." style="resize:none; width:600px; height:350px;"></textarea>
+	
 	<script>
  		var ckeditor_config = {
    		resize_enaleb : false,
    		enterMode : CKEDITOR.ENTER_BR,
    		shiftEnterMode : CKEDITOR.ENTER_P,
-   		filebrowserUploadUrl : "/admin/goods/ckUpload"
+   		filebrowserUploadUrl : "/app/fileupload.do"
  		};
  
  		CKEDITOR.replace("postContent", ckeditor_config);
-</script>
+	</script>
+	
+	
 <br>
 	<div style="text-align:center;">
 	<input type=submit value=글쓰기>&nbsp;&nbsp;<input type=button value=취소 onclick="document.location='http://localhost:8080/app/notice'">

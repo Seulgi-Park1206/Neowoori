@@ -144,7 +144,7 @@
 		delete study_post where postnum = #{param1}
 	</delete>
 	
-	<!-- 유저관리 게시물 삭제 -->
+	<!-- 유저관리에서 유저 삭제 -->
 	<delete id="pjhUserdelete">
 		delete members where unum = #{param1}
 	</delete>
@@ -158,5 +158,30 @@
 	<select id="pjhCompanylist" resultType="com.neowoori.app.PJH_Company">
 		select * from Company
  	</select>
+ 	
+ 	<!-- (처음)QNA 관리자 페이지 가져오기 -->
+	<select id="pjhQnAlist" resultType="com.neowoori.app.BFaq">
+		select * from faq order by faqnum 
+ 	</select>
+ 	
+ 	<!-- 이후 QNA 관리자 페이지 가져오기 -->
+	<select id="pjhQnAlistnext" resultType="com.neowoori.app.BFaq">
+		select * from faq ORDER BY faqnum OFFSET #{param1} ROWS FETCH FIRST 10 ROWS ONLY
+	</select>
+	
+	<!-- QNA 번호로 정보 가져오기 -->
+	<select id="pjhQnamodal" resultType="com.neowoori.app.BFaq">
+		select * from faq where faqnum=#{param1}
+	</select>
+	
+	<!-- QNA 관리자 페이지에서 삭제 -->
+	<delete id="pjhQnAdelete">
+		delete faq where faqnum = #{param1}
+	</delete>
+	
+		<!-- QNA 답변 수정 -->
+	<update id="pjhQnaanswer">
+		update faq set answer=#{param1},state=#{param2} where faqnum = #{param3}
+	</update>
 	
 </mapper>
