@@ -18,6 +18,7 @@ public class BJsbStudyInfo {
 	String Longi;
 	String mWhere2;
 	String mWhere3;
+	
 	public BJsbStudyInfo(){
 		
 	}

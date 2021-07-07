@@ -6,9 +6,7 @@
 	<select id="jsbSelectlocation" resultType="com.neowoori.app.BStudy">
 		select * from study
 	</select>
-	<select id="jsbGetStudyInfo" resultType="com.neowoori.app.BJsbStudyInfo">
-		select b.unick,a.* from study a, members b where a.unum=b.unum
-	</select>
+
 		<!--Study 생성 -->
 	<insert id="jsbCreateStudy">
 		insert into study
@@ -182,6 +180,48 @@
 	    on e.unum=f.unum
 	where f.category1=#{param1} and f.category2=#{param2} and f.mName LIKE '%'||#{param3}||'%'
 	order by f.mnum desc
+	</select>
+	
+	<!-- 스터디 정보 가져오기 -->
+	<select id="jsbGetStudyInfoInCate" resultType="com.neowoori.app.BJsbStudyInfo">
+		select b.unick,a.* from study a, members b where a.unum=b.unum and a.category1=#{param1} and a.category2=#{param2}
+	</select>
+	
+	<select id="jsbGetStudyInfoInCateONE" resultType="com.neowoori.app.BJsbStudyInfo">
+		select b.unick,a.* from study a, members b where a.unum=b.unum and a.category1=#{param1}
+	</select>
+	
+	<select id="jsbGetStudyInfo" resultType="com.neowoori.app.jsbBListStudy">
+		select e.uNick,f.*
+		from members e right outer join(
+		    select d.*, c.cnt
+		    from study d left outer join(
+		        select distinct a.mnum,nvl(b.cnts,'1') cnt
+		        from meeting_study a left outer join(
+		            select mnum, count(mnum)+1 cnts
+		            from meeting_study
+		            where state=20
+		            group by mnum) b
+		        on a.mnum = b.mnum
+		        order by a.mnum) c
+		    on d.mnum = c.mnum
+		    order by d.mnum desc) f
+		    on e.unum=f.unum
+		order by f.mnum desc
+	</select>
+		
+		
+	<!-- 메시지 영역 -->
+	<select id="jsbReceiveMsgList" resultType="com.neowoori.app.jsbBMsgList">
+		select d.uNick as recuNick, c.*
+		from members d right outer join(
+		    select a.*, b.uNick as senduNick
+		    from message a left outer join(
+		        select uNick, unum
+		        from members )b
+		    on a.sendunum=b.unum) c
+		on c.receiveunum = d.unum
+		order by c.msgnum desc
 	</select>
 	
 </mapper>

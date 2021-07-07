@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class HomeController {
+
 	//전역 변수 영역
 	//유건우
 	
@@ -65,6 +66,7 @@ public class HomeController {
 	/*---------------유건우 영역----------------------*/
 	@RequestMapping("/index") //인덱스 page
 	   public String index() {
+		
 	      return "ygwIndex";
 	   }
 	@RequestMapping("/email") //인덱스 page
@@ -456,7 +458,7 @@ public class HomeController {
 		model.addAttribute("s_num", s_num);
 	      return "PJH_meetView";
 	  }
-	@RequestMapping("/faq") //자주 묻는 질문
+	@RequestMapping("/faq") //자주 묻는 질문 *삭제페이지
 	   public String faq() {
 	      return "PJH_faq";
 	   }
@@ -1094,17 +1096,6 @@ public class HomeController {
 			if(reqMNum > 1) dao.jsbCreateMeet(mUserNum,reqMNum,stateNum);
 			}
 	
-	@ResponseBody
-	@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
-		public ArrayList<BStudy> reqList(HttpServletRequest req) {
-			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-//			String one = req.getParameter("one");
-//			String two = req.getParameter("two");		
-//			System.out.println(one+","+two);
-			ArrayList<BStudy> resp=dao.jsbGetStudyInfo();
-			return resp;
-	   }
-	
 	@ResponseBody	/*가입신청 상태인지 아닌지 확인*/
 	@RequestMapping(value="/jsbFindMeetStudy.do", method=RequestMethod.POST,produces = "application/json")
 		public int jsbFindMeetStudy(String mNumHid, String userId, HttpServletRequest req) {
@@ -1177,7 +1168,7 @@ public class HomeController {
 		public int jsbSearchPageBtn(String mNum, HttpServletRequest req,HttpSession session) {
 			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 			int mNums = Integer.parseInt(req.getParameter("mNum"));
-			session.setAttribute("userid","human1");
+			//session.setAttribute("userid","human1");
 			String sessionUserId = String.valueOf(session.getAttribute("userid"));
 			BMembers mem = dao.jsbGetUser(sessionUserId);
 			int mUserNum = mem.getuNum();
@@ -1270,8 +1261,48 @@ public class HomeController {
 			}
 			return null;
 	   }
-		
 
+		@ResponseBody
+		@RequestMapping(value="/jsbFindMapInCate.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<BJsbStudyInfo> findMapInCate(String cate1, String cate2,HttpServletRequest req) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+				String one = req.getParameter("cate1");
+				String two = req.getParameter("cate2");
+				System.out.println(one+","+two);
+				if (two.equals("dontSel")) {
+					System.out.println("one 실행");
+					ArrayList<BJsbStudyInfo> resp=dao.jsbGetStudyInfoInCateONE(one);
+					return resp;
+				} else {
+					System.out.println("ALL 실행");
+					ArrayList<BJsbStudyInfo> resp=dao.jsbGetStudyInfoInCate(one,two);
+					return resp;
+				}
+		   }
+
+		@ResponseBody //카테고리 분야 포기 map 리플레쉬하려면 오래걸림
+		@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<jsbBListStudy> reqList(HttpServletRequest req) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+//				String one = req.getParameter("one");
+//				String two = req.getParameter("two");		
+//				System.out.println(one+","+two);
+				ArrayList<jsbBListStudy> resp=dao.jsbGetStudyInfo();
+				return resp;
+		   }
+			
+			@ResponseBody // 받은 쪽지  receiveMsgList
+			@RequestMapping(value="/receiveMsgList.do", method=RequestMethod.POST,produces = "application/json")
+				public ArrayList<jsbBMsgList> receiveMsgList(HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					
+					String sessionUserId = String.valueOf(session.getAttribute("userid"));
+					BMembers mem = dao.jsbGetUser(sessionUserId);
+					int mUserNum = mem.getuNum();
+					
+					ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList();
+					return resp;
+			   }
 	
 	/*---------------------------------------------*/
 	

@@ -77,8 +77,8 @@
 	  </tbody>
 	</table>
 </div>
-<div class="d-flex justify-content-center">
-	<div id=page>
+<div class="d-flex justify-content-center" style="text-align:center;margin:0 auto;">
+	<div id=page style="text-align:center;margin:0 auto;">
 	</div>
 </div>
 
@@ -173,11 +173,19 @@ $(document)
 	var path=datas[0][tmpVal];
 	//console.log(td.eq(6).text());
 	var tmpTextVal = td.eq(6).text();
+	var tmpHow = td.eq(4).text().split('/');
+	//console.log(tmpHow[0]+","+tmpHow[1])
 	//console.log(tmpTextVal);
 	if (tmpTextVal=="신청가능"){
-		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
-		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
-	}
+		if (tmpHow[0] <= tmpHow[1]){
+			$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+			$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+		}else{
+			$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() disabled>가입신청</button>");
+			$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+		
+		}
+		}
 	if (tmpTextVal=="신청중"){
 		console.log("신청중인데");
 		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
@@ -188,6 +196,7 @@ $(document)
 		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
 	}
 	if(tmpTextVal=="스터디장"){
+		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+td.eq(7).text()+") >관리페이지</button>");
 		//해당 스터디장인데 버튼 추가해야될까?
 	};
 	$("#modal-footerBtn2").append("<button type='button' class='btn btn-primary' onclick=btnSendMsg() >메시지 보내기</button>");
@@ -203,12 +212,17 @@ $(document)
    	$("#modal-body1").append("<tr><td><p class='text-primary'>활동요일</p></td><td>&nbsp"+path.mDay+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>시작시간</p></td><td>&nbsp"+path.mTime+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>진행시간</p></td><td>&nbsp"+path.mPtime+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>인원</p></td><td>&nbsp"+path.cnt+"/"+path.mPersonnel+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>난이도</p></td><td>&nbsp"+path.mLevel+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>소개</p></td><td></td></tr><tr><td colspan='2'>"+path.mContents+"</td></tr>");
 	$("#modal-body1").append("</table>");
 	$("#studyAdminNick").text(path.uNick);
 	$('#bbtn').get(0).click();
 })
+
+function btnToMeetStudy(who){
+	location.href='meetadmin/'+who;
+}
 
 function setPage(who){
 	//console.log(who);
@@ -218,7 +232,7 @@ function setPage(who){
 		pageHow = pageHow + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
     	}
 	var result = '';
-	result += '<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">'
+	result += '<nav aria-label="Page navigation example" style="width:100px;margin:0 auto;text-align:center;">'
 	result += '<ul class="pagination" id="pageUl">'
 	for(var i = 1; i <= pageHow; i++){
 		result +='<li class="page-item" onclick=pageBtnFuc('+i+')><a class="page-link" href="#">'+i+'</a></li>'
@@ -237,6 +251,7 @@ function viewState(){
 		var tr = $(this);
 		var td = tr.children();
 		var text = td.eq(7).text();
+		var tmpHow = td.eq(4).text().split('/');
 		(function(i) {
             $.ajax({
             	url: "jsbSearchPageBtn.do",
@@ -247,10 +262,19 @@ function viewState(){
                 async:false,
                 success:function(result){
                 	//console.log(i);
-                	if (result==0) td.eq(6).html("<h5><span class='badge bg-secondary' id='0'>신청가능</span></h5>");
-                	else if(result==10) td.eq(6).html("<h5><span class='badge bg-secondary' id='10'>신청중</span></h5>");
-                	else if(result==20) td.eq(6).html("<h5><span class='badge bg-secondary' id='20'>가입상태</span></h5>");
-                	else if(result==30) td.eq(6).html("<h5><span class='badge bg-secondary' id='30'>스터디장</span></h5>");
+                	if (result==0) {
+                		if (tmpHow[0] <= tmpHow[1]){
+                		td.eq(6).html("<h5><span class='badge bg-secondary' id='0'>신청가능</span></h5>");
+                		}else{
+                		td.eq(6).html("<h5><span class='badge bg-secondary' id='0'>인원초과</span></h5>");
+                		}
+                	}else if(result==10){
+                		td.eq(6).html("<h5><span class='badge bg-secondary' id='10'>신청중</span></h5>");
+                	}else if(result==20){
+                		td.eq(6).html("<h5><span class='badge bg-secondary' id='20'>가입상태</span></h5>");
+                	}else if(result==30){
+                		td.eq(6).html("<h5><span class='badge bg-secondary' id='30'>스터디장</span></h5>");
+                	}
                  },
                  error: function(xhr,status,error){
                     console.log(xhr+status+error);
