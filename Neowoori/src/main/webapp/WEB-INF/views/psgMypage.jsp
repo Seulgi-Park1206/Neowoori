@@ -17,54 +17,56 @@
 	<div class=form>
 		<a class=title>내 정보 수정</a>
 		<div class=contents>
-			<table>
+			<table class="table">
 				<tr>
-					<td class=tdLeft>아이디:</td>
-					<td class=tdCenter><label class=intext id=uid>${member.userId}</label></td>
+					<th class="tdLeft table-light">아이디:</th>
+					<td colspan=2 class="tdCenter align-middle"><label class=intext id=uid>${member.userId}</label></td>
 				</tr>
 				<tr class=trPw>
-					<td class=tdLeft>비밀번호:</td>
-					<td class=tdCenter><input type=button class="btn btn-outline-primary" id=btnShowHiddenTr value="변경" /></td>
+					<th class="tdLeft table-light">비밀번호:</th>
+					<td colspan=2 class="tdCenter align-middle"><input type=button class="btn btn-outline-secondary" id=btnShowHiddenTr value="변경" /></td>
 				</tr>
 				<tr class=hiddenTr>
-					<td class=tdLeft>새 비밀번호:</td>
-					<td class=tdCenter><input type=password class=intext id=upw1 placeholder="새 비밀번호를 입력하세요." /></td>
-					<td class=tdCheck><label class=intext id=yesNo></label></td>
+					<th class="tdLeft table-light">새 비밀번호:</th>
+					<td class="tdCenter align-middle"><input type=password class="intext inp" id=upw1 placeholder="새 비밀번호를 입력하세요." /></td>
+					<td class="tdCheck align-middle"><label class=intext id=yesNo></label></td>
 				</tr>
 				<tr class=hiddenTr>
-					<td class=tdLeft>새 비밀번호 확인:</td>
-					<td class=tdCenter><input type=password class=intext id=upw placeholder="새 비밀번호를 다시 입력하세요." /></td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnUpdatePw value="변경" /></td>
+					<th class="tdLeft table-light">새 비밀번호 확인:</th>
+					<td class="tdCenter align-middle"><input type=password class="intext inp" id=upw placeholder="새 비밀번호를 다시 입력하세요." /></td>
+					<td class="tdCheck align-middle"><input type=button class="btn btn-outline-secondary" id=btnUpdatePw value="변경" /></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>이름:</td>
-					<td class=tdCenter><label class=intext id=uname>${member.uName}</label></td>
+					<th class="tdLeft table-light">이름:</th>
+					<td colspan=2 class="tdCenter align-middle"><label class=intext id=uname>${member.uName}</label></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>닉네임:</td>
-					<td class=tdCenter><input type=text class=intext id=unick placeholder="닉네임을 입력하세요." /></td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnNickCheck value="중복확인" />
-										<input type=button class="btn btn-outline-primary" id=btnUpdateNick value="변경" /></td>
+					<th class="tdLeft table-light">닉네임:</th>
+					<td class="tdCenter align-middle"><input type=text class="intext inp" id=unick placeholder="닉네임을 입력하세요." />
+					</td>
+					<td class="tdCheck align-middle"><input type=button class="btn btn-outline-secondary" id=btnNickCheck value="중복확인" />
+													<input type=button class="btn btn-outline-secondary" id=btnUpdateNick value="변경" /></td>
 				</tr>
-				<tr class=hidden><td class=tdLeft></td><td class=tdCenter><label class=intext id=nickCheckResult></label>
+				<tr class="hidden align-top"><th></th><td colspan=2><label id=nickCheckResult></label></td></tr>
+				<!-- <tr class=hidden><td class="tdLeft"></td><td colspan=2 class="tdCenter align-middle"><label class="intext" id=nickCheckResult1></label></td></tr> -->
 				<tr>
-					<td class=tdLeft>생년월일:</td>
-					<td class=tdCenter><label class=intext id=birth>${member.uYear}${member.uBirthday}</label></td>
-				</tr>
-				<tr>
-					<td class=tdLeft>성별:</td>
-					<td class=tdCenter><label class=intext id=gender>${member.uGender}</label></td>
+					<th class="tdLeft table-light">생년월일:</th>
+					<td colspan=2 class="tdCenter align-middle"><label class=intext id=birth>${member.uYear}${member.uBirthday}</label></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>연락처:</td>
-					<td class=tdCenter><input type=text class=intext id=umobile placeholder="연락처를 입력하세요." /></td>
-					<td class=tdCheck><input type=button class="btn btn-outline-primary" id=btnMobileCheck value="중복확인" />
-										<input type=button class="btn btn-outline-primary" id=btnUpdateMobile value="변경" /></td>
+					<th class="tdLeft table-light">성별:</th>
+					<td colspan=2 class="tdCenter align-middle"><label class=intext id=gender>${member.uGender}</label></td>
 				</tr>
-				<tr class=hidden><td class=tdLeft></td><td class=tdCenter><label class=intext id=mobileCheckResult></label>
 				<tr>
-					<td class=tdLeft>이메일:</td>
-					<td class=tdCenter><label class=intext id=email>${member.uMail}</label></td>
+					<th class="tdLeft table-light">연락처:</th>
+					<td class="tdCenter align-middle"><input type=text class="intext inp" id=umobile placeholder="연락처를 입력하세요." /></td>
+					<td class="tdCheck  align-middle"><input type=button class="btn btn-outline-secondary" id=btnMobileCheck value="중복확인" />
+										<input type=button class="btn btn-outline-secondary" id=btnUpdateMobile value="변경" /></td>
+				</tr>
+				<tr class=hidden><td class="tdLeft table-light"></td><td colspan=2 class="tdCenter align-middle"><label class="intext inp" id=mobileCheckResult></label></td></tr>
+				<tr>
+					<th class="tdLeft table-light">이메일:</th>
+					<td colspan=2 class="tdCenter align-middle"><label class=intext id=email>${member.uMail}</label></td>
 				</tr>
 			</table>
 		</div>
@@ -113,17 +115,18 @@ $(document)
 })
 // 변경
 .on('click', 'input[type=button]', function(){
-	let data = $(this).parent().parent().find('td:eq(1) input').val();
-	console.log(data);
-	let inputId = $(this).parent().parent().find('td:eq(1) input').attr('id');
-	console.log(inputId);
+	var data = $(this).parent().parent().find('td:eq(0) input').val();
+	console.log('data: ' + data);
+	let inputId = $(this).parent().parent().find('td:eq(0) input').attr('id');
+	console.log('inputId: ' + inputId);
 	
 	if(data == ''){
 		if(inputId == 'upw') {alert('비밀번호를 다시 입력해주세요.');}
 		else if(inputId == 'unick') {alert('닉네임을 다시 입력해주세요.');}
 		else if(inputId == 'umobile') {alert('연락처를 다시 입력해주세요.');}
 	} else {
-		let check = $(this).parent().parent().next().find('td:eq(1) label');
+		var check = $(this).parent().parent().next().find('td:eq(0) label');
+		console.log('check: ' + check.attr('id'));
 		if($(this).val() == '변경'){
 			if(inputId == 'btnShowHiddenTr'){
 				$('.hiddenTr').show();
@@ -151,9 +154,8 @@ $(document)
 				}
 			}
 		} else if($(this).val() == '중복확인') {
-			let update = {uid:$('#uid').text(), optype:inputId, val:data};
-			// let check = $(this).parent().parent().next().find('td:eq(1) label');
-			check.css('background-color', '#ff9595');
+			var update = {uid:$('#uid').text(), optype:inputId, val:data};
+			/* check.css('background-color', '#ff9595'); */
 			// db에서 검색한 결과: 존재 여부(count)
 			$.ajax({
 				url:'dup_check.do',

@@ -19,16 +19,17 @@
 	<div class=form>
 		<a class=title>스터디 관리</a>
 		<div class=contents>
-			<table>
-				<tr><td class=tdLeft>스터디명:</td><td class=tdRight><label class=intext id=groupName>${studyInfo.mName}</label></td></tr>
-				<tr><td class=tdLeft>관리자:</td><td class=tdRight><label class=intext id=admin>${studyInfo.uNick}</label></td></tr>
-				<tr><td class=tdLeft>카테고리:</td><td class=tdRight><label class=intext id=category>${studyInfo.category1} > ${studyInfo.category2}</label></td></tr>
-				<tr><td class=tdLeft>스터디 장소:</td><td class=tdRight><label class=intext id=place>${studyInfo.mWhere} ${studyInfo.mWhere2} ${studyInfo.mWhere3}</label></td></tr>
-				<tr><td class=tdLeft>스터디 시간:</td><td class=tdRight><label class=intext2 id=day>${studyInfo.mDay}</label> / <label class=intext1 id=time>${studyInfo.mTime}</label>~</td></tr>
-				<tr><td class=tdLeft>진행 시간:</td><td class=tdRight><label class=intext id=progressTime>${studyInfo.mPtime}</label></td></tr>
-				<tr><td class=tdLeft>난이도:</td><td class=tdRight><label class=intext id=level>${studyInfo.mLevel}</label></td></tr>
-				<tr><td class=tdLeft>모집 인원:</td><td class=tdRight><label class=intext2 id=peopleNumber>${studyInfo.cMcount}</label>/<label class=intext2 id=personnel>${studyInfo.mPersonnel}</label></td></tr>
-				<tr class=trExp><td class=tdLeft>스터디 설명:</td><td class=tdMul colspan=2><textarea id=explain>${studyInfo.mContents}</textarea></td></tr>
+			<table class="table">
+				<tr><td class="tdLeft table-light">스터디명:</td><td class="tdRight"><label class=intext id=groupName>${studyInfo.mName}</label></td></tr>
+				<tr><td class="tdLeft table-light">관리자:</td><td class="tdRight"><label class=intext id=admin>${studyInfo.uNick}</label></td></tr>
+				<tr><td class="tdLeft table-light">카테고리:</td><td class="tdRight"><label class=intext id=category>${studyInfo.category1} > ${studyInfo.category2}</label></td></tr>
+				<tr><td class="tdLeft table-light align-middle" rowspan=2>스터디 장소:</td><td class="tdRight"><label class=intext id=place>${studyInfo.mWhere}</label></td></tr>
+				<tr><td class="tdRight"><label>${studyInfo.mWhere2}</label><label>${studyInfo.mWhere3}</label></td></tr>
+				<tr><td class="tdLeft table-light">스터디 시간:</td><td class="tdRight"><label class=intext2 id=day>${studyInfo.mDay}</label> / <label class=intext1 id=time>${studyInfo.mTime}</label>~</td></tr>
+				<tr><td class="tdLeft table-light">진행 시간:</td><td class="tdRight"><label class=intext id=progressTime>${studyInfo.mPtime}</label></td></tr>
+				<tr><td class="tdLeft table-light">난이도:</td><td class="tdRight"><label class=intext id=level>${studyInfo.mLevel}</label></td></tr>
+				<tr><td class="tdLeft table-light">모집 인원:</td><td class="tdRight"><label class=intext2 id=peopleNumber>${studyInfo.cMcount}</label>/<label class=intext2 id=personnel>${studyInfo.mPersonnel}</label></td></tr>
+				<tr class=trExp><td class="tdLeft table-light  align-middle">스터디 설명:</td><td class=tdMul colspan=2><textarea id=explain readonly>${studyInfo.mContents}</textarea></td></tr>
 			</table>
 			<br>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
@@ -109,7 +110,7 @@
 	        </div>
 	      </div>
 		  <!-- danger-alert -->
-		  <div style="display:none;"id=dAlert class="alert alert-danger d-flex align-items-center" role="alert">
+		  <!-- <div style="display:none;"id=dAlert class="alert alert-danger d-flex align-items-center" role="alert">
 			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
   				<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
   				<path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
@@ -117,7 +118,7 @@
 		    <div>
 		    	<p>An example danger alert with an icon</p>
 			</div>
-		  </div>
+		  </div> -->
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
 	        <button type="button" class="btn btn-primary" id=btnUpdateComplete data-bs-dismiss="modal">수정 완료</button>

@@ -20,8 +20,8 @@
 			<a class="linklog" href="">쪽지함</a>
 			<a class="linklog" id=mystudy onclick="mystudy()">내스터디</a>
 			<a class="linklog" id=userid href="${path}/mypage">님</a>
-			<a class="link" id=login href="${path}/login">로그인</a>
 			<a class="linklog" id=logout>로그아웃</a>
+			<a class="link" id=login href="${path}/login">로그인</a>
 		</nav>
 	</header>
 	<hr>

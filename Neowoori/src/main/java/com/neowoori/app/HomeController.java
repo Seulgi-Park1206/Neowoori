@@ -380,7 +380,7 @@ public class HomeController {
 	/* 회원가입 이메일 인증 */
 	@RequestMapping(value="/mailCheck", method=RequestMethod.GET)
 	@ResponseBody
-	public void mailCheckGET(String email) throws Exception{
+	public String mailCheckGET(String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
 		System.out.println(email);
@@ -415,7 +415,7 @@ public class HomeController {
 			e.printStackTrace();
 		}		
 		
-				
+		return Integer.toString(checkNum);	
 	}
 	
 	/*---------------------------------------------*/
