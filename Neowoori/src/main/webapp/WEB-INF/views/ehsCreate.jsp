@@ -379,6 +379,11 @@ $("#signupbtn").on("click",function(){
 		alert("스터디명 중복확인해주세요.");
 		return;
 	}
+	
+	if(personnel<=11){
+		alert("인원 수 확인해주세요.");
+		return;
+	}
 	signupajax();
    
 })

@@ -17,14 +17,21 @@
 <input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
 
 <div style="text-align:center;">
-	<img src="${path}/resources/img/searchSmall.png" width="80" height="120">
+	<img src="${path}/resources/jsb/banner1.png" width="750" height="100">
 </div>
+<div style="text-align:center;">
+	<img src="${path}/resources/jsb/banner2.png" width="750" height="100">
+</div>
+<div style="text-align:center;">
+	<img src="${path}/resources/jsb/banner3.png" width="750" height="100">
+</div>
+<!-- 
 <div>
 <p style="font-size:50px; text-align:center;">스터디찾기</p>
 </div>
+ -->
 
-
-<div class="container" style="text-align:center;">
+<div class="container" style="text-align:center;display:none;">
 	<div class="btn-group" >
 		<div class="dropdown" >
 		  <a class="btn btn-secondary dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-bs-toggle="dropdown" aria-expanded="false" style='width:130px;'>카테고리</a>
@@ -46,13 +53,64 @@
 		  	<li><a class="dropdown-item" href="#" >카테고리 먼저 선택하시오</a></li>
 		  </ul>
 		</div>
+		&nbsp;
+		<button type="button" class="btn btn-secondary btn-sm" onclick=btnSearch()>검색</button>
 	</div>
 </div>
+
+<div class="container" style="text-align:center;">
+<button type="button" class="btn btn-secondary btn-sm" onclick=btnSearch()>내 위치에 스터디 보기</button>
+</div>
+
 <br>
 <div>
 <div id="map" style="width:750px;height:550px; margin:0 auto;display:none;" ></div>
 </div>
+<div id="map2" style="text-align:center;display:none;">
+	<img src="${path}/resources/jsb/indexPage.png" width="750px" height="550px">
+</div>
 
+<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalToggleLabel">Modal 1</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body1">
+        
+      </div>
+      <div class="modal-footer" id=modal-footerBtn1>
+      	
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal fade" id="exampleModalToggle2" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h6 class="modal-title" id="exampleModalToggleLabel2">쪽지보내기</h6>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" id="modal-body2">
+		<form>
+			<div class="form-floating">
+			  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea1" disabled></textarea>
+			  <label for="floatingTextarea2" id=studyAdminNick>닉네임</label>
+			</div>
+			<div class="form-floating">
+			  <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" style="height: 200px"></textarea>
+			  <label for="floatingTextarea2">쪽지 내용</label>
+			</div>
+        </form>
+      </div>
+      <div class="modal-footer" id=modal-footerBtn2>
+       </div>
+    </div>
+  </div>
+</div>
+<a id="bbtn" class="btn btn-primary" data-bs-toggle="modal" href="#exampleModalToggle" role="button" style="display:none;">Open first modal</a>
 
 
 <jsp:include page="/module/footer.jsp" flush="false" />
@@ -64,22 +122,37 @@
 var mapContainer = document.getElementById('map'), // 지도를 표시할 div  
 mapOption = { 
     center: new kakao.maps.LatLng(33.450701, 126.570667), // 지도의 중심좌표
-    level: 5 // 지도의 확대 레벨
+    level: 4 // 지도의 확대 레벨
 };
 
 var map = new kakao.maps.Map(mapContainer, mapOption); // 지도를 생성합니다
+var loc;
+var mapChk=0;
+var markers = [];
+var sessionVal = "<%=session.getAttribute("userid")%>";
 
-$(document)
-.ready(function(){
+function mapDateView(){
+	/* 카테고리 삭제
+	var tmpCate2;
+	if ($('#dropdownMenuLink2').text()=="상세 카테고리") {
+		tmpCate2="dontSel";
+	}else{
+		tmpCate2=$('#dropdownMenuLink2').text();
+	}
+	console.log("mapData"+$('#dropdownMenuLink').text());
+	console.log("mapData2"+tmpCate2);
+	*/
 	$.ajax({
         url:'findMap.do'
         , method : 'POST'
-        , data: {}
-        , contentType : 'application/json; charset=UTF-8'
+        , data:	{} //{"cate1": $('#dropdownMenuLink').text(),"cate2": tmpCate2}
+        //, contentType : 'application/json; charset=UTF-8'
         , dataType : 'json'
         , success :
         	function(resp){
-        	console.log(resp);
+        	delMarkers();
+        	//marker.setMap(null);
+        	//console.log(resp);
         	if (navigator.geolocation) {
         	    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         	    navigator.geolocation.getCurrentPosition(function(position) {
@@ -88,7 +161,6 @@ $(document)
         	        var locPosition = new kakao.maps.LatLng(lat, lon)
         	            //message = '';
         	        displayMarker(locPosition);
-
         	      });
         	} else {
         	    var locPosition = new kakao.maps.LatLng(33.450701, 126.570667),    
@@ -108,8 +180,11 @@ $(document)
         	        image: markerImage1
         	    }); 
         	    map.setCenter(locPosition);      
+        	    loc=locPosition;
+        	    console.log(loc);
         	};
 	        	$.each(resp, function (i, item){
+	        		mapChk=1;
 	        		//console.log(item.lati);
 	        		var positions = [
 			        		{
@@ -129,11 +204,11 @@ $(document)
 	        	        position: positions[0].latlng, // 마커의 위치
 	        	        image: markerImage2
 	        	    });
-					/*
-	        	    var infowindow = new kakao.maps.InfoWindow({
-	        	        content: positions[0].content // 인포윈도우에 표시할 내용
-	        	    });
-	        	    */
+					
+	        	    //var infowindow = new kakao.maps.InfoWindow({
+	        	    //    content: positions[0].content // 인포윈도우에 표시할 내용
+	        	    //});
+	        	    
 	        	    var infowindow = new kakao.maps.InfoWindow({
 	        	        content: '<div style="padding:5px;font-size:12px;">'+item.mName+'</div>' // 인포윈도우에 표시할 내용
 	        	    });
@@ -145,18 +220,39 @@ $(document)
 	        	        // 마커 위에 인포윈도우를 표시합니다
 	        	        //console.log(item.mName);
 	        	        //console.log(item.mNum);
-	        	        addModal(item.unick,item.mName,item.category1,item.category2,item.mContents,item.mDay,item.mLevel,item.mPtime,item.mTime,item.mWhere,item.mNum,item.mWhere2,item.mWhere3);
-	        	        addModalBtn();
+	        	        addModal(item.uNick,item.mName,item.category1,item.category2,item.mContents,item.mDay,item.mLevel,item.mPTime,item.mTime,item.mWhere,item.mNum,item.mWhere2,item.mWhere3,item.mPersonnel,item.cnt);
+	        	        addModalBtn(item.mNum);
 	        	        btnTest();
 	        	    });
+	        	    markers.push(marker);
 	        	})
-        	
+	        	//console.log("실행시키자");
+	        	//panTo(loc.La,loc.Ma);
         	}
 	})
-})
+
+}
+
+$(document)
 .ready(function(){
-	$("#hid").val("human1");
+	//테스트를 위한 회원 값
+	sessionVal="human1";
+	//$("#hid").val("human1");
 })
+.on("click","#map2",function(){
+	location.href='signup';
+	//signup
+})
+
+function delMarkers(){
+	if(mapChk==1){
+		for (var i=0; i<<markers.length;i++){
+			markers[i].setMap(null);
+		}
+	}
+	
+}
+
 // 인포윈도우를 표시하는 클로저를 만드는 함수입니다 
 function makeOverListener(map, marker, infowindow) {
     return function() {
@@ -178,17 +274,18 @@ function resizeMap() {
 }
 
 function relayout() {    
-    
-    // 지도를 표시하는 div 크기를 변경한 이후 지도가 정상적으로 표출되지 않을 수도 있습니다
-    // 크기를 변경한 이후에는 반드시  map.relayout 함수를 호출해야 합니다 
-    // window의 resize 이벤트에 의한 크기변경은 map.relayout 함수가 자동으로 호출됩니다
     map.relayout();
 }
+
+function panTo(la,ma) {
+    var moveLatLon = new kakao.maps.LatLng(ma, la);
+    map.setCenter(moveLatLon);            
+}        
 
 function btnTest(){
 	$('#bbtn').get(0).click();
 }
-function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,mTime,mWhere,mNum,mWhere2,mWhere3){
+function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,mTime,mWhere,mNum,mWhere2,mWhere3,mPersonnel,cnt){
    	$('#modal-body1').empty();
    	$('#exampleModalToggleLabel').text(mName);
    	$("#modal-body1").append("<input type='hidden' name='mNum' id='mNumHid'>");
@@ -201,23 +298,26 @@ function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,m
    	$("#modal-body1").append("<tr><td><p class='text-primary'>시작시간</p></td><td>&nbsp"+mTime+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>진행시간</p></td><td>&nbsp"+mPtime+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>난이도</p></td><td>&nbsp"+mLevel+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>인원</p></td><td>&nbsp"+cnt+"/"+mPersonnel+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>소개</p></td><td></td></tr><tr><td colspan='2'>"+mContents+"</td></tr>");
 	$("#modal-body1").append("</table>");
 	$("#studyAdminNick").text(uNick);
 }
-function addModalBtn(){ // state를 확인해야함... 10인가 20인가
+function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
 	$('#modal-footerBtn1').empty();
 	$('#modal-footerBtn2').empty();
+	console.log("modalBtnTest");
+	console.log(who);
 	$.ajax({
 	    url: "jsbFindMeetStudy.do",
 	    type: "POST",
 	    data: {
 	    	"mNumHid" : $('#mNumHid').val(), // 스터디명
-	    	"userId" : $("#hid").val()	    	
+	    	"userId" : sessionVal
 	    },
 	    success : function(data){
 	    	//0=가입안함,10=가입신청중,20=가입완료,30=해당 스터디장
-	    	//console.log(data);
+	    	console.log(data);
 	    	if (data==0){
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
@@ -229,6 +329,8 @@ function addModalBtn(){ // state를 확인해야함... 10인가 20인가
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
 	    	}else if(data==30){
 	    		//해당 스터디장인데 버튼 추가해야될까?
+	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+who+") >관리페이지</button>");
+	    		console.log("스터디장");
 	    	}else{
 	    		console.log("addModalBtn함수 data값 이상");
 	    	}
@@ -239,13 +341,17 @@ function addModalBtn(){ // state를 확인해야함... 10인가 20인가
 	    }
 		});
 }
+function btnToMeetStudy(who){
+	location.href='meetadmin/'+who;
+}
+
 function btnJoinStudy(){ //가입신청
 	$.ajax({
 		url: "jsbJoinStudy.do",
 		type: "POST",
 		data: {
 			"mNumHid" : $('#mNumHid').val(), // 스터디명
-			"userId" : $("#hid").val()	    	
+			"userId" : sessionVal   	
 	    },
 	    success : function(data){
 	    	alert("성공(임시 alert)");
@@ -263,7 +369,7 @@ function btnCancelJoin(){ // 가입신청취소
 		type: "POST",
 		data: {
 			"mNumHid" : $('#mNumHid').val(), // 스터디명
-			"userId" : $("#hid").val()	    	
+			"userId" : sessionVal   	
 	    },
 	    success : function(data){
 	    	alert("성공(임시 alert)");
@@ -281,7 +387,7 @@ function btnOutStudy(){ // 스터디탈되
 		type: "POST",
 		data: {
 			"mNumHid" : $('#mNumHid').val(), // 스터디명
-			"userId" : $("#hid").val()	    	
+			"userId" :sessionVal	
 	    },
 	    success : function(data){
 	    	alert("성공(임시 alert)");
@@ -296,14 +402,14 @@ function btnOutStudy(){ // 스터디탈되
 
 function btnSendMsg(){ // 메시지보내기
 	//floatingTextarea1 , floatingTextarea2
-	console.log($("#hid").val());
+	console.log(sessionVal);
 	console.log($("#floatingTextarea2").val());
 	console.log($("#studyAdminNick").text());
 	$.ajax({
 		url: "jsbSendModalMsg.do",
 		type: "POST",
 		data: {
-			"userId" : $("#hid").val(), // 보내는 사람 id
+			"userId" : sessionVal, // 보내는 사람 id
 			"cont" : $("#floatingTextarea2").val(),
 			"mAdminNick" : $("#studyAdminNick").text() // 닉네임으로 받는사람 num구해야됨
 	    },
@@ -443,6 +549,8 @@ function btnBigSelect7(){
 	$("#btnGroupSm").append('<li><a onclick=btnSmClick(8) id="btnSm8" class="dropdown-item" href="#">취소</a></li>');
 	//$('#btnradio11').trigger('click');
 }
+
+
 function btnSmClick(who){
 	if (who==1) $("#dropdownMenuLink2").text($("#btnSm1").text());
 	if (who==2) $("#dropdownMenuLink2").text($("#btnSm2").text());
@@ -452,9 +560,113 @@ function btnSmClick(who){
 	if (who==6) $("#dropdownMenuLink2").text($("#btnSm6").text());
 	if (who==7) $("#dropdownMenuLink2").text($("#btnSm7").text());
 	if (who==8) $('#dropdownMenuLink2').text("상세 카테고리");
-	$("#map").show();
-	relayout();
+	//console.log(loc);
 //	console.log($("#smSel").val())
+}
+function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,mTime,mWhere,mNum,mWhere2,mWhere3){
+   	$('#modal-body1').empty();
+   	$('#exampleModalToggleLabel').text(mName);
+   	$("#modal-body1").append("<input type='hidden' name='mNum' id='mNumHid'>");
+   	$("#mNumHid").val(mNum);
+   	$("#modal-body1").append("<table border='2'>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>카테고리&nbsp</p></td><td>&nbsp"+category1+"-"+category2+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>스터디장&nbsp</p></td><td>&nbsp"+uNick+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>주소&nbsp</p></td><td>&nbsp"+mWhere+" "+mWhere3+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>활동요일</p></td><td>&nbsp"+mDay+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>시작시간</p></td><td>&nbsp"+mTime+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>진행시간</p></td><td>&nbsp"+mPtime+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>난이도</p></td><td>&nbsp"+mLevel+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>소개</p></td><td></td></tr><tr><td colspan='2'>"+mContents+"</td></tr>");
+	$("#modal-body1").append("</table>");
+	$("#studyAdminNick").text(uNick);
+}
+
+function btnJoinStudy(){ //가입신청
+	$.ajax({
+		url: "jsbJoinStudy.do",
+		type: "POST",
+		data: {
+			"mNumHid" : $('#mNumHid').val(), // 스터디명
+			"userId" : sessionVal
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    	$('#modal-footerBtn1').empty();
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+function btnCancelJoin(){ // 가입신청취소
+	$.ajax({
+		url: "jsbCancelJoin.do",
+		type: "POST",
+		data: {
+			"mNumHid" : $('#mNumHid').val(), // 스터디명
+			"userId" : sessionVal
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    	$('#modal-footerBtn1').empty();
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+function btnOutStudy(){ // 스터디탈되
+	$.ajax({
+		url: "jsbJoinOut.do",
+		type: "POST",
+		data: {
+			"mNumHid" : $('#mNumHid').val(), // 스터디명
+			"userId" : sessionVal
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    	$('#modal-footerBtn1').empty();
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+
+function btnSendMsg(){ // 메시지보내기
+	//floatingTextarea1 , floatingTextarea2
+	console.log(sessionVal);
+	console.log($("#floatingTextarea2").val());
+	console.log($("#studyAdminNick").text());
+	$.ajax({
+		url: "jsbSendModalMsg.do",
+		type: "POST",
+		data: {
+			"userId" : sessionVal, // 보내는 사람 id
+			"cont" : $("#floatingTextarea2").val(),
+			"mAdminNick" : $("#studyAdminNick").text() // 닉네임으로 받는사람 num구해야됨
+	    },
+	    success : function(data){
+	    	alert("성공(임시 alert)");
+	    },
+	    error : function(){	
+	    }
+		});
+}
+
+function btnSearch(){
+	mapDateView();
+	console.log(sessionVal);
+	if (sessionVal!=null){
+		$("#map").show();
+	}else{
+		$("#map2").show();
+	}
+	
+	relayout();
 }
 </script>
 </html>
