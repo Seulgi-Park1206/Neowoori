@@ -221,7 +221,7 @@ function mapDateView(){
 	        	        //console.log(item.mName);
 	        	        //console.log(item.mNum);
 	        	        addModal(item.uNick,item.mName,item.category1,item.category2,item.mContents,item.mDay,item.mLevel,item.mPTime,item.mTime,item.mWhere,item.mNum,item.mWhere2,item.mWhere3,item.mPersonnel,item.cnt);
-	        	        addModalBtn(item.mNum);
+	        	        addModalBtn(item.mNum,item.mPersonnel,item.cnt);
 	        	        btnTest();
 	        	    });
 	        	    markers.push(marker);
@@ -303,7 +303,7 @@ function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,m
 	$("#modal-body1").append("</table>");
 	$("#studyAdminNick").text(uNick);
 }
-function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
+function addModalBtn(mNum,mPersonnel,cnt){ // state를 확인해야함... 10인가 20인가
 	$('#modal-footerBtn1').empty();
 	$('#modal-footerBtn2').empty();
 	console.log("modalBtnTest");
@@ -319,8 +319,14 @@ function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
 	    	//0=가입안함,10=가입신청중,20=가입완료,30=해당 스터디장
 	    	console.log(data);
 	    	if (data==0){
-	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
-	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    		if (mPersonnel <= cnt) { // 최대인원이 cnt와 같거나 크다.
+	    			$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() disabled>가입신청</button>");
+		    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    		}else{
+	    			$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+		    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    		}
+	    		
 	    	}else if(data==10){
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
@@ -329,7 +335,7 @@ function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
 	    	}else if(data==30){
 	    		//해당 스터디장인데 버튼 추가해야될까?
-	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+who+") >관리페이지</button>");
+	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+mNum+") >관리페이지</button>");
 	    		console.log("스터디장");
 	    	}else{
 	    		console.log("addModalBtn함수 data값 이상");

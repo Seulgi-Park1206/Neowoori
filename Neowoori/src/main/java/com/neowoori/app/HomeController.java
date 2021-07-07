@@ -1275,6 +1275,19 @@ public class HomeController {
 				ArrayList<jsbBListStudy> resp=dao.jsbGetStudyInfo();
 				return resp;
 		   }
+			
+			@ResponseBody // 받은 쪽지  receiveMsgList
+			@RequestMapping(value="/receiveMsgList.do", method=RequestMethod.POST,produces = "application/json")
+				public ArrayList<jsbBMsgList> receiveMsgList(HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					
+					String sessionUserId = String.valueOf(session.getAttribute("userid"));
+					BMembers mem = dao.jsbGetUser(sessionUserId);
+					int mUserNum = mem.getuNum();
+					
+					ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList();
+					return resp;
+			   }
 	
 	/*---------------------------------------------*/
 	

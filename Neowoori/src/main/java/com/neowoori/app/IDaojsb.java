@@ -35,4 +35,8 @@ public interface IDaojsb {
 	
 	public ArrayList<BJsbStudyInfo> jsbGetStudyInfoInCate(String one,String two);
 	public ArrayList<BJsbStudyInfo> jsbGetStudyInfoInCateONE(String one);
+	
+	
+	//msg 관련
+	public ArrayList<jsbBMsgList> jsbReceiveMsgList();
 }
