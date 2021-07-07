@@ -14,7 +14,7 @@
 	<hr>
 	<ul>
 		<li><a href="${path}/company">회사소개</a></li>
-		<li><a href="${path}/faq">Q&A</a></li>
+		<li><a href="${path}/qna">Q&A</a></li>
 		<li><a href="${path}/notice">공지사항</a></li>
 	</ul>
 </footer>

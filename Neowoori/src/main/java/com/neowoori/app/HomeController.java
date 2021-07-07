@@ -105,7 +105,7 @@ public class HomeController {
 		  model.addAttribute("paging",paging);
 		  model.addAttribute("lastpage",Math.ceil(noticecnt/10));
 		  
-	      return "ygwnoticetest";
+	      return "ygw_notice";
 	   }
 	
 	/*
@@ -120,6 +120,15 @@ public class HomeController {
 		  dao.categorySelResultCnt(category,keyword);
 	      //return "ygwFaw";
 	}*/
+	
+	@RequestMapping("/notice/{noticepostid}") //자주 묻는 질문
+	   public String noticeView(@PathVariable int noticepostid,Model model) {
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  BAdminPost viewnotice=dao.viewnotice(noticepostid);
+		  model.addAttribute("noticelist",viewnotice);
+		  
+	      return "ygw_viewNotice";
+	}
 	
 	@RequestMapping("/qnawrite") //자주 묻는 질문
 	   public String Qnawrite() {
@@ -196,7 +205,13 @@ public class HomeController {
 	    return "redirect:/qna";
 	}
 	
-	
+	@RequestMapping("/noticedelete/{noticepostnum}") //qna 삭제
+	   public String deleteNotice(@PathVariable int noticepostnum,Model model) {
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		dao.deleteNotice(noticepostnum);
+		
+	    return "redirect:/notice";
+	}
 	
 		@RequestMapping(value="/Qnaserver",method=RequestMethod.POST) //Qna 게시판 글쓰기
 		   public String faqserver(HttpServletRequest request,Model model,HttpSession session) {

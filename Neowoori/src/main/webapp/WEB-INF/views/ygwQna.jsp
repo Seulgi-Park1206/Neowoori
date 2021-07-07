@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
- <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
- <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
  
 <c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
@@ -60,7 +60,7 @@ th, td {
 	<input id=qnanewpost type=button value=새글쓰기  onclick="document.location='http://localhost:8080/app/qnawrite'">
 </div>
 <div class=pagenumber>
-	<a href= # value=previous name=page>이전</a><div id="divPage"><span id="paging">${paging}</span></div><a href= # value=next name=page>다음</a>
+	<a href= # value=previous name=page>이전</a><div id="divPage" style="display:inline;"><span id="paging">${paging}</span></div><a href= # value=next name=page>다음</a>
 </div>
 </div> 
 
@@ -89,7 +89,7 @@ $(document)
       let pageNum = parseInt(prePageNum)+1; //현재 페이지에 +1
       //alert("pre pagenum : "+pageNum);
       prePageNum++; //값을 +1 해줌 (이전, 다음에는 따로 값이 없어서 임의의 변수를 이용함)
-      //alert("next apgenum : "+lastPage);
+      //alert("next pagenum : "+lastPage);
       if(pageNum>lastPage){ //lastPage(페이징의 최대 값) 보다 현재 페이지가 크면
          alert("다음 페이지가 없습니다.");
          return false;
@@ -122,7 +122,6 @@ $(document)
       prePageNum=pageNum;
    }
 })
-
 
 .on('click','#search_btn',function(){
 	let category=$('#search_faq_sel option:selected').val();
@@ -160,8 +159,8 @@ $(document)
 			for(let i = 0; i < Math.ceil(n/10); i++){
 				paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 			}
-			$('#divPage').empty(paging);
-			$('#divPage').append(paging);
+			//$('#divPage').empty(paging);
+			/*$('#divPage').append(paging);*/
 			
 		},
 		error:function(result){
@@ -172,17 +171,34 @@ $(document)
 })
 
 
-.on('click','#tbl1 tr:not(:first)',function(){
+.on('click','#tbl1 tr:not(:first)',function(){ //첫번째행 제외하고 클릭시
 	let qnapostid=$(this).find("td:eq(0)").find("input[name=qnapostid]").val();
 	document.location="http://localhost:8080/app/qna/"+qnapostid;
 	
 	//return false;
 })
 
-.on('click','#test',function(){
-	alert("userid"+userid+"dddddddddd");
-	//alert("세션값"+a);
+/*
+.on('click','#qna_answer',function(){
+	//let a=$(this).find("td:eq(0)").find("input[name=qnapostid]").text();
+	//let tr=$(this).parent().parent().td.eq(0).text();
+	//let tr=$(this).parent().parent().eq(0).html();
+	//console.log(tr);
+	//alert(tr);
+	
 })
+*/
+
+/*
+.on('click','#tbl1 td:last',function(){
+	let last=$(this).find("td:eq(5)").val();
+	alert("마지막값"+last);
+	//let col=$(this).parent().children().index($(this));
+	//let row=$(this).parent().parent().children().index($(this).parent());
+	//alert("col 값 :"+col+"row 값 : "+row);
+})
+*/
+
 
 if(userid==""){
 	$('#qnanewpost').hide();
