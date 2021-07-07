@@ -15,13 +15,14 @@
 <jsp:include page="/module/nav.jsp" flush="false" />
 
 <input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
-
+<!-- 
 <div style="text-align:center;">
 	<img src="${path}/resources/jsb/banner1.png" width="750" height="100">
 </div>
 <div style="text-align:center;">
 	<img src="${path}/resources/jsb/banner2.png" width="750" height="100">
 </div>
+ -->
 <div style="text-align:center;">
 	<img src="${path}/resources/jsb/banner3.png" width="750" height="100">
 </div>
@@ -221,7 +222,7 @@ function mapDateView(){
 	        	        //console.log(item.mName);
 	        	        //console.log(item.mNum);
 	        	        addModal(item.uNick,item.mName,item.category1,item.category2,item.mContents,item.mDay,item.mLevel,item.mPTime,item.mTime,item.mWhere,item.mNum,item.mWhere2,item.mWhere3,item.mPersonnel,item.cnt);
-	        	        addModalBtn(item.mNum);
+	        	        addModalBtn(item.mNum,item.mPersonnel,item.cnt);
 	        	        btnTest();
 	        	    });
 	        	    markers.push(marker);
@@ -236,7 +237,8 @@ function mapDateView(){
 $(document)
 .ready(function(){
 	//테스트를 위한 회원 값
-	sessionVal="human1";
+	//sessionVal="human1";
+	//sessionVal="";
 	//$("#hid").val("human1");
 })
 .on("click","#map2",function(){
@@ -303,11 +305,11 @@ function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,m
 	$("#modal-body1").append("</table>");
 	$("#studyAdminNick").text(uNick);
 }
-function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
+function addModalBtn(mNum,mPersonnel,cnt){ // state를 확인해야함... 10인가 20인가
 	$('#modal-footerBtn1').empty();
 	$('#modal-footerBtn2').empty();
 	console.log("modalBtnTest");
-	console.log(who);
+	//console.log(who);
 	$.ajax({
 	    url: "jsbFindMeetStudy.do",
 	    type: "POST",
@@ -319,8 +321,14 @@ function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
 	    	//0=가입안함,10=가입신청중,20=가입완료,30=해당 스터디장
 	    	console.log(data);
 	    	if (data==0){
-	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
-	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    		if (mPersonnel <= cnt) { // 최대인원이 cnt와 같거나 크다.
+	    			$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() disabled>가입신청</button>");
+		    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    		}else{
+	    			$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
+		    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
+	    		}
+	    		
 	    	}else if(data==10){
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
@@ -329,7 +337,7 @@ function addModalBtn(who){ // state를 확인해야함... 10인가 20인가
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
 	    	}else if(data==30){
 	    		//해당 스터디장인데 버튼 추가해야될까?
-	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+who+") >관리페이지</button>");
+	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+mNum+") >관리페이지</button>");
 	    		console.log("스터디장");
 	    	}else{
 	    		console.log("addModalBtn함수 data값 이상");
@@ -402,9 +410,9 @@ function btnOutStudy(){ // 스터디탈되
 
 function btnSendMsg(){ // 메시지보내기
 	//floatingTextarea1 , floatingTextarea2
-	console.log(sessionVal);
-	console.log($("#floatingTextarea2").val());
-	console.log($("#studyAdminNick").text());
+	//console.log(sessionVal);
+	//console.log($("#floatingTextarea2").val());
+	//console.log($("#studyAdminNick").text());
 	$.ajax({
 		url: "jsbSendModalMsg.do",
 		type: "POST",
@@ -638,9 +646,9 @@ function btnOutStudy(){ // 스터디탈되
 
 function btnSendMsg(){ // 메시지보내기
 	//floatingTextarea1 , floatingTextarea2
-	console.log(sessionVal);
-	console.log($("#floatingTextarea2").val());
-	console.log($("#studyAdminNick").text());
+	//console.log(sessionVal);
+	//console.log($("#floatingTextarea2").val());
+	//console.log($("#studyAdminNick").text());
 	$.ajax({
 		url: "jsbSendModalMsg.do",
 		type: "POST",
@@ -659,11 +667,12 @@ function btnSendMsg(){ // 메시지보내기
 
 function btnSearch(){
 	mapDateView();
-	console.log(sessionVal);
-	if (sessionVal!=null){
-		$("#map").show();
-	}else{
+	//console.log(sessionVal);
+	if (sessionVal=="null"){
 		$("#map2").show();
+		
+	}else{
+		$("#map").show();
 	}
 	
 	relayout();

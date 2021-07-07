@@ -210,5 +210,18 @@
 		order by f.mnum desc
 	</select>
 		
+		
+	<!-- 메시지 영역 -->
+	<select id="jsbReceiveMsgList" resultType="com.neowoori.app.jsbBMsgList">
+		select d.uNick as recuNick, c.*
+		from members d right outer join(
+		    select a.*, b.uNick as senduNick
+		    from message a left outer join(
+		        select uNick, unum
+		        from members )b
+		    on a.sendunum=b.unum) c
+		on c.receiveunum = d.unum
+		order by c.msgnum desc
+	</select>
 	
 </mapper>
