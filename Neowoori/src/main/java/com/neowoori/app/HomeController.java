@@ -443,7 +443,7 @@ public class HomeController {
 		model.addAttribute("s_num", s_num);
 	      return "PJH_meetView";
 	  }
-	@RequestMapping("/faq") //자주 묻는 질문
+	@RequestMapping("/faq") //자주 묻는 질문 *삭제페이지
 	   public String faq() {
 	      return "PJH_faq";
 	   }
@@ -1153,7 +1153,7 @@ public class HomeController {
 		public int jsbSearchPageBtn(String mNum, HttpServletRequest req,HttpSession session) {
 			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 			int mNums = Integer.parseInt(req.getParameter("mNum"));
-			session.setAttribute("userid","human1");
+			//session.setAttribute("userid","human1");
 			String sessionUserId = String.valueOf(session.getAttribute("userid"));
 			BMembers mem = dao.jsbGetUser(sessionUserId);
 			int mUserNum = mem.getuNum();

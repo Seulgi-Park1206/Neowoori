@@ -77,8 +77,8 @@
 	  </tbody>
 	</table>
 </div>
-<div class="d-flex justify-content-center">
-	<div id=page>
+<div class="d-flex justify-content-center" style="text-align:center;margin:0 auto;">
+	<div id=page style="text-align:center;margin:0 auto;">
 	</div>
 </div>
 
@@ -232,7 +232,7 @@ function setPage(who){
 		pageHow = pageHow + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
     	}
 	var result = '';
-	result += '<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">'
+	result += '<nav aria-label="Page navigation example" style="width:100px;margin:0 auto;text-align:center;">'
 	result += '<ul class="pagination" id="pageUl">'
 	for(var i = 1; i <= pageHow; i++){
 		result +='<li class="page-item" onclick=pageBtnFuc('+i+')><a class="page-link" href="#">'+i+'</a></li>'

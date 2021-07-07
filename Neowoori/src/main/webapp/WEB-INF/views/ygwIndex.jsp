@@ -15,13 +15,14 @@
 <jsp:include page="/module/nav.jsp" flush="false" />
 
 <input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
-
+<!-- 
 <div style="text-align:center;">
 	<img src="${path}/resources/jsb/banner1.png" width="750" height="100">
 </div>
 <div style="text-align:center;">
 	<img src="${path}/resources/jsb/banner2.png" width="750" height="100">
 </div>
+ -->
 <div style="text-align:center;">
 	<img src="${path}/resources/jsb/banner3.png" width="750" height="100">
 </div>
@@ -236,7 +237,8 @@ function mapDateView(){
 $(document)
 .ready(function(){
 	//테스트를 위한 회원 값
-	sessionVal="human1";
+	//sessionVal="human1";
+	//sessionVal="";
 	//$("#hid").val("human1");
 })
 .on("click","#map2",function(){
@@ -307,7 +309,7 @@ function addModalBtn(mNum,mPersonnel,cnt){ // state를 확인해야함... 10인�
 	$('#modal-footerBtn1').empty();
 	$('#modal-footerBtn2').empty();
 	console.log("modalBtnTest");
-	console.log(who);
+	//console.log(who);
 	$.ajax({
 	    url: "jsbFindMeetStudy.do",
 	    type: "POST",
@@ -408,9 +410,9 @@ function btnOutStudy(){ // 스터디탈되
 
 function btnSendMsg(){ // 메시지보내기
 	//floatingTextarea1 , floatingTextarea2
-	console.log(sessionVal);
-	console.log($("#floatingTextarea2").val());
-	console.log($("#studyAdminNick").text());
+	//console.log(sessionVal);
+	//console.log($("#floatingTextarea2").val());
+	//console.log($("#studyAdminNick").text());
 	$.ajax({
 		url: "jsbSendModalMsg.do",
 		type: "POST",
@@ -644,9 +646,9 @@ function btnOutStudy(){ // 스터디탈되
 
 function btnSendMsg(){ // 메시지보내기
 	//floatingTextarea1 , floatingTextarea2
-	console.log(sessionVal);
-	console.log($("#floatingTextarea2").val());
-	console.log($("#studyAdminNick").text());
+	//console.log(sessionVal);
+	//console.log($("#floatingTextarea2").val());
+	//console.log($("#studyAdminNick").text());
 	$.ajax({
 		url: "jsbSendModalMsg.do",
 		type: "POST",
@@ -665,11 +667,12 @@ function btnSendMsg(){ // 메시지보내기
 
 function btnSearch(){
 	mapDateView();
-	console.log(sessionVal);
-	if (sessionVal!=null){
-		$("#map").show();
-	}else{
+	//console.log(sessionVal);
+	if (sessionVal=="null"){
 		$("#map2").show();
+		
+	}else{
+		$("#map").show();
 	}
 	
 	relayout();
