@@ -958,7 +958,7 @@ public class HomeController {
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
 	 	
-	return "psgMeetList";
+		return "psgMeetList";
 	}
 	// 내 스터디 목록 검색
 	@ResponseBody 
@@ -983,6 +983,31 @@ public class HomeController {
 		model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
 		
 		return "psgMeetadmin";
+	}
+	// 스터디 정보 수정
+	@ResponseBody
+	@RequestMapping(value="/updateStudyInfo.do", method=RequestMethod.POST)
+	public String updateStudyInfoDo(@RequestBody HashMap<String, String> hashmap) {
+		System.out.println("-- 스터디 정보 수정 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int mNum = Integer.parseInt(hashmap.get("sNum"));
+		dao.psgUpdateStudyInfo(mNum, hashmap.get("sWeek"), hashmap.get("sTime"), hashmap.get("pTime"),
+				hashmap.get("psn"));
+		System.out.println("-- 수정 완료 --");
+		
+		return "success";
+	}
+	// 스터디 삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteStudy.do", method=RequestMethod.POST)
+	public String deleteStudyDo(@RequestBody String sNum) {
+		System.out.println("-- 스터디 삭제 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int mNum = Integer.parseInt(sNum);
+		dao.psgDeleteStudy(mNum);
+		System.out.println("-- 삭제 완료 --");
+		
+		return "success";
 	}
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")

@@ -33,11 +33,11 @@
 			</table>
 			<br>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="btn btn-outline-primary" id=btnUpdateInfo value="스터디 정보 수정">
-				<input type=button class="btn btn-outline-primary" onclick="go_adminUser()" value="회원 관리">
-				<input type=button class="btn btn-outline-primary" onclick="go_adminBoard()" value="게시판 관리">
-				<input type=button class="btn btn-outline-primary" id=btnDeleteStudy value="스터디 삭제">
-				<input type=button class="btn btn-outline-primary" onclick="cancel()" value="취소">
+				<input type=button class="btn btn-outline-secondary" id=btnUpdateInfo value="스터디 정보 수정">
+				<input type=button class="btn btn-outline-secondary" onclick="go_adminUser()" value="회원 관리">
+				<input type=button class="btn btn-outline-secondary" onclick="go_adminBoard()" value="게시판 관리">
+				<input type=button class="btn btn-outline-secondary" id=btnDeleteStudy value="스터디 삭제">
+				<input type=button class="btn btn-outline-secondary" onclick="cancel()" value="취소">
 			</div>
 		</div>
 	</div>
@@ -145,13 +145,12 @@
 	        </div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnNo>취소</button>
-	        <button type="button" class="btn btn-primary" id=btnYes data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal">확인</button>
+	        <button type="button" class="btn btn-secondary" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal" id=btnNo>취소</button>
+	        <button type="button" class="btn btn-primary" id=btnYes data-bs-dismiss="modal">확인</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
-	
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -235,6 +234,32 @@ function checkedModal(chk){
 	}
 }
 
+// 스터디 정보 수정 유효성 검사
+function validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel){
+	var alTitle = '스터디 정보 수정';
+	if(chkweek == false) {
+		alertModal(alTitle,'요일을 선택해주세요.');
+	} else if(studyHour == "0" || studyMin == "0") {
+		confirmModal(alTitle, '스터디 시간에서 0을 선택하셨습니다. 그대로 진행하시겠습니까?');
+	} else if(playHour == "0" && playMin == "0") {
+		alertModal(alTitle, '진행 시간을 다시 입력해주세요.');
+	} else if(studyHour == "" || studyHour > "23"){
+		alertModal(alTitle, '스터디 시간(시) 확인해주세요.');
+	} else if(studyMin == "" || studyMin > "59"){
+		alertModal(alTitle, '스터디 시간(분) 확인해주세요.');
+	} else if(playHour == ""){
+		alertModal(alTitle, '진행 시간(시) 확인해주세요.');
+	} else if(playMin == "" || playMin > "59"){
+		alertModal(alTitle, '진행 시간(분) 확인해주세요.');
+	} else if(personnel >= 11){
+		alertModal(alTitle, '최대 인원은 10명 입니다.');
+	} else if(personnel < 2) {
+		alertModal(alTitle, '최소 인원은 2명 입니다.');
+	} else {
+		return 'success';
+	}
+}
+
 $(document)
 .ready(function(){
 	adjustHeight($('#explain'));
@@ -260,52 +285,70 @@ $(document)
 	$('#studyContents').val($('#explain').text());
 	$('#updateModal').modal('show');
 })
-// 스터디 정보 수정 기능
+// 스터디 정보 수정 완료 버튼 클릭
 .on('click', '#btnUpdateComplete', function(){
-	var studyName = $("#studyName").val();
+	var studyName = $('#studyName').val();
 	var chkweek = $('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
-	var studyHour = $("#studyTime").val();
-	var studyMin = $("#studyMin").val();
-	var playHour = $("#playTime").val();
-	var playMin = $("#playMin").val();
-
-	if(chkweek == false) {
-		alertModal('스터디 정보 수정','요일을 선택해주세요.');
-	} else if(studyHour == "0" || studyMin == "0") {
-		confirmModal("스터디 시간에서 0을 선택하셨습니다. 그대로 진행하시겠습니까?");
-	} else if(playHour == "0" && playMin == "0") {
-		//alert("진행 시간(시)을 확인해주세요.");
+	var studyHour = $('#studyHour').val();
+	var studyMin = $('#studyMin').val();
+	var playHour = $('#playHour').val();
+	var playMin = $('#playMin').val();
+	var personnel = $('#studyPersonnel').val();
+	var alTitle = '스터디 정보 수정';
+	
+	// 유효성 검사
+	var vd = validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel);
+	if(vd == 'success'){
+		var stime = studyHour + '시' + studyMin + '분';
+		var ptime = playHour + '시간' + playMin + '분';
+		var chkwk = checkboxArr();
+		var update = {
+			sNum : s_num,
+			sWeek: chkwk,
+			sTime: stime,
+			pTime: ptime,
+			psn: personnel
+		};
+		// 스터디 정보 수정 기능
+		$.ajax({
+			url : '${path}/updateStudyInfo.do',
+			data : JSON.stringify(update),
+			contentType : 'application/json; charset=UTF-8',
+			method : 'post',
+			success : function() {
+				alertModal(alTitle, '수정이 완료되었습니다.');
+				$('#day').text(chkwk);
+				$('#time').text(stime);
+				$('#progressTime').text(ptime);
+				$('#personnel').text(personnel);
+			},
+			error : function() {
+				alert('Update error');
+			}
+		});
 	}
-	/*
-	var chkwk = checkboxArr();
-	var update = {
-		sNum : s_num,
-		sWeek: chkwk
-	};
-	$.ajax({
-		url : '${path}/updateStudyInfo.do',
-		data : JSON.stringify(update),
-		contentType : 'application/json; charset=UTF-8',
-		method : 'post',
-		success : function() {
-			alertModal('스터디 정보 수정', '수정이 완료되었습니다.');
-			$('#date').text($('#studyDate').val());
-			$('#time').text($('#studyTime').val());
-			$('#progressTime').text($('#studyPTime').val());
-			$('#personnel').text($('#studyPersonnel').val());
-			adjustHeight($('#studyContents'));
-		},
-		error : function() {
-			alert('Update error');
-		}
-	});
-*/
+	
 	return false;
 })
-
+// 스터디 삭제 클릭
 .on('click', '#btnDeleteStudy', function() {
-	// 스터디 폐쇄
-
+	confirmModal('스터디 삭제', '정말 스터디를 삭제하시겠습니까?');
+	
+	return false;
+})
+// confirmModal - btnYes click
+.on('click', '#btnYes', function(){
+	console.log('type: ' + $('#confirmTitle').text());
+	var type = $('#confirmTitle').text();
+	
+	if(type == '스터디 정보 수정'){
+		// 정보 수정
+		
+	} else if(type == '스터디 삭제'){
+		// 스터디 폐쇄		
+	}
+	
+	
 	return false;
 })
 </script>
