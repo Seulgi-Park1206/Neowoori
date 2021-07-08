@@ -161,17 +161,17 @@
  	
  	<!-- (처음)QNA 관리자 페이지 가져오기 -->
 	<select id="pjhQnAlist" resultType="com.neowoori.app.BFaq">
-		select * from faq order by faqnum 
+		select * from faq order by state desc, faqdate
  	</select>
  	
  	<!-- 이후 QNA 관리자 페이지 가져오기 -->
 	<select id="pjhQnAlistnext" resultType="com.neowoori.app.BFaq">
-		select * from faq ORDER BY faqnum OFFSET #{param1} ROWS FETCH FIRST 10 ROWS ONLY
+		select * from faq ORDER BY state desc, faqdate OFFSET #{param1} ROWS FETCH FIRST 10 ROWS ONLY
 	</select>
 	
 	<!-- QNA 번호로 정보 가져오기 -->
 	<select id="pjhQnamodal" resultType="com.neowoori.app.BFaq">
-		select * from faq where faqnum=#{param1}
+		select * from faq where faqnum=#{param1} 
 	</select>
 	
 	<!-- QNA 관리자 페이지에서 삭제 -->

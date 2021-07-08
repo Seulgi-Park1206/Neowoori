@@ -1,5 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%
+	HttpSession sess = request.getSession(false);
+	if(session.getAttribute("adminid")==null){
+		response.sendRedirect("adminlogin");
+	}
+%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -43,10 +49,16 @@ $(document)
 	    		  showConfirmButton: false,
 	    		  timer: 1500
 	    		})
+	    		setTimeout(function() {
+	    			location.href = document.referrer;
+					}, 1000);
 	    },
 	    error: function (){        
 	    }
 	  })
-});
+})
+.on('click','#btn_cl',function(){
+	location.href = document.referrer;
+})
 </script>
 </html>

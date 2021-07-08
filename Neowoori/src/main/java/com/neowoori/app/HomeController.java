@@ -629,7 +629,7 @@ public class HomeController {
 	}
 	
 	@ResponseBody // QnA 답변 (수정)
-	@RequestMapping(value="/Qnaanswer.do",method=RequestMethod.POST, produces="application/json")
+	@RequestMapping(value="/Qnaanswer.do",method=RequestMethod.POST)
 	public String Qna_answer(@RequestBody HashMap<String, String> Qna_answer){
 		String Qnaanswer = String.valueOf(Qna_answer.get("answer"));
 		String qnanum = String.valueOf(Qna_answer.get("qnanum"));

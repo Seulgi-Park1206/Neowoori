@@ -14,8 +14,10 @@
 <title>관리자 페이지</title>
 </head>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-<link rel="stylesheet" href="resources/pjh/userview.css" type="text/css">
-<link rel="stylesheet" href="resources/pjh/adminpage.css" type="text/css">
+<!-- <link rel="stylesheet" href="resources/pjh/userview.css" type="text/css"> -->
+<!-- <link rel="stylesheet" href="resources/pjh/adminpage.css" type="text/css"> -->
+<link rel="stylesheet"  href="resources/pjh/meetView1.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 
 
 <body>
@@ -23,34 +25,79 @@
 
 <!-- ---------------------------------Teb 띄우는곳------------------------------------------ -->
 
+<!-- <div class="container"> -->
+<!--   <ul class="nav nav-tabs"> -->
+<!--     <li class="nav-item"> -->
+<!--       <a class="nav-link active" href="#" id=btnradio1>유저관리</a> -->
+<!--     </li> -->
+<!-- <!--     <li class="nav-item"> -->
+<!-- <!--       <a class="nav-link" href="#">신고관리</a> -->
+<!-- <!--     </li> -->
+<!--     <li class="nav-item"> -->
+<!--       <a class="nav-link active" href="#" id=btnradio3>문의사항</a> -->
+<!--     </li> -->
+<!--   </ul> -->
+<!-- </div> -->
 <div class="container">
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a class="nav-link active" href="#" id=btnradio1>유저관리</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#">신고관리</a>
-    </li>
-    <li class="nav-item">
-      <a class="nav-link" href="#" id=btnradio3>문의사항</a>
-    </li>
-  </ul>
+	<ul class="nav nav-tabs" id="myTab" role="tablist">
+	  <li class="nav-item" role="presentation">
+	    <button class="nav-link active" id="btnradio1" data-bs-toggle="tab" data-bs-target="#home" type="button" role="tab" aria-controls="home" aria-selected="true">유저관리</button>
+	  </li>
+	  <li class="nav-item" role="presentation">
+	    <button class="nav-link" id="btnradio3" data-bs-toggle="tab" data-bs-target="#profile" type="button" role="tab" aria-controls="profile" aria-selected="false">QnA</button>
+	  </li>
+	</ul>
 </div>
 <!-- ---------------------------------Teb 띄우는곳------------------------------------------ -->
 
 
 
 <!-- ---------------------------------목록 띄우는곳------------------------------------------ -->
-<table class="list"> 
-<input type=hidden id=hid_qna value="">
-</table>
+<!-- <table class="list">  -->
+
+<!--유저-->
+<div class="container" id=User_show>
+	<table class="table table-hover" id='viewTable'>
+	  <thead class="thead-light">
+	    <tr>
+	      <th></th>
+	      <th class="jsb_table_width1">No</th>
+	      <th class="jsb_table_width2">닉네임</th>
+	      <th class="jsb_table_width3">마지막 접속</th>
+	    </tr>
+	  </thead>
+	  <tbody class="list">
+	  <input type=hidden id=hid_qna value="">
+	  </tbody>
+	</table>
+</div>
+
+<!--QNA -->
+<div class="container" id=Qna_show style="display:none">
+	<table class="table table-hover" id='viewTable'>
+	  <thead class="thead-light">
+	    <tr>
+	      <th></th>
+	      <th class="jsb_table_width4">No</th>
+	      <th class="jsb_table_width5">제목</th>
+	      <th class="jsb_table_width6">작성자</th>
+	      <th class="jsb_table_width7">작성일자</th>
+	      <th class="jsb_table_width8">상태</th>
+	    </tr>
+	  </thead>
+	  <tbody class="list">
+	  <input type=hidden id=hid_qna value="">
+	  </tbody>
+	</table>
+</div>
 <!-- ---------------------------------목록 띄우는곳------------------------------------------ -->
 
 <!-- 삭제 버튼 -->
- <div class="wrapper" align="right">
+ <div align="right" class="container">
 	<table>
 		<tr>
-			<td><button class="btn_list" id=btn_delete>삭제</button></td>
+			<button type="button" id=btn_company class="btn btn-outline-secondary" style="float: left;">회사소개 수정</button>
+			<button type="button" id=btn_delete class="btn btn-outline-secondary">삭제</button>
 		</tr>
 	</table>
 </div>
@@ -58,8 +105,13 @@
 
 
 <!-- ---------------------------------페이징 띄우는곳------------------------------------------ -->
-<div id=test123 style="width:100px; margin: 0 auto;">
+<!-- <div id=btn_paging style="width:100px; margin: 0 auto;"> -->
 
+<!-- </div> -->
+<div class="w3-center">
+	<div calss="w3-bar" id=btn_paging>
+		
+	</div>
 </div>
 <!-- ---------------------------------페이징 띄우는곳------------------------------------------ -->
 
@@ -68,11 +120,11 @@
 
 
 <!-- ---------------------------------팝업창 띄우는곳------------------------------------------ -->
-<div class="container mt-3">
+<div class="container mt-3" >
   <!-- The Modal -->
   <div class="modal fade" id="myModal">
     <div class="modal-dialog">
-      <div class="modal-content">
+      <div class="modal-content" >
       
         <!-- Modal Header -->
         <div class="modal-header">
@@ -84,7 +136,7 @@
         </div>
         
         <!-- Modal footer -->
-        <div class="modal-footer">
+        <div class="modal-footer" id=delete_footer>
         </div>
       </div>
     </div>
@@ -99,7 +151,11 @@
 	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 	      </div>
 	      <div class="modal-body">
-	      	
+
+	      	<div class="mb-4">
+					<label for="message-text" class="col-form-label">답변:</label>
+					<textarea class="form-control myscrollbar" id=postContents placeholder="답변을 입력하세요."></textarea>
+			</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
@@ -108,6 +164,33 @@
 	    </div>
 	  </div>
 	</div>
+	
+<!-- 회사 소개 수정 modal -->
+	<div class="modal fade" id="Company_updateModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+	  <div class="modal-dialog">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="updateModalLabel">회사소개 수정</h5>
+	        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+	      </div>
+	      <div class="modal-body">
+
+	      	<div class="mb-4">
+					<label for="message-text" class="col-form-label">수정:</label>
+					<textarea class="form-control myscrollbar" id=Company_Contents placeholder="회사 소개를 입력하세요." style="height:640px;"></textarea>
+			</div>
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
+	        <button type="button" class="btn btn-primary" id=btnUpdateCompany data-bs-dismiss="modal">수정 완료</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+	<!-- alert -->
+	<jsp:include page="/module/alertModal.jsp" flush="false" />
+	<!-- confirm -->
+	<jsp:include page="/module/confirmModal.jsp" flush="false" />
 <!-- ---------------------------------팝업창 띄우는곳------------------------------------------ -->
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -118,13 +201,12 @@
 <script src="https://code.jquery.com/jquery-3.5.0.js"></script>
 <script language='javascript'>
 var select = 0;
+var btnnum = 1;
 function userlist(){
 	select = 0;
 	$('.usermodal').remove(); //지우면서 다시 리로딩
- 	$('.test2').remove();
- 	$('.page-item').remove(); // 페이징 지우기
-	$('.pagination').remove();// 페이징 지우기
-	$('#page_nav').remove();  // 페이징 지우기
+	$('.w3-button').remove(); // 페이징 지우기
+	$('.w3-bar-item w3-button').remove();// 페이징 지우기
 	$.ajax({
         url:'userlist.do'
         , method : 'POST'
@@ -134,11 +216,11 @@ function userlist(){
         , success :
         	function output(resp){
 	        	var result = '';
-		        result +='<thead id=list_th>'
-		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
-				+"<th><span>마지막 접속</span></th>"
-		        +"</th>"
-		        result +='<tbody id=list></tbody>'
+// 		        result +='<thead id=list_th>'
+// 		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
+// 				+"<th><span>마지막 접속</span></th>"
+// 		        +"</th>"
+// 		        result +='<tbody id=list></tbody>'
 		        $.each(resp,function(index,item){
 		        	//data-toggle="modal" data-target="#myModal == 파업창 띄우기
 		        	 result +='<tr class=usermodal data-toggle="modal" data-target="#myModal"><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["uNum"]+'></td>'
@@ -146,8 +228,8 @@ function userlist(){
 		        	 result +='<td >'+item["uNick"]+'</td>'
 		        	 result +='<td >'+item["lastJoin"]+'</td>'
 		        })
-		        result +='</tbody>'
-		        result +='</thead>'
+// 		        result +='</tbody>'
+// 		        result +='</thead>'
 		        $('.list').append(result)
         	}
 	})
@@ -166,14 +248,10 @@ function userpaging(){
             	test = test + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
             	}
         	var result = '';
-        	result += '<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">'
-        	result += '<ul class="pagination">'
         	for(var i = 1; i <= test; i++){
-        		result +='<li class="page-item" value='+i+'><a class="page-link" href="#">'+i+'</a></li>'
+        		result += '<a href="#" class="w3-button" value="'+i+'">'+i+'</a>'
         	}
-        	result += '</ul>'
-        	result += '</nav>'
-        	$('#test123').append(result)
+        	$('#btn_paging').append(result)
         }
         })
 }
@@ -185,15 +263,15 @@ $(document)
 })
 
 /*---------------------------------페이징 클릭시------------------------------------------*/
-.on('click','.page-item',function(){
+.on('click','.w3-button',function(){
 	$('.usermodal').remove(); //지우면서 다시 리로딩
  	$('.test2').remove();
-	var btnnum = $(this).val(); // 선택한 버튼의 값 (ex = 1,2,3,4)
+	btnnum = $(this).text(); // 선택한 버튼의 값 (ex = 1,2,3,4)
+	console.log(btnnum);
 	var btnvalue = (btnnum * 10) - 10; // (선택한 버튼의 값 * 10) - 1 == sql에서 사용할 값
 	if(btnnum == 1){ // 1 이면 처음 값 그대로 가져오기.
 		btnnum = 0;
-	}
-	else{
+	}else{
 		btnnum = (btnnum * 10) - 10;
 	}
 	if(select == 0){
@@ -205,19 +283,19 @@ $(document)
         , success :
         	function output(resp){
         	var result = '';
-	        result +='<thead id=list_th>'
-	        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
-			+"<th><span>마지막 접속</span></th>"
-	        +"</th>"
-	        result +='<tbody id=list></tbody>'
+// 	        result +='<thead id=list_th>'
+// 	        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>닉네임</span></th>"
+// 			+"<th><span>마지막 접속</span></th>"
+// 	        +"</th>"
+// 	        result +='<tbody id=list></tbody>'
 	        $.each(resp,function(index,item){
 	        	 result +='<tr class=usermodal data-toggle="modal" data-target="#myModal"><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["uNum"]+'></td>'
 	        	 result +='<td >'+item["uNum"]+'</td>'
 	        	 result +='<td >'+item["uNick"]+'</td>'
 	        	 result +='<td >'+item["lastJoin"]+'</td>'
 	        })
-	        result +='</tbody>'
-	        result +='</thead>'
+// 	        result +='</tbody>'
+// 	        result +='</thead>'
 	        $('.list').append(result)
     	}
 	})
@@ -230,24 +308,24 @@ $(document)
 	        , success :
 	        	function output(resp){
 	        	var result = '';
-		        result +='<thead id=list_th>'
-		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>제목</span></th>"
-				+"<th><span>작성자</span></th><th><span>작성일자</span></th><th><span>상태</span></th>"
-		        +"</th>"
-		        result +='<tbody id=list></tbody>'
+// 		        result +='<thead id=list_th>'
+// 		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>제목</span></th>"
+// 				+"<th><span>작성자</span></th><th><span>작성일자</span></th><th><span>상태</span></th>"
+// 		        +"</th>"
+// 		        result +='<tbody id=list></tbody>'
 		        $.each(resp,function(index,item){
-		        	if(index == 10) return false;
-		        	//data-toggle="modal" data-target="#myModal == 파업창 띄우기
-		        	 result +='<tr class=usermodal data-toggle="modal" data-target="#myModal"><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["faqnum"]+'></td>'
+		        	 var faqdate = 0;
+		        	 var faqdate = item["faqdate"].substring(0,8);
+		        	 result +='<tr class=usermodal><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["faqnum"]+'></td>'
 		        	 result +='<td >'+item["faqnum"]+'</td>'
 		        	 result +='<td >'+item["faqtitle"]+'</td>'
-		        	 result +='<td >'+item["faqcontent"]+'</td>'
-		        	 result +='<td >'+item["faqdate"]+'</td>'
+		        	 result +='<td >'+item["writer"]+'</td>'
+		        	 result +='<td >'+faqdate+'</td>'
 		        	 result +='<td >'+item["state"]+'</td>'
-		        	 result +='<td ><input type=hidden id=faqcontent value="'+item["faqcontent"]+'"></td>'
+		        	 result +='<input type=hidden id=faqcontent value="'+item["faqcontent"]+'">'
 		        })
-		        result +='</tbody>'
-		        result +='</thead>'
+// 		        result +='</tbody>'
+// 		        result +='</thead>'
 		        $('.list').append(result)
 	    	}
 		})
@@ -288,7 +366,7 @@ $(document)
 	        }
 	})
 	}else if(select == 1){
-		$('.mb-3').remove();
+// 		$('.mb-3').remove();
 		$('#hid_qna').val(thisnum);
 		$.ajax({
 	        url:'Qnamodal.do'
@@ -299,12 +377,13 @@ $(document)
 	        	function output(resp){
 		        	var result = '';
 		        	$.each(resp,function(index,item){
+		        		
 			        result +='<div class="mb-3">'
 		        	result +='<label for="recipient-name" class="col-form-label">제목:</label>&nbsp;&nbsp;'
 	        		result +='<label for="recipient-name" class="col-form-label" style="font-size:14px;">'+item["faqtitle"]+'</label>'
         			result +='</div>'
-       				result +='<div class="mb-3">'
-   					result +='<label for="recipient-name" class="col-form-label">작성자:</label>&nbsp;&nbsp;'
+	       			result +='<div class="mb-3">'
+	   				result +='<label for="recipient-name" class="col-form-label">작성자:</label>&nbsp;&nbsp;'
 					result +='<label for="recipient-name" class="col-form-label" style="font-size:14px;">'+item["writer"]+'</label>'
 					result +='</div>'
 					result +='<div class="mb-3">'
@@ -315,12 +394,12 @@ $(document)
 					result +='<label for="recipient-name" class="col-form-label">내용:</label>&nbsp;&nbsp;'
 					result +='<label for="recipient-name" class="col-form-label" style="font-size:14px;">'+item["faqcontent"]+'</label>'
 					result +='</div>'
-					result +='<div class="mb-3">'
-					result +='<label for="message-text" class="col-form-label">답변:</label>'
-					result +='<textarea class="form-control myscrollbar" id=postContents placeholder="답변을 입력하세요."></textarea>'
-					result +='</div>'
+// 					result +='<div class="mb-3">'
+// 					result +='<label for="message-text" class="col-form-label">답변:</label>'
+// 					result +='<textarea class="form-control myscrollbar" id=postContents placeholder="답변을 입력하세요."></textarea>'
+// 					result +='</div>'
 		        	})
-		        	$('.modal-body').append(result);
+		        	$('.modal-body').prepend(result);
 		        }
 		})
 		$('#updateModal').modal('show');
@@ -328,24 +407,24 @@ $(document)
 })
 //문의 답변에서 답변완료 클릭 시
 .on('click', '#btnUpdateComplete', function(){
-	console.log($('#postContents').val("뭔데"));
+	console.log($('#postContents').val());
 	var answer = {answer:$('#postContents').val(),qnanum:$('#hid_qna').val()};
 	$.ajax({
 		url:'Qnaanswer.do',
 		data:JSON.stringify(answer),
 		contentType:'application/json; charset=UTF-8',
 		method:'post',
-		success:function(){
+		success:function(data){
 			alertModal('게시물 수정', '수정이 완료되었습니다.');
-			$('#title').text($('#postTitle').val());
-			$('#content').text($('#postContents').val());
-			adjustModalHeight();
+			$('.mb-3').remove();
+			$("#btnradio3").trigger('click');
+			$('#postContents').val(""); // 답변내용 비우기
 		},
 		error:function(){
+			$('.mb-3').remove();
 			alert('Update error');
 		}
 	});
-	
 	return false;
 })
 
@@ -355,6 +434,8 @@ $(document)
 //유저관리 클릭시
 
 .on('click','#btnradio1',function(){
+	$('#User_show').show();
+	$('#Qna_show').hide();
 	userlist();
 	userpaging();
 })
@@ -364,11 +445,11 @@ $(document)
 // QnA 클릭시
 .on('click','#btnradio3',function(){
 	select = 1;
+	$('#User_show').hide();
+	$('#Qna_show').show();
 	$('.usermodal').remove(); //지우면서 다시 리로딩
- 	$('.test2').remove();
- 	$('.page-item').remove(); // 페이징 지우기
-	$('.pagination').remove();// 페이징 지우기
-	$('#page_nav').remove();  // 페이징 지우기
+ 	$('.w3-button').remove(); // 페이징 지우기
+	$('.w3-bar-item w3-button').remove();// 페이징 지우기
 	$.ajax({
         url:'Qnalist.do'
         , method : 'POST'
@@ -378,24 +459,25 @@ $(document)
         , success :
         	function output(resp){
 	        	var result = '';
-		        result +='<thead id=list_th>'
-		        result +="<tr class=test2><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>제목</span></th>"
-				+"<th><span>작성자</span></th><th><span>작성일자</span></th><th><span>상태</span></th>"
-		        +"</th>"
-		        result +='<tbody id=list></tbody>'
+// 		        result +='<thead id=list_th>'
+// 		        result +="<tr class=test2 onclick='event.cancelBubble=true'><td width='120px' style='background-color:white;'></td><th><span>번호</span></th><th><span>제목</span></th>"
+// 				+"<th><span>작성자</span></th><th><span>작성일자</span></th><th><span>상태</span></th>"
+// 		        +"</th>"
+// 		        result +='<tbody id=list></tbody>'
 		        $.each(resp,function(index,item){
+		        	var faqdate = 0;
 		        	if(index == 10) return false;
-		        	//data-toggle="modal" data-target="#myModal == 파업창 띄우기
-		        	 result +='<tr class=usermodal><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["faqnum"]+'></td>'
+		        	 var faqdate = item["faqdate"].substring(0,8);
+		        	 result +='<tr class=usermodal ><td onclick="event.cancelBubble=true"><input type="checkbox" class=ch_Box id='+item["faqnum"]+'></td>'
 		        	 result +='<td >'+item["faqnum"]+'</td>'
 		        	 result +='<td >'+item["faqtitle"]+'</td>'
 		        	 result +='<td >'+item["writer"]+'</td>'
-		        	 result +='<td >'+item["faqdate"]+'</td>'
+		        	 result +='<td >'+faqdate+'</td>'
 		        	 result +='<td >'+item["state"]+'</td>'
 		        	 result +='<input type=hidden id=unummodal value="'+item["uNum"]+'">'
 		        })
-		        result +='</tbody>'
-		        result +='</thead>'
+// 		        result +='</tbody>'
+// 		        result +='</thead>'
 		        $('.list').append(result)
 		        
 		        /* 페이징 */
@@ -405,31 +487,78 @@ $(document)
 	        		paging = paging + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
 	            	}
 	        	var result = '';
-	        	result += '<nav aria-label="Page navigation example" style="width:100px; margin: 0 auto;">'
-	        	result += '<ul class="pagination">'
-	        	for(var i = 1; i <= paging; i++){
-	        		result +='<li class="page-item" value='+i+'><a class="page-link" href="#">'+i+'</a></li>'
-	        	}
-	        	result += '</ul>'
-	        	result += '</nav>'
-	        	$('#test123').append(result)
+	            	for(var i = 1; i <= paging; i++){
+	            		result += '<a href="#" class="w3-button" value="'+i+'">'+i+'</a>'
+	            	}
+	        	$('#btn_paging').append(result)
         	}
 	})
 	
 })
+//취소 & 최소화 클릭시
+.on('click','.btn-close,#btnCloseModal',function(){
+	$('.mb-3').remove();
+})
 
-
-
-
+//회사소개 수정 
+.on('click','#btn_company',function(){
+	$.ajax({
+        url:'Company_list.do'
+        , method : 'POST'
+        , data: {}
+        , contentType : 'application/json; charset=UTF-8'
+        , dataType : 'json'
+        , success :
+        	function output(resp){
+        	console.log(resp);
+	        	var result = '';
+	        	$.each(resp,function(index,item){
+	        		result += item["contents"]
+	        	})
+	        	$('#Company_Contents').val(result);
+        }
+        
+	})
+	
+	$('#Company_updateModal').modal('show');
+})
+// 회사소개 수정 클릭시
+.on('click', '#btnUpdateCompany', function(){
+// 	var answer = {answer:$('#Company_Contents').val()};
+	$.ajax({
+	    url: 'Company_write.do',
+	    type: 'POST',
+	    dataType: 'text', //서버로부터 내가 받는 데이터의 타입
+	    data: {
+	    	contents : $('#Company_Contents').val(),
+	    		}, 
+		success:function(data){
+			alertModal('게시물 수정', '수정이 완료되었습니다.');
+			$('#Company_Contents').val(""); // 답변내용 비우기
+		},
+		error:function(){
+			alert('Update error');
+		}
+	});
+	return false;
+})
 /*-------------------------삭제 클릭시 이벤트 -------------------------*/
 
 .on('click','#btn_delete',function(){ // 삭제
+	$('.close').remove();
+	$('.tableLeft').remove();
+	$('.btn-danger').remove();
 	var cnt = $("input[class='ch_Box']:checked").length; // 체크 개수
 	console.log(cnt);
     var arr = new Array(); // 저장할 array
     $("input[class='ch_Box']:checked").each(function() {
         arr.push($(this).attr('id'));
     });
+    
+    if(cnt==0){
+    	alertModal("삭제",  "삭제할 목록을 선택하세요.");
+    	return false;
+    }
     console.log(arr);
     var cnt_arr = {arr:arr,cnt:cnt};
     if(select == 0){

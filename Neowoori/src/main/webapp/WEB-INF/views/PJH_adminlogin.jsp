@@ -23,12 +23,12 @@
               <tr>
                   <th>아이디</th>
                   <td>
-                  	<input type="text" id=id placeholder="ID 를 입력하세요.">
+                  	<input onkeyup="enterkey();" type="text" id=id placeholder="ID 를 입력하세요.">
                   </td>
                 </tr>
                 <tr>
                   <th>비밀번호</th>
-                  <td><input type="password" id=pw placeholder="비밀번호를 입력해주세요."></td>
+                  <td><input onkeyup="enterkey();" type="password" id=pw placeholder="비밀번호를 입력해주세요."></td>
                 </tr>
                 <tr>
                 	<th></th>
@@ -36,7 +36,8 @@
                 </tr>
                 <tr>
                 	<th></th>
-                	<td><a href="javascript:;" class="btn_confirm" style="position: relative;margin:15px 0 10px 0px;">메인화면으로 이동</a></td>
+                	<td><a href="javascript:;" id=btn_main class="btn_confirm" style="position: relative;margin:15px 0 10px 0px;">메인화면으로 이동</a>
+                	<br><br><br><br><br><br><br><br><br><br><br><br></td>
                 </tr>
           	  </tbody>
           </table>
@@ -48,9 +49,7 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
-$(document)
-//로그인 체크
-.on('click','#btn_login',function(){
+function adminlogin(){
 	$.ajax({
 	    url: 'adminlogin.do',
 	    type: 'POST',
@@ -65,12 +64,31 @@ $(document)
 	        	 alert("admin 님 환영합니다.");
 	        	 location.href = '/app/adminpage'
 	         }else{
-	        	 alert("아이디를 다시 입력해주세요.");
+	        	 alert("아이디&비밀번호를 다시 확인해주세요.");
 	         }
 	    },
 	    error: function (){        
 	    }
 	  })
-});
+}
+$(document)
+//로그인 체크
+.on('click','#btn_login',function(){
+	adminlogin();
+})
+
+
+//메인화면으로 이동
+.on('click','#btn_main',function(){
+	location.href = '/app/index'
+})
+
+function enterkey() {
+        if (window.event.keyCode == 13) {
+ 
+             // 엔터키가 눌렸을 때 실행할 내용
+             adminlogin();
+        }
+}
 </script>
 </html>
