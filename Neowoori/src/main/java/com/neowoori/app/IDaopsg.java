@@ -20,6 +20,13 @@ public interface IDaopsg { // DB 데이터 이용 관련 함수 작성
 	public void psgDeleteCmt(int pNum, int cNum);	// Delete cmt of Study Post
 	public void psgUpdateCmt(int pNum, int cNum, String contents);	// Update cmt
 	
+	// reCmt of study post
+	public ArrayList<psgBViewCmt> psgSelectReCmt(int parentCnum);	// Select reCmt of Study Post
+	public void psgInsertReCmt(int pNum, String id, String contents, int parentCnum);	// Insert ReCmt
+	public psgBViewCmt psgAddReCmtSelect();	// Recent Recomments added
+	public void psgDeleteReCmt(int pNum, int cNum, int parentCnum);	// Delete ReCmt of Study post
+	public void psgUpdateReCmt(int pNum, int cNum, String contents, int parentCnum);	// Update ReCmt
+	
 	// study management
 	public psgBStudyInfoView psgStudyInfo(int mnum);	// Select study information
 	public void psgUpdateStudyInfo(int mNum, String mDay, String mTime,

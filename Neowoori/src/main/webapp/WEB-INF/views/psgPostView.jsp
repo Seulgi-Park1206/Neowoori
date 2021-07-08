@@ -20,33 +20,30 @@
 	<div class=form>
 		<a class=title>게시글 보기</a>
 		<div class=contents>
-			<table id=tblPost>
+			<table id=tblPost class="table table-bordered">
 				<tr>
-					<td class=tdLeft>제목:</td>
-					<td class=tdCenter><label class=intext id=title>${post.title}</label></td>
+					<th class="tdLeft table-light align-middle">제목:</th>
+					<td colspan=3 class="tdright align-middle"><label class=intext id=title>${post.title}</label></td>
 				</tr>
 				<tr>
-					<td class=tdLeft>작성자:</td>
-					<td class=tdCenter><label class=intext id=writer>${post.userid}</label></td>
-				</tr>
-				<tr>
-					<td class=tdLeft>작성일자:</td>
-					<td class=tdCenter><label class=intext id=date>${post.post_date}</label></td>
+					<th class="tdLeft table-light align-middle">작성자:</th>
+					<td class="tdCenter align-middle"><label class=intext id=writer>${post.userid}</label></td>
+					<th class="tdLeft table-light align-middle">작성일자:</th>
+					<td class="tdCenter align-middle"><label class=intext id=date>${post.post_date}</label></td>
 				</tr>
 				<tr class=trContxt>
-					<td class=tdLeft>내용:</td>
-					<td class=tdCenter><textarea class=intext id=content readonly>${post.post_contents}</textarea></td>
+					<th class="tdLeft table-light align-middle">내용:</th>
+					<td colspan=3 class="tdRight align-middle"><textarea class=intext id=content readonly>${post.post_contents}</textarea></td>
 				</tr>
 			</table>
 			<br>
 			<div class="gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="btn btn-outline-danger" id=btnReport value="글 신고">
-				<input type=button class="btn btn-outline-primary" id=btnList onclick="goList()" value=목록>
-				<input type=button class="btn btn-outline-primary" id=btnUpdate data-bs-toggle="modal" data-bs-target="#updateModal" data-bs-whatever="@mdo" value="수정">
-				<input type=button class="btn btn-outline-primary" id=btnDelete value="삭제">
+				<input type=button class="btn btn-outline-secondary" id=btnList onclick="goList()" value=목록>
+				<input type=button class="btn btn-outline-secondary" id=btnUpdate data-bs-toggle="modal" data-bs-target="#updateModal" value="수정">
+				<input type=button class="btn btn-outline-secondary" id=btnDelete value="삭제">
 			</div>
 			<div class=reply>
-				<p class=title2>댓글목록</p>
+				<p class=title2>댓글</p>
 				<br>
 				<table id=tblReply>
 					<c:forEach var="c" items="${cmt}">
@@ -58,14 +55,14 @@
 								<a class=deleteCmt>삭제</a>
 								<a class=reCmt>댓글</a>
 							</div>
-							<textarea class=cmtTxt readonly>${c.cmt_contents}</textarea></td>
+							<textarea class="cmtTxt form-control" readonly>${c.cmt_contents}</textarea></td>
 						</tr>
 					</c:forEach>
 				</table>
 				<br>
-				<div class=replyWrite>
-					<textarea id=txtWrite rows=2 placeholder="댓글을 입력하세요."></textarea>
-					<input type=button class="btn1 btn btn-outline-primary" id=btnReply value="댓글 쓰기" />
+				<div class="replyWrite input-group mb-3">
+					<textarea id=txtWrite class="form-control" placeholder="댓글을 입력하세요." aria-label="댓글을 입력하세요." aria-describedby="btnReply"></textarea>
+					<button class="btn btn-outline-secondary" type="button" id="btnReply">댓글 쓰기</button>
 				</div>
 				<div id="test_cnt">(0 / 100)</div>
 			</div>
@@ -113,6 +110,7 @@ var link = window.location.pathname;
 link = link.split('/')[3];
 var cmtMenu1 = '<a class=updateCmt>수정</a><a class=deleteCmt>삭제</a><a class=reCmt>댓글</a>';
 var cmtMenu2 = '<a class=cmtComplete>수정완료</a>';
+var cmtMenu3 = '<a class=updateCmt>수정</a><a class=deleteCmt>삭제</a>';
 // 스터디 게시판 목록으로 가기
 function goList(){
 	window.location="${path}/meetView/${s_num}";
@@ -130,7 +128,7 @@ function addComment(res){
 	result += res['cmtDate'];
 	result += ')</label><div class=cmtAbout>'
 	result += cmtMenu1;
-	result += '</div><textarea class=cmtTxt readonly>';
+	result += '</div><textarea class="cmtTxt form-control" readonly>';
 	result += res['cmtContents'];
 	result += '</textarea></td></tr>';
 	console.log(result);
@@ -140,47 +138,49 @@ function addComment(res){
 
 // 대댓글 쓰기
 function writeReComment(){
-	var result = '<div class=replyWrite>';
-	result += '<textarea class=txtWrite rows=2 placeholder="댓글을 입력하세요."></textarea>';
-	result += '<input type=button class="btn1 btn btn-outline-primary" id=btnReCmt value="댓글 쓰기" />';
-	result += '</div><div id="test_cnt">(0 / 100)</div>';
+	var result = '<div class="replyWrite input-group w">';
+	result += '<span class="input-group-text" id="spanReply">';
+	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
+	result += '<input type="text" class="txtWrite form-control" placeholder="댓글을 입력하세요." aria-describedby="btnReCmt" />';
+	result += '<button class="btn btn-outline-secondary" type="button" id="btnReCmt">댓글 쓰기</button></div>';
 	
 	return result;
 }
 
 // 대댓글 추가
-function addReComment(){
-	//console.log(res);
-	//console.log(res['userid']);
-	var result = '<a class=hidPCnum>PCmtNum </a><a class=hidReCnum>Cmt Num</a>';
-	result += '<div class=tdView><label class="writer">userid';
-	result += '</label><label> (reCmtDate';
-	result += ')</label><div class=cmtAbout>'
-	result += cmtMenu1;
-	result += '</div><textarea class=cmtTxt readonly>reCmtContents';
-	result += '</textarea></div></div>';
+function addReCmt(res){/*
+	console.log(res);
+	console.log(res['userid']);
+	var result = '<a class=hidReCnum>';
+	result += res['cmtnum'];
+	result += '</a><div class="replyWrite input-group"><span class="input-group-text" id="spanReply">'
+	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
+	result += '<input type=text class="cmtTxt form-control" readonly value="';
+	result += res['cmtContents'];
+	result += '"><input type=text class="form-control" readonly value="';
+	result += res['userid'];
+	result += '" (';
+	result += res['cmtDate'];
+	result += ')<div class=cmtAbout>'
+	result += cmtMenu3;
+	result += '</div></div>';
+	console.log(result);
+	*/
+	var result = '<a class=hidReCnum>';
+	result += res['cmtnum'];
+	result += '</a><div class="replyWrite input-group w"><span class="input-group-text" id="spanReply">'
+	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span><label class="writer">';
+	result += res['userid'];
+	result += '</label><label> (';
+	result += res['cmtDate'];
+	result += ')</label>';
+	result += '<input type=text class="cmtTxt form-control" readonly value="';
+	result += res['cmtContents'];
+	result += '"></div></div>';
 	console.log(result);
 	
 	return result;
 }
-/* function addReComment(res){
-	//console.log(res);
-	//console.log(res['userid']);
-	var result = '<div class=hidPCnum><div class=hidReCnum>';
-	result += res['cmtnum'];
-	result += '</div><div class=tdView><label class="writer">';
-	result += res['userid'];
-	result += '</label><label> (';
-	result += res['cmtDate'];
-	result += ')</label><div class=cmtAbout>'
-	result += cmtMenu1;
-	result += '</div><textarea class=cmtTxt readonly>';
-	result += res['cmtContents'];
-	result += '</textarea></div></div>';
-	console.log(result);
-	
-	return result;
-} */
 
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
@@ -225,20 +225,6 @@ function clearCmt() {
 	$('#txtWrite').val('');
 	$('#test_cnt').html("(0 / 100)");
 }
-
-/* // alert Modal show
-function alertModal(title, comment){
-	$('#alertTitle').text(title);
-	$('#lblAlert').text(comment);
-	$('#alertModal').modal('show');
-}
-
-// confirm Modal show
-function confirmModal(title, comment){
-	$('#confirmTitle').text(title);
-	$('#lblConfirm').text(comment);
-	$('#confirmModal').modal('show');
-} */
 
 $(document)
 .ready(function(){
@@ -405,7 +391,6 @@ $(document)
 			txt.attr('readonly', false);
 			// 댓글의 마지막으로 커서 focus
 			txt.focus();
-			//txt[0].setSelectionRange(txt.val().length, txt.val().length);
 		} else {
 			alertModal(modalTitle, '작성자가 아닙니다.');
 		}
@@ -443,18 +428,83 @@ $(document)
 })
 // 댓글 클릭(대댓글 쓰기) 클릭
 .on('click', '.reCmt', function(){
-	// 대댓글 div가 없으면 1, 있으면 2
-	var divCount = $(this).parents('td div').length;
-	console.log('divCount: '+divCount);
-	if(divCount == 1){	// 대댓글 없음
+	var divCount = $(this).parents('.tdView .divReCmt');
+	console.log('divCount: '+divCount.length);
+	if(divCount.length == 0){	// 대댓글 없음
+		// 해당 댓글 번호
+		var replyNum = $(this).parent().parent().siblings('.hidCnum').text();
+		console.log('replyNum: '+replyNum);
+		// 추가할 위치
 		var td = $(this).parents('td');
-		td.append('<div class=divReCmtWhole></div>');
-		var reCmtWhole = td.children('.divReCmtWhole');
-		reCmtWhole.append($('.arrow'));
-		reCmtWhole.append('<div class=divReCmt></div>');
-		reCmtWhole.children('.divReCmt').html(addReComment());
+		td.append('<div class=divReCmt></div>');
+		// 해당 댓글의 대댓글 검색 후 출력
+		$.ajax({
+			url: '${path}/selectReCmt.do',
+			data: replyNum,
+			contentType: 'text/plain; charset=UTF-8',
+			dataType: 'json',
+			method: 'post',
+			success: function(res){
+				console.log('res.length: ' + res.length);
+				if(res.length > 0){
+					$.each(res, function(index, item){
+						console.log('index: '+index+'/item: '+item);
+						console.log(item['userid']);
+						
+						td.children('.divReCmt').prepend(addReCmt(item));
+					});
+				}
+				td.children('.divReCmt').append(writeReComment());
+			},
+			error: function(){
+				alert('ReCmt Load Error');
+			}
+		});
+	} else {
 	}
-	//adjustDivReCmtHeight(div)
+	
+	return false;
+})
+//대댓글 - '댓글 쓰기' 클릭
+.on('click', '#btnReCmt', function(){
+	// 대댓글 입력한 input
+	var reCmt = $(this).siblings('.txtWrite');
+	console.log('대댓글: ' + reCmt.val());
+	
+	// 대댓글 등록
+	if('${userid}' != ""){ // 로그인을 하지 않은 경우 실행 x
+		var replyNumTd = $(this).parent().parent().parent().siblings('.hidCnum');
+		var cnum = replyNumTd.text();
+		console.log('cnum: '+cnum);
+		var cts = reCmt.val().trim();
+		if(cts != null && cts != ''){
+			var cmt = {pNum:link, parentNum:cnum, contents:reCmt.val().trim()};
+			
+			$.ajax({
+				url:'${path}/insertReCmt.do',
+				data:JSON.stringify(cmt),
+				contentType:'application/json; charset=UTF-8',
+				dataType:'json',
+				method:'post',
+				success:function(res){
+					reCmt.prepend(addReCmt(res));
+					adjustDivReCmtHeight($('.divReCmt'));
+					alertModal('댓글 등록', '댓글이 등록되었습니다.');
+					reCmt.val('');
+				},
+				error:function(){
+					alert('ReCmt insert error');
+				}
+			});	
+		} else {
+			alertModal('댓글 등록','댓글 내용을 입력하세요.');
+		}
+	} else {
+		alertModal('댓글 등록', '로그인이 필요합니다.');
+		clearCmt();
+		location.href='${path}/login';
+	}
+	
 	return false;
 })
 </script>
