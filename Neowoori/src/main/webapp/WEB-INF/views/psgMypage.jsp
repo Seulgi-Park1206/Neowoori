@@ -72,6 +72,9 @@
 			</table>
 		</div>
 	</div>
+	<!-- alertModal -->
+	<jsp:include page="/module/alertModal.jsp" flush="false" />
+	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
@@ -83,27 +86,6 @@ $(document)
 .ready(function(){
 	$('#unick').val('${member.uNick}');
 	$('#umobile').val('${member.uMobile}');
-	/*
-	// 세션값을 이용해 user_id를 얻어와서 db에서 해당 유저 정보 불러오기
-	$.ajax({
-		url:'${path}/mypage.do',
-		data:{},
-		contentType:'application/json; charset=UTF-8',
-		dataType:'json',
-		method:'post',
-		success:function(result){
-				$('#uid').text(result['userid']);
-				$('#uname').text(result['uname']);
-				$('#unick').val(result['unick']);
-				$('#birth').text(result['uyear']+result['ubirthday']);
-				$('#gender').text(result['ugender']);
-				$('#umobile').val(result['umobile']);
-				$('#email').text(result['umail']);
-		},
-		error:function(){
-			alert('error');
-		}
-	});*/
 })
 // 비밀번호 일치/불일치 판단
 .on('change keyup paste focus', '#upw, #upw1', function(){
@@ -137,7 +119,7 @@ $(document)
 					alert('중복된 정보입니다. 다시 입력 바랍니다.')
 				} else {
 					let update = {uid:$('#uid').text(), optype:inputId, val:data};
-					if(confirm("수정하시겠습니까?")){
+					if(confirm('수정하시겠습니까?')){
 						$.ajax({
 							url:'update_myInfo.do',
 							data:JSON.stringify(update),
@@ -145,7 +127,7 @@ $(document)
 							dataType:'text',
 							method:'post',
 							success:function(result){
-								alert("수정이 완료되었습니다.");
+								alertModal('수정', '수정이 완료되었습니다.');
 							},
 							error:function(){
 								alert('Update error');
@@ -173,7 +155,7 @@ $(document)
 					}
 				},
 				error:function(){
-					alert('Dup Error');
+					alertModal('중복체크', 'Dup Error');
 				}
 			});
 		}

@@ -999,7 +999,7 @@ public class HomeController {
 	}
 	// 스터디 삭제
 	@ResponseBody
-	@RequestMapping(value="/deleteStudy.do", method=RequestMethod.POST)
+	@RequestMapping(value="/deleteStudyInfo.do", method=RequestMethod.POST)
 	public String deleteStudyDo(@RequestBody String sNum) {
 		System.out.println("-- 스터디 삭제 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);

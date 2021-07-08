@@ -55,14 +55,6 @@
 					</tr>
 				</tbody>
 			</table>
-			<div class="btn-group" role="group" aria-label="Basic outlined example">
-  				<button type="button" class="btn btn-outline-primary">이전</button>
-				<button type="button" class="btn btn-outline-primary">1</button>
-				<button type="button" class="btn btn-outline-primary">2</button>
-				<button type="button" class="btn btn-outline-primary">3</button>
-				<button type="button" class="btn btn-outline-primary">4</button>
-				<button type="button" class="btn btn-outline-primary">다음</button>
-			</div>
 		</div>
 		<div class="dropdown">
 			<a id=kick>강퇴하기</a>

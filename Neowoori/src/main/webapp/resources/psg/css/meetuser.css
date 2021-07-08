@@ -1,4 +1,4 @@
-@charset "EUC-KR";
+@charset "utf-8";
 .jsb_table_width2 {
    width:15%;
 }
@@ -8,14 +8,11 @@
 .jsb_table_width4 {
    width:25%;
 }
-tr, th {
-	border: 1px solid gray;
-}
 .dropdown {
 	position: absolute;
 	background-color: #797799;
 	color: #ffffff;
-	width: 150px;
+	width: 130px;
 	text-align: center;
 	font-size: 20px;
 	padding: 10px;

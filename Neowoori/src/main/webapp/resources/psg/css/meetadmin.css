@@ -3,14 +3,9 @@ html {
 	margin: 0;
 	min-width: 444px;
 }
-table {
-	/* width: 80%; */
-	height: 500px;
-}
 tr {
 	text-align: center;
-	line-height: 50px;
-	height: 10%;
+	height: 5%;
 }
 td {
 	border-left: 0;
@@ -38,9 +33,6 @@ textarea {
 	width: 10%;
 	text-align: center;
 }
-.trExp {
-	border-top: 1px solid gray;
-}
 .tdMul {
 	margin: 0;
 	height: 150px;
@@ -61,6 +53,3 @@ textarea {
 span {
 	text-align: center;
 }
-/* #dAlert {
-	display: none;
-} */

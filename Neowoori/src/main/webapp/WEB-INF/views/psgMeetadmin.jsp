@@ -117,21 +117,7 @@
 	  </div>
 	</div>
 	<!-- alert -->
-	<div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<label class="modal-title" id=alertTitle></label>
-	      </div>
-	      <div class="modal-body">
-	        <label id=lblAlert></label>
-	      </div>
-	      <div class="modal-footer">
-	        <button class="btn btn-primary" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<jsp:include page="/module/alertModal.jsp" flush="false" />
 	<!-- confirm -->
 	<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -145,7 +131,7 @@
 	        </div>
 	      </div>
 	      <div class="modal-footer">
-	        <button type="button" class="btn btn-secondary" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal" id=btnNo>취소</button>
+	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnNo>취소</button>
 	        <button type="button" class="btn btn-primary" id=btnYes data-bs-dismiss="modal">확인</button>
 	      </div>
 	    </div>
@@ -159,6 +145,10 @@
 // 스터디 번호
 var link = window.location.pathname;
 s_num = link.split('/')[3];
+// 스터디 수정 관련 변수
+var studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel = '';
+// alertTitle
+var alTitle = '';
 
 // 회원 관리 페이지로 이동
 function go_adminUser(){
@@ -236,10 +226,10 @@ function checkedModal(chk){
 
 // 스터디 정보 수정 유효성 검사
 function validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel){
-	var alTitle = '스터디 정보 수정';
+	alTitle = '스터디 정보 수정';
 	if(chkweek == false) {
 		alertModal(alTitle,'요일을 선택해주세요.');
-	} else if(studyHour == "0" || studyMin == "0") {
+	} else if(studyHour == "0" && studyMin == "0") {
 		confirmModal(alTitle, '스터디 시간에서 0을 선택하셨습니다. 그대로 진행하시겠습니까?');
 	} else if(playHour == "0" && playMin == "0") {
 		alertModal(alTitle, '진행 시간을 다시 입력해주세요.');
@@ -263,6 +253,16 @@ function validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, 
 $(document)
 .ready(function(){
 	adjustHeight($('#explain'));
+	/* var uid = '${userid}';
+	// 닉네임이구나..참..
+	if(uid != $('#admin').text()){
+		alert('관리자가 아닙니다.');
+		location.href = '${path}/index';
+	} */
+})
+.on('click', '.btn', function(){
+	var uid='${userid}';
+	console.log('user: ' + uid);
 })
 // 스터디 정보 수정 버튼 클릭
 .on('click', '#btnUpdateInfo', function(){
@@ -287,18 +287,54 @@ $(document)
 })
 // 스터디 정보 수정 완료 버튼 클릭
 .on('click', '#btnUpdateComplete', function(){
-	var studyName = $('#studyName').val();
-	var chkweek = $('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
-	var studyHour = $('#studyHour').val();
-	var studyMin = $('#studyMin').val();
-	var playHour = $('#playHour').val();
-	var playMin = $('#playMin').val();
-	var personnel = $('#studyPersonnel').val();
-	var alTitle = '스터디 정보 수정';
+	studyName = $('#studyName').val();
+	chkweek = $('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
+	studyHour = $('#studyHour').val();
+	studyMin = $('#studyMin').val();
+	playHour = $('#playHour').val();
+	playMin = $('#playMin').val();
+	personnel = $('#studyPersonnel').val();
+	alTitle = '스터디 정보 수정';
 	
 	// 유효성 검사
 	var vd = validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel);
 	if(vd == 'success'){
+		// 스터디 정보 수정
+		$('#confirmTitle').text('스터디 정보 수정');
+		$('#btnYes').click();
+	}
+	
+	return false;
+})
+// 스터디 삭제 클릭
+.on('click', '#btnDeleteStudy', function() {
+	confirmModal('스터디 삭제', '정말 스터디를 삭제하시겠습니까?');
+	
+	return false;
+})
+// confirmModal - btnYes click
+.on('click', '#btnYes', function(){
+	console.log('type: ' + $('#confirmTitle').text());
+	var type = $('#confirmTitle').text();
+	
+	if(type == '스터디 삭제'){
+		// 스터디 폐쇄
+		console.log('스터디 삭제 기능');
+		alTitle = type;
+		$.ajax({
+			url : '${path}/deleteStudyInfo.do',
+			data : s_num,
+			contentType : 'text/plain; charset=UTF-8',
+			method : 'post',
+			success : function() {
+				alertModal(alTitle, '삭제가 완료되었습니다.');
+				cancel();
+			},
+			error : function() {
+				alert('Delete error');
+			}
+		});
+	} else if(type == '스터디 정보 수정'){
 		var stime = studyHour + '시' + studyMin + '분';
 		var ptime = playHour + '시간' + playMin + '분';
 		var chkwk = checkboxArr();
@@ -330,24 +366,13 @@ $(document)
 	
 	return false;
 })
-// 스터디 삭제 클릭
-.on('click', '#btnDeleteStudy', function() {
-	confirmModal('스터디 삭제', '정말 스터디를 삭제하시겠습니까?');
-	
-	return false;
-})
-// confirmModal - btnYes click
-.on('click', '#btnYes', function(){
+.on('click', '#btnNo', function(){
 	console.log('type: ' + $('#confirmTitle').text());
 	var type = $('#confirmTitle').text();
 	
 	if(type == '스터디 정보 수정'){
-		// 정보 수정
-		
-	} else if(type == '스터디 삭제'){
-		// 스터디 폐쇄		
+		$('#updateModal').modal('show');
 	}
-	
 	
 	return false;
 })
