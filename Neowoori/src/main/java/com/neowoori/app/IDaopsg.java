@@ -22,4 +22,7 @@ public interface IDaopsg { // DB 데이터 이용 관련 함수 작성
 	
 	// study management
 	public psgBStudyInfoView psgStudyInfo(int mnum);	// Select study information
+	public void psgUpdateStudyInfo(int mNum, String mDay, String mTime,
+			String mPTime, String mPersonnel);	// Update Study Info
+	public void psgDeleteStudy(int mNum);	// Delete Study
 }

@@ -1,7 +1,19 @@
+<<<<<<< HEAD
 @charset "EUC-KR";
 .psg_table_width2 {
+=======
+@charset "utf-8";
+.jsb_table_width2 {
+   width:15%;
+}
+.jsb_table_width3 {
+   width:60%;
+}
+.jsb_table_width4 {
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
    width:25%;
 }
+<<<<<<< HEAD
 .psg_table_width3 {
    width:25%;
 }
@@ -11,12 +23,13 @@
 tr, th {
 	border: 1px solid gray;
 }
+=======
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 .dropdown {
 	position: absolute;
 	background-color: #797799;
 	color: #ffffff;
-	width: 150px;
-	height: 120px;
+	width: 130px;
 	text-align: center;
 	font-size: 20px;
 	padding: 10px;

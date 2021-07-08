@@ -1,63 +1,60 @@
-@charset "EUC-KR";
-/* .form{
-	width: 70%;
-	height: 700px;
-	margin-left: auto;
-	margin-right: auto;
-} */
+@charset "utf-8";
 table {
 	width: 100%;
-	height: 600px;
-	border: 1px solid gray;
-	padding: 30px, 20px;
+	height: 400px;
 }
 tr {
-	text-align: center;
-	line-height: 50px;
 	height: 10%;
 }
+.hidden {
+	display: none;
+	height: 20px;
+	color: red;
+}
 .hidden label {
-	height: 80%;
+	height: 15px;
+	font-size: 10px;
+	color: red;
 }
 .tdLeft {
-	width: 25%;
+	width: 35%;
 }
 .tdCenter {
-	width: 50%;
-}
-.tdCenter * {
-	height: 70%;
+	width: 40%;
 }
 .tdCheck {
-	width: 25%;
 	margin-left: 0;
-	text-align: left;
 	border-left: 0;
 }
 .intext {
-	width: 80%;
-	height: 60%;
 	text-align: center;
-}
-#yesno, #nickCheckResult {
+	width: 60%;
 	height: 80%;
 }
-#nickCheckResult, #mobileCheckResult {
-	color: white;
+#upw, #upw1 {
+	width: 80%;
 }
-#yesNo {
+#yesno {
+	height: 80%;
 	color: red;
-}
-.btn{
-	/* width: 100%;
-	height: 10%;
-	margin-top: 25px; */
-	text-align: right;
 }
 .hiddenTr{
 	display: none;
 }
-@media (max-width:1330px){ /*°¡·Î ³Êºñ°¡ 1330px ÀÌÇÏÀÏ ¶§ ¾Æ·¡ ½ºÅ¸ÀÏ Àû¿ë*/
+.inp {
+	border:1px solid #ececec;
+	color:#4c4c4c;
+	padding:10px;
+	width: 70%;
+	float:right;
+}
+#btnUpdatePw {
+	float: left;
+}
+.btn {
+	height: 80%;
+}
+@media (max-width:1330px){ /*ê°€ë¡œ ë„ˆë¹„ê°€ 1330px ì´í•˜ì¼ ë•Œ ì•„ë˜ ìŠ¤íƒ€ì¼ ì ìš©*/
 	.tdCheck {
 		margin-left: 0;
 	}

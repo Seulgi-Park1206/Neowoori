@@ -49,6 +49,7 @@
 				</c:forEach>
 				</tbody>
 			</table>
+<<<<<<< HEAD
 			</div>
 			</div>
 			<!--  
@@ -62,6 +63,8 @@
 			</div>
 			-->
 		</div>
+=======
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 		</div>
 		<div class="dropdown">
 			<a id=kick>강퇴하기</a>

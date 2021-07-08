@@ -4,12 +4,21 @@
 	
 <mapper namespace="com.neowoori.app.IDaoygw">
 	<select id="listNoticeDao" resultType="com.neowoori.app.BAdminPost">
-		select postnum,TITLE,ADMIN_CONTENTS,admin_date from admin_post order by admin_date desc
+		select * from admin_post order by admin_date desc
 	</select>
+	
 	<insert id="writeNoticeDao">
 		insert into admin_post(POSTNUM,ADMINNUM,POSTTYPE,TITLE,ADMIN_CONTENTS,ADMIN_DATE)
 		values(admin_post_seq.nextval,1,'notice',#{param1},#{param2},TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi'))
 	</insert>
+	
+	<select id="viewnotice" resultType="com.neowoori.app.BAdminPost">
+		select * from admin_post where postnum=#{param1}
+	</select>
+	
+	<delete id="deleteNotice">
+		delete from admin_post where postnum=#{param1}
+	</delete>
 	
 	<!-- 아이디 있는지 없는지 체크 -->
 	<select id="check_email" resultType="Integer">

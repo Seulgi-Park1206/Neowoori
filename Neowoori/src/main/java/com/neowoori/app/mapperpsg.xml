@@ -56,4 +56,13 @@
 	<select id="psgStudyInfo" resultType="com.neowoori.app.psgBStudyInfoView">
 		select b.unick, (select count(*) from meeting_study where mnum=#{param1}) cmcount, a.* from study a, members b where a.unum=b.unum and a.mnum=#{param1}
 	</select>
+	<!-- 스터디 정보 수정 -->
+	<update id="psgUpdateStudyInfo">
+		update study set mday=#{param2}, mtime=#{param3}, mptime=#{param4}, mpersonnel=#{param5}
+			where mnum=#{param1}
+	</update>
+	<!-- 스터디 삭제 -->
+	<delete id="psgDeleteStudy">
+		delete from study where mnum=#{param1}
+	</delete>
 </mapper>

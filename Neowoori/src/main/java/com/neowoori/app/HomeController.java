@@ -107,7 +107,7 @@ public class HomeController {
 		  model.addAttribute("paging",paging);
 		  model.addAttribute("lastpage",Math.ceil(noticecnt/10));
 		  
-	      return "ygwnoticetest";
+	      return "ygw_notice";
 	   }
 	
 	/*
@@ -122,6 +122,15 @@ public class HomeController {
 		  dao.categorySelResultCnt(category,keyword);
 	      //return "ygwFaw";
 	}*/
+	
+	@RequestMapping("/notice/{noticepostid}") //자주 묻는 질문
+	   public String noticeView(@PathVariable int noticepostid,Model model) {
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  BAdminPost viewnotice=dao.viewnotice(noticepostid);
+		  model.addAttribute("noticelist",viewnotice);
+		  
+	      return "ygw_viewNotice";
+	}
 	
 	@RequestMapping("/qnawrite") //자주 묻는 질문
 	   public String Qnawrite() {
@@ -198,7 +207,13 @@ public class HomeController {
 	    return "redirect:/qna";
 	}
 	
-	
+	@RequestMapping("/noticedelete/{noticepostnum}") //qna 삭제
+	   public String deleteNotice(@PathVariable int noticepostnum,Model model) {
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		dao.deleteNotice(noticepostnum);
+		
+	    return "redirect:/notice";
+	}
 	
 		@RequestMapping(value="/Qnaserver",method=RequestMethod.POST) //Qna 게시판 글쓰기
 		   public String faqserver(HttpServletRequest request,Model model,HttpSession session) {
@@ -380,7 +395,7 @@ public class HomeController {
 	/* 회원가입 이메일 인증 */
 	@RequestMapping(value="/mailCheck", method=RequestMethod.GET)
 	@ResponseBody
-	public void mailCheckGET(String email) throws Exception{
+	public String mailCheckGET(String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
 		System.out.println(email);
@@ -415,7 +430,7 @@ public class HomeController {
 			e.printStackTrace();
 		}		
 		
-				
+		return Integer.toString(checkNum);	
 	}
 	
 	/*---------------------------------------------*/
@@ -943,7 +958,7 @@ public class HomeController {
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
 	 	
-	return "psgMeetList";
+		return "psgMeetList";
 	}
 	// 내 스터디 목록 검색
 	@ResponseBody 
@@ -968,6 +983,31 @@ public class HomeController {
 		model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
 		
 		return "psgMeetadmin";
+	}
+	// 스터디 정보 수정
+	@ResponseBody
+	@RequestMapping(value="/updateStudyInfo.do", method=RequestMethod.POST)
+	public String updateStudyInfoDo(@RequestBody HashMap<String, String> hashmap) {
+		System.out.println("-- 스터디 정보 수정 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int mNum = Integer.parseInt(hashmap.get("sNum"));
+		dao.psgUpdateStudyInfo(mNum, hashmap.get("sWeek"), hashmap.get("sTime"), hashmap.get("pTime"),
+				hashmap.get("psn"));
+		System.out.println("-- 수정 완료 --");
+		
+		return "success";
+	}
+	// 스터디 삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteStudyInfo.do", method=RequestMethod.POST)
+	public String deleteStudyDo(@RequestBody String sNum) {
+		System.out.println("-- 스터디 삭제 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int mNum = Integer.parseInt(sNum);
+		dao.psgDeleteStudy(mNum);
+		System.out.println("-- 삭제 완료 --");
+		
+		return "success";
 	}
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
