@@ -12,10 +12,10 @@
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
 <input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
-  <div class="wrap wd668">
-      <div class="container">
-        <div class="form_txtInput">
-          <h2 class="sub_tit_txt">스터디 만들기</h2>
+   <div class="wrap wd668">
+     <!--  <div class="container"> -->
+        <!-- <div class="form_txtInput">-->
+          <h2 >스터디 만들기</h2>
           <div class="join_form" >
             <table>
               <colgroup>
@@ -27,7 +27,8 @@
                   <th><span>스터디명</span></th>
                   <td colspan='2'>
                   	<input type="text" id=studyName name=studyName style="width:70%;" placeholder="스터디명을 입력해주세요.">
-                  	<a href="javascript:;" id=MNameeCheck class="btn_confirm" style="position: relative;">중복확인</a>
+                  	<input type="button" id=MNameeCheck class='btn btn-outline-secondary' value="중복확인" style="position: relative;width:20%;">
+                  	<!-- <a href="javascript:;" id=MNameeCheck class="btn_confirm" style="position: relative;">중복확인</a> -->
                   	</td>
                   	
                 </tr>
@@ -377,6 +378,11 @@ $("#signupbtn").on("click",function(){
 	}
 	if(chkName==1){
 		alert("스터디명 중복확인해주세요.");
+		return;
+	}
+	
+	if(personnel<=11){
+		alert("인원 수 확인해주세요.");
 		return;
 	}
 	signupajax();

@@ -1,4 +1,4 @@
-@charset "EUC-KR";
+@charset "utf-8";
 header {
 	margin: 0;
 	height: 130px;
@@ -21,8 +21,7 @@ header {
 	margin-right: auto;
 }
 nav {
-	height: 15%;
-	min-width: 400px;
+	height: 30%;
 	padding: 5px;
 	text-align: right;
 	margin-right: 0;
@@ -34,9 +33,10 @@ nav {
 .link, .linklog {
 	margin: 0 15px;
 	color: #000000;
+	width: 30%;
 }
-/* ¸ğ¹ÙÀÏ¿¡¼­µµ ´õ ÁÙÀÌ±ä ÇØ¾ßÇÒµí */
-@media (max-width:1330px){ /*°¡·Î ³Êºñ°¡ 1330px ÀÌÇÏÀÏ ¶§ ¾Æ·¡ ½ºÅ¸ÀÏ Àû¿ë*/
+/* ëª¨ë°”ì¼ì—ì„œë„ ë” ì¤„ì´ê¸´ í•´ì•¼í• ë“¯ */
+@media (max-width:1330px){ /*ê°€ë¡œ ë„ˆë¹„ê°€ 1330px ì´í•˜ì¼ ë•Œ ì•„ë˜ ìŠ¤íƒ€ì¼ ì ìš©*/
     .class-main {
     	margin: 15px 0;
     	margin-left: auto;
@@ -54,11 +54,11 @@ nav {
         height: 55px;
     }
     .link, .linklog {
-        font-size: 15px;    
+        font-size: 12px;    
     }
 }
-@media (max-width:768px){ /*°¡·Î ³Êºñ°¡ 768px ÀÌÇÏÀÏ ¶§ ¾Æ·¡ ½ºÅ¸ÀÏ Àû¿ë*/
+@media (max-width:768px){ /*ê°€ë¡œ ë„ˆë¹„ê°€ 768px ì´í•˜ì¼ ë•Œ ì•„ë˜ ìŠ¤íƒ€ì¼ ì ìš©*/
 	*, div {
-		font-size: 11px;
+		font-size: 10px;
 	}
 }

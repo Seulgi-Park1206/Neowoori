@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,9 +10,10 @@
 </head>
 <style>
 table{
-	width: 100%;
+	width: 	100%;
     border: 1px solid #000000;
     border-collapse: collapse;
+    text-align:center;
 }
 table,td{
 	border: 1px solid #000000;
@@ -19,6 +21,9 @@ table,td{
 }
 </style>
 <body>
+
+<c:set var = "string1" value = "${qnalist.faqdate}"/>
+<c:set var = "string2" value = "${fn:substring(string1, 0, 9)}" />
 
 <table id=viewqnatable style="border-collapse:collapse;">
 	<tr>
@@ -35,13 +40,23 @@ table,td{
 		<td>내용</td><td>${qnalist.faqcontent}</td>
 	</tr>
 	<tr>
-		<td>작성일</td><td>${qnalist.faqdate}</td>	
+		<td>작성일</td><td>${string2}</td>	
 	</tr>
-	<tr><td colspan=3 align=center><input type=button id=btnUpdate value=수정>
-	                  <input type=button id=btnDelete value=삭제>
-	                  <input type=button id=btnNew value=새글쓰기>
-	                  <input type=button id=btnQnalist value=목록보기 onclick="document.location='http://localhost:8080/app/qna'"></td></tr>
+	<tr>
+		<td>답변상태</td><td>${qnalist.state}</td>
+	</tr>
+	<tr>
+		<td>답변내용</td><td>${qnalist.answer}</td>	
+	</tr>
+	
 </table>
+<br>
+<div style="text-align:center;">
+	<input type=button id=btnUpdate value=수정>
+	<input type=button id=btnDelete value=삭제>
+	<!--<input type=button id=btnNew value=새글쓰기>-->
+	<input type=button id=btnQnalist value=목록보기 onclick="document.location='http://localhost:8080/app/qna'"></td></tr>
+</div>
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
@@ -72,15 +87,6 @@ $(document)
 		return false;	
 	}
 })
-
-.on('click','#btnNew',function(){
-	document.location="http://localhost:8080/edu/newpost";
-	return false;
-})
-
-
-
-
 
 if(writer==null || writer!=dbwriter){
 	$('#btnUpdate').hide();

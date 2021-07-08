@@ -33,6 +33,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
  */
 @Controller
 public class HomeController {
+
 	//전역 변수 영역
 	//유건우
 	
@@ -65,6 +66,7 @@ public class HomeController {
 	/*---------------유건우 영역----------------------*/
 	@RequestMapping("/index") //인덱스 page
 	   public String index() {
+		
 	      return "ygwIndex";
 	   }
 	@RequestMapping("/email") //인덱스 page
@@ -105,7 +107,7 @@ public class HomeController {
 		  model.addAttribute("paging",paging);
 		  model.addAttribute("lastpage",Math.ceil(noticecnt/10));
 		  
-	      return "ygwnoticetest";
+	      return "ygw_notice";
 	   }
 	
 	/*
@@ -120,6 +122,15 @@ public class HomeController {
 		  dao.categorySelResultCnt(category,keyword);
 	      //return "ygwFaw";
 	}*/
+	
+	@RequestMapping("/notice/{noticepostid}") //자주 묻는 질문
+	   public String noticeView(@PathVariable int noticepostid,Model model) {
+		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		  BAdminPost viewnotice=dao.viewnotice(noticepostid);
+		  model.addAttribute("noticelist",viewnotice);
+		  
+	      return "ygw_viewNotice";
+	}
 	
 	@RequestMapping("/qnawrite") //자주 묻는 질문
 	   public String Qnawrite() {
@@ -196,7 +207,13 @@ public class HomeController {
 	    return "redirect:/qna";
 	}
 	
-	
+	@RequestMapping("/noticedelete/{noticepostnum}") //qna 삭제
+	   public String deleteNotice(@PathVariable int noticepostnum,Model model) {
+		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		dao.deleteNotice(noticepostnum);
+		
+	    return "redirect:/notice";
+	}
 	
 		@RequestMapping(value="/Qnaserver",method=RequestMethod.POST) //Qna 게시판 글쓰기
 		   public String faqserver(HttpServletRequest request,Model model,HttpSession session) {
@@ -378,7 +395,7 @@ public class HomeController {
 	/* 회원가입 이메일 인증 */
 	@RequestMapping(value="/mailCheck", method=RequestMethod.GET)
 	@ResponseBody
-	public void mailCheckGET(String email) throws Exception{
+	public String mailCheckGET(String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
 		System.out.println(email);
@@ -413,7 +430,7 @@ public class HomeController {
 			e.printStackTrace();
 		}		
 		
-				
+		return Integer.toString(checkNum);	
 	}
 	
 	/*---------------------------------------------*/
@@ -441,7 +458,7 @@ public class HomeController {
 		model.addAttribute("s_num", s_num);
 	      return "PJH_meetView";
 	  }
-	@RequestMapping("/faq") //자주 묻는 질문
+	@RequestMapping("/faq") //자주 묻는 질문 *삭제페이지
 	   public String faq() {
 	      return "PJH_faq";
 	   }
@@ -941,7 +958,7 @@ public class HomeController {
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
 	 	
-	return "psgMeetList";
+		return "psgMeetList";
 	}
 	// 내 스터디 목록 검색
 	@ResponseBody 
@@ -967,10 +984,40 @@ public class HomeController {
 		
 		return "psgMeetadmin";
 	}
+	// 스터디 정보 수정
+	@ResponseBody
+	@RequestMapping(value="/updateStudyInfo.do", method=RequestMethod.POST)
+	public String updateStudyInfoDo(@RequestBody HashMap<String, String> hashmap) {
+		System.out.println("-- 스터디 정보 수정 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int mNum = Integer.parseInt(hashmap.get("sNum"));
+		dao.psgUpdateStudyInfo(mNum, hashmap.get("sWeek"), hashmap.get("sTime"), hashmap.get("pTime"),
+				hashmap.get("psn"));
+		System.out.println("-- 수정 완료 --");
+		
+		return "success";
+	}
+	// 스터디 삭제
+	@ResponseBody
+	@RequestMapping(value="/deleteStudyInfo.do", method=RequestMethod.POST)
+	public String deleteStudyDo(@RequestBody String sNum) {
+		System.out.println("-- 스터디 삭제 시작 --");
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int mNum = Integer.parseInt(sNum);
+		dao.psgDeleteStudy(mNum);
+		System.out.println("-- 삭제 완료 --");
+		
+		return "success";
+	}
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
-	public String meetUser(@PathVariable String study_id, Model model) {
-		model.addAttribute("s_id", study_id);
+	public String meetUser(@PathVariable int study_id, Model model) {
+		//model.addAttribute("s_id", study_id);
+		//study_id사용하면됨
+		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+		ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
+		model.addAttribute("resp", resp);
+		
 		return "psgMeetuser";
 	}
 	// 관리자 질문 답변
@@ -1079,17 +1126,6 @@ public class HomeController {
 			if(reqMNum > 1) dao.jsbCreateMeet(mUserNum,reqMNum,stateNum);
 			}
 	
-	@ResponseBody
-	@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
-		public ArrayList<BStudy> reqList(HttpServletRequest req) {
-			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-//			String one = req.getParameter("one");
-//			String two = req.getParameter("two");		
-//			System.out.println(one+","+two);
-			ArrayList<BStudy> resp=dao.jsbGetStudyInfo();
-			return resp;
-	   }
-	
 	@ResponseBody	/*가입신청 상태인지 아닌지 확인*/
 	@RequestMapping(value="/jsbFindMeetStudy.do", method=RequestMethod.POST,produces = "application/json")
 		public int jsbFindMeetStudy(String mNumHid, String userId, HttpServletRequest req) {
@@ -1162,7 +1198,7 @@ public class HomeController {
 		public int jsbSearchPageBtn(String mNum, HttpServletRequest req,HttpSession session) {
 			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 			int mNums = Integer.parseInt(req.getParameter("mNum"));
-			session.setAttribute("userid","human1");
+			//session.setAttribute("userid","human1");
 			String sessionUserId = String.valueOf(session.getAttribute("userid"));
 			BMembers mem = dao.jsbGetUser(sessionUserId);
 			int mUserNum = mem.getuNum();
@@ -1255,8 +1291,61 @@ public class HomeController {
 			}
 			return null;
 	   }
-		
 
+		@ResponseBody
+		@RequestMapping(value="/jsbFindMapInCate.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<BJsbStudyInfo> findMapInCate(String cate1, String cate2,HttpServletRequest req) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+				String one = req.getParameter("cate1");
+				String two = req.getParameter("cate2");
+				System.out.println(one+","+two);
+				if (two.equals("dontSel")) {
+					System.out.println("one 실행");
+					ArrayList<BJsbStudyInfo> resp=dao.jsbGetStudyInfoInCateONE(one);
+					return resp;
+				} else {
+					System.out.println("ALL 실행");
+					ArrayList<BJsbStudyInfo> resp=dao.jsbGetStudyInfoInCate(one,two);
+					return resp;
+				}
+		   }
+
+		@ResponseBody //카테고리 분야 포기 map 리플레쉬하려면 오래걸림
+		@RequestMapping(value="/findMap.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<jsbBListStudy> reqList(HttpServletRequest req) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+//				String one = req.getParameter("one");
+//				String two = req.getParameter("two");		
+//				System.out.println(one+","+two);
+				ArrayList<jsbBListStudy> resp=dao.jsbGetStudyInfo();
+				return resp;
+		   }
+			
+			@ResponseBody // 받은 쪽지  receiveMsgList
+			@RequestMapping(value="/receiveMsgList.do", method=RequestMethod.POST,produces = "application/json")
+				public ArrayList<jsbBMsgList> receiveMsgList(HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					
+					String sessionUserId = String.valueOf(session.getAttribute("userid"));
+					BMembers mem = dao.jsbGetUser(sessionUserId);
+					int mUserNum = mem.getuNum();
+					
+					ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList(mUserNum);
+					return resp;
+			   }
+				
+				@ResponseBody // 보낸 쪽지  SendMsgList
+				@RequestMapping(value="/sendMsgList.do", method=RequestMethod.POST,produces = "application/json")
+					public ArrayList<jsbBMsgList> SendMsgList(HttpServletRequest req,HttpSession session) {
+						IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+						
+						String sessionUserId = String.valueOf(session.getAttribute("userid"));
+						BMembers mem = dao.jsbGetUser(sessionUserId);
+						int mUserNum = mem.getuNum();
+						
+						ArrayList<jsbBMsgList> resp=dao.jsbSendMsgList(mUserNum);
+						return resp;
+				   }
 	
 	/*---------------------------------------------*/
 	
