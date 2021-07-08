@@ -221,7 +221,27 @@
 		        from members )b
 		    on a.sendunum=b.unum) c
 		on c.receiveunum = d.unum
+		where receiveunum=#{param1}
 		order by c.msgnum desc
 	</select>
 	
+	<select id="jsbSendMsgList" resultType="com.neowoori.app.jsbBMsgList">
+		select d.uNick as recuNick, c.*
+		from members d right outer join(
+		    select a.*, b.uNick as senduNick
+		    from message a left outer join(
+		        select uNick, unum
+		        from members )b
+		    on a.sendunum=b.unum) c
+		on c.receiveunum = d.unum
+		where sendunum=#{param1}
+		order by c.msgnum desc
+	</select>
+	
+	<!-- 슬기 도움 영역 meetuser -->
+	<select id="jsbMeetUserList" resultType="com.neowoori.app.jsbBMeetUserList">
+		select a.unum,a.mnum, b.uNick, b.ugender, b.umail
+		from meeting_study a, members b 
+		where a.state=20 and a.unum=b.unum and a.mnum=#{param1}
+	</select>
 </mapper>

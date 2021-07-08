@@ -17,7 +17,7 @@
 		<nav>
 			<a class="link" id=searchLink href="">찾기</a>
 			<a class="link" href="${path}/create">만들기</a>
-			<a class="linklog" href="">쪽지함</a>
+			<a class="linklog" href="" onclick="click_add();">쪽지함</a>
 			<a class="linklog" id=mystudy onclick="mystudy()">내스터디</a>
 			<a class="linklog" id=userid href="${path}/mypage">님</a>
 			<a class="link" id=login href="${path}/login">로그인</a>
@@ -48,6 +48,14 @@ function islogin(){
 		$('#login').show();
 	}
 }
+//석봉추가
+function click_add(){
+	var url = "msgGetBox";
+	var name = "메시지";
+	var option = "width=800, height=650, left=100,top=50,location=no";
+	window.open(url,name,option)
+}
+
 $(document)
 .ready(function(){
 	islogin();

@@ -971,8 +971,13 @@ public class HomeController {
 	}
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
-	public String meetUser(@PathVariable String study_id, Model model) {
-		model.addAttribute("s_id", study_id);
+	public String meetUser(@PathVariable int study_id, Model model) {
+		//model.addAttribute("s_id", study_id);
+		//study_id사용하면됨
+		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+		ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
+		model.addAttribute("resp", resp);
+		
 		return "psgMeetuser";
 	}
 	// 관리자 질문 답변
@@ -1285,9 +1290,22 @@ public class HomeController {
 					BMembers mem = dao.jsbGetUser(sessionUserId);
 					int mUserNum = mem.getuNum();
 					
-					ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList();
+					ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList(mUserNum);
 					return resp;
 			   }
+				
+				@ResponseBody // 보낸 쪽지  SendMsgList
+				@RequestMapping(value="/sendMsgList.do", method=RequestMethod.POST,produces = "application/json")
+					public ArrayList<jsbBMsgList> SendMsgList(HttpServletRequest req,HttpSession session) {
+						IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+						
+						String sessionUserId = String.valueOf(session.getAttribute("userid"));
+						BMembers mem = dao.jsbGetUser(sessionUserId);
+						int mUserNum = mem.getuNum();
+						
+						ArrayList<jsbBMsgList> resp=dao.jsbSendMsgList(mUserNum);
+						return resp;
+				   }
 	
 	/*---------------------------------------------*/
 	
