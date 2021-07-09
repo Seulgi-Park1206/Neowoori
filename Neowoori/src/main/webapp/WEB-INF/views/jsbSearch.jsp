@@ -8,6 +8,7 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <link rel="stylesheet"  href="${path}/resources/jsb/search.css">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
 <head>
 <meta charset="UTF-8">
 <title>스터디 게시판</title>
@@ -77,10 +78,17 @@
 	  </tbody>
 	</table>
 </div>
+
+<div class="w3-center">
+<div class="w3-bar" id=page>
+</div>
+</div>
+<!-- 
 <div class="d-flex justify-content-center" style="text-align:center;margin:0 auto;">
 	<div id=page style="text-align:center;margin:0 auto;">
 	</div>
 </div>
+ -->
 
 <div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel" tabindex="-1">
   <div class="modal-dialog modal-dialog-centered">
@@ -232,13 +240,14 @@ function setPage(who){
 		pageHow = pageHow + 1; // 나머지 때문에 +1 (if문 사용해서 수정해야됨.)
     	}
 	var result = '';
-	result += '<nav aria-label="Page navigation example" style="width:100px;margin:0 auto;text-align:center;">'
-	result += '<ul class="pagination" id="pageUl">'
+	//result += '<nav aria-label="Page navigation example" style="width:100px;margin:0 auto;text-align:center;">'
+	//result += '<ul class="pagination" id="pageUl">'
 	for(var i = 1; i <= pageHow; i++){
-		result +='<li class="page-item" onclick=pageBtnFuc('+i+')><a class="page-link" href="#">'+i+'</a></li>'
+		//result +='<li class="page-item" onclick=pageBtnFuc('+i+')><a class="page-link" href="#">'+i+'</a></li>'
+		result +='<a href="#" class="w3-button">'+i+'</a>'
 	}
-	result += '</ul>'
-	result += '</nav>'
+	//result += '</ul>'
+	//result += '</nav>'
 	$('#page').append(result);
 }
 

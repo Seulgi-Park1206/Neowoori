@@ -19,24 +19,25 @@
 	<div class=form>
 		<a class=title>스터디 관리</a>
 		<div class=contents>
-			<table>
-				<tr><td class=tdLeft>스터디명:</td><td class=tdRight><label class=intext id=groupName>${studyInfo.mName}</label></td></tr>
-				<tr><td class=tdLeft>관리자:</td><td class=tdRight><label class=intext id=admin>${studyInfo.uNick}</label></td></tr>
-				<tr><td class=tdLeft>카테고리:</td><td class=tdRight><label class=intext id=category>${studyInfo.category1} > ${studyInfo.category2}</label></td></tr>
-				<tr><td class=tdLeft>스터디 장소:</td><td class=tdRight><label class=intext id=place>${studyInfo.mWhere} ${studyInfo.mWhere2} ${studyInfo.mWhere3}</label></td></tr>
-				<tr><td class=tdLeft>스터디 시간:</td><td class=tdRight><label class=intext2 id=day>${studyInfo.mDay}</label> / <label class=intext1 id=time>${studyInfo.mTime}</label>~</td></tr>
-				<tr><td class=tdLeft>진행 시간:</td><td class=tdRight><label class=intext id=progressTime>${studyInfo.mPtime}</label></td></tr>
-				<tr><td class=tdLeft>난이도:</td><td class=tdRight><label class=intext id=level>${studyInfo.mLevel}</label></td></tr>
-				<tr><td class=tdLeft>모집 인원:</td><td class=tdRight><label class=intext2 id=peopleNumber>${studyInfo.cMcount}</label>/<label class=intext2 id=personnel>${studyInfo.mPersonnel}</label></td></tr>
-				<tr class=trExp><td class=tdLeft>스터디 설명:</td><td class=tdMul colspan=2><textarea id=explain>${studyInfo.mContents}</textarea></td></tr>
+			<table class="table">
+				<tr><td class="tdLeft table-light">스터디명:</td><td class="tdRight"><label class=intext id=groupName>${studyInfo.mName}</label></td></tr>
+				<tr><td class="tdLeft table-light">관리자:</td><td class="tdRight"><label class=intext id=admin>${studyInfo.uNick}</label></td></tr>
+				<tr><td class="tdLeft table-light">카테고리:</td><td class="tdRight"><label class=intext id=category>${studyInfo.category1} > ${studyInfo.category2}</label></td></tr>
+				<tr><td class="tdLeft table-light align-middle" rowspan=2>스터디 장소:</td><td class="tdRight"><label class=intext id=place>${studyInfo.mWhere}</label></td></tr>
+				<tr><td class="tdRight"><label>${studyInfo.mWhere2}</label><label>${studyInfo.mWhere3}</label></td></tr>
+				<tr><td class="tdLeft table-light">스터디 시간:</td><td class="tdRight"><label class=intext2 id=day>${studyInfo.mDay}</label> / <label class=intext1 id=time>${studyInfo.mTime}</label>~</td></tr>
+				<tr><td class="tdLeft table-light">진행 시간:</td><td class="tdRight"><label class=intext id=progressTime>${studyInfo.mPtime}</label></td></tr>
+				<tr><td class="tdLeft table-light">난이도:</td><td class="tdRight"><label class=intext id=level>${studyInfo.mLevel}</label></td></tr>
+				<tr><td class="tdLeft table-light">모집 인원:</td><td class="tdRight"><label class=intext2 id=peopleNumber>${studyInfo.cMcount}</label>/<label class=intext2 id=personnel>${studyInfo.mPersonnel}</label></td></tr>
+				<tr class=trExp><td class="tdLeft table-light  align-middle">스터디 설명:</td><td class=tdMul colspan=2><textarea id=explain readonly>${studyInfo.mContents}</textarea></td></tr>
 			</table>
 			<br>
 			<div class="d-grid gap-2 d-md-flex justify-content-md-end">
-				<input type=button class="btn btn-outline-primary" id=btnUpdateInfo value="스터디 정보 수정">
-				<input type=button class="btn btn-outline-primary" onclick="go_adminUser()" value="회원 관리">
-				<input type=button class="btn btn-outline-primary" onclick="go_adminBoard()" value="게시판 관리">
-				<input type=button class="btn btn-outline-primary" id=btnDeleteStudy value="스터디 삭제">
-				<input type=button class="btn btn-outline-primary" onclick="cancel()" value="취소">
+				<input type=button class="btn btn-outline-secondary" id=btnUpdateInfo value="스터디 정보 수정">
+				<input type=button class="btn btn-outline-secondary" onclick="go_adminUser()" value="회원 관리">
+				<input type=button class="btn btn-outline-secondary" onclick="go_adminBoard()" value="게시판 관리">
+				<input type=button class="btn btn-outline-secondary" id=btnDeleteStudy value="스터디 삭제">
+				<input type=button class="btn btn-outline-secondary" onclick="cancel()" value="취소">
 			</div>
 		</div>
 	</div>
@@ -108,16 +109,6 @@
 	          <textarea class="form-control myscrollbar" id="studyContents" readonly></textarea>
 	        </div>
 	      </div>
-		  <!-- danger-alert -->
-		  <div style="display:none;"id=dAlert class="alert alert-danger d-flex align-items-center" role="alert">
-			<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-exclamation-triangle" viewBox="0 0 16 16">
-  				<path d="M7.938 2.016A.13.13 0 0 1 8.002 2a.13.13 0 0 1 .063.016.146.146 0 0 1 .054.057l6.857 11.667c.036.06.035.124.002.183a.163.163 0 0 1-.054.06.116.116 0 0 1-.066.017H1.146a.115.115 0 0 1-.066-.017.163.163 0 0 1-.054-.06.176.176 0 0 1 .002-.183L7.884 2.073a.147.147 0 0 1 .054-.057zm1.044-.45a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566z"/>
-  				<path d="M7.002 12a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 5.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995z"/>
-			</svg>
-		    <div>
-		    	<p>An example danger alert with an icon</p>
-			</div>
-		  </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnCloseModal>취소</button>
 	        <button type="button" class="btn btn-primary" id=btnUpdateComplete data-bs-dismiss="modal">수정 완료</button>
@@ -126,21 +117,7 @@
 	  </div>
 	</div>
 	<!-- alert -->
-	<div class="modal fade" id="alertModal" aria-hidden="true" aria-labelledby="exampleModalToggleLabel2" tabindex="-1">
-	  <div class="modal-dialog modal-dialog-centered">
-	    <div class="modal-content">
-	      <div class="modal-header">
-	      	<label class="modal-title" id=alertTitle></label>
-	      </div>
-	      <div class="modal-body">
-	        <label id=lblAlert></label>
-	      </div>
-	      <div class="modal-footer">
-	        <button class="btn btn-primary" data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal">확인</button>
-	      </div>
-	    </div>
-	  </div>
-	</div>
+	<jsp:include page="/module/alertModal.jsp" flush="false" />
 	<!-- confirm -->
 	<div class="modal fade" id="confirmModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
 	  <div class="modal-dialog">
@@ -155,12 +132,11 @@
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id=btnNo>취소</button>
-	        <button type="button" class="btn btn-primary" id=btnYes data-bs-target="#updateModal" data-bs-toggle="modal" data-bs-dismiss="modal">확인</button>
+	        <button type="button" class="btn btn-primary" id=btnYes data-bs-dismiss="modal">확인</button>
 	      </div>
 	    </div>
 	  </div>
 	</div>
-	
 	<!-- footer -->
 	<jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -169,6 +145,10 @@
 // 스터디 번호
 var link = window.location.pathname;
 s_num = link.split('/')[3];
+// 스터디 수정 관련 변수
+var studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel = '';
+// alertTitle
+var alTitle = '';
 
 // 회원 관리 페이지로 이동
 function go_adminUser(){
@@ -244,9 +224,45 @@ function checkedModal(chk){
 	}
 }
 
+// 스터디 정보 수정 유효성 검사
+function validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel){
+	alTitle = '스터디 정보 수정';
+	if(chkweek == false) {
+		alertModal(alTitle,'요일을 선택해주세요.');
+	} else if(studyHour == "0" && studyMin == "0") {
+		confirmModal(alTitle, '스터디 시간에서 0을 선택하셨습니다. 그대로 진행하시겠습니까?');
+	} else if(playHour == "0" && playMin == "0") {
+		alertModal(alTitle, '진행 시간을 다시 입력해주세요.');
+	} else if(studyHour == "" || studyHour > "23"){
+		alertModal(alTitle, '스터디 시간(시) 확인해주세요.');
+	} else if(studyMin == "" || studyMin > "59"){
+		alertModal(alTitle, '스터디 시간(분) 확인해주세요.');
+	} else if(playHour == ""){
+		alertModal(alTitle, '진행 시간(시) 확인해주세요.');
+	} else if(playMin == "" || playMin > "59"){
+		alertModal(alTitle, '진행 시간(분) 확인해주세요.');
+	} else if(personnel >= 11){
+		alertModal(alTitle, '최대 인원은 10명 입니다.');
+	} else if(personnel < 2) {
+		alertModal(alTitle, '최소 인원은 2명 입니다.');
+	} else {
+		return 'success';
+	}
+}
+
 $(document)
 .ready(function(){
 	adjustHeight($('#explain'));
+	/* var uid = '${userid}';
+	// 닉네임이구나..참..
+	if(uid != $('#admin').text()){
+		alert('관리자가 아닙니다.');
+		location.href = '${path}/index';
+	} */
+})
+.on('click', '.btn', function(){
+	var uid='${userid}';
+	console.log('user: ' + uid);
 })
 // 스터디 정보 수정 버튼 클릭
 .on('click', '#btnUpdateInfo', function(){
@@ -269,52 +285,95 @@ $(document)
 	$('#studyContents').val($('#explain').text());
 	$('#updateModal').modal('show');
 })
-// 스터디 정보 수정 기능
+// 스터디 정보 수정 완료 버튼 클릭
 .on('click', '#btnUpdateComplete', function(){
-	var studyName = $("#studyName").val();
-	var chkweek = $('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
-	var studyHour = $("#studyTime").val();
-	var studyMin = $("#studyMin").val();
-	var playHour = $("#playTime").val();
-	var playMin = $("#playMin").val();
-
-	if(chkweek == false) {
-		alertModal('스터디 정보 수정','요일을 선택해주세요.');
-	} else if(studyHour == "0" || studyMin == "0") {
-		confirmModal("스터디 시간에서 0을 선택하셨습니다. 그대로 진행하시겠습니까?");
-	} else if(playHour == "0" && playMin == "0") {
-		//alert("진행 시간(시)을 확인해주세요.");
+	studyName = $('#studyName').val();
+	chkweek = $('input:checkbox[name=chkWeek]').is(':checked'); // true false 확인
+	studyHour = $('#studyHour').val();
+	studyMin = $('#studyMin').val();
+	playHour = $('#playHour').val();
+	playMin = $('#playMin').val();
+	personnel = $('#studyPersonnel').val();
+	alTitle = '스터디 정보 수정';
+	
+	// 유효성 검사
+	var vd = validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel);
+	if(vd == 'success'){
+		// 스터디 정보 수정
+		$('#confirmTitle').text('스터디 정보 수정');
+		$('#btnYes').click();
 	}
-	/*
-	var chkwk = checkboxArr();
-	var update = {
-		sNum : s_num,
-		sWeek: chkwk
-	};
-	$.ajax({
-		url : '${path}/updateStudyInfo.do',
-		data : JSON.stringify(update),
-		contentType : 'application/json; charset=UTF-8',
-		method : 'post',
-		success : function() {
-			alertModal('스터디 정보 수정', '수정이 완료되었습니다.');
-			$('#date').text($('#studyDate').val());
-			$('#time').text($('#studyTime').val());
-			$('#progressTime').text($('#studyPTime').val());
-			$('#personnel').text($('#studyPersonnel').val());
-			adjustHeight($('#studyContents'));
-		},
-		error : function() {
-			alert('Update error');
-		}
-	});
-*/
+	
 	return false;
 })
-
+// 스터디 삭제 클릭
 .on('click', '#btnDeleteStudy', function() {
-	// 스터디 폐쇄
-
+	confirmModal('스터디 삭제', '정말 스터디를 삭제하시겠습니까?');
+	
+	return false;
+})
+// confirmModal - btnYes click
+.on('click', '#btnYes', function(){
+	console.log('type: ' + $('#confirmTitle').text());
+	var type = $('#confirmTitle').text();
+	
+	if(type == '스터디 삭제'){
+		// 스터디 폐쇄
+		console.log('스터디 삭제 기능');
+		alTitle = type;
+		$.ajax({
+			url : '${path}/deleteStudyInfo.do',
+			data : s_num,
+			contentType : 'text/plain; charset=UTF-8',
+			method : 'post',
+			success : function() {
+				alertModal(alTitle, '삭제가 완료되었습니다.');
+				cancel();
+			},
+			error : function() {
+				alert('Delete error');
+			}
+		});
+	} else if(type == '스터디 정보 수정'){
+		var stime = studyHour + '시' + studyMin + '분';
+		var ptime = playHour + '시간' + playMin + '분';
+		var chkwk = checkboxArr();
+		var update = {
+			sNum : s_num,
+			sWeek: chkwk,
+			sTime: stime,
+			pTime: ptime,
+			psn: personnel
+		};
+		// 스터디 정보 수정 기능
+		$.ajax({
+			url : '${path}/updateStudyInfo.do',
+			data : JSON.stringify(update),
+			contentType : 'application/json; charset=UTF-8',
+			method : 'post',
+			success : function() {
+				alertModal(alTitle, '수정이 완료되었습니다.');
+				$('#day').text(chkwk);
+				$('#time').text(stime);
+				$('#progressTime').text(ptime);
+				$('#personnel').text(personnel);
+			},
+			error : function() {
+				alert('Update error');
+			}
+		});
+	}
+	
+	return false;
+})
+.on('click', '#btnNo', function(){
+	console.log('type: ' + $('#confirmTitle').text());
+	var type = $('#confirmTitle').text();
+	
+	if(type == '스터디 정보 수정'){
+		$('#updateModal').modal('show');
+	}
+	
 	return false;
 })
 </script>

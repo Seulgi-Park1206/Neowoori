@@ -38,5 +38,10 @@ public interface IDaojsb {
 	
 	
 	//msg 관련
-	public ArrayList<jsbBMsgList> jsbReceiveMsgList();
+	public ArrayList<jsbBMsgList> jsbReceiveMsgList(int mUserNum);
+	public ArrayList<jsbBMsgList> jsbSendMsgList(int mUserNum);
+	
+	
+	//슬기도움 meetuser(회원관리)페이지
+	public ArrayList<jsbBMeetUserList> jsbMeetUserList(int mNum);
 }

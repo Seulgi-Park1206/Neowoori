@@ -35,12 +35,12 @@ th, td {
 </div>
 <br>
 <div style="text-align:center; float:none; margin:0 auto;">
-				<select class="form-select" id=search_faq_sel name=search_faq_sel style="width:9%;">
+				<select id=search_faq_sel name=search_faq_sel>
 					<option value="" disabled selected>선택</option>
 					<option value=faqtitle>제목</option>
 					<option value=faqcontent>내용</option>
 				</select>
-				<input type="text" class="form-control" id=search_input placeholder="제목이나 내용을 입력하세요." style="float:none; margin:0 auto; width:30%;">
+				<input type="text" id=search_input placeholder="제목이나 내용을 입력하세요." style="float:none; margin:0 auto; width:30%;">
 				<button id=search_btn><img src="${path}/resources/img/faq_search_btn.png" width="20" height="20"></button>
 				<br><br>
 </div>
