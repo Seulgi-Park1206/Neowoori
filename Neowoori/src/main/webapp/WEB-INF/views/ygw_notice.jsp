@@ -1,13 +1,16 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 
+<c:set var="path" value="${pageContext.request.contextPath}"/>
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
 <title>공지사항</title>
 </head>
+<!--  
 <style>
 table{
 	width: 100%;
@@ -18,24 +21,34 @@ th, td {
     border: 1px solid #000000;
     padding: 10px;
  }
+ 
 </style>
-
+-->
+<link rel="stylesheet" href="resources/pjh/faq.css" type="text/css" >
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet"  href="${path}/resources/ygw/notice.css">
 <body>
+
 <jsp:include page="/module/nav.jsp" flush="false" />
-<div style="text-align:center;">
+<div style="text-align:center; margin:0 auto;">
 	<h2>공지사항</h2>
 </div>
-<br><br>
-<div id=noticediv1 style="margin:0 auto;">
-<table id=tbl1>
+<br>
+<div class=noticediv id=noticediv1 style="margin:0 auto;">
+<table class="table table-hover" id=tbl1 style="text-align:center;">
+   <thead class="thead-light">
 	<tr>
-		<td>게시물 번호</td><td>제목</td><td>작성일자</td>
+		<th class="ygw_table_width1"><strong>번호</strong></th>
+		<th class="ygw_table_width2"><strong>제목</strong></th>
+		<th class="ygw_table_width3"><strong>작성일자</strong></th>
+		<th class="ygw_table_width4"><strong>작성자</strong></th>
 	</tr>
-<c:forEach items="${alData}" var="rec">
+	</thead>	
+<c:forEach items="${noticeData}" var="rec">
 <c:set var="i" value="${i+1}"/>
 	<tr id=tr1 class=trclass1>
-		<td>${i}<input type=hidden name=noticepostid value="${rec.postnum}"/></td><td>${rec.title}</td><td>${rec.admin_date}</td>
+		<td>${i}<input type=hidden name=noticepostid value="${rec.postnum}"/></td><td>${rec.title}</td><td>${rec.admin_date}</td><td>관리자</td>
 	</tr>
 </c:forEach>
 </table>
@@ -49,11 +62,13 @@ th, td {
 	    <button type="button" class="btn btn-outline-secondary">5</button>
 	  	</div>-->
 	  	<div style="text-align:right;">
-	  	<input id=noticenewpost type=button value="새글쓰기" onclick="document.location='http://localhost:8080/app/noticewrite'">
+	  	<input class="btn btn-outline-secondary" id=noticenewpost type=button value="새글쓰기" onclick="document.location='http://localhost:8080/app/noticewrite'">
 	  	</div>
-	 <div class=pagenumber style="text-align:center;">
-	<a href= # value=previous name=page>이전</a>${paging}<a href= # value=next name=page>다음</a>
-		</div>
+<div class="w3-center">
+	<div class="w3-bar">
+		<a href= # value=previous name=page>&laquo;</a>${paging}<a href= # value=next name=page>&raquo;</a>
+	</div>
+</div>
 <!--  	</div>-->
 	
 

@@ -97,15 +97,15 @@ public class HomeController {
 	@RequestMapping("/notice") //공지사항
 	   public String notice(Model model) {
 		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
-		  ArrayList<BAdminPost> alData=dao.listNoticeDao();
-		  model.addAttribute("alData",alData);
+		  ArrayList<BAdminPost> noticeData=dao.listNoticeDao();
+		  model.addAttribute("noticeData",noticeData);
 		  String paging="";
 		  float noticecnt=dao.noticepostcount();
 		  for(int i=0; i<Math.ceil(noticecnt/10); i++) {
 			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 		  }
 		  model.addAttribute("paging",paging);
-		  model.addAttribute("lastpage",Math.ceil(noticecnt/10));
+		  model.addAttribute("lastPage",Math.ceil(noticecnt/10));
 		  
 	      return "ygw_notice";
 	   }
