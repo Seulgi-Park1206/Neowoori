@@ -9,7 +9,7 @@
 			<a href="${path}/index"><img class=logo src="${path}/resources/img/logo.png"></a>
 		</div>
 		<nav>
-			<a class="link" id=searchLink href="">찾기</a>
+			<a class="link" id=searchLink href="${path}/search">찾기</a>
 			<a class="link" href="${path}/create">만들기</a>
 			<a class="linklog" href="" onclick="click_add();">쪽지함</a>
 			<a class="linklog" id=mystudy onclick="mystudy()">내스터디</a>
