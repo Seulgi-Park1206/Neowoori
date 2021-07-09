@@ -885,12 +885,9 @@ public class HomeController {
 			HttpServletRequest request, HttpSession session) {
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int pNum = Integer.parseInt(hashmap.get("pNum"));
-		System.out.println(pNum);
 		session = request.getSession();
 		String uid = (String) session.getAttribute("userid");
-		System.out.println(uid);
 		String content = hashmap.get("contents");
-		System.out.println(hashmap.get("contents"));
 		// 댓글 추가
 		dao.psgInsertCmt(pNum, uid, content);
 		// 추가한 댓글 조회
@@ -911,7 +908,6 @@ public class HomeController {
 	public String deletePost(@RequestBody String postNum) {
 		int pNum = Integer.parseInt(postNum);
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		//System.out.println("--"+pNum+"들어옴");
 		dao.psgDeleteStudyPost(pNum);
 		
 		return "success";
@@ -923,8 +919,6 @@ public class HomeController {
 		int pNum = Integer.parseInt(hashmap.get("postNum"));
 		int cNum = Integer.parseInt(hashmap.get("coNum"));
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		//System.out.println("--"+pNum+"들어옴");
-		//System.out.println("--"+cNum+"들어옴");
 		dao.psgDeleteCmt(pNum, cNum);
 		
 		return "success";
@@ -933,11 +927,9 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/updatePost.do", method=RequestMethod.POST)
 	public String UpdatePostDo(@RequestBody HashMap<String, String> hashmap) {
-		//System.out.println("-- 게시물 수정 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int pNum = Integer.parseInt(hashmap.get("pNum"));
 		dao.psgUpdateStudyPost(pNum, hashmap.get("title"), hashmap.get("contents"));
-		//System.out.println("-- 수정 완료 --");
 		
 		return "success";
 	}
@@ -945,15 +937,68 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/updateCmt.do", method=RequestMethod.POST)
 	public String UpdateCmtDo(@RequestBody HashMap<String, String> hashmap) {
-		System.out.println("-- 댓글 수정 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int pNum = Integer.parseInt(hashmap.get("pNum"));
 		int cNum = Integer.parseInt(hashmap.get("cNum"));
 		dao.psgUpdateCmt(pNum, cNum, hashmap.get("contents"));
-		System.out.println("-- 수정 완료 --");
 		
 		return "success";
 	}
+	// 대댓글 검색
+	@ResponseBody
+	@RequestMapping(value="/selectReCmt.do", method=RequestMethod.POST)
+	public JSONArray selectReCmtDo(@RequestBody String cmt_num) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int cNum = Integer.parseInt(cmt_num);
+		System.out.println(cNum);
+		// 해당 댓글의 대댓글 조회
+		ArrayList<psgBViewCmt> reCmt = dao.psgSelectReCmt(cNum);
+		System.out.println("reCmt.size(): "+reCmt.size());
+		JSONArray jarray = new JSONArray();
+		for(int i=0; i<reCmt.size();i++) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			map.put("cmtnum",reCmt.get(i).getCmtnum());
+			map.put("userid", reCmt.get(i).getUserid());
+			map.put("cmtDate", reCmt.get(i).getCmt_date());
+			map.put("cmtContents", reCmt.get(i).getCmt_contents());
+			JSONObject jo = new JSONObject(map);
+			System.out.println("대댓글 조회: "+jo);
+			jarray.add(jo);
+		}
+		
+		return jarray;
+	}
+	// 대댓글 추가
+	@ResponseBody
+	@RequestMapping(value="/insertReCmt.do", method=RequestMethod.POST)
+	public JSONObject insertReCmtDo(@RequestBody HashMap<String, String> hashmap,
+			HttpServletRequest request, HttpSession session) {
+		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		int pNum = Integer.parseInt(hashmap.get("pNum"));
+		System.out.println(pNum);
+		String uid = (String) session.getAttribute("userid");
+		String content = hashmap.get("contents");
+		System.out.println(hashmap.get("contents"));
+		int parentNum = Integer.parseInt(hashmap.get("parentNum"));
+		System.out.println("parentNum"+parentNum);
+		// 댓글 추가
+		dao.psgInsertReCmt(pNum, uid, content, parentNum);
+		// 추가한 댓글 조회
+		psgBViewCmt reCmt = dao.psgAddReCmtSelect();
+		HashMap<String, Object> map = new HashMap<String, Object>();
+		map.put("cmtnum",reCmt.getCmtnum());
+		map.put("userid", reCmt.getUserid());
+		map.put("cmtDate", reCmt.getCmt_date());
+		map.put("cmtContents", reCmt.getCmt_contents());
+		JSONObject jo = new JSONObject(map);
+		System.out.println("jo: "+jo);
+		
+		return jo;
+	}
+	// 대댓글 삭제
+	
+	// 대댓글 수정
+	
 	// 내 스터디 조회 
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
@@ -988,12 +1033,10 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/updateStudyInfo.do", method=RequestMethod.POST)
 	public String updateStudyInfoDo(@RequestBody HashMap<String, String> hashmap) {
-		System.out.println("-- 스터디 정보 수정 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int mNum = Integer.parseInt(hashmap.get("sNum"));
 		dao.psgUpdateStudyInfo(mNum, hashmap.get("sWeek"), hashmap.get("sTime"), hashmap.get("pTime"),
 				hashmap.get("psn"));
-		System.out.println("-- 수정 완료 --");
 		
 		return "success";
 	}
@@ -1001,11 +1044,9 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/deleteStudyInfo.do", method=RequestMethod.POST)
 	public String deleteStudyDo(@RequestBody String sNum) {
-		System.out.println("-- 스터디 삭제 시작 --");
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 		int mNum = Integer.parseInt(sNum);
 		dao.psgDeleteStudy(mNum);
-		System.out.println("-- 삭제 완료 --");
 		
 		return "success";
 	}

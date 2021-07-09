@@ -24,12 +24,12 @@
 	<!-- 해당 게시물의 댓글 조회 -->
 	<select id="psgSelectCmt" resultType="com.neowoori.app.psgBViewCmt">
 		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
-		where c.postnum=#{param1} and c.unum=m.unum
+		where c.postnum=#{param1} and c.unum=m.unum and c.parent_cnum=0
 		order by c.cmtnum desc
 	</select>
 	<!-- 댓글 쓰기 -->
 	<insert id="psgInsertCmt">
-		insert into cmt values(#{param1}, seq_cmt.nextval, (select unum from members where userid=#{param2}), #{param3}, sysdate, 0)
+		insert into cmt values(#{param1}, seq_cmt.nextval, (select unum from members where userid=#{param2}), #{param3}, sysdate, 0, 0)
 	</insert>
 	<!-- 추가한 댓글 보기 -->
 	<select id="psgAddCmtSelect" resultType="com.neowoori.app.psgBViewCmt">
@@ -42,7 +42,7 @@
 	</delete>
 	<!-- 댓글 삭제 -->
 	<delete id="psgDeleteCmt">
-		delete from cmt where postnum=#{param1} and cmtnum=#{param2}
+		delete from cmt where postnum=#{param1} and cmtnum=#{param2} or parent_cnum=#{param2}
 	</delete>
 	<!-- 게시글 수정 -->
 	<update id="psgUpdateStudyPost">
@@ -51,6 +51,29 @@
 	<!-- 댓글 수정 -->
 	<update id="psgUpdateCmt">
 		update cmt set cmt_contents=#{param3} where postnum=#{param1} and cmtnum=#{param2}
+	</update>
+	<!-- 대댓글 조회 -->
+	<select id="psgSelectReCmt" resultType="com.neowoori.app.psgBViewCmt">
+		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		where c.unum=m.unum and c.parent_cnum=#{param1}
+		order by c.cmtnum desc
+	</select>
+	<!-- 대댓글 추가 -->
+	<insert id="psgInsertReCmt">
+		insert into cmt values(#{param1}, seq_cmt.nextval, (select unum from members where userid=#{param2}), #{param3}, sysdate, 0, #{param4})
+	</insert>
+	<!-- 추가한 대댓글 보기 -->
+	<select id="psgAddReCmtSelect" resultType="com.neowoori.app.psgBViewCmt">
+		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		where c.unum=m.unum and c.cmtnum=(select max(cmtnum) from cmt)
+	</select>
+	<!-- 대댓글 삭제 -->
+	<delete id="psgDeleteReCmt">
+		delete from cmt where postnum=#{param1} and cmtnum=#{param2} and parent_cnum=#{param3}
+	</delete>
+	<!-- 대댓글 수정 -->
+	<update id="psgUpdateReCmt">
+		update cmt set cmt_contents=#{param3} where postnum=#{param1} and cmtnum=#{param2} and parent_cnum=#{param4}
 	</update>
 	<!-- 스터디 정보 조회 -->
 	<select id="psgStudyInfo" resultType="com.neowoori.app.psgBStudyInfoView">
