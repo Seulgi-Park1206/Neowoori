@@ -97,15 +97,15 @@ public class HomeController {
 	@RequestMapping("/notice") //공지사항
 	   public String notice(Model model) {
 		  IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
-		  ArrayList<BAdminPost> alData=dao.listNoticeDao();
-		  model.addAttribute("alData",alData);
+		  ArrayList<BAdminPost> noticeData=dao.listNoticeDao();
+		  model.addAttribute("noticeData",noticeData);
 		  String paging="";
 		  float noticecnt=dao.noticepostcount();
 		  for(int i=0; i<Math.ceil(noticecnt/10); i++) {
 			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 		  }
 		  model.addAttribute("paging",paging);
-		  model.addAttribute("lastpage",Math.ceil(noticecnt/10));
+		  model.addAttribute("lastPage",Math.ceil(noticecnt/10));
 		  
 	      return "ygw_notice";
 	   }
@@ -1234,6 +1234,20 @@ public class HomeController {
 			dao.jsbSendModalMsg(uNum,recNum,contents);
 	   }
 	
+	@ResponseBody	/*Modal Send MSG*/
+	@RequestMapping(value="/jsbSendModalMsg2.do", method=RequestMethod.POST,produces = "application/json")
+		public void jsbSendModalMsg2(String userId, String cont, int recUserNum, HttpServletRequest req) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			//int mNum = Integer.parseInt(req.getParameter("mNumHid"));
+			String uId = req.getParameter("userId");
+			String contents = req.getParameter("cont");
+			String UserNum = req.getParameter("recUserNum");
+			BMembers mem1 = dao.jsbGetUser(uId);
+			int uNum = mem1.getuNum();
+			int recNum =  Integer.parseInt(UserNum);
+			dao.jsbSendModalMsg(uNum,recNum,contents);
+	   }
+	
 	@ResponseBody	/*Search study btn*/
 	@RequestMapping(value="/jsbSearchPageBtn.do", method=RequestMethod.POST,produces = "application/json")
 		public int jsbSearchPageBtn(String mNum, HttpServletRequest req,HttpSession session) {
@@ -1362,31 +1376,41 @@ public class HomeController {
 				return resp;
 		   }
 			
-			@ResponseBody // 받은 쪽지  receiveMsgList
-			@RequestMapping(value="/receiveMsgList.do", method=RequestMethod.POST,produces = "application/json")
-				public ArrayList<jsbBMsgList> receiveMsgList(HttpServletRequest req,HttpSession session) {
-					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-					
-					String sessionUserId = String.valueOf(session.getAttribute("userid"));
-					BMembers mem = dao.jsbGetUser(sessionUserId);
-					int mUserNum = mem.getuNum();
-					
-					ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList(mUserNum);
-					return resp;
-			   }
+		@ResponseBody // 받은 쪽지  receiveMsgList
+		@RequestMapping(value="/receiveMsgList.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<jsbBMsgList> receiveMsgList(HttpServletRequest req,HttpSession session) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 				
-				@ResponseBody // 보낸 쪽지  SendMsgList
-				@RequestMapping(value="/sendMsgList.do", method=RequestMethod.POST,produces = "application/json")
-					public ArrayList<jsbBMsgList> SendMsgList(HttpServletRequest req,HttpSession session) {
-						IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
-						
-						String sessionUserId = String.valueOf(session.getAttribute("userid"));
-						BMembers mem = dao.jsbGetUser(sessionUserId);
-						int mUserNum = mem.getuNum();
-						
-						ArrayList<jsbBMsgList> resp=dao.jsbSendMsgList(mUserNum);
-						return resp;
-				   }
+				String sessionUserId = String.valueOf(session.getAttribute("userid"));
+				BMembers mem = dao.jsbGetUser(sessionUserId);
+				int mUserNum = mem.getuNum();
+				
+				ArrayList<jsbBMsgList> resp=dao.jsbReceiveMsgList(mUserNum);
+				return resp;
+		   }
+				
+		@ResponseBody // 보낸 쪽지  SendMsgList
+		@RequestMapping(value="/sendMsgList.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<jsbBMsgList> SendMsgList(HttpServletRequest req,HttpSession session) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+				
+				String sessionUserId = String.valueOf(session.getAttribute("userid"));
+				BMembers mem = dao.jsbGetUser(sessionUserId);
+				int mUserNum = mem.getuNum();
+				
+				ArrayList<jsbBMsgList> resp=dao.jsbSendMsgList(mUserNum);
+				return resp;
+		   }
+			
+		@ResponseBody // 보낸 쪽지  SendMsgList
+		@RequestMapping(value="/meetUserKick.do", method=RequestMethod.POST,produces = "application/json")
+			public void meetUserKick(String uId,String mNum,HttpServletRequest req,HttpSession session) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+				String one = req.getParameter("uId");
+				String two = req.getParameter("mNum");
+				
+				dao.jsbMeetUserKick(0, 0);
+		   }
 	
 	/*---------------------------------------------*/
 	

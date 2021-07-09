@@ -1,0 +1,22 @@
+/*notice 메인페이지*/
+.noticediv {
+	width:70%;
+}
+
+.ygw_table_width1 {
+	width:20%;
+}
+.ygw_table_width2 {
+	width:50%;
+}
+.ygw_table_width3 {
+	width:20%;
+}
+.ygw_table_width4 {
+	width:10%;
+}
+
+/*notice view 페이지*/
+.noticeviewdiv {
+	width:50%;
+}

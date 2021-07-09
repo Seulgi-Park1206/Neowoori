@@ -10,37 +10,48 @@
 </style>
 <script src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>
 <!--<script src="//cdn.ckeditor.com/4.16.1/standard/ckeditor.js"></script>-->
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
-<div>
-<p style="font-size:30px; text-align:center;">공지사항 쓰기</p>
+<div style="text-algin:center;">
+	<p style="font-size:30px; text-align:center;">공지사항 작성</p>
 </div>
 
-<form action="/app/noticeserver" method="post">
-<div style="text-align:center;">
-	<input type=text style="width:600px; height:30px;" id=postTitle name=postTitle placeholder="제목을 입력하세요.""><br><br>
-	<textarea id=postContent name=postContent placeholder="내용을 입력하세요." style="resize:none; width:600px; height:350px;"></textarea>
-	
-	<script>
- 		var ckeditor_config = {
-   		resize_enaleb : false,
-   		enterMode : CKEDITOR.ENTER_BR,
-   		shiftEnterMode : CKEDITOR.ENTER_P,
-   		filebrowserUploadUrl : "/app/fileupload.do"
- 		};
- 
- 		CKEDITOR.replace("postContent", ckeditor_config);
-	</script>
-	
-	
-<br>
-	<div style="text-align:center;">
-	<input type=submit value=글쓰기>&nbsp;&nbsp;<input type=button value=취소 onclick="document.location='http://localhost:8080/app/notice'">
+<div class="container" style="float:none; margin:0 auto; width:40%;">
+	<form action="/app/noticeserver" method="post">
+	<div class="form-group">
+	<label for=postTitle><strong>제목</strong></label>
+	<input class="form-control" type=text id=postTitle name=postTitle placeholder="제목을 입력하세요."><br>
 	</div>
-</div>
-</form>
+	<div class="form-group">
+	<label for=postContent><strong>내용</strong></label>
+	<textarea class="form-control" id=postContent name=postContent placeholder="내용을 입력하세요." style="resize:none; height:230px;"></textarea>
+	</div>
+	<br>
+	<div style="text-align:center;">
+	<input class="btn btn-outline-secondary" type=submit id=noticewrite value=글쓰기>&nbsp;&nbsp;<input class="btn btn-outline-secondary" type=button value=취소 onclick="document.location='http://localhost:8080/app/notice'">
+	</div>
 
+	</form>
+</div>
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
+<script src='https://code.jquery.com/jquery-3.5.0.js'></script>
+<script>
+$(document)
+.on('click','#noticewrite',function(){
+	if($('#postTitle').val()==""){
+		alert("제목을 입력해주세요!");
+		
+		return false;
+	}
+	else if($('#postContent').val()==""){
+		alert("내용을 입력해주세요!");
+		
+		return false;
+	}
+	
+})
+</script>
 </html>

@@ -1,5 +1,5 @@
 @charset "EUC-KR";
-@import url('https://fonts.googleapis.com/css?family=Amarante');
+
 
 
 .jsb_table_width1 {
@@ -16,7 +16,6 @@
 }
 
 
-
 img { border: 0; max-width: 100%; }
 
 
@@ -24,10 +23,7 @@ img { border: 0; max-width: 100%; }
 /** page structure **/
 .wrapper {
   display: block;
-  width: 1200px;
-  background: #fff;
   margin: 0 auto;
-  padding: 10px 17px;
 }
 
 .keywords {
@@ -37,35 +33,8 @@ img { border: 0; max-width: 100%; }
 }
 
 
-.keywords thead {
-  cursor: pointer;
-  background: #939856;
-}
-.keywords thead tr th { 
-  font-weight: bold;
-  padding: 12px 30px;
-  padding-left: 42px;
-}
-.keywords thead tr th span { 
-  padding-right: 20px;
-  background-repeat: no-repeat;
-  background-position: 100% 100%;
-}
 
-.keywords thead tr th.headerSortUp, #keywords thead tr th.headerSortDown {
-  background: #acc8dd;
-}
 
-.keywords tbody tr { 
-  color: #555;
-}
-.keywords tbody tr td {
-  text-align: center;
-  padding: 15px 10px;
-}
-.keywords tbody tr td.lalign {
-  text-align: left;
-}
 .btn_search{
 	width: 50px;
 	height: 100%;

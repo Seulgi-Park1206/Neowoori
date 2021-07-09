@@ -126,7 +126,7 @@
 					<textarea class="form-control myscrollbar" id=postContent placeholder="내용을 입력하세요." style="height:500px;"></textarea>
 			</div>
 			<div class="mb-4">
-					<label for="message-text" class="col-form-label">공지사항 :</label>
+					<label for="message-text" class="col-form-label" id=notice>공지사항 :</label>
 					<input type="checkbox" id=noticeCheckbox name=noticeCheckbox> 
 			</div>
 	      </div>
@@ -228,6 +228,8 @@ $(document)
         		return;
         	}else{
         		$('#btn_delete').hide();
+        		$('#noticeCheckbox').hide();
+        		$('#notice').hide();
         	}
         }
 	})
@@ -259,7 +261,7 @@ $(document)
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
-					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+					result += ' <input type=hidden value="'+item["postNum"]+'">'
 		 			result += ' </tr>'
 		 			sum++;
 		 			notice++;
@@ -271,7 +273,7 @@ $(document)
    						result += ' <td>'+item["title"]+'</td>'
    						result += ' <td>'+item["unick"]+'</td>'
    						result += ' <td>'+item["post_Date"]+'</td>'
-   						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+   						result += ' <input type=hidden value="'+item["postNum"]+'">'
    			 			result += ' </tr>'
      				}
      			})
@@ -359,7 +361,7 @@ $(document)
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
-					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+					result += ' <input type=hidden value="'+item["postNum"]+'">'
 		 			result += ' </tr>'
 		        	miu++;
  				}else{
@@ -369,7 +371,7 @@ $(document)
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
-					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+					result += ' <input type=hidden value="'+item["postNum"]+'">'
 		 			result += ' </tr>'
 		 			posthid++;
  				}
@@ -414,7 +416,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			        	miu++;
 	 				}else{
@@ -424,7 +426,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			 			posthid++;
 	 				}
@@ -488,7 +490,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			        	miu++;
 	 				}else{
@@ -498,7 +500,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			 			posthid++;
 	 				}
@@ -567,7 +569,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			 			sum++;
 			 			notice++;
@@ -579,7 +581,7 @@ $(document)
 	   						result += ' <td>'+item["title"]+'</td>'
 	   						result += ' <td>'+item["unick"]+'</td>'
 	   						result += ' <td>'+item["post_Date"]+'</td>'
-	   						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+	   						result += ' <input type=hidden value="'+item["postNum"]+'">'
 	   			 			result += ' </tr>'
 	     				}
 	     			})
@@ -664,7 +666,7 @@ $(document)
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
-					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+					result += ' <input type=hidden value="'+item["postNum"]+'">'
 		 			result += ' </tr>'
 		        	miu++;
  				}else{
@@ -674,7 +676,7 @@ $(document)
 					result += ' <td>'+item["title"]+'</td>'
 					result += ' <td>'+item["unick"]+'</td>'
 					result += ' <td>'+item["post_Date"]+'</td>'
-					result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+					result += ' <input type=hidden value="'+item["postNum"]+'">'
 		 			result += ' </tr>'
 		 			posthid++;
  				}
@@ -740,7 +742,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			        	miu++;
 	 				}else{
@@ -750,7 +752,7 @@ $(document)
 						result += ' <td>'+item["title"]+'</td>'
 						result += ' <td>'+item["unick"]+'</td>'
 						result += ' <td>'+item["post_Date"]+'</td>'
-						result += ' <td><input type=hidden value="'+item["postNum"]+'"></td>'
+						result += ' <input type=hidden value="'+item["postNum"]+'">'
 			 			result += ' </tr>'
 			 			posthid++;
 	 				}
