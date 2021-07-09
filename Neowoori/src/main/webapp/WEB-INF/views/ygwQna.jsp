@@ -8,9 +8,10 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>자주 묻는 질문</title>
+<title>Q&A</title>
 </head>
 <style>
+/*
 table{
 	width: 100%;
     border: 1px solid #000000;
@@ -19,50 +20,57 @@ table{
 th, td {
     border: 1px solid #000000;
     padding: 10px;
- }
+}
+*/
 </style>
 
 <link rel="stylesheet" href="resources/pjh/faq.css" type="text/css" >
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<link rel="stylesheet" href="${path}/resources/ygw/qna.css">
 <body>
-<c:forEach items="${faqData}" var="sub">
-<c:set var = "string1" value = "${sub.faqdate}"/>
-<c:set var = "string2" value = "${fn:substring(string1, 0, 9)}" />
-</c:forEach>
 <jsp:include page="/module/nav.jsp" flush="false" />
 <div style="text-align:center;">
 	<h2>Q & A</h2>
 </div>
 <br>
-<div class="wrapper" style="text-align:center;">
-				<select id=search_faq_sel name=search_faq_sel>
+<div style="text-align:center; float:none; margin:0 auto;">
+				<select class="form-select" id=search_faq_sel name=search_faq_sel style="width:9%;">
 					<option value="" disabled selected>선택</option>
 					<option value=faqtitle>제목</option>
 					<option value=faqcontent>내용</option>
 				</select>
-				<input type="text" id=search_input placeholder="제목이나 내용을 입력하세요." style="width:500px;">
+				<input type="text" class="form-control" id=search_input placeholder="제목이나 내용을 입력하세요." style="float:none; margin:0 auto; width:30%;">
 				<button id=search_btn><img src="${path}/resources/img/faq_search_btn.png" width="20" height="20"></button>
 				<br><br>
 </div>
-<div id=div1 style="margin:0 auto;">
-<table id=tbl1>
+<div class=qnadiv id=div1 style="margin:0 auto;">
+<table class="table table-hover" id=tbl1 style="text-align:center;">
+	<thead class="thead-light">
 	<tr>
-		<td>게시물 번호</td><td>제목</td><td>작성자</td><td>작성일자</td><td>상태</td>
+		<th class="qna_table_width1"><strong>번호</strong></th>
+		<th class="qna_table_width2"><strong>제목</strong></th>
+		<th class="qna_table_width3"><strong>작성자</strong></th>
+		<th class="qna_table_width4"><strong>작성일자</strong></th>
+		<th class="qna_table_width5"><strong>상태</strong></th>
 	</tr>
+	</thead>
 <c:forEach items="${faqData}" var="rec2">
 <c:set var="i" value="${i+1}"/>
 	<tr id=tr1 class=trclass1>
-		<td>${i}<input type=hidden name=qnapostid value="${rec2.faqnum}"/></td><td>${rec2.faqtitle}</td><td>${rec2.writer}</td><td>${string2}</td><td>${rec2.state}</td>
+		<td>${i}<input type=hidden name=qnapostid value="${rec2.faqnum}"/></td><td>${rec2.faqtitle}</td><td>${rec2.writer}</td><td>${rec2.faqdate}</td><td>${rec2.state}</td>
 	</tr>
 </c:forEach>
 </table>
+</div>
 <div style="text-align:right;">
-	<input id=qnanewpost type=button value=새글쓰기  onclick="document.location='http://localhost:8080/app/qnawrite'">
+	<input class="btn btn-outline-secondary" id=qnanewpost type=button value=새글쓰기  onclick="document.location='http://localhost:8080/app/qnawrite'">
 </div>
-<div class=pagenumber>
-	<a href= # value=previous name=page>이전</a><div id="divPage" style="display:inline;"><span id="paging">${paging}</span></div><a href= # value=next name=page>다음</a>
+<div class="w3-center">
+<div class="w3-bar">
+	<a href= # value=previous name=page>&laquo;</a><div id="divPage" style="display:inline;"><span id="paging">${paging}</span></div><a href= # value=next name=page>&raquo;</a>
 </div>
-</div> 
+</div>
 
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>

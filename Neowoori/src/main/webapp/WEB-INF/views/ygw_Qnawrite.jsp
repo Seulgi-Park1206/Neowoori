@@ -10,38 +10,27 @@
 </style>
 <!--  <script src="${pageContext.request.contextPath}/resources/ckeditor/ckeditor.js"></script>-->
 <script src="https://cdn.ckeditor.com/4.8.0/full-all/ckeditor.js"></script> <!-- 에디터 사용을 위한 스크립트 -->
-
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
 <div>
 <p style="font-size:30px; text-align:center;">Q & A 작성</p>
 </div>
-<div style="width:700px; text-align:center;">
+<div class="container" style="float:none; margin:0 auto; width:40%;">
 <form action="/app/Qnaserver" method="post">
-<div style="text-align:center;">
-	<input type=text style="width:690px; height:30px;" id=faqTitle name=faqTitle placeholder="제목을 입력하세요.""><br><br>
-	<textarea id=faqContent name=faqContent style="resize:none; width:400px; height:350px;"></textarea>
-			<script>
-				var ckeditor_config = {
-					resize_enaleb : false,
-					enterMode : CKEDITOR.ENTER_BR,
-					shiftEnterMode : CKEDITOR.ENTER_P,
-					filebrowserUploadUrl : "/admin/goods/ckUpload"
-				};
-
-				CKEDITOR.replace("faqContent", ckeditor_config);
-			</script>
-			<!--  
- <script type="text/javascript">
-          CKEDITOR.replace('faqContent',   //textarea 아이디
-                            {height: 500});
-   </script>
--->
-			<br>
-	<div style="text-align:center;">
-	<input type=submit value=글쓰기>&nbsp;&nbsp;<input type=button value=취소 onclick="document.location='http://localhost:8080/app/qna'">
+	<div class="form-group">
+	<label for=postTitle><strong>제목</strong></label>
+	<input type=text class="form-control" id=faqTitle name=faqTitle placeholder="제목을 입력하세요."><br>
 	</div>
-</div>
+	<div class="form-group">
+	<label for=postContent><strong>내용</strong></label>
+	<textarea class="form-control" id=faqContent name=faqContent placeholder="내용을 입력하세요." style="resize:none; height:230px;"></textarea>
+	</div>
+	<br>
+	<div style="text-align:center;">
+	<input type=submit  class="btn btn-outline-secondary" value=글쓰기>&nbsp;&nbsp;<input type=button class="btn btn-outline-secondary" value=취소 onclick="document.location='http://localhost:8080/app/qna'">
+	</div>
 </form>
 </div>
 <jsp:include page="/module/footer.jsp" flush="false" />
