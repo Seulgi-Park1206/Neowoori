@@ -4,12 +4,12 @@
 	
 <mapper namespace="com.neowoori.app.IDaoygw">
 	<select id="listNoticeDao" resultType="com.neowoori.app.BAdminPost">
-		select * from admin_post order by admin_date desc
+		select * from admin_post order by postnum desc
 	</select>
 	
 	<insert id="writeNoticeDao">
 		insert into admin_post(POSTNUM,ADMINNUM,POSTTYPE,TITLE,ADMIN_CONTENTS,ADMIN_DATE)
-		values(admin_post_seq.nextval,1,'notice',#{param1},#{param2},TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi'))
+		values(admin_post_seq.nextval,1,'notice',#{param1},#{param2},TO_CHAR(SYSDATE, 'YYYY-MM-DD'))
 	</insert>
 	
 	<select id="viewnotice" resultType="com.neowoori.app.BAdminPost">
@@ -48,11 +48,11 @@
 	<!-- faq 글쓰기 -->
 	<insert id="writefaqDao">
 		insert into faq(faqnum,faqtitle,faqcontent,faqdate,state,answer,writer) 
-		values(faqnum.nextval,#{param1},#{param2},TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi'),#{param3},#{param4},#{param5})
+		values(faqnum.nextval,#{param1},#{param2},TO_CHAR(SYSDATE, 'YYYY-MM-DD'),#{param3},#{param4},#{param5})
 	</insert>
 	<!-- faq 목록 -->
 	<select id="listFaqDao" resultType="com.neowoori.app.BFaq">
-		select faqnum,faqtitle,faqcontent,faqdate,state,answer,writer from faq order by faqdate desc
+		select * from faq order by faqnum desc
 	</select>
 	
 	<!-- faq 게시물 삭제 -->
@@ -61,7 +61,7 @@
 	</delete>
 	
 	<update id="modifyqna">
-		update faq set faqtitle=#{param1}, faqcontent=#{param2}, faqdate=TO_DATE(SYSDATE,'yyyy/mm/dd hh24:mi') where faqnum=#{param3}
+		update faq set faqtitle=#{param1}, faqcontent=#{param2}, faqdate=TO_CHAR(SYSDATE, 'YYYY-MM-DD') where faqnum=#{param3}
 	</update>
 	
 	<!--  faq 게시글 갯수--> 

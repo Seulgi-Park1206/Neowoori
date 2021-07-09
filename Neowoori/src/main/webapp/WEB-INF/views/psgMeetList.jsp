@@ -21,61 +21,13 @@
 				<div id=noStudyDiv1>
 					<a class=comment>가입된 스터디가 없습니다.</a><br>
 					<img src="${path}/resources/img/searchBig.png" class=searchPic><br>
-					<a href="" id=goSearch>스터디 찾으러 가기</a>
+					<a href="http://localhost:8080/app/search#" id=goSearch>스터디 찾으러 가기</a>
 				</div>
-				<div id=myStudyDiv1>
-<!-- 					<table> -->
-<!-- 						<tr><td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td><td class=blank></td> -->
-<!-- 							<td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td></tr> -->
-<!-- 						<tr><td colspan=3 class=blank2></td></tr> -->
-<!-- 						<tr><td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td><td class=blank></td> -->
-<!-- 							<td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td></tr> -->
-<!-- 						<tr><td colspan=3 class=blank2></td></tr> -->
-<!-- 						<tr><td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td><td class=blank></td> -->
-<!-- 							<td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td></tr> -->
-<!-- 					</table> -->
+				<div id=img1 style="text-align:center;">
+				<img src="${path}/resources/img/company.png" width="150" height="120">
+				</div>
+				<div id=myStudyDiv1> <!-- 내가 만든 스터디 목록-->
+				
 				</div>
 			</div>
 		</div>
@@ -87,67 +39,13 @@
 				<div id=noStudyDiv2>
 					<a class=comment>가입된 스터디가 없습니다.</a><br>
 					<img src="${path}/resources/img/searchBig.png" class=searchPic><br>
-					<a href="" id=goSearch>스터디 찾으러 가기</a>
+					<a href="http://localhost:8080/app/search#" id=goSearch>스터디 찾으러 가기</a>
 				</div>
-				<div id=myStudyDiv2>
-<!-- 					<table> -->
-<!-- 						<tr><td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>(가입 중)</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td><td class=blank></td> -->
-<!-- 							<td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>(가입 중)</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td></tr> -->
-<!-- 						<tr><td colspan=3 class=blank2></td></tr> -->
-<!-- 						<tr><td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>(가입 중)</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td><td class=blank></td> -->
-<!-- 							<td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>(가입 중)</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td></tr> -->
-<!-- 						<tr><td colspan=3 class=blank2></td></tr> -->
-<!-- 						<tr><td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>(가입 중)</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td><td class=blank></td> -->
-<!-- 							<td class=studyBlock> -->
-<!-- 								<table class=tblBlock> -->
-<!-- 									<tr><td>행렬의 아름다움</td></tr> -->
-<!-- 									<tr><td>(가입 중)</td></tr> -->
-<!-- 									<tr><td>카테고리 대</td></tr> -->
-<!-- 									<tr><td>카테고리 소</td></tr> -->
-<!-- 									<tr><td>천안시</td></tr> -->
-<!-- 								</table> -->
-<!-- 							</td></tr> -->
-<!-- 					</table> -->
+				<div id=img2 style="text-align:center;">
+				<img src="${path}/resources/img/company.png" width="150" height="120">
+				</div>
+				<div id=myStudyDiv2> <!-- 내가 가입한 스터디 목록-->
+				
 				</div>
 			</div>
 		</div>
@@ -159,6 +57,8 @@
 $(document)
 .ready(function(){
 	var userid = '<%=session.getAttribute("userid")%>';
+	var mystudy = 0;
+	var join = 0;
 	
 	// 아이디로 유저num 가져와서 세션저장
 	$.ajax({
@@ -182,9 +82,11 @@ $(document)
 		success: function output(resp){
 			console.log(resp);
 			var result = '';
+			var count = 0;
 			result += '<table>'
 			$.each(resp,function(index,item){
 				if(item["state"] == 30){
+					if(count%2 == 0){
 				result += '<tr><td class=studyBlock>'
 				result += '<table class=tblBlock>'
 				result += '<input type=hidden value="'+item["mNum"]+'">'
@@ -193,14 +95,32 @@ $(document)
 				result += '<tr><td>'+item["category2"]+'</td></tr>'
 				result += '<tr><td>'+item["mwhere"]+'</td></tr>'
 				result += '</table>'
-// 				result += '</td><td class=blank></td>'
-				
+				result += '</td><td class=blank></td>'
+				mystudy++;
+				}else{
+					result += '<td class=studyBlock>'
+					result += '<table class=tblBlock>'
+					result += '<input type=hidden value="'+item["mNum"]+'">'
+					result += '<tr><td>'+item["mname"]+'</td></tr>'
+					result += '<tr><td>'+item["category1"]+'</td></tr>'
+					result += '<tr><td>'+item["category2"]+'</td></tr>'
+					result += '<tr><td>'+item["mwhere"]+'</td></tr>'
+					result += '</table>'
+					result += '</td></tr>'
+					result += '<tr><td colspan=3 class=blank2></td></tr>'
+				}
+				count++;
+					
 			}
 		})
 				result +='</table>'
 				result += '</td></tr>'
 			$('#myStudyDiv1').append(result);
-		
+			if(mystudy != 0){
+				$('#noStudyDiv1').hide();
+			}else{
+				$('#img1').hide();
+			}
 		},
 		error: function(){
 			alert('error');
@@ -215,47 +135,52 @@ $(document)
 		success: function output(resp){
 			console.log(resp);
 			var result = '';
+			var count2 = 0;
 			result += '<table>'
 			$.each(resp,function(index,item){
 				if(item["state"] == 20){
-				result += '<tr><td class=studyBlock>'
-				result += '<table class=tblBlock>'
-				result += '<input type=hidden value="'+item["mNum"]+'">'
-				result += '<tr><td>'+item["mname"]+'</td></tr>'
-				result += '<tr><td>(가입 중)</td></tr>'
-				result += '<tr><td>'+item["category1"]+'</td></tr>'
-				result += '<tr><td>'+item["category2"]+'</td></tr>'
-				result += '<tr><td>'+item["mwhere"]+'</td></tr>'
-				result += '</table>'
-// 				result += '</td><td class=blank></td>'
-				
+					if(count2%2 == 0){
+						result += '<tr><td class=studyBlock>'
+						result += '<table class=tblBlock>'
+						result += '<input type=hidden value="'+item["mNum"]+'">'
+						result += '<tr><td>'+item["mname"]+'</td></tr>'
+						result += '<tr><td>'+item["category1"]+'</td></tr>'
+						result += '<tr><td>'+item["category2"]+'</td></tr>'
+						result += '<tr><td>'+item["mwhere"]+'</td></tr>'
+						result += '</table>'
+						result += '</td><td class=blank></td>'
+						join++;
+						}else{
+							result += '<td class=studyBlock>'
+							result += '<table class=tblBlock>'
+							result += '<input type=hidden value="'+item["mNum"]+'">'
+							result += '<tr><td>'+item["mname"]+'</td></tr>'
+							result += '<tr><td>'+item["category1"]+'</td></tr>'
+							result += '<tr><td>'+item["category2"]+'</td></tr>'
+							result += '<tr><td>'+item["mwhere"]+'</td></tr>'
+							result += '</table>'
+							result += '</td></tr>'
+							result += '<tr><td colspan=3 class=blank2></td></tr>'
+						}
+				count2++;
 			}
 		})
 				result +='</table>'
 				result += '</td></tr>'
 			$('#myStudyDiv2').append(result);
-		
+			if(join != 0){
+				$('#noStudyDiv2').hide();
+			}else{
+				$('#img2').hide();
+			}
 		},
 		error: function(){
 			alert('error');
 		}
 	});
-	
-	var mystudy = 1;
-	var join = 1;
 	// 수정 사항
 	// mystudy: 내가 스터디장인 스터디의 개수 count / 있는지 확인
 	// join: 내가 가입된 스터디
-	if(mystudy != null){
-		$('#noStudyDiv1').hide();
-	}else{
-		$('#myStudyDiv1').hide();
-	}
-	if(join != null){
-		$('#noStudyDiv2').hide();
-	}else{
-		$('#myStudyDiv2').hide();
-	}
 })
 .on('click','.tblBlock',function(){
 	var s_num = $(this).find('input').val();

@@ -23,41 +23,27 @@
               <tr>
                   <th>아이디</th>
                   <td>
-                  	<input type="text" id=id placeholder="ID 를 입력하세요.">
+                  	<input onkeyup="enterkey();" type="text" id=id placeholder="ID 를 입력하세요.">
                   </td>
                 </tr>
                 <tr>
                   <th>비밀번호</th>
-                  <td><input type="password" id=pw placeholder="비밀번호를 입력해주세요."></td>
+                  <td><input onkeyup="enterkey();" type="password" id=pw placeholder="비밀번호를 입력해주세요."></td>
                 </tr>
                 <tr>
                 	<th></th>
                 	<td><a href="javascript:;" id="btn_login" class="btn_confirm" style="position: relative;margin:15px 0 10px 0px;">로그인</a></td>
                 </tr>
+                 <tr>
+                	<th></th>
+                	<td><a href="javascript:;" id=btn_main class="btn_confirm" style="position: relative;margin:15px 0 10px 0px;">메인화면으로 이동</a></td>
+                </tr>
                 <tr>
                 <th></th>
                   <td><a class="link" id=findid onclick="find_id();" href="">아이디 찾기</a><a class="link" id=findpw onclick="find_pw();" href="">비밀번호 찾기</a>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a class="link" href="">회원가입</a></td>
+                  <a class="link" id=signup href="http://localhost:8080/app/signup">회원가입</a><br><br><br><br><br><br><br><br></td>
                 </tr>
-                <tr>
-                	<th></th>
-     				<td>
-     					<a class="btn_confirm" href="" style="margin:15px 0 10px 0px; background-color:#FAE100"><img src="resources/img/kakao.PNG" style="float: left; width:48px; height:48px;">카카오로그인</a>                	
-     				<td>
-          		</tr>
-          		<tr>
-                	<th></th>
-     				<td>
-     					<a class="btn_confirm" href="" style="background-color:#2DB400"><img src="resources/img/naver.PNG" style="float: left; width:48px; height:48px;">네이버로그인</a></td>
-                	<td>
-          		</tr>
-          		<tr>
-                	<th></th>
-     				<td>
-     					<a class="btn_confirm" href="" style="margin:0px 0 100px 0px; background-color:white"><img src="resources/img/google.PNG" style="float: left; width:48px; height:48px;">구글로그인</a></td>
-                	<td>
-          		</tr>
           	  </tbody>
           </table>
           </div>
@@ -68,10 +54,7 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
-$(document)
-//로그인 체크
-.on('click','#btn_login',function(){
-	
+function login(){
 	$.ajax({
 	    url: 'login.do',
 	    type: 'POST',
@@ -92,7 +75,23 @@ $(document)
 	    error: function (){        
 	    }
 	  })
-});
+}
+$(document)
+//로그인 체크
+.on('click','#btn_login',function(){
+	login();
+	
+})
+
+function enterkey() {
+        if (window.event.keyCode == 13) {
+ 
+             // 엔터키가 눌렸을 때 실행할 내용
+             login();
+        }
+}
+
+
 
 function find_id(){
 	var url = "findidPopup";

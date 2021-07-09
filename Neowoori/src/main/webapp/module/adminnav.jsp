@@ -16,6 +16,7 @@
 				src="${path}/resources/img/logo.png"></a>
 		</div>
 		<nav>
+<!-- 			<a class="linklog" id=company>회사소개 수정</a> -->
 			<a class="linklog" id=logout>로그아웃</a>
 		</nav>
 	</header>
@@ -52,5 +53,9 @@ $(document)
 	});
 	return false;
 })
+
+// .on('click', '#company', function(){
+// 	location.href='CompanyWrite';
+// })
 </script>
 </html>
