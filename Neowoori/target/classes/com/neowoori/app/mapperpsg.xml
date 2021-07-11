@@ -69,11 +69,11 @@
 	</select>
 	<!-- 대댓글 삭제 -->
 	<delete id="psgDeleteReCmt">
-		delete from cmt where postnum=#{param1} and cmtnum=#{param2} and parent_cnum=#{param3}
+		delete from cmt where postnum=#{param1} and cmtnum=#{param2}
 	</delete>
 	<!-- 대댓글 수정 -->
 	<update id="psgUpdateReCmt">
-		update cmt set cmt_contents=#{param3} where postnum=#{param1} and cmtnum=#{param2} and parent_cnum=#{param4}
+		update cmt set cmt_contents=#{param3} where postnum=#{param1} and cmtnum=#{param2}
 	</update>
 	<!-- 스터디 정보 조회 -->
 	<select id="psgStudyInfo" resultType="com.neowoori.app.psgBStudyInfoView">

@@ -117,6 +117,19 @@ textarea {
 .cmtComplete {
 	color: #0000ff;
 }
+ul.dropdown-menu {
+	min-width: 50px;
+}
+div.dropdown {
+	float: right;
+	display: inline;
+}
+.updateReCmt:hover {
+	color: #0000ff;
+}
+.deleteReCmt:hover {
+	color: #ff0000;
+}
 #postContents {
 	height: auto;
 	min-height: 160px;
@@ -149,5 +162,5 @@ textarea {
 	overflow:hidden;
 }
 .hidPCnum, .hidReCnum {
-	display: none;
+	/* display: none; */
 }
