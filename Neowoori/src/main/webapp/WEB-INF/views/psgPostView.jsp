@@ -1,3 +1,4 @@
+  
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -47,15 +48,18 @@
 				<br>
 				<table id=tblReply>
 					<c:forEach var="c" items="${cmt}">
-						<tr><td class=hidCnum>${c.cmtnum}</td>
-						<td class=tdView><label class="writer">${c.userid}</label>
-							<label> (${c.cmt_date})</label>
-							<div class=cmtAbout>
-								<a class=updateCmt>수정</a>
-								<a class=deleteCmt>삭제</a>
-								<a class=reCmt>댓글</a>
-							</div>
-							<textarea class="cmtTxt form-control" readonly>${c.cmt_contents}</textarea></td>
+						<tr>
+							<td class=hidCnum>${c.cmtnum}</td>
+							<td class=tdView>
+								<label class="writer">${c.userid}</label>
+								<label> (${c.cmt_date})</label>
+								<div class=cmtAbout>
+									<a class=updateCmt>수정</a>
+									<a class=deleteCmt>삭제</a>
+									<a class=reCmt>댓글</a>
+								</div>
+								<textarea class="cmtTxt form-control" readonly>${c.cmt_contents}</textarea>
+							</td>
 						</tr>
 					</c:forEach>
 				</table>
@@ -115,7 +119,6 @@ var cmtMenu3 = '<a class=updateCmt>수정</a><a class=deleteCmt>삭제</a>';
 function goList(){
 	window.location="${path}/meetView/${s_num}";
 }
-
 // 댓글 추가
 function addComment(res){
 	console.log(res);
@@ -135,40 +138,21 @@ function addComment(res){
 	
 	return result;
 }
-
 // 대댓글 쓰기
 function writeReComment(){
 	var result = '<div class="replyWrite input-group w">';
 	result += '<span class="input-group-text" id="spanReply">';
 	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
-	result += '<input type="text" class="txtWrite form-control" placeholder="댓글을 입력하세요." aria-describedby="btnReCmt" />';
-	result += '<button class="btn btn-outline-secondary" type="button" id="btnReCmt">댓글 쓰기</button></div>';
+	result += '<input type="text" class="txtWrite form-control" placeholder="댓글을 입력하세요."/>';
+	result += '<button class="btnReCmt btn btn-outline-secondary" type="button">댓글 쓰기</button></div>';
 	
 	return result;
 }
-
 // 대댓글 추가
-function addReCmt(res){/*
-	console.log(res);
-	console.log(res['userid']);
-	var result = '<a class=hidReCnum>';
+function addReCmt(res){
+	/* var result = '<a class=hidReCnum>';
 	result += res['cmtnum'];
-	result += '</a><div class="replyWrite input-group"><span class="input-group-text" id="spanReply">'
-	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
-	result += '<input type=text class="cmtTxt form-control" readonly value="';
-	result += res['cmtContents'];
-	result += '"><input type=text class="form-control" readonly value="';
-	result += res['userid'];
-	result += '" (';
-	result += res['cmtDate'];
-	result += ')<div class=cmtAbout>'
-	result += cmtMenu3;
-	result += '</div></div>';
-	console.log(result);
-	*/
-	var result = '<a class=hidReCnum>';
-	result += res['cmtnum'];
-	result += '</a><div class="replyWrite input-group w"><span class="input-group-text" id="spanReply">'
+	result += '</a><div class="replyView input-group w"><span class="input-group-text" id="spanReply">'
 	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span><label class="writer">';
 	result += res['userid'];
 	result += '</label><label> (';
@@ -177,11 +161,23 @@ function addReCmt(res){/*
 	result += '<input type=text class="cmtTxt form-control" readonly value="';
 	result += res['cmtContents'];
 	result += '"></div></div>';
+	console.log(result); */
+	
+	var result = '<a class=hidReCnum>';
+	result += res['cmtnum'];
+	result += '</a><div class="replyView input-group w"><span class="input-group-text" id="spanReply">'
+	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
+	result += '<label class="form-control">';
+	result += res['userid'];
+	result += ' (';
+	result += res['cmtDate'];
+	result += ')<br>';
+	result += res['cmtContents'];
+	result += '</label></div>';
 	console.log(result);
 	
 	return result;
 }
-
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
 	var contents = $('#content');
@@ -189,7 +185,6 @@ function adjustHeight() {
     var contentsHeight = contents.prop('scrollHeight');
     contents.css('height', contentsHeight);
 }
-
 // modal 본문 내용 크기에 맞게 높이 자동 조절
 function adjustModalHeight() {
 	var contents = $('#postContents');
@@ -198,20 +193,10 @@ function adjustModalHeight() {
     //console.log('postContents: ' + contentsHeight);
     contents.css('height', contentsHeight);
 }
-
-// 대댓글 div 댓글 개수에 따라 높이 자동 조절
-function adjustDivReCmtHeight(div) {
-	div[0].style.height = 'auto';
-    var divHeight = div.prop('scrollHeight');
-    console.log('divCmt: ' + divHeight);
-    div.css('height', divHeight);
-}
-
 // 댓글 줄바꿈 체크
 function Check(){
 	var str_arr = str.split("\n");  // 줄바꿈 기준으로 나눔 
 	var row = str_arr.length;  // row = 줄 수 
-
 	if(row > 2){
 	//마지막 입력문자 삭제
 	alert("3줄 이상 입력할 수 없습니다.")
@@ -219,13 +204,11 @@ function Check(){
 	$("#txtWrite").val(lastChar)
 	}
 }
-
 // 댓글 초기화
 function clearCmt() {
 	$('#txtWrite').val('');
 	$('#test_cnt').html("(0 / 100)");
 }
-
 $(document)
 .ready(function(){
 	console.log(link);
@@ -248,27 +231,33 @@ $(document)
 // 댓글 쓰기
 .on('click', '#btnReply', function(){
 	if('${userid}' != ""){ // 로그인을 하지 않은 경우 실행 x
-		var cmt = {pNum:link, contents:$('#txtWrite').val().trim()};
-		$.ajax({
-			url:'${path}/insertCmt.do',
-			data:JSON.stringify(cmt),
-			contentType:'application/json; charset=UTF-8',
-			dataType:'json',
-			method:'post',
-			success:function(res){
-				alertModal('댓글 등록', '댓글이 등록되었습니다.');
-				$('#tblReply').prepend(addComment(res));
-				clearCmt();
-			},
-			error:function(){
-				alert('Cmt insert error');
-			}
-		});		
-	} else {
-		alertModal('댓글 등록', '로그인이 필요합니다.');
-		clearCmt();
-		location.href='${path}/login';
+		var cmt = $('#txtWrite').val().trim();
+		if(cmt == null || cmt == ''){
+			alertModal('댓글 쓰기','댓글 내용을 입렵하세요.');
+		}else {
+			var cmt = {pNum:link, contents:$('#txtWrite').val().trim()};
+			$.ajax({
+				url:'${path}/insertCmt.do',
+				data:JSON.stringify(cmt),
+				contentType:'application/json; charset=UTF-8',
+				dataType:'json',
+				method:'post',
+				success:function(res){
+					alertModal('댓글 등록', '댓글이 등록되었습니다.');
+					$('#tblReply').prepend(addComment(res));
+					clearCmt();
+				},
+				error:function(){
+					alert('Cmt insert error');
+				}
+			});		
+		}
+	}else {
+			alertModal('댓글 등록', '로그인이 필요합니다.');
+			clearCmt();
+			location.href='${path}/login';
 	}
+	
 	return false;
 })
 // 게시물 삭제 버튼 클릭
@@ -334,7 +323,6 @@ $(document)
 			}
 		});
 	}
-
 	return false;
 })
 // 게시물 수정 버튼 클릭
@@ -428,14 +416,20 @@ $(document)
 })
 // 댓글 클릭(대댓글 쓰기) 클릭
 .on('click', '.reCmt', function(){
-	var divCount = $(this).parents('.tdView .divReCmt');
-	console.log('divCount: '+divCount.length);
-	if(divCount.length == 0){	// 대댓글 없음
-		// 해당 댓글 번호
-		var replyNum = $(this).parent().parent().siblings('.hidCnum').text();
-		console.log('replyNum: '+replyNum);
-		// 추가할 위치
-		var td = $(this).parents('td');
+	console.log('-----------------------------------------------------');
+	var divCount = $(this).parent().parent().children('div');
+	var divCount_class = divCount.attr('class'); // .cmtAbout
+	console.log('tdView 내의 div 개수: '+divCount.length);
+	console.log('class: ' + divCount_class);
+	
+	// 해당 댓글 번호
+	var replyNum = $(this).parent().parent().siblings('.hidCnum').text();
+	console.log('replyNum: '+replyNum);
+	// 추가할 위치
+	var td = $(this).parents('td');	// .tdView
+	console.log('>>> 추가할 위치: '+td.attr('class'));
+	
+	if(divCount.length == 1){	// 대댓글 안보임
 		td.append('<div class=divReCmt></div>');
 		// 해당 댓글의 대댓글 검색 후 출력
 		$.ajax({
@@ -445,28 +439,29 @@ $(document)
 			dataType: 'json',
 			method: 'post',
 			success: function(res){
-				console.log('res.length: ' + res.length);
-				if(res.length > 0){
+				console.log('>>> res.length: ' + res.length);
+				if(res.length > 0){	// 대댓글 존재
 					$.each(res, function(index, item){
-						console.log('index: '+index+'/item: '+item);
-						console.log(item['userid']);
-						
-						td.children('.divReCmt').prepend(addReCmt(item));
+						console.log('index: '+index);
+						td.children('.divReCmt').append(addReCmt(item));
 					});
 				}
 				td.children('.divReCmt').append(writeReComment());
+				td.children('.divReCmt').show();
 			},
 			error: function(){
 				alert('ReCmt Load Error');
 			}
 		});
-	} else {
+	} else {	// 대댓글 보임
+		console.log('-- 대댓글 제거');
+		td.children(':last').remove();	// 대댓글 제거
 	}
 	
 	return false;
 })
 //대댓글 - '댓글 쓰기' 클릭
-.on('click', '#btnReCmt', function(){
+.on('click', '.btnReCmt', function(){
 	// 대댓글 입력한 input
 	var reCmt = $(this).siblings('.txtWrite');
 	console.log('대댓글: ' + reCmt.val());
@@ -478,7 +473,7 @@ $(document)
 		console.log('cnum: '+cnum);
 		var cts = reCmt.val().trim();
 		if(cts != null && cts != ''){
-			var cmt = {pNum:link, parentNum:cnum, contents:reCmt.val().trim()};
+			var cmt = {pNum:link, parentNum:cnum, contents:cts};
 			
 			$.ajax({
 				url:'${path}/insertReCmt.do',
@@ -487,8 +482,7 @@ $(document)
 				dataType:'json',
 				method:'post',
 				success:function(res){
-					reCmt.prepend(addReCmt(res));
-					adjustDivReCmtHeight($('.divReCmt'));
+					reCmt.parent().before(addReCmt(res));
 					alertModal('댓글 등록', '댓글이 등록되었습니다.');
 					reCmt.val('');
 				},

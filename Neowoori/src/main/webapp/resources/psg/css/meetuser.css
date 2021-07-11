@@ -1,19 +1,12 @@
-<<<<<<< HEAD
+
 @charset "EUC-KR";
-.psg_table_width2 {
-=======
 @charset "utf-8";
+
+
+
 .jsb_table_width2 {
    width:15%;
 }
-.jsb_table_width3 {
-   width:60%;
-}
-.jsb_table_width4 {
->>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
-   width:25%;
-}
-<<<<<<< HEAD
 .psg_table_width3 {
    width:25%;
 }
@@ -23,9 +16,8 @@
 tr, th {
 	border: 1px solid gray;
 }
-=======
->>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
-.dropdown {
+
+.psg_dropdown {
 	position: absolute;
 	background-color: #797799;
 	color: #ffffff;
@@ -35,18 +27,18 @@ tr, th {
 	padding: 10px;
 	border-radius: 10px;
 }
-.dropdown a {
+.psg_dropdown a {
 	display: block;
 	text-decoration: none;
 	margin: 10px 0;
 	color: #ffffff;
 }
-.dropdown a:hover {
+.psg_dropdown a:hover {
 	background-color: #ffffff;
 	color: #0000ff;
 	font-weight: bold;
 	
 }
-.pop:hover {
+.psg_pop:hover {
 	color: #000000;
 }

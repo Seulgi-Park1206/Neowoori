@@ -150,9 +150,9 @@ $(document)
 	    	//"studyName" : $('#studyName').val() // 스터디명
 	    },
 	    success : function(data){
-	    	//console.log(data);
+	    	console.log(data);
 	    	datas= new Array(data);
-	    	//console.log(datas[0]);
+	    	console.log(datas[0]);
 	    	//console.log(datas[0][0].mName);
 	    	let tblStr='';
 	    	$.each(data, function(e, item){
@@ -244,7 +244,7 @@ function setPage(who){
 	//result += '<ul class="pagination" id="pageUl">'
 	for(var i = 1; i <= pageHow; i++){
 		//result +='<li class="page-item" onclick=pageBtnFuc('+i+')><a class="page-link" href="#">'+i+'</a></li>'
-		result +='<a href="#" class="w3-button">'+i+'</a>'
+		result +='<a href="#" class="w3-button" onclick=pageBtnFuc('+i+')>'+i+'</a>'
 	}
 	//result += '</ul>'
 	//result += '</nav>'
@@ -488,10 +488,13 @@ function searchBtn(){
 	    },
 	    success : function(data){
 	    	datas= new Array(data);
+	    	console.log(datas[0]);
 	    	let tblStr='';
+	    	let n=1;
 	    	$.each(data, function(e, item){
-	    		tblStr +='<tr><td></td><td>'+item.mName+'</td><td>'+item.adrCounty+' '+item.adrCity+'</td><td>'+item.category1+' - '+item.category2+'</td><td>'+item.cnt+'/'+item.mPersonnel+'</td><td>'+item.uNick+'</td><td></td><td style="display:none;">'+item.mNum+'</td></tr>'
+	    		tblStr +='<tr><td>'+n+'</td><td>'+item.mName+'</td><td>'+item.adrCounty+' '+item.adrCity+'</td><td>'+item.category1+' - '+item.category2+'</td><td>'+item.cnt+'/'+item.mPersonnel+'</td><td>'+item.uNick+'</td><td></td><td style="display:none;">'+item.mNum+'</td></tr>'
 	    		if(e==9) return false;
+	    		n++;
 	    	})
 	    	$('#viewTable tbody').html(tblStr);
 	    	setPage(data.length);

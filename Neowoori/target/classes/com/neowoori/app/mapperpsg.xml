@@ -56,7 +56,7 @@
 	<select id="psgSelectReCmt" resultType="com.neowoori.app.psgBViewCmt">
 		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
 		where c.unum=m.unum and c.parent_cnum=#{param1}
-		order by c.cmtnum desc
+		order by c.cmtnum
 	</select>
 	<!-- 대댓글 추가 -->
 	<insert id="psgInsertReCmt">
