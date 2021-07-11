@@ -23,8 +23,8 @@
 					<img src="${path}/resources/img/searchBig.png" class=searchPic><br>
 					<a href="http://localhost:8080/app/search#" id=goSearch>스터디 찾으러 가기</a>
 				</div>
-				<div id=img1 style="text-align:center;">
-				<img src="${path}/resources/img/company.png" width="150" height="120">
+				<div class=img1 style="text-align:center;">
+				<img src="${path}/resources/img/meetlist.PNG" width="150" height="120">
 				</div>
 				<div id=myStudyDiv1> <!-- 내가 만든 스터디 목록-->
 				
@@ -41,8 +41,8 @@
 					<img src="${path}/resources/img/searchBig.png" class=searchPic><br>
 					<a href="http://localhost:8080/app/search#" id=goSearch>스터디 찾으러 가기</a>
 				</div>
-				<div id=img2 style="text-align:center;">
-				<img src="${path}/resources/img/company.png" width="150" height="120">
+				<div id=class style="text-align:center;">
+				<img src="${path}/resources/img/meetlist.PNG" width="150" height="120">
 				</div>
 				<div id=myStudyDiv2> <!-- 내가 가입한 스터디 목록-->
 				
@@ -87,6 +87,7 @@ $(document)
 			$.each(resp,function(index,item){
 				if(item["state"] == 30){
 					if(count%2 == 0){
+// 				result += '<tr><td><img src="${path}/resources/img/meetlist.PNG" width="150" height="100"></td></tr>'
 				result += '<tr><td class=studyBlock>'
 				result += '<table class=tblBlock>'
 				result += '<input type=hidden value="'+item["mNum"]+'">'
@@ -119,7 +120,7 @@ $(document)
 			if(mystudy != 0){
 				$('#noStudyDiv1').hide();
 			}else{
-				$('#img1').hide();
+				$('.img1').hide();
 			}
 		},
 		error: function(){
@@ -171,7 +172,7 @@ $(document)
 			if(join != 0){
 				$('#noStudyDiv2').hide();
 			}else{
-				$('#img2').hide();
+				$('.img1').hide();
 			}
 		},
 		error: function(){
