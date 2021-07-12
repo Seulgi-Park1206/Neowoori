@@ -34,7 +34,7 @@ table,td{
 		<td class="table-light">게시글 번호</td><td><input type=text name=qnapostnum readonly value="${modifyqna.faqnum}"></td>
 	</tr>
 	<tr>
-		<td class="table-light">제목</td><td><input type=text id=modifyqnatitle class="form-control" name=qnatitle value="${modifyqna.faqtitle}"></td>
+		<td class="table-light">제목</td><td><input type=text id=modifyqnatitle maxlength="25" class="form-control" name=qnatitle value="${modifyqna.faqtitle}"></td>
 	</tr>
 
 	<tr>

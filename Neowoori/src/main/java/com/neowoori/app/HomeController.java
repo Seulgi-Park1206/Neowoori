@@ -102,7 +102,7 @@ public class HomeController {
 		  String paging="";
 		  float noticecnt=dao.noticepostcount();
 		  for(int i=0; i<Math.ceil(noticecnt/10); i++) {
-			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+			  paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 		  }
 		  model.addAttribute("paging",paging);
 		  model.addAttribute("lastPage",Math.ceil(noticecnt/10));
@@ -147,7 +147,7 @@ public class HomeController {
 		  float faqcnt=dao.faqpostcount(); //faq 게시글 총갯수 가져옴
 		  
 		  for(int i=0; i<Math.ceil(faqcnt/10); i++){
-			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+			  paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 		  }
 		  
 		  model.addAttribute("paging",paging);
