@@ -22,11 +22,11 @@
 	<form action="/app/noticeserver" method="post">
 	<div class="form-group">
 	<label for=postTitle><strong>제목</strong></label>
-	<input class="form-control" type=text id=postTitle name=postTitle placeholder="제목을 입력하세요."><br>
+	<input class="form-control" type=text maxlength="25" id=postTitle name=postTitle placeholder="제목을 입력하세요."><br>
 	</div>
 	<div class="form-group">
 	<label for=postContent><strong>내용</strong></label>
-	<textarea class="form-control" id=postContent name=postContent placeholder="내용을 입력하세요." style="resize:none; height:230px;"></textarea>
+	<textarea class="form-control" id=postContent maxlength="250" name=postContent placeholder="내용을 입력하세요." style="resize:none; height:230px;"></textarea>
 	</div>
 	<br>
 	<div style="text-align:center;">
@@ -52,6 +52,12 @@ $(document)
 		return false;
 	}
 	
+	/*
+	if($('#postTitle').val().length>$('#postTitle').attr('maxlength')){
+		alert('제한길이를 초과하였습니다.');
+		$('#postTitle').val()=="1";
+	}
+	*/
 })
 </script>
 </html>

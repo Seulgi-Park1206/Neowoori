@@ -102,7 +102,7 @@ public class HomeController {
 		  String paging="";
 		  float noticecnt=dao.noticepostcount();
 		  for(int i=0; i<Math.ceil(noticecnt/10); i++) {
-			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+			  paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 		  }
 		  model.addAttribute("paging",paging);
 		  model.addAttribute("lastPage",Math.ceil(noticecnt/10));
@@ -147,7 +147,7 @@ public class HomeController {
 		  float faqcnt=dao.faqpostcount(); //faq 게시글 총갯수 가져옴
 		  
 		  for(int i=0; i<Math.ceil(faqcnt/10); i++){
-			  paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+			  paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 		  }
 		  
 		  model.addAttribute("paging",paging);
@@ -916,12 +916,19 @@ public class HomeController {
 	@ResponseBody
 	@RequestMapping(value="/deleteCmt.do", method=RequestMethod.POST)
 	public String deleteComment(@RequestBody HashMap<String, String> hashmap) {
+		String cmtType = hashmap.get("type");
+		System.out.println(cmtType);
 		int pNum = Integer.parseInt(hashmap.get("postNum"));
 		int cNum = Integer.parseInt(hashmap.get("coNum"));
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		dao.psgDeleteCmt(pNum, cNum);
+		if(cmtType.equals("댓글")) {
+			dao.psgDeleteCmt(pNum, cNum);
+			return "cmt";
+		} else {
+			dao.psgDeleteReCmt(pNum, cNum);
+			return "reCmt";
+		}
 		
-		return "success";
 	}
 	// 게시물 수정
 	@ResponseBody
@@ -933,14 +940,17 @@ public class HomeController {
 		
 		return "success";
 	}
-	// 댓글 수정
+	// 댓글/대댓글 수정
 	@ResponseBody
 	@RequestMapping(value="/updateCmt.do", method=RequestMethod.POST)
 	public String UpdateCmtDo(@RequestBody HashMap<String, String> hashmap) {
 		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+		String cmtType = hashmap.get("type");
+		System.out.println(cmtType);
 		int pNum = Integer.parseInt(hashmap.get("pNum"));
 		int cNum = Integer.parseInt(hashmap.get("cNum"));
-		dao.psgUpdateCmt(pNum, cNum, hashmap.get("contents"));
+		if(cmtType.equals("댓글 수정")) dao.psgUpdateCmt(pNum, cNum, hashmap.get("contents"));
+		else dao.psgUpdateReCmt(pNum, cNum, hashmap.get("contents"));
 		
 		return "success";
 	}
@@ -995,9 +1005,6 @@ public class HomeController {
 		
 		return jo;
 	}
-	// 대댓글 삭제
-	
-	// 대댓글 수정
 	
 	// 내 스터디 조회 
 	@RequestMapping("/meetList/{user_id}")

@@ -65,9 +65,9 @@ th, td {
 	  	<input class="btn btn-outline-secondary" id=noticenewpost type=button value="새글쓰기" onclick="document.location='http://localhost:8080/app/noticewrite'">
 	  	</div>
 <div class="w3-center">
-	<div class="w3-bar">
-		<a href= # value=previous name=page>&laquo;</a>${paging}<a href= # value=next name=page>&raquo;</a>
-	</div>
+	
+		<a href= # value=previous class="w3-bar-item w3-button" name=page>&laquo;</a>${paging}<a href= # value=next class="w3-bar-item w3-button" name=page>&raquo;</a>
+	
 </div>
 <!--  	</div>-->
 	
