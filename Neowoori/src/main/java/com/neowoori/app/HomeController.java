@@ -158,7 +158,7 @@ public class HomeController {
 	
 	@RequestMapping("/qna/{qnapostid}") //qna
 	   public String viewQna(@PathVariable int qnapostid,Model model) {
-		System.out.println("qnaid 값 : "+qnapostid);
+		//System.out.println("qnaid 값 : "+qnapostid);
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
 		BFaq viewqna=dao.viewqna(qnapostid);
 		model.addAttribute("qnalist",viewqna);
@@ -288,7 +288,7 @@ public class HomeController {
 	@RequestMapping(value="/findidServer", method=RequestMethod.POST) //id찾기 서버
 	@ResponseBody
 	   public String checkfindidServer(String email,Model model) {
-		  System.out.println("email 테스트 : "+email); 
+		  //System.out.println("email 테스트 : "+email); 
 	      IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
 	      int check_email=dao.check_email(email);
 	      String final_check_email=Integer.toString(check_email);
@@ -326,13 +326,13 @@ public class HomeController {
 	@ResponseBody
 	public String checkServer(String id,String email) throws Exception{
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
-		System.out.println(id);
-		System.out.println(email);
+		//System.out.println(id);
+		//System.out.println(email);
 		//email,id 있는지 체크
 		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
 		int count=dao.check_findpw(id,email);
 		String check_count=Integer.toString(count);
-		System.out.println("count 결과 : "+check_count);
+		//System.out.println("count 결과 : "+check_count);
 		
 		if(check_count.equals("1")) {
 			findpwServer(id,email);
@@ -351,8 +351,8 @@ public class HomeController {
 	public void findpwServer(String id,String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
-		System.out.println(id);
-		System.out.println(email);
+		//System.out.println(id);
+		//System.out.println(email);
 				
 		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
 				
@@ -398,12 +398,12 @@ public class HomeController {
 	public String mailCheckGET(String email) throws Exception{
 		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
-		System.out.println(email);
+		//System.out.println(email);
 				
 		/* 인증번호(난수) 생성 */
 		Random random = new Random();
 		int checkNum = random.nextInt(888888) + 111111;
-		System.out.println("인증번호 : "+checkNum);
+		//System.out.println("인증번호 : "+checkNum);
 		
 		/* 이메일 보내기 */
 		String setFrom = "brokerdev99@gmail.com";
