@@ -43,7 +43,7 @@ function islogin(){
 }
 //석봉추가
 function click_add(){
-	var url = "msgGetBox";
+	var url = "/msgGetBox";
 	var name = "메시지";
 	var option = "width=800, height=650, left=100,top=50,location=no";
 	window.open(url,name,option)

@@ -33,7 +33,7 @@
     <tr>
       <th class="jsb_table_width1"><input type="checkBox"></th>
       <th class="jsb_table_width2">No</th>
-      <th class="jsb_table_width3">받은사람</th>
+      <th class="jsb_table_width3">받는사람</th>
       <th class="jsb_table_width4">쪽지내용</th>
       <th class="jsb_table_width5">수신날짜</th>
     </tr>

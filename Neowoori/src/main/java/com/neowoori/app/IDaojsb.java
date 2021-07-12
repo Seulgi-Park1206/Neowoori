@@ -41,6 +41,9 @@ public interface IDaojsb {
 	public ArrayList<jsbBMsgList> jsbReceiveMsgList(int mUserNum);
 	public ArrayList<jsbBMsgList> jsbSendMsgList(int mUserNum);
 	
+	//관리자판단여부
+	public int jsbStudyAmdinboolean(int uNum, int mNum);
+	
 	
 	//슬기도움 meetuser(회원관리)페이지
 	public ArrayList<jsbBMeetUserList> jsbMeetUserList(int mNum);
@@ -50,5 +53,6 @@ public interface IDaojsb {
 	public void jsbMeetUserAccept(int uNum, int mNum);
 	public void jsbMeetUserCancel(int uNum, int mNum);
 	public ArrayList<jsbBMeetUserAva> jsbMeetAcceptAva(int mNum);
+
 	
 }

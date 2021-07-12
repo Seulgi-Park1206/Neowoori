@@ -1059,7 +1059,26 @@ public class HomeController {
 	}
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
-	public String meetUser(@PathVariable int study_id, Model model) {
+	public String meetUser(@PathVariable int study_id, Model model,HttpSession session) {
+		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		System.out.println(sessionUserId);
+		System.out.println(study_id);
+		if(sessionUserId!=null) {
+			BMembers userInfo=dao.jsbGetUser(sessionUserId);
+			int getUNum=userInfo.getuNum();
+			int chkStudyAdmin=dao.jsbStudyAmdinboolean(getUNum,study_id);
+			if (chkStudyAdmin==1) {
+				model.addAttribute("studyId", study_id);
+				return "psgMeetuserTest";
+			}else {
+				
+				return "redirect:/meetList/"+sessionUserId; //혹은 에러페이지..
+			}
+		}else {
+			return "redirect:/index";
+		}
+		/*
 		//model.addAttribute("s_id", study_id);
 		model.addAttribute("studyId", study_id);
 		//study_id사용하면됨
@@ -1068,6 +1087,7 @@ public class HomeController {
 		//model.addAttribute("resp", resp);
 		
 		return "psgMeetuserTest";
+		*/
 	}
 	// 관리자 질문 답변
 	@RequestMapping("/admin/{question_id}")
@@ -1410,6 +1430,59 @@ public class HomeController {
 				return resp;
 		   }
 			
+			@ResponseBody // kick user
+			@RequestMapping(value="/meetuser/meetUserKick.do", method=RequestMethod.POST,produces = "application/json")
+				public void meetUserKick(String uId,String mNum,HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					String one = req.getParameter("uId");
+					String two = req.getParameter("mNum");
+					
+					dao.jsbMeetUserKick(Integer.parseInt(one),Integer.parseInt(two));
+			   }
+			
+			@ResponseBody // 
+			@RequestMapping(value="/meetuser/meetUserListTwo.do", method=RequestMethod.POST,produces = "application/json")
+				public ArrayList<jsbBMeetUserList2> meetUserListTwo(String tStudyNum, HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					String StudyNum = req.getParameter("tStudyNum");
+					int sNum = Integer.parseInt(StudyNum);
+					ArrayList<jsbBMeetUserCount> cnt = dao.jsbBMeetUserCount(sNum);
+					//System.out.println(cnt.get(0).getResOne());
+					//System.out.println(cnt.get(0).getResTwo());
+					
+					if (cnt.get(0).getResOne()!=0 && cnt.get(0).getResTwo()!=0) {
+						ArrayList<jsbBMeetUserList2> res= dao.jsbMeetUserList2(sNum);
+						return res;
+					}else {
+						ArrayList<jsbBMeetUserList2> res= dao.jsbMeetUserList2(sNum);
+						return res;
+					}
+			   }
+				
+			@ResponseBody // 
+			@RequestMapping(value="/meetuser/meetUserAccept.do", method=RequestMethod.POST,produces = "application/json")
+				public boolean meetUserAccept(String uId, String mId , HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					String uNum = req.getParameter("uId");
+					String mNum = req.getParameter("mId");
+					ArrayList<jsbBMeetUserAva> cnt= dao.jsbMeetAcceptAva(Integer.parseInt(mNum));
+					
+					if(cnt.get(0).getmPersonnel()>cnt.get(0).getMeet()) {
+						dao.jsbMeetUserAccept(Integer.parseInt(uNum),Integer.parseInt(mNum));
+						return true;
+					}else {
+						return false;
+					}
+			   }
+				@ResponseBody // 
+				@RequestMapping(value="/meetuser/meetUserCancel.do", method=RequestMethod.POST,produces = "application/json")
+					public void meetUserCancel(String uId, String mId, HttpServletRequest req,HttpSession session) {
+						IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+						String uNum = req.getParameter("uId");
+						String mNum = req.getParameter("mId");
+						dao.jsbMeetUserCancel(Integer.parseInt(uNum),Integer.parseInt(mNum));
+				   }
+			/*테스트영역..
 		@ResponseBody // kick user
 		@RequestMapping(value="/meetusert/meetUserKick.do", method=RequestMethod.POST,produces = "application/json")
 			public void meetUserKick(String uId,String mNum,HttpServletRequest req,HttpSession session) {
@@ -1426,14 +1499,17 @@ public class HomeController {
 				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 				String StudyNum = req.getParameter("tStudyNum");
 				int sNum = Integer.parseInt(StudyNum);
+				System.out.println("오류!ㅋㅋ");
 				ArrayList<jsbBMeetUserCount> cnt = dao.jsbBMeetUserCount(sNum);
 				//System.out.println(cnt.get(0).getResOne());
 				//System.out.println(cnt.get(0).getResTwo());
 				
 				if (cnt.get(0).getResOne()!=0 && cnt.get(0).getResTwo()!=0) {
+					System.out.println("오류!!");
 					ArrayList<jsbBMeetUserList2> res= dao.jsbMeetUserList2(sNum);
 					return res;
 				}else {
+					System.out.println("오류??");
 					ArrayList<jsbBMeetUserList2> res= dao.jsbMeetUserList2(sNum);
 					return res;
 				}
@@ -1462,21 +1538,30 @@ public class HomeController {
 					String mNum = req.getParameter("mId");
 					dao.jsbMeetUserCancel(Integer.parseInt(uNum),Integer.parseInt(mNum));
 			   }
+			   */
 	
 	/*---------------------------------------------*/
 	
 		
 		// 스터디장 페이지(스터디관리)-회원관리
 		@RequestMapping("/meetusert/{study_id}")
-		public String meetUserTest(@PathVariable int study_id, Model model) {
-			//System.out.println("study ID:"+study_id);
-			model.addAttribute("studyId", study_id);
-			//study_id사용하면됨
-			//IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-			//ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
-			//model.addAttribute("resp", resp);
-			
-			return "psgMeetuserTest";
+		public String meetUserTest(@PathVariable int study_id, Model model,HttpSession session) {
+			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+			String sessionUserId = String.valueOf(session.getAttribute("userid"));
+			if(sessionUserId!=null) {
+				BMembers userInfo=dao.jsbGetUser(sessionUserId);
+				int getUNum=userInfo.getuNum();
+				int chkStudyAdmin=dao.jsbStudyAmdinboolean(getUNum,study_id);
+				if (chkStudyAdmin==1) {
+					model.addAttribute("studyId", study_id);
+					return "psgMeetuserTest";
+				}else {
+					return "redirect:/meetAdmin/"+study_id; //혹은 에러페이지..
+				}
+			}else {
+				return "redirect:/index";
+			}
+
 		}
 	//#############################################################
 	//#############################################################

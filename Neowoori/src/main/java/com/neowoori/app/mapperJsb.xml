@@ -277,5 +277,11 @@
 		from study
 		where mnum=#{param1}
 </select>
+
+	<select id="jsbStudyAmdinboolean"  resultType="Integer">
+		select count(*) count
+		from study
+		where unum=#{param1} and mnum=#{param2}
+	</select>
 	
 </mapper>
