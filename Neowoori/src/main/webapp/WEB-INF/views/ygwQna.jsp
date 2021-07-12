@@ -152,9 +152,10 @@ $(document)
 			keyword : keyword
 		},
 		success:function(result){
-			console.log("result 결과"+result);
+			//console.log("result 결과"+result);
 			console.log("크기 : "+result.length);
 			let n = result.length;
+			//console.log("n형형변환 : "+n);
 			
 			$('.trclass1').remove();
 			
