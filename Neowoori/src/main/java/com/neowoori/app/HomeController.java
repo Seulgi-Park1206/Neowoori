@@ -245,10 +245,20 @@ public class HomeController {
 						System.out.println("키워드" + keyword);
 						faqSelResult = dao.categorySelResult(category, keyword);
 						System.out.println("사이즈 : " + faqSelResult.size());
+						//String paging="";
+						//float faqsearchcnt=faqSelResult.size();
+						//System.out.println("faqsearchcnt"+faqsearchcnt);
+						//for(int i=0; i<Math.ceil(faqsearchcnt/10); i++) {
+						//	paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+						//}
+						
+						
 					}
 				}
 
 				return faqSelResult;
+
+				
 			}
 	
 			@RequestMapping("/faqserver3") // 자주 묻는 질문
