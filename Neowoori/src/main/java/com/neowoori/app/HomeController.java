@@ -1452,9 +1452,6 @@ public class HomeController {
 				}else {
 					return false;
 				}
-				
-				
-				
 		   }
 			@ResponseBody // 
 			@RequestMapping(value="/meetusert/meetUserCancel.do", method=RequestMethod.POST,produces = "application/json")
@@ -1462,7 +1459,6 @@ public class HomeController {
 					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 					String uNum = req.getParameter("uId");
 					String mNum = req.getParameter("mId");
-					
 					dao.jsbMeetUserCancel(Integer.parseInt(uNum),Integer.parseInt(mNum));
 			   }
 	
