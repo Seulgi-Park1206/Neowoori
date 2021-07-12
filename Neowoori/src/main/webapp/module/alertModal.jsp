@@ -12,7 +12,7 @@
 	        <label id=lblAlert></label>
 	      </div>
 	      <div class="modal-footer">
-	        <button class="btn btn-secondary" data-bs-dismiss="modal">확인</button>
+	        <button class="btn btn-secondary" data-bs-dismiss="modal" id=btnOK>확인</button>
 	      </div>
 	    </div>
 	  </div>
