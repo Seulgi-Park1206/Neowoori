@@ -140,7 +140,8 @@ $(document)
 })
 
 //notice 공지사항 작성 버튼 => 로그인 id human 아니면 버튼 숨김
-if(userid!='human'){ 
+var adminChk = '<%=session.getAttribute("adminid")%>';
+if(adminChk==''){ 
 	$('#noticenewpost').hide();
 	$('#noticeDel').hide();
 }

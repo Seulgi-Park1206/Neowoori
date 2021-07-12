@@ -63,26 +63,43 @@ public class HomeController {
 		return "ygwIndex";
 	}
 	
+	@RequestMapping("/Invalid") //인덱스 page
+	   public String Invalid() {
+		
+	      return "aInvalidError";
+	   }	
 	/*---------------유건우 영역----------------------*/
 	@RequestMapping("/index") //인덱스 page
 	   public String index() {
 		
 	      return "ygwIndex";
 	   }
-	@RequestMapping("/email") //인덱스 page
+	@RequestMapping("/email") //미사용
 	   public String email() {
 	      return "email";
 	   }
 	
 	@RequestMapping("/meetwrite") //게시판 글쓰기 //  스터디 아이디 
-	   public String meetwrite() {
-		return "ygwMeetwrite";
+	   public String meetwrite(HttpSession session) {
+		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		if(sessionUserId!=null) {
+			return "ygwMeetwrite";
+		}else{
+			return "redirect:/index";
+		}
+		
 	   }
 	
 	@RequestMapping("/noticewrite") //공지사항 글쓰기
-	   public String noticewrite() {
-		
-	      return "ygwNoticewrite";
+	   public String noticewrite(HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
+		if(sessionUserId!=null) {
+			return "ygwNoticewrite";
+		}else{
+			return "redirect:/adminlogin";
+		}
+	      
 	   }
 	
 	@RequestMapping(value="/noticeserver",method=RequestMethod.POST) //게시판 글쓰기
@@ -133,8 +150,13 @@ public class HomeController {
 	}
 	
 	@RequestMapping("/qnawrite") //자주 묻는 질문
-	   public String Qnawrite() {
-	      return "ygw_Qnawrite";
+	   public String Qnawrite(HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
+		if(sessionUserId!=null) {
+			return "ygw_Qnawrite";
+		}else{
+			return "redirect:/adminlogin";
+		}
 	}
 	
 	@RequestMapping("/qna") //자주 묻는 질문
@@ -168,16 +190,24 @@ public class HomeController {
 	
 	// qna 수정
 	@RequestMapping("/qnamodify/{qnapostnum}/{qnawriter}")
-	public String modify(@PathVariable int qnapostnum,@PathVariable String qnawriter, Model model) {
-		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
-		BFaq viewqna=dao.viewqna(qnapostnum);
-		model.addAttribute("modifyqna",viewqna);
+	public String modify(@PathVariable int qnapostnum,@PathVariable String qnawriter, Model model, HttpSession session) {
+		//user ID 가져오네..
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		if (qnawriter.equals(sessionUserId)) {
+			IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+			BFaq viewqna=dao.viewqna(qnapostnum);
+			model.addAttribute("modifyqna",viewqna);
+			
+			return "ygwupdateQna";
+		}else {
+			return "redirect:/Invalid";
+		}
 		
-		return "ygwupdateQna";
+		
 	}
 	
 	@RequestMapping(value="/modifyqna",method=RequestMethod.POST)
-	public String modifymethod(HttpServletRequest request,Model model) {
+	public String modifymethod(HttpServletRequest request,Model model,HttpSession session) {
 		
 		int qnapostnum=Integer.parseInt(request.getParameter("qnapostnum"));
 		String qnatitle=request.getParameter("qnatitle");
@@ -200,19 +230,30 @@ public class HomeController {
 	
 //	//qna 삭제
 	@RequestMapping("/qnadelete/{qnapostnum}") //qna 삭제
-	   public String deleteQna(@PathVariable int qnapostnum,Model model) {
+	   public String deleteQna(@PathVariable int qnapostnum,Model model,HttpSession session) {
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
-		dao.deleteqna(qnapostnum);
-		
-	    return "redirect:/qna";
+		IDaojsb jsbdao= sqlSession.getMapper(IDaojsb.class);
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		if (jsbdao.jsbQnaGetNum(qnapostnum)==sessionUserId) {
+			dao.deleteqna(qnapostnum);
+		    return "redirect:/qna";
+		} else {
+			return "redirect:/Invalid";
+		}
+
 	}
 	
 	@RequestMapping("/noticedelete/{noticepostnum}") //qna 삭제
-	   public String deleteNotice(@PathVariable int noticepostnum,Model model) {
+	   public String deleteNotice(@PathVariable int noticepostnum,Model model,HttpSession session) {
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
+		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
+		if(sessionUserId!=null) {
 		dao.deleteNotice(noticepostnum);
-		
-	    return "redirect:/notice";
+		 return "redirect:/notice";
+		}else {
+			return "redirect:/adminlogin";
+		}
+	   
 	}
 	
 		@RequestMapping(value="/Qnaserver",method=RequestMethod.POST) //Qna 게시판 글쓰기
@@ -464,9 +505,15 @@ public class HomeController {
 	   }
 	
 	@RequestMapping("/meetView/{s_num}") //내 스터디 모임
-	   public String meetView(@PathVariable String s_num, Model model) {
-		model.addAttribute("s_num", s_num);
-	      return "PJH_meetView";
+	   public String meetView(@PathVariable String s_num, Model model,HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		if (s_num.equals(sessionUserId)) {
+			model.addAttribute("s_num", s_num);
+			return "PJH_meetView";
+		}else {
+			return "redirect:/Invalid";
+		}
+		
 	  }
 	@RequestMapping("/faq") //자주 묻는 질문 *삭제페이지
 	   public String faq() {
@@ -852,9 +899,15 @@ public class HomeController {
 	public String myPage(HttpServletRequest request, Model model) {
 		HttpSession session = request.getSession();
 		String uid = (String) session.getAttribute("userid");
-		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("member", dao.psgUserInfo(uid));
-		return "psgMypage";
+		
+		if (uid!=null) {
+			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+			model.addAttribute("member", dao.psgUserInfo(uid));
+			return "psgMypage";
+		}else {
+			return "redirect:/Invalid";
+		}
+		
 	}
 	// 내 정보 중복체크
 	@ResponseBody
@@ -882,11 +935,26 @@ public class HomeController {
 	}
 	// 스터디 게시판 게시글 및 댓글 보기
 	@RequestMapping("/postView/{post_num}")
-	public String postView(@PathVariable int post_num, Model model) {
-		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		model.addAttribute("post", dao.psgSelectStudyPost(post_num));
-		model.addAttribute("cmt", dao.psgSelectCmt(post_num));
-		return "psgPostView";
+	public String postView(@PathVariable int post_num, Model model, HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		IDaojsb jsbdao = sqlSession.getMapper(IDaojsb.class);
+		ArrayList<jsbBPostFindUser> rev = jsbdao.jsbPostFindUser(post_num);
+		boolean flag=false;
+		for(int i=0;i<rev.size();i++) {
+			if (rev.get(i).getUserId().equals(sessionUserId)) {
+				flag= true;
+				break;
+			}
+		}
+		if(flag==true) {
+			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+			model.addAttribute("post", dao.psgSelectStudyPost(post_num));
+			model.addAttribute("cmt", dao.psgSelectCmt(post_num));
+			return "psgPostView";
+		}else {
+			return "redirect:/Invalid";
+		}
+		
 	}
 	// 댓글 쓰기
 	@ResponseBody
@@ -1019,8 +1087,13 @@ public class HomeController {
 	// 내 스터디 조회 
 	@RequestMapping("/meetList/{user_id}")
 	public String meetList(@PathVariable String user_id, HttpServletRequest request, HttpSession session) {
-	 	
-		return "psgMeetList";
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		if (user_id.equals(sessionUserId)) {
+			return "psgMeetList";
+		} else {
+			return "redirect:/Invalid";
+		}
+		
 	}
 	// 내 스터디 목록 검색
 	@ResponseBody 
@@ -1039,12 +1112,22 @@ public class HomeController {
 	}
 	// 스터디장 페이지(스터디관리)
 	@RequestMapping("/meetadmin/{study_id}")
-	public String meetAdmin(@PathVariable int study_id, Model model) {
-		IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-		System.out.println(study_id);
-		model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
+	public String meetAdmin(@PathVariable int study_id, Model model,HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		IDaojsb jsbdao = sqlSession.getMapper(IDaojsb.class);
+		int result = jsbdao.jsbFindUserStateMeeting(study_id, jsbdao.jsbOnlyGetUserNum(sessionUserId));
 		
-		return "psgMeetadmin";
+		if(result==30) {
+			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+			System.out.println(study_id);
+			model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
+			
+			return "psgMeetadmin";
+		}else {
+			return "redirect:/Invalid";
+		}
+		
+		
 	}
 	// 스터디 정보 수정
 	@ResponseBody
@@ -1072,8 +1155,8 @@ public class HomeController {
 	public String meetUser(@PathVariable int study_id, Model model,HttpSession session) {
 		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		System.out.println(sessionUserId);
-		System.out.println(study_id);
+		//System.out.println(sessionUserId);
+		//System.out.println(study_id);
 		if(sessionUserId!=null) {
 			BMembers userInfo=dao.jsbGetUser(sessionUserId);
 			int getUNum=userInfo.getuNum();
@@ -1082,8 +1165,8 @@ public class HomeController {
 				model.addAttribute("studyId", study_id);
 				return "psgMeetuserTest";
 			}else {
-				
-				return "redirect:/meetList/"+sessionUserId; //혹은 에러페이지..
+				return "redirect:/Invalid";
+				//return "redirect:/meetList/"+sessionUserId; //혹은 에러페이지..
 			}
 		}else {
 			return "redirect:/index";
@@ -1091,9 +1174,15 @@ public class HomeController {
 	}
 	// 관리자 질문 답변
 	@RequestMapping("/admin/{question_id}")
-	public String question(@PathVariable String question_id, Model model) {
-		model.addAttribute("q_id", question_id);
-		return "psgQna";
+	public String question(@PathVariable String question_id, Model model,HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
+		if(sessionUserId!=null) {
+			model.addAttribute("q_id", question_id);
+			return "psgQna";
+		}else{
+			return "redirect:/adminlogin";
+		}
+		
 	}
 	/*---------------------------------------------*/
 	

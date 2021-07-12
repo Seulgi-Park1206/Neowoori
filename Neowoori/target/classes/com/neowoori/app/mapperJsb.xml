@@ -289,4 +289,20 @@
 		from study
 		where unum=#{param1}
 	</select>
+	
+		<select id="jsbQnaGetNum"  resultType="String">
+			select writer
+			from faq
+			where faqnum=#{param1}
+	</select>
+	
+	<select id="jsbPostFindUser" resultType="com.neowoori.app.jsbBPostFindUser">
+		from study_post a, members b, meeting_study c
+		where a.postnum=#{param1} and a.mnum=c.mnum and (c.state=20 or c.state=30) and c.unum=b.unum
+		group by b.userId;
+	</select>
+
+	<select id="jsbOnlyGetUserNum"  resultType="Integer">
+		select unum from members where userId=#{param1}
+	</select>
 </mapper>

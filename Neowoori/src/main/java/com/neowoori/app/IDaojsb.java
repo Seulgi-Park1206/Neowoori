@@ -19,6 +19,7 @@ public interface IDaojsb {
 	public void jsbSendModalMsg(int sendNum, int recNum,String cont);
 	public ArrayList<jsbBListStudy> jsbListTypeOne();
 	public int jsbListFindMeetState(int mNum,int uNum);
+	public int jsbOnlyGetUserNum(String uId);
 	
 	//검색부분
 	//제목만
@@ -47,6 +48,11 @@ public interface IDaojsb {
 	//스터디 생성개수 체크
 	public int jsbStrudyCreateCount(int uNum);
 	
+	//qna get num
+	public String jsbQnaGetNum(int qnaNum);
+	
+	//postView/post_num으로 가입자인지 확인하기
+	public ArrayList<jsbBPostFindUser> jsbPostFindUser(int pNum);
 	
 	//슬기도움 meetuser(회원관리)페이지
 	public ArrayList<jsbBMeetUserList> jsbMeetUserList(int mNum);
