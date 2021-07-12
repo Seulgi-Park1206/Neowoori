@@ -1060,13 +1060,14 @@ public class HomeController {
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
 	public String meetUser(@PathVariable int study_id, Model model) {
-		model.addAttribute("s_id", study_id);
+		//model.addAttribute("s_id", study_id);
+		model.addAttribute("studyId", study_id);
 		//study_id사용하면됨
 		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-		ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
-		model.addAttribute("resp", resp);
+		//ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
+		//model.addAttribute("resp", resp);
 		
-		return "psgMeetuser";
+		return "psgMeetuserTest";
 	}
 	// 관리자 질문 답변
 	@RequestMapping("/admin/{question_id}")
