@@ -232,7 +232,7 @@ $(document)
 	$('#modalFoot').empty();
 	
 	$("#exampleModalLabel").text("강퇴하기");
-	$("#modalBody").append('<p class="text-primary" id="pUesrNick"><p>유저를 강퇴 하시겠습니까?');
+	$("#modalBody").append('<p class="text-primary" id="pUesrNick"></p>유저를 강퇴 하시겠습니까?');
 	$("#modalFoot").append('<button type="button" class="btn btn-primary" onclick=btnKickUser('+clickUserNum+') >강퇴하기</button>');
 	$("#modalFoot").append('<button id="btnCnt" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>');
 	//$("#studyAdminNick").text(clickUser);
@@ -272,7 +272,7 @@ $(document)
 	$('#modalFoot').empty();
 	
 	$("#exampleModalLabel").text("가입 수락 확인");
-	$("#modalBody").append('<p class="text-primary" id="pUesrNick"><p>유저 가입을 수락하시겠습니까?');
+	$("#modalBody").append('<p class="text-primary" id="pUesrNick"></p>유저 가입을 수락하시겠습니까?');
 	$("#modalFoot").append('<button type="button" class="btn btn-primary" onclick=btnAcceptUser('+clickUserNum+') >수락하기</button>');
 	$("#modalFoot").append('<button id="btnCnt" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>');
 	//$("#studyAdminNick").text(clickUser);
@@ -291,7 +291,7 @@ $(document)
 	$('#modalFoot').empty();
 	
 	$("#exampleModalLabel").text("가입 수락 확인");
-	$("#modalBody").append('<p class="text-primary" id="pUesrNick"><p>유저 가입을 거절하시겠습니까?');
+	$("#modalBody").append('<p class="text-primary" id="pUesrNick"></p>유저 가입을 거절하시겠습니까?');
 	$("#modalFoot").append('<button type="button" class="btn btn-primary" onclick=btnCancelUser('+clickUserNum+') >거절하기</button>');
 	$("#modalFoot").append('<button id="btnCnt" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>');
 	//$("#studyAdminNick").text(clickUser);
@@ -318,17 +318,37 @@ function btnAcceptUser(who){
 	    },
 	    success : function(data){
 	    	//alert("성공(임시 alert)");
-	    	$('#liCla'+clickUserNum+'').remove();
-	    	wStr ='<li class="list-group-item list-group-item-action  d-flex justify-content-between align-items-start" onclick=selUNum('+clickUserNum+',"'+clickUser+'",'+clickMNum+') id="liCla'+clickUserNum+'">';
-			wStr +='<div class="ms-2 me-auto">';
-			wStr +='<div class="fw-bold">'+clickUser+'</div>';
-			wStr +=tmpText+'</div>';
-			wStr +='<input type=button class="btn btn-outline-secondary btn-sml" value="강퇴하기" id=kick>';
-			wStr +='<input type=button class="btn btn-outline-secondary btn-sml" value="쪽지보내기" id=msg>';
-			wStr +='</div>';
-			$('#listOne').append(wStr);
-	    	//$('#btnCnt').get(0).click();
-			$('#btnCnt').get(0).click();
+	    	//console.log(data);
+	    	if (data==true){
+	    		$('#liCla'+clickUserNum+'').remove();
+		    	wStr ='<li class="list-group-item list-group-item-action  d-flex justify-content-between align-items-start" onclick=selUNum('+clickUserNum+',"'+clickUser+'",'+clickMNum+') id="liCla'+clickUserNum+'">';
+				wStr +='<div class="ms-2 me-auto">';
+				wStr +='<div class="fw-bold">'+clickUser+'</div>';
+				wStr +=tmpText+'</div>';
+				wStr +='<input type=button class="btn btn-outline-secondary btn-sml" value="강퇴하기" id=kick>';
+				wStr +='<input type=button class="btn btn-outline-secondary btn-sml" value="쪽지보내기" id=msg>';
+				wStr +='</div>';
+				$('#listOne').append(wStr);
+		    	//$('#btnCnt').get(0).click();
+				$('#btnCnt').get(0).click();
+	    	}else{
+	    		$('#btnCnt').get(0).click();
+	    		setTimeout(function(){
+		    		//alert("너무많앙");
+		    		$('#modalBody').empty();
+					$('#modalFoot').empty();
+		    		$("#exampleModalLabel").text("인원수 초과");
+		    		$("#modalBody").append('허용 가능한 인원수가 초과되었습니다.');
+		    		//$("#modalFoot").append('<button type="button" class="btn btn-primary" onclick=btnCancelUser('+clickUserNum+') >거절하기</button>');
+		    		$("#modalFoot").append('<button id="btnCnt" type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>');
+		    		//$("#studyAdminNick").text(clickUser);
+		    		//$("#pUesrNick").text(clickUser);
+		    		//$('#bbtn').trigger('click');
+		    		$('#bbtn').get(0).click();
+	    		},800);
+
+	    	}
+	    	
 	    },
 	    error : function(){	
 	    }

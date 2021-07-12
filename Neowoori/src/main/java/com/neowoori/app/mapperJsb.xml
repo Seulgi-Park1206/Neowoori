@@ -268,10 +268,14 @@
 		update meeting_study set state=20 where unum=#{param1} and mnum=#{param2}
 	</update>
 	
-	
 	<delete id="jsbMeetUserCancel">
 		delete from meeting_study where unum=#{param1} and mnum=#{param2} and state=10
 	</delete>
 	
+	<select id="jsbMeetAcceptAva" resultType="com.neowoori.app.jsbBMeetUserAva">
+		select mpersonnel, (select count(*)+1 from meeting_study where state=20 and mnum=#{param1}) meet
+		from study
+		where mnum=#{param1}
+</select>
 	
 </mapper>

@@ -1070,13 +1070,14 @@ public class HomeController {
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
 	public String meetUser(@PathVariable int study_id, Model model) {
-		model.addAttribute("s_id", study_id);
+		//model.addAttribute("s_id", study_id);
+		model.addAttribute("studyId", study_id);
 		//study_id사용하면됨
 		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-		ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
-		model.addAttribute("resp", resp);
+		//ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
+		//model.addAttribute("resp", resp);
 		
-		return "psgMeetuser";
+		return "psgMeetuserTest";
 	}
 	// 관리자 질문 답변
 	@RequestMapping("/admin/{question_id}")
@@ -1450,12 +1451,18 @@ public class HomeController {
 			
 		@ResponseBody // 
 		@RequestMapping(value="/meetusert/meetUserAccept.do", method=RequestMethod.POST,produces = "application/json")
-			public void meetUserAccept(String uId, String mId , HttpServletRequest req,HttpSession session) {
+			public boolean meetUserAccept(String uId, String mId , HttpServletRequest req,HttpSession session) {
 				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 				String uNum = req.getParameter("uId");
 				String mNum = req.getParameter("mId");
-				dao.jsbMeetUserAccept(Integer.parseInt(uNum),Integer.parseInt(mNum));
+				ArrayList<jsbBMeetUserAva> cnt= dao.jsbMeetAcceptAva(Integer.parseInt(mNum));
 				
+				if(cnt.get(0).getmPersonnel()>cnt.get(0).getMeet()) {
+					dao.jsbMeetUserAccept(Integer.parseInt(uNum),Integer.parseInt(mNum));
+					return true;
+				}else {
+					return false;
+				}
 		   }
 			@ResponseBody // 
 			@RequestMapping(value="/meetusert/meetUserCancel.do", method=RequestMethod.POST,produces = "application/json")
@@ -1463,7 +1470,6 @@ public class HomeController {
 					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 					String uNum = req.getParameter("uId");
 					String mNum = req.getParameter("mId");
-					
 					dao.jsbMeetUserCancel(Integer.parseInt(uNum),Integer.parseInt(mNum));
 			   }
 	
