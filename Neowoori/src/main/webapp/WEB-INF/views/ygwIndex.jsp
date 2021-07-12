@@ -182,7 +182,7 @@ function mapDateView(){
         	    }); 
         	    map.setCenter(locPosition);      
         	    loc=locPosition;
-        	    console.log(loc);
+  //      	    console.log(loc);
         	};
 	        	$.each(resp, function (i, item){
 	        		mapChk=1;
@@ -308,7 +308,7 @@ function addModal(uNick,mName,category1,category2,mContents,mDay,mLevel,mPtime,m
 function addModalBtn(mNum,mPersonnel,cnt){ // state를 확인해야함... 10인가 20인가
 	$('#modal-footerBtn1').empty();
 	$('#modal-footerBtn2').empty();
-	console.log("modalBtnTest");
+	//console.log("modalBtnTest");
 	//console.log(who);
 	$.ajax({
 	    url: "jsbFindMeetStudy.do",
@@ -338,9 +338,9 @@ function addModalBtn(mNum,mPersonnel,cnt){ // state를 확인해야함... 10인�
 	    	}else if(data==30){
 	    		//해당 스터디장인데 버튼 추가해야될까?
 	    		$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnToMeetStudy("+mNum+") >관리페이지</button>");
-	    		console.log("스터디장");
+	    		//console.log("스터디장");
 	    	}else{
-	    		console.log("addModalBtn함수 data값 이상");
+	    		//console.log("addModalBtn함수 data값 이상");
 	    	}
 	    	$("#modal-footerBtn2").append("<button type='button' class='btn btn-primary' onclick=btnSendMsg() >메시지 보내기</button>");
 	    	$("#modal-footerBtn2").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle' data-bs-toggle='modal' data-bs-dismiss='modal'>정보보기</button>");
@@ -422,7 +422,8 @@ function btnSendMsg(){ // 메시지보내기
 			"mAdminNick" : $("#studyAdminNick").text() // 닉네임으로 받는사람 num구해야됨
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	alert("메시지 보내기 완료");
+	    	$("#floatingTextarea2").val("");
 	    },
 	    error : function(){	
 	    }
@@ -598,7 +599,7 @@ function btnJoinStudy(){ //가입신청
 			"userId" : sessionVal
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	//alert("가입신청 완료");
 	    	$('#modal-footerBtn1').empty();
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnCancelJoin() >가입신청취소</button>");
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
@@ -616,7 +617,7 @@ function btnCancelJoin(){ // 가입신청취소
 			"userId" : sessionVal
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	//alert("성공(임시 alert)");
 	    	$('#modal-footerBtn1').empty();
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
@@ -634,31 +635,10 @@ function btnOutStudy(){ // 스터디탈되
 			"userId" : sessionVal
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	//alert("성공(임시 alert)");
 	    	$('#modal-footerBtn1').empty();
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
-	    },
-	    error : function(){	
-	    }
-		});
-}
-
-function btnSendMsg(){ // 메시지보내기
-	//floatingTextarea1 , floatingTextarea2
-	//console.log(sessionVal);
-	//console.log($("#floatingTextarea2").val());
-	//console.log($("#studyAdminNick").text());
-	$.ajax({
-		url: "jsbSendModalMsg.do",
-		type: "POST",
-		data: {
-			"userId" : sessionVal, // 보내는 사람 id
-			"cont" : $("#floatingTextarea2").val(),
-			"mAdminNick" : $("#studyAdminNick").text() // 닉네임으로 받는사람 num구해야됨
-	    },
-	    success : function(data){
-	    	alert("성공(임시 alert)");
 	    },
 	    error : function(){	
 	    }
@@ -674,7 +654,6 @@ function btnSearch(){
 	}else{
 		$("#map").show();
 	}
-	
 	relayout();
 }
 </script>

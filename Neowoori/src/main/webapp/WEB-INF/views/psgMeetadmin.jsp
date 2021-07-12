@@ -159,7 +159,7 @@ function go_adminUser(){
 
 // 게시판 관리 페이지로 이동
 function go_adminBoard(){
-	console.log(s_num);
+//	console.log(s_num);
 	location.href = '${path}/meetView/'+s_num;
 }
 
@@ -211,9 +211,9 @@ function checkboxArr(){
 
 // 요일 selected
 function checkedModal(chk){
-	console.log(chk);
+//	console.log(chk);
 	var chkArray = chk.split("");
-	console.log(chkArray);
+//	console.log(chkArray);
 	var val = document.getElementsByName("chkWeek");
 	for(var i=0;i<chkArray.length;i++){
 		if(chkArray[i]=="월") val[0].checked = true;
@@ -255,7 +255,7 @@ function validation(studyName, chkweek, studyHour, studyMin, playHour, playMin, 
 $(document)
 .ready(function(){
 	adjustHeight($('#explain'));
-	console.log(s_num);
+//	console.log(s_num);
 	/* var uid = '${userid}';
 	// 닉네임이구나..참..
 	if(uid != $('#admin').text()){
@@ -265,7 +265,7 @@ $(document)
 })
 .on('click', '.btn', function(){
 	var uid='${userid}';
-	console.log('user: ' + uid);
+//	console.log('user: ' + uid);
 })
 // 스터디 정보 수정 버튼 클릭
 .on('click', '#btnUpdateInfo', function(){
@@ -275,13 +275,13 @@ $(document)
 	checkedModal($('#day').text());
 	var sh = $('#time').text().substr(0, 2);
 	var sm = $('#time').text().substr(3, 2);
-	console.log(sh+':'+sm);
+//	console.log(sh+':'+sm);
 	$('#studyHour').val(sh);
 	$('#studyMin').val(sm);
 	var ph = $('#progressTime').text().split("시간");
 	var pm = ph[1].replace("분", "");
 	ph = ph[0];
-	console.log(ph+'/'+pm);
+//	console.log(ph+'/'+pm);
 	$('#playHour').val(ph);
 	$('#playMin').val(pm);
 	$('#studyPersonnel').val($('#personnel').text());
@@ -317,12 +317,12 @@ $(document)
 })
 // confirmModal - btnYes click
 .on('click', '#btnYes', function(){
-	console.log('type: ' + $('#confirmTitle').text());
+//	console.log('type: ' + $('#confirmTitle').text());
 	var type = $('#confirmTitle').text();
 	
 	if(type == '스터디 삭제'){
 		// 스터디 폐쇄
-		console.log('스터디 삭제 기능');
+//		console.log('스터디 삭제 기능');
 		alTitle = type;
 		$.ajax({
 			url : '${path}/deleteStudyInfo.do',
@@ -370,7 +370,7 @@ $(document)
 	return false;
 })
 .on('click', '#btnNo', function(){
-	console.log('type: ' + $('#confirmTitle').text());
+//	console.log('type: ' + $('#confirmTitle').text());
 	var type = $('#confirmTitle').text();
 	
 	if(type == '스터디 정보 수정'){

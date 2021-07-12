@@ -267,7 +267,7 @@ $(document)
 	$('.usermodal').remove(); //지우면서 다시 리로딩
  	$('.test2').remove();
 	btnnum = $(this).text(); // 선택한 버튼의 값 (ex = 1,2,3,4)
-	console.log(btnnum);
+//	console.log(btnnum);
 	var btnvalue = (btnnum * 10) - 10; // (선택한 버튼의 값 * 10) - 1 == sql에서 사용할 값
 	if(btnnum == 1){ // 1 이면 처음 값 그대로 가져오기.
 		btnnum = 0;
@@ -407,7 +407,7 @@ $(document)
 })
 //문의 답변에서 답변완료 클릭 시
 .on('click', '#btnUpdateComplete', function(){
-	console.log($('#postContents').val());
+//	console.log($('#postContents').val());
 	var answer = {answer:$('#postContents').val(),qnanum:$('#hid_qna').val()};
 	$.ajax({
 		url:'Qnaanswer.do',

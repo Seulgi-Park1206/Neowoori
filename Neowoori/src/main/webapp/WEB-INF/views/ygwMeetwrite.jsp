@@ -4,7 +4,7 @@
 <%
 	HttpSession sess = request.getSession(false);
 	if(session.getAttribute("userid")==null){
-		response.sendRedirect("/app/login");
+		response.sendRedirect("/login");
 	}
 %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>

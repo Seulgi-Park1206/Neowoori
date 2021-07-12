@@ -30,7 +30,7 @@ function mystudy(){
 }
 function islogin(){
 	let adminid = '<%=session.getAttribute("adminid")%>';
-	console.log(adminid+'님');
+	//console.log(adminid+'님');
 }
 $(document)
 .ready(function(){

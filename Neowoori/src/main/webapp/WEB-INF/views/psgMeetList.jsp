@@ -174,7 +174,7 @@ $(document)
 		dataType : 'json',
 		data: {"uid":userid},
 		success: function output(resp){
-			console.log(resp);
+//			console.log(resp);
 			var result = '';
 			var result1 = '';
 			var count2 = 0;

@@ -386,7 +386,7 @@ function btnKickUser(who){
 			"mNum" : studyID // 닉네임으로 받는사람 num구해야됨
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	//alert("성공(임시 alert)");
 	    	//id="liCla'+res.uNum+'
 	    	$('#liCla'+clickUserNum+'').remove();
 	    	$('#btnCnt').get(0).click();
@@ -408,7 +408,7 @@ function btnSendMsg(who){
 			"recUserNum" : who // 닉네임으로 받는사람 num구해야됨
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	alert("메시지 보내기 완료");
 	    	$('#btnCnt').get(0).click();
 	    },
 	    error : function(){	

@@ -57,7 +57,7 @@ $(document)
 				}
 			},
 			error:function(result){
-				console.log("fail11 값 : "+result);
+//				console.log("fail11 값 : "+result);
 			}
 					
 		});

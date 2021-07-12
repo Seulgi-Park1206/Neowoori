@@ -279,7 +279,7 @@ function signupajax(){
 			if(val[i].value==7) chkWekkArry+="일";
 	}}
 //	console.log("로그인 아이디:"+$("#hid").val());
-	console.log(juso);
+//	console.log(juso);
 	/*-----주소------*/
 	//활동요일은 homeController에서 사용
 	$.ajax({
@@ -306,7 +306,7 @@ function signupajax(){
     	"userId" : $("#hid").val()
     },
     success : function(data){
-    	console.log("내부데이터:"+data);
+ //   	console.log("내부데이터:"+data);
     	//성공시 meeting 테이블 insert data
     	$.ajax({
     	    url: "jsbCreateToMeet.do",
@@ -316,7 +316,12 @@ function signupajax(){
     	    	"userId" : $("#hid").val()
     	    },
     	    success : function(data){
-    	    	alert("생성완료(임시 alert)");
+    	    	if (data != 0){
+    	    		location.href='${path}/meetList/'+data;
+    	    	}else{
+    	    		alert("스터디는 최대 10개까지만 만들 수 있습니다.");
+    	    	}
+    	    	
     	    },
     	    error : function(){	
     	    }
@@ -528,7 +533,7 @@ $(document)
 	$('#btncheck1').trigger('click');
 	$('#btnradio22').trigger('click');
 	$("#hid").val("seulgi");
-	console.log($("#hid").val());
+//	console.log($("#hid").val());
 })
 .on("click","#MNameeCheck",function(){
 	checkMName();
@@ -583,7 +588,7 @@ function checkMName(){
 	    		chkName=1;
 	    		alert("이미 존재하는 스티디명입니다.");
 	    	}
-	    	console.log("chkName 0 & 1:"+chkName);
+//	    	console.log("chkName 0 & 1:"+chkName);
 	    },
 	    error : function(){	
 	    }

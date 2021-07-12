@@ -4,7 +4,7 @@
 <%
 	HttpSession sess = request.getSession(false);
 	if(session.getAttribute("userid")==null){
-		response.sendRedirect("/app/login");
+		response.sendRedirect("/login");
 	}
 %>
 <c:set var="path" value="${pageContext.request.contextPath}"/>
@@ -223,7 +223,7 @@ $(document)
 		, method:'post'
         , success :
         	function output(resp){
-        	console.log(resp);
+ //       	console.log(resp);
         	if(resp == 30){
         		return;
         	}else{
@@ -806,12 +806,12 @@ $(document)
 .on('click','#btn_delete',function(){ // 삭제
 	$('.ch_Box').css("display","");
 	var cnt = $("input[class='ch_Box']:checked").length; // 체크 개수
-	console.log(cnt);
+//	console.log(cnt);
     var arr = new Array(); // 저장할 array
     $("input[class='ch_Box']:checked").each(function() {
         arr.push($(this).attr('id'));
     });
-    console.log(arr);
+ //   console.log(arr);
     var cnt_arr = {arr:arr,cnt:cnt};
     if(cnt == 0){
     	alertModal1("알림","선택 후 다시 삭제를 눌러주세요.");
@@ -863,7 +863,7 @@ $(document)
 	var title = $('#postTitle').val();
 	var Content = $('#postContent').val();
 	var form = {usernum:usernum,s_id:s_id,title:title,Content:Content.trim(),result:result};
-	console.log(form);
+//	console.log(form);
 	
 	if(load == 0){
 	$.ajax({
@@ -894,7 +894,7 @@ $(document)
 // 해당 게시물 클릭할때 이벤트
 .on('click','.stpost',function(){
 	var post_num = $(this).find($("input[type='hidden']")).val();
-	console.log(post_num);
+//	console.log(post_num);
 	location.href = '${path}/postView/'+post_num
 })
 

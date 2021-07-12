@@ -60,7 +60,7 @@ public class HomeController {
 	
 	@RequestMapping("/") //
 	public String toIndex() {
-		return "redirect:/index";
+		return "ygwIndex";
 	}
 	
 	/*---------------유건우 영역----------------------*/
@@ -1153,7 +1153,7 @@ public class HomeController {
 	
 	@ResponseBody /*스터디생성 ajax*/
 	@RequestMapping(value="/jsbCreate.do", method=RequestMethod.POST)
-	   public void createAjax(String studyName,String bigSel,String smSel,String week,
+	   public int createAjax(String studyName,String bigSel,String smSel,String week,
 			   String studyTime, String playTime,String lvlSel, String contents,String personnel,
 			   String ujso,String ujso2,String ujso3,String ulati,String ulongi,String userId,
 			   HttpServletRequest request,Model model) {
@@ -1173,10 +1173,19 @@ public class HomeController {
 			String mWhere2 = request.getParameter("ujuso2");
 			String mWhere3 = request.getParameter("ujuso3");
 			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			
 			BMembers mem = dao.jsbGetUser(loginUId);
 			int mUserNum = mem.getuNum();
+			int count = dao.jsbStrudyCreateCount(mUserNum);
+			
+			if(count<=11) {
+				dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi,mWhere2,mWhere3);
+				return mUserNum;
+			}else {
+				return 0;
+			}
 //			System.out.println(mUserNum+","+mName+","+CATEGORY1+","+CATEGORY2+","+mWhere+","+mDay+","+mTime+","+mPtime+","+mLevel+","+mContents+","+mPersonnel+","+lati+","+longi);
-			dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi,mWhere2,mWhere3);
+			
 	   }
 	
 	@ResponseBody /*스터디생성후 meeting 생성 ajax*/

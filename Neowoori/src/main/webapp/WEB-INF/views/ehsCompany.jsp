@@ -47,7 +47,7 @@ $(document)
         , dataType : 'json'
         , success :
         	function output(resp){
-        	console.log(resp);
+  //      	console.log(resp);
 	        	var result = '';
 	        	$.each(resp,function(index,item){
 	        	result +='<center>'

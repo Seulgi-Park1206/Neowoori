@@ -150,9 +150,9 @@ $(document)
 	    	//"studyName" : $('#studyName').val() // 스터디명
 	    },
 	    success : function(data){
-	    	console.log(data);
+//	    	console.log(data);
 	    	datas= new Array(data);
-	    	console.log(datas[0]);
+//	    	console.log(datas[0]);
 	    	//console.log(datas[0][0].mName);
 	    	let tblStr='';
 	    	$.each(data, function(e, item){
@@ -286,7 +286,7 @@ function viewState(){
                 	}
                  },
                  error: function(xhr,status,error){
-                    console.log(xhr+status+error);
+//                    console.log(xhr+status+error);
                  } 
             });
     	})(i);
@@ -488,7 +488,7 @@ function searchBtn(){
 	    },
 	    success : function(data){
 	    	datas= new Array(data);
-	    	console.log(datas[0]);
+//	    	console.log(datas[0]);
 	    	let tblStr='';
 	    	let n=1;
 	    	$.each(data, function(e, item){
@@ -565,9 +565,9 @@ function btnOutStudy(){ // 스터디탈되
 
 function btnSendMsg(){ // 메시지보내기
 	//floatingTextarea1 , floatingTextarea2
-	console.log($("#hid").val());
-	console.log($("#floatingTextarea2").val());
-	console.log($("#studyAdminNick").text());
+//	console.log($("#hid").val());
+//	console.log($("#floatingTextarea2").val());
+//	console.log($("#studyAdminNick").text());
 	$.ajax({
 		url: "jsbSendModalMsg.do",
 		type: "POST",
@@ -577,7 +577,9 @@ function btnSendMsg(){ // 메시지보내기
 			"mAdminNick" : $("#studyAdminNick").text() // 닉네임으로 받는사람 num구해야됨
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	alert("메시지 보내기 완료");
+	    	$("#floatingTextarea2").val("");
+	    	
 	    },
 	    error : function(){	
 	    }

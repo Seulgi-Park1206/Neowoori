@@ -132,7 +132,7 @@
 <script>
 // 스터디 게시글 번호
 var link = window.location.pathname;
-link = link.split('/')[3];
+link = link.split('/')[2];
 
 // 스터디 게시판 목록으로 가기
 function goList(){
@@ -140,8 +140,8 @@ function goList(){
 }
 // 댓글 추가
 function addComment(res){
-	console.log(res);
-	console.log(res['userid']);
+//	console.log(res);
+//	console.log(res['userid']);
 	
 	var result = '<tr><td class="hidCnum">';
 	result += res['cmtnum'];
@@ -154,7 +154,7 @@ function addComment(res){
 	result += '</div><textarea class="cmtTxt form-control" readonly>';
 	result += res['cmtContents'];
 	result += '</textarea></td></tr>';
-	console.log(result);
+//	console.log(result);
 	
 	return result;
 }
@@ -189,7 +189,7 @@ function addReCmt(res){
 	result += '</ul></div><br><label class="reCmtTxt">';
 	result += res['cmtContents'];
 	result += '</label></label></div>';
-	console.log(result);
+//	console.log(result);
 	
 	return result;
 }
@@ -231,7 +231,7 @@ function clearCmt() {
 
 $(document)
 .ready(function(){
-	console.log(link);
+//	console.log(link);
 	var uid = '${userid}';
 	uid='human1';
 	if($('#writer').text() == uid) {
@@ -293,7 +293,7 @@ $(document)
 	var cmt = $(this).parent().siblings('.cmtTxt');
 	var writer = cmt.siblings('.writer').text();
 	writer = writer.split(' (')[0];
-	console.log('작성자: '+writer);
+//	console.log('작성자: '+writer);
 	var modalTitle = '댓글 삭제';
 	if('${userid}' == writer){
 		$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
@@ -308,7 +308,7 @@ $(document)
 // 삭제 기능
 .on('click', '#btnYes', function(){
 	var th = $(this).parent().siblings('.modal-header').children().text();
-	console.log('th: ' + th);
+//	console.log('th: ' + th);
 	if(th == '게시물 삭제'){
 		$.ajax({
 			url:'${path}/deletePost.do',
@@ -352,9 +352,9 @@ $(document)
 					console.log(result);
 					// 해당 대댓글 삭제
 					$('.hidReCnum').each(function(index, upCmt){
-						console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
+//						console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
 						if($(this).text() == $('#hiddenCnum').text()){ // 수정 중인 댓글
-							console.log('--- 삭제!');
+//							console.log('--- 삭제!');
 							var idx = $(this).index();
 							$(this).siblings(':eq('+idx+')').remove();
 							$(this).remove();
@@ -378,7 +378,7 @@ $(document)
 
 // 게시물 수정 버튼 클릭
 .on('click', '#btnUpdate', function(){
-	console.log('수정 버튼 클릭');
+//	console.log('수정 버튼 클릭');
 	// 모달창으로 게시글 수정
 	$('#postTitle').val($('#title').text());
 	$('#postContents').val($('#content').text());
@@ -412,10 +412,10 @@ $(document)
 	// 해당 댓글 번호
 	$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
 	var cmt = $(this).parent().siblings('.cmtTxt');
-	console.log('댓글 수정 클릭: '+cmt.attr('class'));
+//	console.log('댓글 수정 클릭: '+cmt.attr('class'));
 	var writer = cmt.siblings('.writer').text();
 	writer = writer.split(' (')[0];
-	console.log('작성자: '+writer);
+//	console.log('작성자: '+writer);
 	if('${userid}' == writer){
 		// 댓글 수정 Modal 보기
 		$('#updateCmtContents').val(cmt.text());
@@ -429,7 +429,7 @@ $(document)
 
 // 댓글/대댓글 수정 완료 클릭
 .on('click', '#btnupdateCmtComplete', function(){
-	console.log('수정 완료 클릭');
+//	console.log('수정 완료 클릭');
 	var cmtType = '';
 	var updateTxt = '';
 	
@@ -439,10 +439,10 @@ $(document)
 			cmtType = '댓글';
 			// 수정한 댓글이 있는 textarea
 			var txt = $(this).parent().siblings('.modal-body').children('div').children('textarea');
-			console.log('수정한 댓글 입력: '+txt.val());
+//			console.log('수정한 댓글 입력: '+txt.val());
 			// 수정된 댓글 내용으로 바꾸기
 			$('.hidCnum').each(function(index, upCmt){
-				console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
+//				console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
 				if($(this).text() == $('#hiddenCnum').text()){ // 수정 중인 댓글
 					updateTxt = txt.val().trim();
 					$(this).siblings('.tdView').children('.cmtTxt').val(updateTxt);
@@ -451,31 +451,31 @@ $(document)
 			
 		}else {
 			cmtType = '대댓글';
-			console.log('대댓글 수정이야');
+//			console.log('대댓글 수정이야');
 			// 수정한 대댓글이 있는 textarea
 			var txt = $(this).parent().siblings('.modal-body').children('div').children('textarea');
-			console.log('수정한 댓글 입력: '+txt.val());
+//			console.log('수정한 댓글 입력: '+txt.val());
 			// 수정된 대댓글 내용으로 바꾸기
 			$('.hidReCnum').each(function(index, upCmt){
-				console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
+//				console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
 				if($(this).text() == $('#hiddenCnum').text()){ // 수정 중인 댓글
-					console.log('--- 수정!');
+//					console.log('--- 수정!');
 					var idx = $(this).index();
-					console.log('idx: '+idx);
+//					console.log('idx: '+idx);
 					var upReCmt = $(this).siblings(':eq('+idx+')').children('label').children('label');	//.reCmtTxt
-					console.log('upReCmt: '+upReCmt.text());
+//					console.log('upReCmt: '+upReCmt.text());
 					updateTxt = txt.val().trim();
 					upReCmt.text(updateTxt);
 					
 					return false;
 				}
 			});
-			console.log('updateTxt: '+updateTxt);
+//			console.log('updateTxt: '+updateTxt);
 		}
 		
 		// 수정한 댓글 db에 저장
 		var cmt = {type:cmtType, pNum:link, cNum:$('#hiddenCnum').text(), contents:updateTxt};
-		console.log('cmt: '+cmt);
+//		console.log('cmt: '+cmt);
 		$.ajax({
 			url:'${path}/updateCmt.do',
 			data:JSON.stringify(cmt),
@@ -495,18 +495,18 @@ $(document)
 
 // 댓글 클릭(대댓글 쓰기) 클릭
 .on('click', '.reCmt', function(){
-	console.log('-----------------------------------------------------');
+//	console.log('-----------------------------------------------------');
 	var divCount = $(this).parent().parent().children('div');
 	var divCount_class = divCount.attr('class'); // .cmtAbout
-	console.log('tdView 내의 div 개수: '+divCount.length);
-	console.log('class: ' + divCount_class);
+//	console.log('tdView 내의 div 개수: '+divCount.length);
+//	console.log('class: ' + divCount_class);
 	
 	// 해당 댓글 번호
 	var replyNum = $(this).parent().parent().siblings('.hidCnum').text();
-	console.log('replyNum: '+replyNum);
+//	console.log('replyNum: '+replyNum);
 	// 추가할 위치
 	var td = $(this).parents('td');	// .tdView
-	console.log('>>> 추가할 위치: '+td.attr('class'));
+//	console.log('>>> 추가할 위치: '+td.attr('class'));
 	
 	if(divCount.length == 1){	// 대댓글 안보임
 		td.append('<div class=divReCmt></div>');
@@ -518,10 +518,10 @@ $(document)
 			dataType: 'json',
 			method: 'post',
 			success: function(res){
-				console.log('>>> res.length: ' + res.length);
+//				console.log('>>> res.length: ' + res.length);
 				if(res.length > 0){	// 대댓글 존재
 					$.each(res, function(index, item){
-						console.log('index: '+index);
+//						console.log('index: '+index);
 						td.children('.divReCmt').append(addReCmt(item));
 					});
 				}
@@ -533,7 +533,7 @@ $(document)
 			}
 		});
 	} else {	// 대댓글 보임
-		console.log('-- 대댓글 제거');
+//		console.log('-- 대댓글 제거');
 		td.children(':last').remove();	// 대댓글 제거
 	}
 	
@@ -544,13 +544,13 @@ $(document)
 .on('click', '.btnReCmt', function(){
 	// 대댓글 입력한 input
 	var reCmt = $(this).siblings('.txtWrite');
-	console.log('대댓글: ' + reCmt.val());
+//	console.log('대댓글: ' + reCmt.val());
 	
 	// 대댓글 등록
 	if('${userid}' != ""){ // 로그인을 하지 않은 경우 실행 x
 		var replyNumTd = $(this).parent().parent().parent().siblings('.hidCnum');
 		var cnum = replyNumTd.text();
-		console.log('cnum: '+cnum);
+//		console.log('cnum: '+cnum);
 		var cts = reCmt.val().trim();
 		if(cts != null && cts != ''){
 			var cmt = {pNum:link, parentNum:cnum, contents:cts};
@@ -586,19 +586,19 @@ $(document)
 .on('click', '.updateReCmt', function(){
 	$('#updateModalLabel').text('대댓글 수정');
 	var idx = $(this).parent().parent().parent().parent().parent();
-	console.log('idx: '+idx.index());
+//	console.log('idx: '+idx.index());
 	var preIdx = idx.index()-1;
-	console.log('idx-1: '+idx.siblings(':eq('+preIdx+')').text());
+//	console.log('idx-1: '+idx.siblings(':eq('+preIdx+')').text());
 	// 해당 댓글 번호
 	$('#hiddenCnum').text(idx.siblings(':eq('+preIdx+')').text());
 	
 	var cmt = $(this).parent().parent().parent().parent();	// label(.form-control)
-	console.log('대댓글 수정 클릭: '+cmt.attr('class'));
+//	console.log('대댓글 수정 클릭: '+cmt.attr('class'));
 	var writer = cmt.text();
 	writer = writer.split(' (')[0];
-	console.log('작성자: '+writer);
+//	console.log('작성자: '+writer);
 	var reCmtTxt = cmt.children('.reCmtTxt').text();
-	console.log('대댓글: '+reCmtTxt);
+//	console.log('대댓글: '+reCmtTxt);
 	if('${userid}' == writer){
 		// 댓글 수정 Modal 보기
 		$('#updateCmtContents').val(reCmtTxt);
@@ -613,16 +613,16 @@ $(document)
 // 대댓글 삭제
 .on('click', '.deleteReCmt', function(){
 	var idx = $(this).parent().parent().parent().parent().parent();
-	console.log('idx: '+idx.index());
+//	console.log('idx: '+idx.index());
 	var preIdx = idx.index()-1;
-	console.log('idx-1: '+idx.siblings(':eq('+preIdx+')').text());
+//	console.log('idx-1: '+idx.siblings(':eq('+preIdx+')').text());
 	
 	var modalTitle = '대댓글 삭제';
 	var cmt = $(this).parent().parent().parent().parent();	// label(.form-control)
-	console.log('대댓글 수정 클릭: '+cmt.attr('class'));
+//	console.log('대댓글 수정 클릭: '+cmt.attr('class'));
 	var writer = cmt.text();
 	writer = writer.split(' (')[0];
-	console.log('작성자: '+writer);
+//	console.log('작성자: '+writer);
 	if('${userid}' == writer){
 		// 해당 댓글 번호
 		$('#hiddenCnum').text(idx.siblings(':eq('+preIdx+')').text());

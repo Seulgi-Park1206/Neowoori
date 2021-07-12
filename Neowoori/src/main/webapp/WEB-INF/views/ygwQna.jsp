@@ -153,7 +153,7 @@ $(document)
 		},
 		success:function(result){
 			//console.log("result 결과"+result);
-			console.log("크기 : "+result.length);
+			//console.log("크기 : "+result.length);
 			let n = result.length;
 			//console.log("n형형변환 : "+n);
 			
@@ -173,7 +173,7 @@ $(document)
  				$('#paging').remove();
  			});
 			lastPage=Math.ceil(n/10);
-			console.log("n이다 : "+lastPage);
+			//console.log("n이다 : "+lastPage);
 			let paging = "";
 			for(let i = 0; i < Math.ceil(n/10); i++){
 				paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
@@ -184,7 +184,8 @@ $(document)
 			$('.trclass2').click(function(){
 				let qnapostid2=$(this).find("td:eq(0)").find("input[name=qnapostid2]").val();
 				//alert("qnaid값 : "+qnapostid2);
-				document.location="http://localhost:8080/app/qna/"+qnapostid2;
+				//document.location="http://localhost:8080/app/qna/"+qnapostid2;
+				location.href='/qna/'+qnapostid2;
 			})
 			
 		},
@@ -200,7 +201,8 @@ $(document)
 .on('click','.trclass1',function(){ //첫번째행 제외하고 클릭시
 	let qnapostid=$(this).find("td:eq(0)").find("input[name=qnapostid]").val();
 	
-	document.location="http://localhost:8080/app/qna/"+qnapostid;
+	//document.location="http://localhost:8080/app/qna/"+qnapostid;
+	location.href='/qna/'+qnapostid;
 	
 	//return false;
 })

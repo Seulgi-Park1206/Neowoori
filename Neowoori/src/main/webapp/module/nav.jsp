@@ -28,9 +28,9 @@ function mystudy(){
 
 function islogin(){
 	let uid = '${userid}';
-	console.log(uid+'님');
+	//console.log(uid+'님');
 	if(uid != ""){
-		console.log('login');
+		//console.log('login');
 		let u = uid + '님';
 		$('#userid').text(u);
 		$('.linklog').show();

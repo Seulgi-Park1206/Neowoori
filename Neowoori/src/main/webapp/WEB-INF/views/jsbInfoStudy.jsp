@@ -7,6 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
+<!--  modal로 대체함-->
 </body>
 </html>

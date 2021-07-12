@@ -99,9 +99,9 @@ $(document)
 // 변경
 .on('click', 'input[type=button]', function(){
 	var data = $(this).parent().parent().find('td:eq(0) input').val();
-	console.log('data: ' + data);
+//	console.log('data: ' + data);
 	let inputId = $(this).parent().parent().find('td:eq(0) input').attr('id');
-	console.log('inputId: ' + inputId);
+//	console.log('inputId: ' + inputId);
 	
 	if(data == ''){
 		if(inputId == 'upw') {alert('비밀번호를 다시 입력해주세요.');}
@@ -109,7 +109,7 @@ $(document)
 		else if(inputId == 'umobile') {alert('연락처를 다시 입력해주세요.');}
 	} else {
 		var check = $(this).parent().parent().next().find('td:eq(0) label');
-		console.log('check: ' + check.attr('id'));
+//		console.log('check: ' + check.attr('id'));
 		if($(this).val() == '변경'){
 			if(inputId == 'btnShowHiddenTr'){
 				$('.hiddenTr').show();

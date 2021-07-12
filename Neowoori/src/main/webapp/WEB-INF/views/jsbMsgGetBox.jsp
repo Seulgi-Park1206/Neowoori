@@ -108,7 +108,7 @@ function post_find(){
 }
 
 function setPage(who){
-	console.log(who);
+//	console.log(who);
 	$('#page').empty();
 	var pageHow = parseInt(who/10);  // 총 유저수 / 5 
 	if(who%10 != 0){ // 나머지가 0이 아니면 + 1

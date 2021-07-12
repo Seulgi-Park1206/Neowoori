@@ -194,7 +194,7 @@ function selUNum(who,who2,who3){
 }
 
 function btnKickUser(who){
-	console.log(who);
+//	console.log(who);
 }
 
 function btnSendMsg(who){

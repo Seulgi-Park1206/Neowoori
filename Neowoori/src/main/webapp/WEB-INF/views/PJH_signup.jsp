@@ -222,9 +222,9 @@ $("#btn_con ").on("click",function(){
 	
  	var mail = email+"@"+email2;
  	   $("#mail").val(mail);  
- 	   console.log(email);
- 	   console.log(email2);
- 	   console.log(mail);
+ //	   console.log(email);
+ //	   console.log(email2);
+ //	   console.log(mail);
  	   if(!email_rule.test(mail)){
  	       alert("이메일을 형식에 맞게 입력해주세요.");
  	     return false;
@@ -238,7 +238,7 @@ $("#btn_con ").on("click",function(){
  				url:"mailCheck?email=" + mail,
  				success:function(data){
  					
- 					console.log("data : " + data);
+// 					console.log("data : " + data);
  					code = data;
  					
  				}
@@ -250,7 +250,7 @@ $("#btn_con ").on("click",function(){
 /*--------------------------인증번호 누를시 input보이게하기---------------------------------*/
 /*--------------------------인증번호 유효성 검사(임시)---------------------------------*/
 $("#btn_num ").on("click",function(){
-	console.log('인증번호 입력: '+$("#send_number").val());
+//	console.log('인증번호 입력: '+$("#send_number").val());
 	if($("#send_number").val()==code){
 		if(code!=""){
 			alert("인증에 성공하였습니다.");
@@ -463,8 +463,8 @@ $(function(){
 		var birthday1 = birth.substring(5,7);
 		var birthday2 = birth.substring(8,11);
 		var birthday = birthday1+birthday2;
-		console.log(birthday);
-		console.log(year);
+//		console.log(birthday);
+//		console.log(year);
 		/*-----생년월일------*/
 		
 		/*-----주소------*/

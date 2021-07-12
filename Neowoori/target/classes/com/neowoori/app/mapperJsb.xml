@@ -284,4 +284,9 @@
 		where unum=#{param1} and mnum=#{param2}
 	</select>
 	
+	<select id="jsbStrudyCreateCount"  resultType="Integer">
+		select count(*) count
+		from study
+		where unum=#{param1}
+	</select>
 </mapper>

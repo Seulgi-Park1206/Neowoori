@@ -44,6 +44,9 @@ public interface IDaojsb {
 	//관리자판단여부
 	public int jsbStudyAmdinboolean(int uNum, int mNum);
 	
+	//스터디 생성개수 체크
+	public int jsbStrudyCreateCount(int uNum);
+	
 	
 	//슬기도움 meetuser(회원관리)페이지
 	public ArrayList<jsbBMeetUserList> jsbMeetUserList(int mNum);
