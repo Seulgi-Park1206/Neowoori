@@ -1440,11 +1440,20 @@ public class HomeController {
 			
 		@ResponseBody // 
 		@RequestMapping(value="/meetusert/meetUserAccept.do", method=RequestMethod.POST,produces = "application/json")
-			public void meetUserAccept(String uId, String mId , HttpServletRequest req,HttpSession session) {
+			public boolean meetUserAccept(String uId, String mId , HttpServletRequest req,HttpSession session) {
 				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 				String uNum = req.getParameter("uId");
 				String mNum = req.getParameter("mId");
-				dao.jsbMeetUserAccept(Integer.parseInt(uNum),Integer.parseInt(mNum));
+				ArrayList<jsbBMeetUserAva> cnt= dao.jsbMeetAcceptAva(Integer.parseInt(mNum));
+				
+				if(cnt.get(0).getmPersonnel()>cnt.get(0).getMeet()) {
+					dao.jsbMeetUserAccept(Integer.parseInt(uNum),Integer.parseInt(mNum));
+					return true;
+				}else {
+					return false;
+				}
+				
+				
 				
 		   }
 			@ResponseBody // 

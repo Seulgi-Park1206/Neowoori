@@ -49,4 +49,6 @@ public interface IDaojsb {
 	public ArrayList<jsbBMeetUserList2> jsbMeetUserList2(int mNum);
 	public void jsbMeetUserAccept(int uNum, int mNum);
 	public void jsbMeetUserCancel(int uNum, int mNum);
+	public ArrayList<jsbBMeetUserAva> jsbMeetAcceptAva(int mNum);
+	
 }
