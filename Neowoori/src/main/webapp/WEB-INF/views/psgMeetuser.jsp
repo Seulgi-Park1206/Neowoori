@@ -54,7 +54,7 @@
 	</div>
 	</div>
 		
-		<div class="psg_dropdown">
+		<div id="psg_dropdown">
 			<a id=kick>강퇴하기</a>
 			<hr>
 			<a id=msg>쪽지 보내기</a>
@@ -103,12 +103,14 @@
 let clickUser;
 let clickUserNum;
 let clickMNum;
+let studyID= {s_id};
 var sessionVal = "<%=session.getAttribute("userid")%>";
 $(document)
 .ready(function(){
 	//let study_id = ${s_id};
 	// study_id로 해당 스터디 회원 정보 db에서 불러오기
-	$('.psg_dropdown').hide();
+	$('#psg_dropdown').hide();
+	//console.log(studyID);
 })
 .ready(function(){
 	
@@ -116,10 +118,10 @@ $(document)
 .on('click', '.psg_pop', function(e){
 	console.log(e.pageX, e.pageY)
 	if($(e.target).hasClass('psg_pop')){
-		$('.psg_dropdown').show();
+		$('#psg_dropdown').show();
 		let x = parseInt(e.pageX)+20;
 		x = String(x);
-		$('.psg_dropdown').css({
+		$('#psg_dropdown').css({
 			"left": x + 'px',
 			"top": e.pageY + 'px'
 		})
@@ -127,7 +129,7 @@ $(document)
 	return false;
 })
 .on('click', '.form', function(){
-	$('.psg_dropdown').hide();
+	$('#psg_dropdown').hide();
 	return false;
 })
 .on('click', '#kick', function(){
@@ -141,14 +143,15 @@ $(document)
 	
 	}
 	*/
-	console.log('kick');
+	//console.log('kick');
 	$('#modalBody').empty();
 	$('#modalFoot').empty();
 	
 	$("#exampleModalLabel").text("강퇴하기");
 	$("#modalBody").append('<p class="text-primary" id="pUesrNick"><p>유저를 강퇴 하시겠습니까?');
-	$("#modalFoot").append('<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>');
 	$("#modalFoot").append('<button type="button" class="btn btn-primary" onclick=btnKickUser('+clickUserNum+') >강퇴하기</button>');
+	$("#modalFoot").append('<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>');
+
 	//$("#studyAdminNick").text(clickUser);
 	$("#pUesrNick").text(clickUser);
 	//$('#bbtn').trigger('click');
@@ -156,7 +159,7 @@ $(document)
 	return false;
 })
 .on('click', '#msg', function(){
-	console.log('msg 클ㄹ릭');
+	//console.log('msg 클ㄹ릭');
 	$('#modalBody').empty();
 	$('#modalFoot').empty();
 	
@@ -171,8 +174,9 @@ $(document)
 	$("#modalBody").append('<label for="floatingTextarea2"></label>');
 	$("#modalBody").append('</div>');
 	$("#modalBody").append('</form>');
-	$("#modalFoot").append('<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>');
 	$("#modalFoot").append('<button type="button" class="btn btn-primary" onclick=btnSendMsg('+clickUserNum+') >메시지 보내기</button>');
+	$("#modalFoot").append('<button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>');
+
 	//$("#studyAdminNick").text(clickUser);
 	$("#adminNick").text(clickUser);
 	//$('#bbtn').trigger('click');
@@ -186,7 +190,7 @@ function selUNum(who,who2,who3){
 	clickUserNum=who;
 	clickUser=who2;
 	clickMNum=who3;
-	console.log(who+","+who2+","+who3);
+	//console.log(who+","+who2+","+who3);
 }
 
 function btnKickUser(who){

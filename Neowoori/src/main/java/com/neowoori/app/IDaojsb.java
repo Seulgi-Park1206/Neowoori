@@ -45,4 +45,8 @@ public interface IDaojsb {
 	//슬기도움 meetuser(회원관리)페이지
 	public ArrayList<jsbBMeetUserList> jsbMeetUserList(int mNum);
 	public void jsbMeetUserKick(int uNum,int mNum);
+	public ArrayList<jsbBMeetUserCount> jsbBMeetUserCount(int mNum);
+	public ArrayList<jsbBMeetUserList2> jsbMeetUserList2(int mNum);
+	public void jsbMeetUserAccept(int uNum, int mNum);
+	public void jsbMeetUserCancel(int uNum, int mNum);
 }
