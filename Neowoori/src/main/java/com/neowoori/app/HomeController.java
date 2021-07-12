@@ -1060,7 +1060,7 @@ public class HomeController {
 	// 스터디장 페이지(스터디관리)-회원관리
 	@RequestMapping("/meetuser/{study_id}")
 	public String meetUser(@PathVariable int study_id, Model model) {
-		//model.addAttribute("s_id", study_id);
+		model.addAttribute("s_id", study_id);
 		//study_id사용하면됨
 		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
 		ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
@@ -1409,18 +1409,69 @@ public class HomeController {
 				return resp;
 		   }
 			
-		@ResponseBody // 보낸 쪽지  SendMsgList
-		@RequestMapping(value="/meetUserKick.do", method=RequestMethod.POST,produces = "application/json")
+		@ResponseBody // kick user
+		@RequestMapping(value="/meetusert/meetUserKick.do", method=RequestMethod.POST,produces = "application/json")
 			public void meetUserKick(String uId,String mNum,HttpServletRequest req,HttpSession session) {
 				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 				String one = req.getParameter("uId");
 				String two = req.getParameter("mNum");
 				
-				dao.jsbMeetUserKick(0, 0);
+				dao.jsbMeetUserKick(Integer.parseInt(one),Integer.parseInt(two));
 		   }
+		
+		@ResponseBody // 
+		@RequestMapping(value="/meetusert/meetUserListTwo.do", method=RequestMethod.POST,produces = "application/json")
+			public ArrayList<jsbBMeetUserList2> meetUserListTwo(String tStudyNum, HttpServletRequest req,HttpSession session) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+				String StudyNum = req.getParameter("tStudyNum");
+				int sNum = Integer.parseInt(StudyNum);
+				ArrayList<jsbBMeetUserCount> cnt = dao.jsbBMeetUserCount(sNum);
+				//System.out.println(cnt.get(0).getResOne());
+				//System.out.println(cnt.get(0).getResTwo());
+				
+				if (cnt.get(0).getResOne()!=0 && cnt.get(0).getResTwo()!=0) {
+					ArrayList<jsbBMeetUserList2> res= dao.jsbMeetUserList2(sNum);
+					return res;
+				}else {
+					ArrayList<jsbBMeetUserList2> res= dao.jsbMeetUserList2(sNum);
+					return res;
+				}
+		   }
+			
+		@ResponseBody // 
+		@RequestMapping(value="/meetusert/meetUserAccept.do", method=RequestMethod.POST,produces = "application/json")
+			public void meetUserAccept(String uId, String mId , HttpServletRequest req,HttpSession session) {
+				IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+				String uNum = req.getParameter("uId");
+				String mNum = req.getParameter("mId");
+				dao.jsbMeetUserAccept(Integer.parseInt(uNum),Integer.parseInt(mNum));
+				
+		   }
+			@ResponseBody // 
+			@RequestMapping(value="/meetusert/meetUserCancel.do", method=RequestMethod.POST,produces = "application/json")
+				public void meetUserCancel(String uId, String mId, HttpServletRequest req,HttpSession session) {
+					IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
+					String uNum = req.getParameter("uId");
+					String mNum = req.getParameter("mId");
+					
+					dao.jsbMeetUserCancel(Integer.parseInt(uNum),Integer.parseInt(mNum));
+			   }
 	
 	/*---------------------------------------------*/
 	
+		
+		// 스터디장 페이지(스터디관리)-회원관리
+		@RequestMapping("/meetusert/{study_id}")
+		public String meetUserTest(@PathVariable int study_id, Model model) {
+			//System.out.println("study ID:"+study_id);
+			model.addAttribute("studyId", study_id);
+			//study_id사용하면됨
+			//IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
+			//ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
+			//model.addAttribute("resp", resp);
+			
+			return "psgMeetuserTest";
+		}
 	//#############################################################
 	//#############################################################
 	//#############################################################
