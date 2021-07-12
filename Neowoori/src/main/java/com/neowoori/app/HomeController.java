@@ -1078,16 +1078,6 @@ public class HomeController {
 		}else {
 			return "redirect:/index";
 		}
-		/*
-		//model.addAttribute("s_id", study_id);
-		model.addAttribute("studyId", study_id);
-		//study_id사용하면됨
-		IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-		//ArrayList<jsbBMeetUserList> resp=dao.jsbMeetUserList(study_id);
-		//model.addAttribute("resp", resp);
-		
-		return "psgMeetuserTest";
-		*/
 	}
 	// 관리자 질문 답변
 	@RequestMapping("/admin/{question_id}")
