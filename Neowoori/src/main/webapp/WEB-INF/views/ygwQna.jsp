@@ -34,15 +34,18 @@ th, td {
 	<h2>Q & A</h2>
 </div>
 <br>
-<div style="text-align:center; float:none; margin:0 auto;">
-				<select id=search_faq_sel name=search_faq_sel>
+<div class="input-group mb-3" style="text-align:center; float:none; margin:0 auto; width:50%;">
+				
+				<select class="form-select" aria-label="Default select example" id=search_faq_sel name=search_faq_sel>
 					<option value="" disabled selected>선택</option>
 					<option value=faqtitle>제목</option>
 					<option value=faqcontent>내용</option>
 				</select>
-				<input type="text" id=search_input placeholder="제목이나 내용을 입력하세요." style="float:none; margin:0 auto; width:30%;">
+				
+				<input type="text"  class="form-control" aria-label="Text input with dropdown button" id=search_input placeholder="제목이나 내용을 입력하세요." style="float:none; margin:0 auto; width:20%;">
 				<button id=search_btn><img src="${path}/resources/img/faq_search_btn.png" width="20" height="20"></button>
 				<br><br>
+				
 </div>
 <div class=qnadiv id=div1 style="margin:0 auto;">
 <table class="table table-hover" id=tbl1 style="text-align:center;">
@@ -67,9 +70,9 @@ th, td {
 	<input class="btn btn-outline-secondary" id=qnanewpost type=button value=새글쓰기  onclick="document.location='http://localhost:8080/app/qnawrite'">
 </div>
 <div class="w3-center">
-<div class="w3-bar">
-	<a href= # value=previous name=page>&laquo;</a><div id="divPage" style="display:inline;"><span id="paging">${paging}</span></div><a href= # value=next name=page>&raquo;</a>
-</div>
+
+	<a href= # value=previous class="w3-bar-item w3-button" name=page>&laquo;</a><div id="divPage" style="display:inline;"><span id="paging">${paging}</span></div><a href= # value=next class="w3-bar-item w3-button" name=page>&raquo;</a>
+
 </div>
 
 <jsp:include page="/module/footer.jsp" flush="false" />
@@ -135,6 +138,7 @@ $(document)
 	let category=$('#search_faq_sel option:selected').val();
 	let keyword=$('#search_input').val();
 	
+	
 	if($('#search_input').val()==""){
 		alert("키워드를 입력해주세요!");
 		$('#search_input').focus();
@@ -148,27 +152,40 @@ $(document)
 			keyword : keyword
 		},
 		success:function(result){
-			console.log("result 결과"+result);
+			//console.log("result 결과"+result);
 			console.log("크기 : "+result.length);
 			let n = result.length;
+			//console.log("n형형변환 : "+n);
 			
 			$('.trclass1').remove();
 			
-			$.each(result,function(index,item){
- 				let str = "<tr class=trclass1><td>"+item['faqnum']+"</td><td>"+item['faqtitle']+"</td><td>"+item['faqdate']+"</td></tr>";
+			let i=1;
+			$.each(result,function(index,item){ //result 값 faqSelResult 배열
+ 				let str = "<tr class=trclass2><td>"+i+"<input type=hidden name=qnapostid2 value="+item['faqnum']+"></td><td>"+item['faqtitle']+"</td><td>"+item['writer']+"</td><td>"+item['faqdate']+"</td><td>"+item['state']+"</td></tr>";
+ 				i++;
+ 				
+ 				//console.log("item값"+JSON.stringify(str));
+ 				//let qnapostid=$('.trclass1').find("td:eq(0)").val();
+ 				//console.log("qnapostid 깂"+qnapostid);
  				$('#tbl1').append(str);
- 				$('.trclass1').hide();
- 				$('.trclass1').slice(0,10).show();
+ 				$('.trclass2').hide();
+ 				$('.trclass2').slice(0,10).show();
  				$('#paging').remove();
  			});
 			lastPage=Math.ceil(n/10);
 			console.log("n이다 : "+lastPage);
 			let paging = "";
 			for(let i = 0; i < Math.ceil(n/10); i++){
-				paging+="<a href=#"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
+				paging+="<a href=# class='w3-button'"+(i+1)+" name='page' value="+(i+1)+">"+(i+1)+"</a>";
 			}
-			//$('#divPage').empty(paging);
-			/*$('#divPage').append(paging);*/
+			$('#divPage').empty(paging);
+			$('#divPage').append(paging);
+			
+			$('.trclass2').click(function(){
+				let qnapostid2=$(this).find("td:eq(0)").find("input[name=qnapostid2]").val();
+				//alert("qnaid값 : "+qnapostid2);
+				document.location="http://localhost:8080/app/qna/"+qnapostid2;
+			})
 			
 		},
 		error:function(result){
@@ -176,11 +193,13 @@ $(document)
 		}
 				
 	});
+	
 })
 
 
-.on('click','#tbl1 tr:not(:first)',function(){ //첫번째행 제외하고 클릭시
+.on('click','.trclass1',function(){ //첫번째행 제외하고 클릭시
 	let qnapostid=$(this).find("td:eq(0)").find("input[name=qnapostid]").val();
+	
 	document.location="http://localhost:8080/app/qna/"+qnapostid;
 	
 	//return false;

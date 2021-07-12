@@ -244,4 +244,44 @@
 		from meeting_study a, members b 
 		where a.state=20 and a.unum=b.unum and a.mnum=#{param1}
 	</select>
+	
+				<!-- UserId, mnum으로 meeting 제거 unum,mnum,10으로 검색-->
+	<delete id="jsbMeetUserKick">
+		delete from meeting_study
+		where unum=#{param1} and mnum=#{param2} and state=20
+	</delete>
+	
+		<select id="jsbBMeetUserCount" resultType="com.neowoori.app.jsbBMeetUserCount">
+		select (select count(*) from meeting_study where state=10 and mnum=#{param1}) resOne,
+		        (select count(*) from meeting_study where state=20 and mnum=#{param1}) resTwo
+		        from dual
+	</select>
+	
+	<select id="jsbMeetUserList2" resultType="com.neowoori.app.jsbBMeetUserList2">
+		select a.unum,a.mnum, b.uNick, b.ugender, b.umail, a.state
+		from meeting_study a, members b
+        where (a.state=20 or a.state=10) and a.unum=b.unum and a.mnum=#{param1}
+        order by a.state desc
+	</select>
+	
+	<update id="jsbMeetUserAccept">
+		update meeting_study set state=20 where unum=#{param1} and mnum=#{param2}
+	</update>
+	
+	<delete id="jsbMeetUserCancel">
+		delete from meeting_study where unum=#{param1} and mnum=#{param2} and state=10
+	</delete>
+	
+	<select id="jsbMeetAcceptAva" resultType="com.neowoori.app.jsbBMeetUserAva">
+		select mpersonnel, (select count(*)+1 from meeting_study where state=20 and mnum=#{param1}) meet
+		from study
+		where mnum=#{param1}
+</select>
+
+	<select id="jsbStudyAmdinboolean"  resultType="Integer">
+		select count(*) count
+		from study
+		where unum=#{param1} and mnum=#{param2}
+	</select>
+	
 </mapper>
