@@ -41,7 +41,6 @@ html {
 }
 .btn {
 	margin: 0 0 0 15px;
-	padding: 7px;
 }
 input {
 	padding: 5px;
@@ -60,16 +59,16 @@ label {
 }
 @media (max-width:1330px){ /*가로 너비가 1330px 이하일 때 아래 스타일 적용*/
     * {
-		font-size: 12px;
+		font-size: 10px;
 	}
     .form {
-        width: 90%;
+        width: 95%;
     }
     .title {
     	font-size: 15px;
     }
     .contents {
-		width: 80%;
+		width: 100%;
 		font-size: 12px;
 	}
 	.btnDiv {
@@ -77,7 +76,7 @@ label {
     }
     .btn{
     	font-size: 12px;
-    	margin: 0 0 0 4px;
+    	margin: 0 0 0 2px;
     }
 }
 @media (max-width:768px){ /*가로 너비가 768px 이하일 때 아래 스타일 적용*/
@@ -86,6 +85,6 @@ label {
 	}
 	.btn{
     	font-size: 11px;
-    	margin: 0 0 0 4px;
+    	margin: 0 0 0 2px;
     }
 }

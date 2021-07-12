@@ -20,7 +20,7 @@
 			<table class="table">
 				<tr>
 					<th class="tdLeft table-light align-middle">아이디:</th>
-					<td colspan=2 class="tdCenter align-middle"><label class="intext align-middle"  id=uid>${member.userId}</label></td>
+					<td colspan=2 class="tdCenter align-middle"><label class="intext align-middle" id=uid>${member.userId}</label></td>
 				</tr>
 				<tr class=trPw>
 					<th class="tdLeft table-light align-middle">비밀번호:</th>
