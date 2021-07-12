@@ -160,15 +160,15 @@ $(document)
 			
 			let i=1;
 			$.each(result,function(index,item){ //result 값 faqSelResult 배열
- 				let str = "<tr class=trclass1><td>"+i+"<input type=text name=qnapostid2 value="+item['faqnum']+"></td><td>"+item['faqtitle']+"</td><td>"+item['writer']+"</td><td>"+item['faqdate']+"</td><td>"+item['state']+"</td></tr>";
+ 				let str = "<tr class=trclass2><td>"+i+"<input type=hidden name=qnapostid2 value="+item['faqnum']+"></td><td>"+item['faqtitle']+"</td><td>"+item['writer']+"</td><td>"+item['faqdate']+"</td><td>"+item['state']+"</td></tr>";
  				i++;
  				
  				//console.log("item값"+JSON.stringify(str));
  				//let qnapostid=$('.trclass1').find("td:eq(0)").val();
  				//console.log("qnapostid 깂"+qnapostid);
  				$('#tbl1').append(str);
- 				$('.trclass1').hide();
- 				$('.trclass1').slice(0,10).show();
+ 				$('.trclass2').hide();
+ 				$('.trclass2').slice(0,10).show();
  				$('#paging').remove();
  			});
 			lastPage=Math.ceil(n/10);
@@ -180,28 +180,25 @@ $(document)
 			$('#divPage').empty(paging);
 			$('#divPage').append(paging);
 			
+			$('.trclass2').click(function(){
+				let qnapostid2=$(this).find("td:eq(0)").find("input[name=qnapostid2]").val();
+				//alert("qnaid값 : "+qnapostid2);
+				document.location="http://localhost:8080/app/qna/"+qnapostid2;
+			})
+			
 		},
 		error:function(result){
 			alert("fail 아작스 실패")
 		}
 				
 	});
-	/*
-	$('#tbl1').click(function(){
-		let qnapostid2=$(this).find("td:eq(0)").find("input[name=qnapostid2]").val();
-		alert("qnaid값 : "+qnapostid2);
-		document.location="http://localhost:8080/app/qna/"+qnapostid2;
-	})
-	*/
-	//let qnapostid=$('.trclass1').find("td:eq(0)").find("input[name=qnapostid2]").val();
-	//alert(qnapostid);
 	
 })
 
 
-.on('click','#tbl1 tr:not(:first)',function(){ //첫번째행 제외하고 클릭시
+.on('click','.trclass1',function(){ //첫번째행 제외하고 클릭시
 	let qnapostid=$(this).find("td:eq(0)").find("input[name=qnapostid]").val();
-	//qnapostid = qnapostid2 
+	
 	document.location="http://localhost:8080/app/qna/"+qnapostid;
 	
 	//return false;
