@@ -67,7 +67,7 @@ th, td {
 </table>
 </div>
 <div style="text-align:right;">
-	<input class="btn btn-outline-secondary" id=qnanewpost type=button value=새글쓰기  onclick="document.location='http://localhost:8080/app/qnawrite'">
+	<input class="btn btn-outline-secondary" id=qnanewpost type=button value=새글쓰기  onclick=newpost()>
 </div>
 <div class="w3-center">
 
@@ -83,6 +83,10 @@ th, td {
 let prePageNum=1; //이전 페이지 번호
 let lastPage="${lastPage}"; 
 let userid='${userid}';
+
+function newpost(){
+	location.href='/qnawrite';
+}
 
 $(document)
 .ready(function(){

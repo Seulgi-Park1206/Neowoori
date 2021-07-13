@@ -77,7 +77,7 @@
 	<select id="jsbListTypeOne" resultType="com.neowoori.app.jsbBListStudy">
 		select e.uNick,f.*
 		from members e right outer join(
-		    select d.*, c.cnt
+		    select d.*, nvl(c.cnt,'1') cnt
 		    from study d left outer join(
 		        select distinct a.mnum,nvl(b.cnts,'1') cnt
 		        from meeting_study a left outer join(

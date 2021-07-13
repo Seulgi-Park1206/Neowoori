@@ -29,7 +29,7 @@
 				</tr>
 				<tr>
 					<th class="tdLeft table-light align-middle">작성자:</th>
-					<td class="tdCenter align-middle"><label class=intext id=writer>${post.userid}</label></td>
+					<td class="tdCenter align-middle"><label class=intext id=writer>${post.unick}</label></td>
 					<th class="tdLeft table-light align-middle">작성일자:</th>
 					<td class="tdCenter align-middle"><label class=intext id=date>${post.post_date}</label></td>
 				</tr>
@@ -52,7 +52,7 @@
 						<tr>
 							<td class=hidCnum>${c.cmtnum}</td>
 							<td class=tdView>
-								<label class="writer">${c.userid} (${c.cmt_date})</label>
+								<label class="writer">${c.unick} (${c.cmt_date})</label>
 								<div class=cmtAbout>
 									<a class=updateCmt>수정</a>
 									<a class=deleteCmt>삭제</a>
@@ -146,7 +146,7 @@ function addComment(res){
 	var result = '<tr><td class="hidCnum">';
 	result += res['cmtnum'];
 	result += '</td><td class=tdView><label class="writer">';
-	result += res['userid'];
+	result += res['unick'];
 	result += ' (';
 	result += res['cmtDate'];
 	result += ')</label><div class="cmtAbout">'
@@ -177,7 +177,7 @@ function addReCmt(res){
 	result += '</a><div class="replyView input-group w"><span class="input-group-text" id="spanReply">'
 	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
 	result += '<label class="form-control">';
-	result += res['userid'];
+	result += res['unick'];
 	result += ' (';
 	result += res['cmtDate'];
 	result += ')<div class="dropdown">';
@@ -193,10 +193,6 @@ function addReCmt(res){
 	
 	return result;
 }
-// 댓글/대댓글 수정/삭제
-/* function dropdownMenu(){
-	var dropdown = 
-} */
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
 	var contents = $('#content');
@@ -231,10 +227,8 @@ function clearCmt() {
 
 $(document)
 .ready(function(){
-//	console.log(link);
-	var uid = '${userid}';
-	uid='human1';
-	if($('#writer').text() == uid) {
+	var unick = '${user.uNick}';
+	if($('#writer').text() == unick) {
 		$('#btnUpdate, #btnDelete').show();
 	}
 	adjustHeight();

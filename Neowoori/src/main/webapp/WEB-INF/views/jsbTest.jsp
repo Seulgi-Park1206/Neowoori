@@ -12,6 +12,9 @@
 <title>jsb test page</title>
 </head>
 <body>
+<!-- 
+
+ -->
 <input type="hidden" id="hid" value=<%=session.getAttribute("userid")%>>
 <div id="map" style="width:80%;height:550px;"></div>
 
@@ -300,5 +303,8 @@ function btnSendMsg(){ // 메시지보내기
 	    }
 		});
 }
+/*
+ 
+ */
 </script>
 </html>

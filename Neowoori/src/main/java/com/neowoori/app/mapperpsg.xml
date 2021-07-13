@@ -17,13 +17,13 @@
 	</select>
 	<!-- 스터디 게시물 상세정보 조회 -->
 	<select id="psgSelectStudyPost" resultType="com.neowoori.app.psgBViewPost">
-		select sp.title, m.userid, sp.post_date, sp.post_contents
+		select sp.title, m.unick, sp.post_date, sp.post_contents
 		from study_post sp, members m
 		where sp.postnum=#{param1} and sp.unum=m.unum
 	</select>
 	<!-- 해당 게시물의 댓글 조회 -->
 	<select id="psgSelectCmt" resultType="com.neowoori.app.psgBViewCmt">
-		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		select c.cmtnum, m.unick, c.cmt_date, c.cmt_contents from cmt c, members m
 		where c.postnum=#{param1} and c.unum=m.unum and c.parent_cnum=0
 		order by c.cmtnum desc
 	</select>
@@ -33,7 +33,7 @@
 	</insert>
 	<!-- 추가한 댓글 보기 -->
 	<select id="psgAddCmtSelect" resultType="com.neowoori.app.psgBViewCmt">
-		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		select c.cmtnum, m.unick, c.cmt_date, c.cmt_contents from cmt c, members m
 		where c.unum=m.unum and c.cmtnum=(select max(cmtnum) from cmt)
 	</select>
 	<!-- 게시글 삭제 -->
@@ -54,7 +54,7 @@
 	</update>
 	<!-- 대댓글 조회 -->
 	<select id="psgSelectReCmt" resultType="com.neowoori.app.psgBViewCmt">
-		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		select c.cmtnum, m.unick, c.cmt_date, c.cmt_contents from cmt c, members m
 		where c.unum=m.unum and c.parent_cnum=#{param1}
 		order by c.cmtnum
 	</select>
@@ -64,7 +64,7 @@
 	</insert>
 	<!-- 추가한 대댓글 보기 -->
 	<select id="psgAddReCmtSelect" resultType="com.neowoori.app.psgBViewCmt">
-		select c.cmtnum, m.userid, c.cmt_date, c.cmt_contents from cmt c, members m
+		select c.cmtnum, m.unick, c.cmt_date, c.cmt_contents from cmt c, members m
 		where c.unum=m.unum and c.cmtnum=(select max(cmtnum) from cmt)
 	</select>
 	<!-- 대댓글 삭제 -->

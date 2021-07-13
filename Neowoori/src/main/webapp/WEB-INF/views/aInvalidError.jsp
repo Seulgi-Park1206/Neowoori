@@ -12,7 +12,7 @@
 <body>
 <jsp:include page="/module/nav.jsp" flush="false" />
 <div id="map2" style="text-align:center;">
-	<img src="${path}/resources/jsb/deldel.png" width="750px" height="550px">
+	<img src="${path}/resources/img/deldel.png" width="750px" height="550px">
 	<h2>잘못된 접근입니다.</h2>
 </div>
 

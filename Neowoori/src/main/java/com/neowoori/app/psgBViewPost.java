@@ -2,7 +2,7 @@ package com.neowoori.app;
 
 public class psgBViewPost {
 	String title;
-	String userid;
+	String unick;
 	String post_date;
 	String post_contents;
 	
@@ -10,10 +10,10 @@ public class psgBViewPost {
 		
 	}
 
-	public psgBViewPost(String title, String userid, String post_date, String post_contents) {
+	public psgBViewPost(String title, String unick, String post_date, String post_contents) {
 		super();
 		this.title = title;
-		this.userid = userid;
+		this.unick = unick;
 		this.post_date = post_date;
 		this.post_contents = post_contents;
 	}
@@ -26,12 +26,12 @@ public class psgBViewPost {
 		this.title = title;
 	}
 
-	public String getUserid() {
-		return userid;
+	public String getUnick() {
+		return unick;
 	}
 
-	public void setUserid(String userid) {
-		this.userid = userid;
+	public void setUnick(String unick) {
+		this.unick = unick;
 	}
 
 	public String getPost_date() {

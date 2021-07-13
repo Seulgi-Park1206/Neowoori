@@ -18,7 +18,7 @@
 <p style="font-size:30px; text-align:center;">Q & A 작성</p>
 </div>
 <div class="container" style="float:none; margin:0 auto; width:40%;">
-<form action="/app/Qnaserver" method="post">
+<form action="/Qnaserver" method="post">
 	<div class="form-group">
 	<label for=postTitle><strong>제목</strong></label>
 	<input type=text class="form-control" maxlength="25" id=faqTitle name=faqTitle placeholder="제목을 입력하세요."><br>
@@ -29,7 +29,7 @@
 	</div>
 	<br>
 	<div style="text-align:center;">
-	<input type=submit id=qnawrite class="btn btn-outline-secondary" value=글쓰기>&nbsp;&nbsp;<input type=button class="btn btn-outline-secondary" value=취소 onclick="document.location='http://localhost:8080/app/qna'">
+	<input type=submit id=qnawrite class="btn btn-outline-secondary" value=글쓰기>&nbsp;&nbsp;<input type=button class="btn btn-outline-secondary" value=취소 onclick=listqna()>
 	</div>
 </form>
 </div>
@@ -37,6 +37,11 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+function listqna(){
+	location.href='/qna';
+}
+
+
 $(document)
 .on('click','#qnawrite',function(){
 	if($('#faqTitle').val()==""){

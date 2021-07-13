@@ -150,7 +150,7 @@ $(document)
 	    	//"studyName" : $('#studyName').val() // 스터디명
 	    },
 	    success : function(data){
-//	    	console.log(data);
+	    	console.log(data);
 	    	datas= new Array(data);
 //	    	console.log(datas[0]);
 	    	//console.log(datas[0][0].mName);
