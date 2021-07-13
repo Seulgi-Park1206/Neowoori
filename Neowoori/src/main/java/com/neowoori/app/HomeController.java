@@ -563,8 +563,21 @@ public class HomeController {
 			String juso = request.getParameter("ujuso");
 			String lati = request.getParameter("ulati");
 			String longi = request.getParameter("ulongi");
+			System.out.println(id);
+			System.out.println(name);
+			System.out.println(pw);
+			System.out.println(nick);
+			System.out.println(mobile);
+			System.out.println(gender);
+			System.out.println(year);
+			System.out.println(birth);
+			System.out.println(email);
+			System.out.println(juso);
+			System.out.println(lati);
+			System.out.println(longi);
+			
 			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-			dao.pjhsignup(id, pw, name, nick, year, birth, gender, mobile, email, juso, lati, longi);
+			//dao.pjhsignup(id, pw, name, nick, year, birth, gender, mobile, email, juso, lati, longi);
 	   }
 	
 	
@@ -1161,8 +1174,7 @@ public class HomeController {
 	public String meetUser(@PathVariable int study_id, Model model,HttpSession session) {
 		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		//System.out.println(sessionUserId);
-		//System.out.println(study_id);
+
 		if(sessionUserId!="null") {
 			BMembers userInfo=dao.jsbGetUser(sessionUserId);
 			int getUNum=userInfo.getuNum();
@@ -1172,7 +1184,6 @@ public class HomeController {
 				return "psgMeetuserTest";
 			}else {
 				return "redirect:/Invalid";
-				//return "redirect:/meetList/"+sessionUserId; //혹은 에러페이지..
 			}
 		}else {
 			return "redirect:/index";
