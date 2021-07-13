@@ -533,7 +533,7 @@ function btnCancelJoin(){ // 가입신청취소
 			"userId" : $("#hid").val()	    	
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	//alert("성공(임시 alert)");
 	    	$('#modal-footerBtn1').empty();
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");
@@ -552,7 +552,7 @@ function btnOutStudy(){ // 스터디탈되
 			"userId" : $("#hid").val()	    	
 	    },
 	    success : function(data){
-	    	alert("성공(임시 alert)");
+	    	//alert("성공(임시 alert)");
 	    	$('#modal-footerBtn1').empty();
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' onclick=btnJoinStudy() >가입신청</button>");
 	    	$("#modal-footerBtn1").append("<button class='btn btn-primary' data-bs-target='#exampleModalToggle2' data-bs-toggle='modal' data-bs-dismiss='modal'>쪽지보내기</button>");

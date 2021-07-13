@@ -28,7 +28,7 @@ table,td{
 </div>
 <br>
 <div class="qnamodify" style="margin:0 auto; float:none; width:40%;">
-<form action="/app/modifyqna" method="post">
+<form action="/modifyqna" method="post">
 <table class="table table-bordered" id=modifyqnatable style="text-align:center; vertical-align:middle;">
 	<tr style="display:none;">
 		<td class="table-light">게시글 번호</td><td><input type=text name=qnapostnum readonly value="${modifyqna.faqnum}"></td>
@@ -47,7 +47,7 @@ table,td{
 
 	<div style="text-algin:center; margin:0 auto; float:none; width:40%;">
 	<input type=submit class="btn btn-outline-secondary" value="수정" id=modify>&nbsp;
-	<input type=button class="btn btn-outline-secondary" value="취소" onclick="document.location='http://localhost:8080/app/qna'">
+	<input type=button class="btn btn-outline-secondary" value="취소" onclick=returnQna()>
 	</div>
 </form>
 </div>
@@ -55,6 +55,10 @@ table,td{
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+
+function returnQna(){
+	location.href='/qna';
+}
 $(document)
 .on('click','#modify',function(){
 	if($('#modifyqnatitle').val()==""){

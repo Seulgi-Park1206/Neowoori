@@ -56,7 +56,7 @@ table,td{
 	<input class="btn btn-outline-secondary" type=button id=btnUpdate value=수정>
 	<input class="btn btn-outline-secondary" type=button id=btnDelete value=삭제>
 	<!--<input type=button id=btnNew value=새글쓰기>-->
-	<input class="btn btn-outline-secondary" type=button id=btnQnalist value=목록보기 onclick="document.location='http://localhost:8080/app/qna'"></td></tr>
+	<input class="btn btn-outline-secondary" type=button id=btnQnalist value=목록보기 onclick=returnQna()></td></tr>
 </div>
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -69,12 +69,16 @@ String writer=(String)session.getAttribute("userid");
 let dbwriter='${qnalist.writer}';
 let writer= '<%=writer%>';
 
+function returnQna(){
+	location.href='/qna';
+}
+
 $(document)
 .on('click','#btnUpdate',function(){
 	let qnapostnum=$('#faqnum').val();
 	let qnawriter=$("#viewqnatable").find('td:eq(3)').text();
-	document.location="http://localhost:8080/app/qnamodify/"+qnapostnum+"/"+qnawriter;
-	
+	//document.location="http://localhost:8080/app/qnamodify/"+qnapostnum+"/"+qnawriter;
+	location.href='/qnamodify/'+qnapostnum+"/"+qnawriter;
 	//alert(qnawriter);
 	return false;
 })
@@ -84,7 +88,8 @@ $(document)
 	let seldelete=confirm("정말 삭제하시겠습니까?");
 	
 	if(seldelete==true){
-		document.location="http://localhost:8080/app/qnadelete/"+qnapostnum;	
+		//document.location="http://localhost:8080/app/qnadelete/"+qnapostnum;
+		location.href="/qnadelete/"+qnapostnum;
 	}
 	else{
 		return false;	

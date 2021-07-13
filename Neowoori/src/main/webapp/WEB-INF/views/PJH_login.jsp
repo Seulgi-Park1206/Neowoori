@@ -42,7 +42,7 @@
                 <th></th>
                   <td><a class="link" id=findid onclick="find_id();" href="">아이디 찾기</a><a class="link" id=findpw onclick="find_pw();" href="">비밀번호 찾기</a>
                   &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                  <a class="link" id=signup href="http://localhost:8080/app/signup">회원가입</a><br><br><br><br><br><br><br><br></td>
+                  <a class="link" id=signup onclick="signup();">회원가입</a><br><br><br><br><br><br><br><br></td>
                 </tr>
           	  </tbody>
           </table>
@@ -54,6 +54,10 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+function signup(){
+	location.href='signup';
+}
+
 function login(){
 	$.ajax({
 	    url: 'login.do',

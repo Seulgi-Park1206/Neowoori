@@ -297,9 +297,10 @@
 	</select>
 	
 	<select id="jsbPostFindUser" resultType="com.neowoori.app.jsbBPostFindUser">
+		select b.userId
 		from study_post a, members b, meeting_study c
 		where a.postnum=#{param1} and a.mnum=c.mnum and (c.state=20 or c.state=30) and c.unum=b.unum
-		group by b.userId;
+		group by b.userId
 	</select>
 
 	<select id="jsbOnlyGetUserNum"  resultType="Integer">

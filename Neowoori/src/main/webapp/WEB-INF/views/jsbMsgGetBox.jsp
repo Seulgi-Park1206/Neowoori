@@ -16,14 +16,8 @@
 <div class="w3-bar w3-light-grey">
   <a href="#" class="w3-bar-item w3-button" onclick="post_get();">받은 쪽지</a>
   <a href="#" class="w3-bar-item w3-button" onclick="post_set();">보낸 쪽지</a>
-  <a href="#" class="w3-bar-item w3-button" onclick="post_box();">보관함</a>
-  <input type="text" class="w3-bar-item w3-input" placeholder="Search..">
-  <a href="#" class="w3-bar-item w3-button w3-green" onclick=post_find()>검색</a>
 </div>
 <div class="w3-bar w3-border">
-  <button class="w3-bar-item w3-button w3-tiny">보관</button>
-  <button class="w3-bar-item w3-button w3-tiny">수신거부</button>
-  <button class="w3-bar-item w3-button w3-tiny">신고하기</button>
   <button class="w3-bar-item w3-button w3-tiny">삭제하기</button>
 </div>
 <div style="height:506px;">
@@ -78,7 +72,7 @@ $(document)
 	    	//"studyName" : $('#studyName').val() // 스터디명
 	    },
 	    success : function(data){
-	    	console.log(data);
+//	    	console.log(data);
 	    	datas= new Array(data);
 	    	let tblStr='';
 	    	$.each(data, function(e, item){

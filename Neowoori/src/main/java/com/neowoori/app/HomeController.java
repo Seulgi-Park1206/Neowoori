@@ -234,6 +234,8 @@ public class HomeController {
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
 		IDaojsb jsbdao= sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		System.out.println("userNick??: "+jsbdao.jsbQnaGetNum(qnapostnum));
+		System.out.println(sessionUserId);
 		if (jsbdao.jsbQnaGetNum(qnapostnum)==sessionUserId) {
 			dao.deleteqna(qnapostnum);
 		    return "redirect:/qna";
@@ -506,14 +508,20 @@ public class HomeController {
 	
 	@RequestMapping("/meetView/{s_num}") //내 스터디 모임
 	   public String meetView(@PathVariable String s_num, Model model,HttpSession session) {
+		IDaojsb jsbdao = sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		if (s_num.equals(sessionUserId)) {
+		int sessionUserNum = jsbdao.jsbOnlyGetUserNum(sessionUserId);
+		int state = jsbdao.jsbFindUserStateMeeting(Integer.parseInt(s_num), sessionUserNum);
+		System.out.println("meetView"+s_num);
+		System.out.println("getUnum"+sessionUserNum);
+		if (state==20 || state==30) {
 			model.addAttribute("s_num", s_num);
 			return "PJH_meetView";
 		}else {
 			return "redirect:/Invalid";
 		}
 		
+		//return "PJH_meetView";
 	  }
 	@RequestMapping("/faq") //자주 묻는 질문 *삭제페이지
 	   public String faq() {

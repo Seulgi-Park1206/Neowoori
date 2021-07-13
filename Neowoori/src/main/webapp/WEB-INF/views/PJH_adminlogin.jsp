@@ -62,7 +62,7 @@ function adminlogin(){
 	    	var se = '<%=session.getAttribute("adminid")%>';
 	    	if(data == 1){
 	        	 alert("admin 님 환영합니다.");
-	        	 location.href = '/app/adminpage'
+	        	 location.href = '/adminpage'
 	         }else{
 	        	 alert("아이디&비밀번호를 다시 확인해주세요.");
 	         }
@@ -80,7 +80,7 @@ $(document)
 
 //메인화면으로 이동
 .on('click','#btn_main',function(){
-	location.href = '/app/index'
+	location.href = '/index'
 })
 
 function enterkey() {
