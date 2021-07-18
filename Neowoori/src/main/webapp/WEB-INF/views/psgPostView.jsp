@@ -29,7 +29,7 @@
 				</tr>
 				<tr>
 					<th class="tdLeft table-light align-middle">작성자:</th>
-					<td class="tdCenter align-middle"><label class=intext id=writer>${post.userid}</label></td>
+					<td class="tdCenter align-middle"><label class=intext id=writer>${post.unick}</label></td>
 					<th class="tdLeft table-light align-middle">작성일자:</th>
 					<td class="tdCenter align-middle"><label class=intext id=date>${post.post_date}</label></td>
 				</tr>
@@ -52,7 +52,7 @@
 						<tr>
 							<td class=hidCnum>${c.cmtnum}</td>
 							<td class=tdView>
-								<label class="writer">${c.userid} (${c.cmt_date})</label>
+								<label class="writer">${c.unick} (${c.cmt_date})</label>
 								<div class=cmtAbout>
 									<a class=updateCmt>수정</a>
 									<a class=deleteCmt>삭제</a>
@@ -132,7 +132,8 @@
 <script>
 // 스터디 게시글 번호
 var link = window.location.pathname;
-link = link.split('/')[2];
+link = link.split('/').reverse()[0];
+var unick = '${unick}';
 
 // 스터디 게시판 목록으로 가기
 function goList(){
@@ -140,13 +141,10 @@ function goList(){
 }
 // 댓글 추가
 function addComment(res){
-//	console.log(res);
-//	console.log(res['userid']);
-	
 	var result = '<tr><td class="hidCnum">';
 	result += res['cmtnum'];
 	result += '</td><td class=tdView><label class="writer">';
-	result += res['userid'];
+	result += res['unick'];
 	result += ' (';
 	result += res['cmtDate'];
 	result += ')</label><div class="cmtAbout">'
@@ -154,7 +152,6 @@ function addComment(res){
 	result += '</div><textarea class="cmtTxt form-control" readonly>';
 	result += res['cmtContents'];
 	result += '</textarea></td></tr>';
-//	console.log(result);
 	
 	return result;
 }
@@ -177,7 +174,7 @@ function addReCmt(res){
 	result += '</a><div class="replyView input-group w"><span class="input-group-text" id="spanReply">'
 	result += '<img class="replyArrow" src="${path}/resources/img/reply_arrow.png"></span>';
 	result += '<label class="form-control">';
-	result += res['userid'];
+	result += res['unick'];
 	result += ' (';
 	result += res['cmtDate'];
 	result += ')<div class="dropdown">';
@@ -189,14 +186,9 @@ function addReCmt(res){
 	result += '</ul></div><br><label class="reCmtTxt">';
 	result += res['cmtContents'];
 	result += '</label></label></div>';
-//	console.log(result);
 	
 	return result;
 }
-// 댓글/대댓글 수정/삭제
-/* function dropdownMenu(){
-	var dropdown = 
-} */
 // 본문 내용 크기에 맞게 높이 자동 조절
 function adjustHeight() {
 	var contents = $('#content');
@@ -209,7 +201,6 @@ function adjustModalHeight() {
 	var contents = $('#postContents');
 	contents[0].style.height = 'auto';
     var contentsHeight = contents.prop('scrollHeight');
-    //console.log('postContents: ' + contentsHeight);
     contents.css('height', contentsHeight);
 }
 // 댓글 줄바꿈 체크
@@ -231,10 +222,7 @@ function clearCmt() {
 
 $(document)
 .ready(function(){
-//	console.log(link);
-	var uid = '${userid}';
-	uid='human1';
-	if($('#writer').text() == uid) {
+	if($('#writer').text() == unick) {
 		$('#btnUpdate, #btnDelete').show();
 	}
 	adjustHeight();
@@ -252,7 +240,7 @@ $(document)
 
 // 댓글 쓰기
 .on('click', '#btnReply', function(){
-	if('${userid}' != ""){ // 로그인을 하지 않은 경우 실행 x
+	if(unick != ""){ // 로그인을 하지 않은 경우 실행 x
 		var cmt = $('#txtWrite').val().trim();
 		if(cmt == null || cmt == ''){
 			alertModal('댓글 쓰기','댓글 내용을 입렵하세요.');
@@ -293,9 +281,8 @@ $(document)
 	var cmt = $(this).parent().siblings('.cmtTxt');
 	var writer = cmt.siblings('.writer').text();
 	writer = writer.split(' (')[0];
-//	console.log('작성자: '+writer);
 	var modalTitle = '댓글 삭제';
-	if('${userid}' == writer){
+	if(unick == writer){
 		$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
 		confirmModal(modalTitle, '정말 댓글을 삭제하시겠습니까?');
 	} else {
@@ -308,7 +295,6 @@ $(document)
 // 삭제 기능
 .on('click', '#btnYes', function(){
 	var th = $(this).parent().siblings('.modal-header').children().text();
-//	console.log('th: ' + th);
 	if(th == '게시물 삭제'){
 		$.ajax({
 			url:'${path}/deletePost.do',
@@ -326,11 +312,9 @@ $(document)
 		});	
 	} else {	// 댓글/대댓글 삭제
 		let cNum = $('#hiddenCnum').text();
-		//console.log('cNum: '+cNum);
 		if(th == ('댓글 삭제'))	cmtType = '댓글';
 		else	cmtType = '대댓글';
 		let delCmt = {type:cmtType, postNum:link, coNum:cNum};
-		//console.log(delCmt);
 		
 		$.ajax({
 			url:'${path}/deleteCmt.do',
@@ -349,12 +333,9 @@ $(document)
 						}
 					});					
 				} else { // 대댓글 삭제
-					console.log(result);
 					// 해당 대댓글 삭제
 					$('.hidReCnum').each(function(index, upCmt){
-//						console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
 						if($(this).text() == $('#hiddenCnum').text()){ // 수정 중인 댓글
-//							console.log('--- 삭제!');
 							var idx = $(this).index();
 							$(this).siblings(':eq('+idx+')').remove();
 							$(this).remove();
@@ -378,7 +359,6 @@ $(document)
 
 // 게시물 수정 버튼 클릭
 .on('click', '#btnUpdate', function(){
-//	console.log('수정 버튼 클릭');
 	// 모달창으로 게시글 수정
 	$('#postTitle').val($('#title').text());
 	$('#postContents').val($('#content').text());
@@ -412,11 +392,9 @@ $(document)
 	// 해당 댓글 번호
 	$('#hiddenCnum').text($(this).parent().parent('td').siblings('.hidCnum').text());
 	var cmt = $(this).parent().siblings('.cmtTxt');
-//	console.log('댓글 수정 클릭: '+cmt.attr('class'));
 	var writer = cmt.siblings('.writer').text();
 	writer = writer.split(' (')[0];
-//	console.log('작성자: '+writer);
-	if('${userid}' == writer){
+	if(unick == writer){
 		// 댓글 수정 Modal 보기
 		$('#updateCmtContents').val(cmt.text());
 		$('#updateCmtModal').modal('show');
@@ -429,7 +407,6 @@ $(document)
 
 // 댓글/대댓글 수정 완료 클릭
 .on('click', '#btnupdateCmtComplete', function(){
-//	console.log('수정 완료 클릭');
 	var cmtType = '';
 	var updateTxt = '';
 	
@@ -439,10 +416,8 @@ $(document)
 			cmtType = '댓글';
 			// 수정한 댓글이 있는 textarea
 			var txt = $(this).parent().siblings('.modal-body').children('div').children('textarea');
-//			console.log('수정한 댓글 입력: '+txt.val());
 			// 수정된 댓글 내용으로 바꾸기
 			$('.hidCnum').each(function(index, upCmt){
-//				console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
 				if($(this).text() == $('#hiddenCnum').text()){ // 수정 중인 댓글
 					updateTxt = txt.val().trim();
 					$(this).siblings('.tdView').children('.cmtTxt').val(updateTxt);
@@ -451,31 +426,23 @@ $(document)
 			
 		}else {
 			cmtType = '대댓글';
-//			console.log('대댓글 수정이야');
 			// 수정한 대댓글이 있는 textarea
 			var txt = $(this).parent().siblings('.modal-body').children('div').children('textarea');
-//			console.log('수정한 댓글 입력: '+txt.val());
 			// 수정된 대댓글 내용으로 바꾸기
 			$('.hidReCnum').each(function(index, upCmt){
-//				console.log(index+': '+$(this).text()+'/'+$('#hiddenCnum').text());
 				if($(this).text() == $('#hiddenCnum').text()){ // 수정 중인 댓글
-//					console.log('--- 수정!');
 					var idx = $(this).index();
-//					console.log('idx: '+idx);
 					var upReCmt = $(this).siblings(':eq('+idx+')').children('label').children('label');	//.reCmtTxt
-//					console.log('upReCmt: '+upReCmt.text());
 					updateTxt = txt.val().trim();
 					upReCmt.text(updateTxt);
 					
 					return false;
 				}
 			});
-//			console.log('updateTxt: '+updateTxt);
 		}
 		
 		// 수정한 댓글 db에 저장
 		var cmt = {type:cmtType, pNum:link, cNum:$('#hiddenCnum').text(), contents:updateTxt};
-//		console.log('cmt: '+cmt);
 		$.ajax({
 			url:'${path}/updateCmt.do',
 			data:JSON.stringify(cmt),
@@ -495,18 +462,13 @@ $(document)
 
 // 댓글 클릭(대댓글 쓰기) 클릭
 .on('click', '.reCmt', function(){
-//	console.log('-----------------------------------------------------');
 	var divCount = $(this).parent().parent().children('div');
 	var divCount_class = divCount.attr('class'); // .cmtAbout
-//	console.log('tdView 내의 div 개수: '+divCount.length);
-//	console.log('class: ' + divCount_class);
 	
 	// 해당 댓글 번호
 	var replyNum = $(this).parent().parent().siblings('.hidCnum').text();
-//	console.log('replyNum: '+replyNum);
 	// 추가할 위치
 	var td = $(this).parents('td');	// .tdView
-//	console.log('>>> 추가할 위치: '+td.attr('class'));
 	
 	if(divCount.length == 1){	// 대댓글 안보임
 		td.append('<div class=divReCmt></div>');
@@ -518,10 +480,8 @@ $(document)
 			dataType: 'json',
 			method: 'post',
 			success: function(res){
-//				console.log('>>> res.length: ' + res.length);
 				if(res.length > 0){	// 대댓글 존재
 					$.each(res, function(index, item){
-//						console.log('index: '+index);
 						td.children('.divReCmt').append(addReCmt(item));
 					});
 				}
@@ -533,7 +493,6 @@ $(document)
 			}
 		});
 	} else {	// 대댓글 보임
-//		console.log('-- 대댓글 제거');
 		td.children(':last').remove();	// 대댓글 제거
 	}
 	
@@ -544,13 +503,11 @@ $(document)
 .on('click', '.btnReCmt', function(){
 	// 대댓글 입력한 input
 	var reCmt = $(this).siblings('.txtWrite');
-//	console.log('대댓글: ' + reCmt.val());
 	
 	// 대댓글 등록
-	if('${userid}' != ""){ // 로그인을 하지 않은 경우 실행 x
+	if(unick != ""){ // 로그인을 하지 않은 경우 실행 x
 		var replyNumTd = $(this).parent().parent().parent().siblings('.hidCnum');
 		var cnum = replyNumTd.text();
-//		console.log('cnum: '+cnum);
 		var cts = reCmt.val().trim();
 		if(cts != null && cts != ''){
 			var cmt = {pNum:link, parentNum:cnum, contents:cts};
@@ -586,20 +543,16 @@ $(document)
 .on('click', '.updateReCmt', function(){
 	$('#updateModalLabel').text('대댓글 수정');
 	var idx = $(this).parent().parent().parent().parent().parent();
-//	console.log('idx: '+idx.index());
 	var preIdx = idx.index()-1;
-//	console.log('idx-1: '+idx.siblings(':eq('+preIdx+')').text());
 	// 해당 댓글 번호
 	$('#hiddenCnum').text(idx.siblings(':eq('+preIdx+')').text());
 	
 	var cmt = $(this).parent().parent().parent().parent();	// label(.form-control)
-//	console.log('대댓글 수정 클릭: '+cmt.attr('class'));
 	var writer = cmt.text();
 	writer = writer.split(' (')[0];
-//	console.log('작성자: '+writer);
 	var reCmtTxt = cmt.children('.reCmtTxt').text();
-//	console.log('대댓글: '+reCmtTxt);
-	if('${userid}' == writer){
+	
+	if(unick == writer){
 		// 댓글 수정 Modal 보기
 		$('#updateCmtContents').val(reCmtTxt);
 		$('#updateCmtModal').modal('show');
@@ -613,17 +566,14 @@ $(document)
 // 대댓글 삭제
 .on('click', '.deleteReCmt', function(){
 	var idx = $(this).parent().parent().parent().parent().parent();
-//	console.log('idx: '+idx.index());
 	var preIdx = idx.index()-1;
-//	console.log('idx-1: '+idx.siblings(':eq('+preIdx+')').text());
 	
 	var modalTitle = '대댓글 삭제';
 	var cmt = $(this).parent().parent().parent().parent();	// label(.form-control)
-//	console.log('대댓글 수정 클릭: '+cmt.attr('class'));
 	var writer = cmt.text();
 	writer = writer.split(' (')[0];
-//	console.log('작성자: '+writer);
-	if('${userid}' == writer){
+
+	if(unick == writer){
 		// 해당 댓글 번호
 		$('#hiddenCnum').text(idx.siblings(':eq('+preIdx+')').text());
 		confirmModal(modalTitle, '정말 댓글을 삭제하시겠습니까?');

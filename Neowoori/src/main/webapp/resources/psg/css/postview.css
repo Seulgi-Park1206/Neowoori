@@ -162,5 +162,5 @@ div.dropdown {
 	overflow:hidden;
 }
 .hidPCnum, .hidReCnum {
-	/* display: none; */
+	display: none;
 }

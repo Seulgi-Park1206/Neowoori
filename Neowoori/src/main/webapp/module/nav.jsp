@@ -11,9 +11,9 @@
 		<nav>
 			<a class="link" id=searchLink href="${path}/search">찾기</a>
 			<a class="link" href="${path}/create">만들기</a>
-			<a class="linklog" href="" onclick="click_add();">쪽지함</a>
+			<a class="linklog" href="" onclick="click_add()">쪽지함</a>
 			<a class="linklog" id=mystudy onclick="mystudy()">내스터디</a>
-			<a class="linklog" id=userid href="${path}/mypage">님</a>
+			<a class="linklog" id=user href="${path}/mypage">님</a>
 			<a class="linklog" id=logout>로그아웃</a>
 			<a class="link" id=login href="${path}/login">로그인</a>
 		</nav>
@@ -27,12 +27,12 @@ function mystudy(){
 }
 
 function islogin(){
-	let uid = '${userid}';
+	let unick = '${unick}';
 	//console.log(uid+'님');
-	if(uid != ""){
+	if(unick != ""){
 		//console.log('login');
-		let u = uid + '님';
-		$('#userid').text(u);
+		let u = unick + '님';
+		$('#user').text(u);
 		$('.linklog').show();
 		$('#login').hide();
 	} else {

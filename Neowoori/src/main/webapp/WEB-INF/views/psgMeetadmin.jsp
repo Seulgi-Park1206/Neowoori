@@ -144,10 +144,12 @@
 <script>
 // 스터디 번호
 var link = window.location.pathname;
-s_num = link.split('/')[2];
+//s_num = link.split('/')[2];
+s_num = link.split('/')[3];
 
 // 스터디 수정 관련 변수
 var studyName, chkweek, studyHour, studyMin, playHour, playMin, personnel = '';
+
 // alertTitle
 var alTitle = '';
 
@@ -256,8 +258,8 @@ $(document)
 .ready(function(){
 	adjustHeight($('#explain'));
 //	console.log(s_num);
-	/* var uid = '${userid}';
-	// 닉네임이구나..참..
+/* 	var uid = '${unick}';
+	
 	if(uid != $('#admin').text()){
 		alert('관리자가 아닙니다.');
 		location.href = '${path}/index';

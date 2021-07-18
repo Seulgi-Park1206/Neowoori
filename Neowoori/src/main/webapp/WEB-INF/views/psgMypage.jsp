@@ -38,7 +38,7 @@
 				</tr>
 				<tr>
 					<th class="tdLeft table-light align-middle">이름:</th>
-					<td colspan=2 class="tdCenter align-middle"><label class="intext align-middle"  id=uname>${member.uName}</label></td>
+					<td colspan=2 class="tdCenter align-middle"><label class="intext align-middle" id=uname>${member.uName}</label></td>
 				</tr>
 				<tr>
 					<th class="tdLeft table-light align-middle">닉네임:</th>
@@ -51,7 +51,7 @@
 				<tr class="hidden align-top"><th class="table-light align-middle"></th><td colspan=2 class="tdCheck align-middle"><label id=nickCheckResult></label></td></tr>
 				<tr>
 					<th class="tdLeft table-light align-middle">생년월일:</th>
-					<td colspan=2 class="tdCenter align-middle"><label class="intext align-middle" id=birth>${member.uYear}${member.uBirthday}</label></td>
+					<td colspan=2 class="tdCenter align-middle"><label class="intext align-middle" id=birth>${member.uYear}.${member.uBirthday}</label></td>
 				</tr>
 				<tr>
 					<th class="tdLeft table-light align-middle">성별:</th>
@@ -102,8 +102,9 @@ $(document)
 //	console.log('data: ' + data);
 	let inputId = $(this).parent().parent().find('td:eq(0) input').attr('id');
 //	console.log('inputId: ' + inputId);
+	var chk = $(this).parent().parent().prev().find('td:last label');
 	
-	if(data == ''){
+	if(data == '' || chk.text() == '불일치'){
 		if(inputId == 'upw') {alert('비밀번호를 다시 입력해주세요.');}
 		else if(inputId == 'unick') {alert('닉네임을 다시 입력해주세요.');}
 		else if(inputId == 'umobile') {alert('연락처를 다시 입력해주세요.');}

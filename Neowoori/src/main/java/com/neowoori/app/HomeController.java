@@ -611,6 +611,11 @@ public class HomeController {
 		if(dto == 1) { //결과 값이 있으면 아이디 존재
 			dao.pjhstate(ID); // 마지막 접속날짜
 			session.setAttribute("userid", ID);
+			// 슬기 추가 /////////////////////////////////////////////
+			IDaopsg dao2 = sqlSession.getMapper(IDaopsg.class);
+			BMembers members = dao2.psgUserInfo(ID);
+			session.setAttribute("unick", members.getuNick());
+			//////////////////////////////////////////////////////
 			return "1";
 		} else {		//없으면 아이디 존재 X
 			return "0";
@@ -943,7 +948,7 @@ public class HomeController {
 	}
 	// 스터디 게시판 게시글 및 댓글 보기
 	@RequestMapping("/postView/{post_num}")
-	public String postView(@PathVariable int post_num, Model model, HttpSession session) {
+	public String postView(@PathVariable int post_num, Model model, HttpSession session, HttpServletRequest request) {
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
 		IDaojsb jsbdao = sqlSession.getMapper(IDaojsb.class);
 		ArrayList<jsbBPostFindUser> rev = jsbdao.jsbPostFindUser(post_num);
@@ -956,6 +961,9 @@ public class HomeController {
 		}
 		if(flag==true) {
 			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+//			BMembers members = dao.psgUserInfo(sessionUserId);
+//			//model.addAttribute("user", members);
+//			session.setAttribute("unick", members.getuNick());
 			model.addAttribute("post", dao.psgSelectStudyPost(post_num));
 			model.addAttribute("cmt", dao.psgSelectCmt(post_num));
 			return "psgPostView";
@@ -980,7 +988,7 @@ public class HomeController {
 		psgBViewCmt cmt = dao.psgAddCmtSelect();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("cmtnum",cmt.getCmtnum());
-		map.put("userid", cmt.getUserid());
+		map.put("unick", cmt.getUnick());
 		map.put("cmtDate", cmt.getCmt_date());
 		map.put("cmtContents", cmt.getCmt_contents());
 		JSONObject jo = new JSONObject(map);
@@ -1054,7 +1062,7 @@ public class HomeController {
 		for(int i=0; i<reCmt.size();i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
 			map.put("cmtnum",reCmt.get(i).getCmtnum());
-			map.put("userid", reCmt.get(i).getUserid());
+			map.put("unick", reCmt.get(i).getUnick());
 			map.put("cmtDate", reCmt.get(i).getCmt_date());
 			map.put("cmtContents", reCmt.get(i).getCmt_contents());
 			JSONObject jo = new JSONObject(map);
@@ -1083,7 +1091,7 @@ public class HomeController {
 		psgBViewCmt reCmt = dao.psgAddReCmtSelect();
 		HashMap<String, Object> map = new HashMap<String, Object>();
 		map.put("cmtnum",reCmt.getCmtnum());
-		map.put("userid", reCmt.getUserid());
+		map.put("unick", reCmt.getUnick());
 		map.put("cmtDate", reCmt.getCmt_date());
 		map.put("cmtContents", reCmt.getCmt_contents());
 		JSONObject jo = new JSONObject(map);
