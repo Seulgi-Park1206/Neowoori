@@ -222,10 +222,6 @@ function clearCmt() {
 
 $(document)
 .ready(function(){
-<<<<<<< HEAD
-=======
-	var unick = '${user.uNick}';
->>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 	if($('#writer').text() == unick) {
 		$('#btnUpdate, #btnDelete').show();
 	}

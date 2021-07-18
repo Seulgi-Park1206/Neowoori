@@ -971,13 +971,6 @@ public class HomeController {
 		}
 		if(flag==true) {
 			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
-<<<<<<< HEAD
-//			BMembers members = dao.psgUserInfo(sessionUserId);
-//			//model.addAttribute("user", members);
-//			session.setAttribute("unick", members.getuNick());
-=======
-			model.addAttribute("user", dao.psgUserInfo(sessionUserId));
->>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 			model.addAttribute("post", dao.psgSelectStudyPost(post_num));
 			model.addAttribute("cmt", dao.psgSelectCmt(post_num));
 			return "psgPostView";
