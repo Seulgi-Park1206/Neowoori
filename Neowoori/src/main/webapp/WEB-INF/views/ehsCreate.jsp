@@ -315,9 +315,9 @@ function signupajax(){
     	    	"studyName" : $('#studyName').val(), // 스터디명
     	    	"userId" : $("#hid").val()
     	    },
-    	    success : function(data){
+    	    success : function(datas){
     	    	if (data != 0){
-    	    		location.href='${path}/meetList/'+data;
+    	    		location.href='/meetadmin/'+data;
     	    	}else{
     	    		alert("스터디는 최대 10개까지만 만들 수 있습니다.");
     	    	}

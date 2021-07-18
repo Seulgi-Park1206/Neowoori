@@ -133,34 +133,19 @@ var markers = [];
 var sessionVal = "<%=session.getAttribute("userid")%>";
 
 function mapDateView(){
-	/* 카테고리 삭제
-	var tmpCate2;
-	if ($('#dropdownMenuLink2').text()=="상세 카테고리") {
-		tmpCate2="dontSel";
-	}else{
-		tmpCate2=$('#dropdownMenuLink2').text();
-	}
-	console.log("mapData"+$('#dropdownMenuLink').text());
-	console.log("mapData2"+tmpCate2);
-	*/
 	$.ajax({
         url:'findMap.do'
         , method : 'POST'
-        , data:	{} //{"cate1": $('#dropdownMenuLink').text(),"cate2": tmpCate2}
-        //, contentType : 'application/json; charset=UTF-8'
+        , data:	{}
         , dataType : 'json'
         , success :
         	function(resp){
         	delMarkers();
-        	//marker.setMap(null);
-        	//console.log(resp);
         	if (navigator.geolocation) {
-        	    // GeoLocation을 이용해서 접속 위치를 얻어옵니다
         	    navigator.geolocation.getCurrentPosition(function(position) {
         	        var lat = position.coords.latitude, // 위도
         	            lon = position.coords.longitude; // 경도
         	        var locPosition = new kakao.maps.LatLng(lat, lon)
-        	            //message = '';
         	        displayMarker(locPosition);
         	      });
         	} else {
@@ -168,9 +153,9 @@ function mapDateView(){
         	        message = 'geolocation에러.'        	    
         	    displayMarker(locPosition);
         	}
-        	var imageSrc = '${path}/resources/jsb/icon_0001.png', // 마커이미지의 주소입니다    
-            imageSize = new kakao.maps.Size(38, 42), // 마커이미지의 크기입니다
-            imageOption = {offset: new kakao.maps.Point(17, 42)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+        	var imageSrc = '${path}/resources/jsb/icon_0001.png',
+            imageSize = new kakao.maps.Size(38, 42),
+            imageOption = {offset: new kakao.maps.Point(17, 42)};
         	
             var markerImage1 = new kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
         	
@@ -182,21 +167,15 @@ function mapDateView(){
         	    }); 
         	    map.setCenter(locPosition);      
         	    loc=locPosition;
-  //      	    console.log(loc);
         	};
 	        	$.each(resp, function (i, item){
 	        		mapChk=1;
-	        		//console.log(item.lati);
 	        		var positions = [
-			        		{
-			        			//content: '<div class="customoverlay"><a><span class="title">'+item.mName+'</span></a></div>', 
-			        	        latlng: new kakao.maps.LatLng(item.lati, item.longi)
-			        		}
+			        		{latlng: new kakao.maps.LatLng(item.lati, item.longi)}
 	        			]
-
-	            	var imageSrc2 = '${path}/resources/jsb/icon_0002.png', // 마커이미지의 주소입니다    
-	                imageSize2 = new kakao.maps.Size(38, 42), // 마커이미지의 크기입니다
-	                imageOption2 = {offset: new kakao.maps.Point(17, 42)}; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
+	            	var imageSrc2 = '${path}/resources/jsb/icon_0002.png', // 
+	                imageSize2 = new kakao.maps.Size(38, 42), // 
+	                imageOption2 = {offset: new kakao.maps.Point(17, 42)}; // 
 	            	
 	                var markerImage2 = new kakao.maps.MarkerImage(imageSrc2, imageSize2, imageOption2)
 
@@ -205,30 +184,18 @@ function mapDateView(){
 	        	        position: positions[0].latlng, // 마커의 위치
 	        	        image: markerImage2
 	        	    });
-					
-	        	    //var infowindow = new kakao.maps.InfoWindow({
-	        	    //    content: positions[0].content // 인포윈도우에 표시할 내용
-	        	    //});
-	        	    
 	        	    var infowindow = new kakao.maps.InfoWindow({
 	        	        content: '<div style="padding:5px;font-size:12px;">'+item.mName+'</div>' // 인포윈도우에 표시할 내용
 	        	    });
-	        	    
-	        	    
 	        	    kakao.maps.event.addListener(marker, 'mouseover', makeOverListener(map, marker, infowindow));
 	        	    kakao.maps.event.addListener(marker, 'mouseout', makeOutListener(infowindow));
 	        	    kakao.maps.event.addListener(marker, 'click', function() {
-	        	        // 마커 위에 인포윈도우를 표시합니다
-	        	        //console.log(item.mName);
-	        	        //console.log(item.mNum);
 	        	        addModal(item.uNick,item.mName,item.category1,item.category2,item.mContents,item.mDay,item.mLevel,item.mPTime,item.mTime,item.mWhere,item.mNum,item.mWhere2,item.mWhere3,item.mPersonnel,item.cnt);
 	        	        addModalBtn(item.mNum,item.mPersonnel,item.cnt);
 	        	        btnTest();
 	        	    });
 	        	    markers.push(marker);
 	        	})
-	        	//console.log("실행시키자");
-	        	//panTo(loc.La,loc.Ma);
         	}
 	})
 
@@ -653,8 +620,9 @@ function btnSearch(){
 		
 	}else{
 		$("#map").show();
+		relayout();
 	}
-	relayout();
+	
 }
 </script>
 </html>

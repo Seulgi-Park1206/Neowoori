@@ -62,7 +62,7 @@ th, td {
 	    <button type="button" class="btn btn-outline-secondary">5</button>
 	  	</div>-->
 	  	<div style="text-align:right;">
-	  	<input class="btn btn-outline-secondary" id=noticenewpost type=button value="새글쓰기" onclick="document.location='http://localhost:8080/app/noticewrite'">
+	  	<input class="btn btn-outline-secondary" id=noticenewpost type=button value="새글쓰기" onclick=newpost()>
 	  	</div>
 <div class="w3-center">
 	
@@ -80,6 +80,10 @@ th, td {
 let userid='${userid}';
 let prePageNum=1; //이전 페이지 번호
 let lastPage="${lastPage}";
+
+function newpost(){
+	location.href='/noticewrite';
+}
 
 $(document)
 .ready(function(){
@@ -134,14 +138,14 @@ $(document)
 .on('click','#tbl1 tr:not(:first)',function(){ //첫번째행 제외하고 클릭시
 	
 	let noticepostid=$(this).find("td:eq(0)").find("input[name=noticepostid]").val();
-	document.location="http://localhost:8080/app/notice/"+noticepostid;
+	document.location="/notice/"+noticepostid;
 	
 	return false;
 })
 
+
 //notice 공지사항 작성 버튼 => 로그인 id human 아니면 버튼 숨김
-var adminChk = '<%=session.getAttribute("adminid")%>';
-if(adminChk==''){ 
+if(userid!='human'){ 
 	$('#noticenewpost').hide();
 	$('#noticeDel').hide();
 }

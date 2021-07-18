@@ -60,7 +60,7 @@ public class HomeController {
 	
 	@RequestMapping("/") //
 	public String toIndex() {
-		return "ygwIndex";
+		return "redirect:/index";
 	}
 	
 	@RequestMapping("/Invalid") //인덱스 page
@@ -83,7 +83,7 @@ public class HomeController {
 	   public String meetwrite(HttpSession session) {
 		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		if(sessionUserId!=null) {
+		if(sessionUserId!="null") {
 			return "ygwMeetwrite";
 		}else{
 			return "redirect:/index";
@@ -94,7 +94,7 @@ public class HomeController {
 	@RequestMapping("/noticewrite") //공지사항 글쓰기
 	   public String noticewrite(HttpSession session) {
 		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
-		if(sessionUserId!=null) {
+		if(sessionUserId!="null") {
 			return "ygwNoticewrite";
 		}else{
 			return "redirect:/adminlogin";
@@ -152,7 +152,7 @@ public class HomeController {
 	@RequestMapping("/qnawrite") //자주 묻는 질문
 	   public String Qnawrite(HttpSession session) {
 		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
-		if(sessionUserId!=null) {
+		if(sessionUserId!="null") {
 			return "ygw_Qnawrite";
 		}else{
 			return "redirect:/adminlogin";
@@ -234,9 +234,9 @@ public class HomeController {
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
 		IDaojsb jsbdao= sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		System.out.println("userNick??: "+jsbdao.jsbQnaGetNum(qnapostnum));
-		System.out.println(sessionUserId);
-		if (jsbdao.jsbQnaGetNum(qnapostnum)==sessionUserId) {
+		//System.out.println("userNick??: "+jsbdao.jsbQnaGetNum(qnapostnum));
+		//System.out.println(sessionUserId);
+		if (jsbdao.jsbQnaGetNum(qnapostnum).equals(sessionUserId)) {
 			dao.deleteqna(qnapostnum);
 		    return "redirect:/qna";
 		} else {
@@ -249,7 +249,7 @@ public class HomeController {
 	   public String deleteNotice(@PathVariable int noticepostnum,Model model,HttpSession session) {
 		IDaoygw dao= sqlSession.getMapper(IDaoygw.class);
 		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
-		if(sessionUserId!=null) {
+		if(sessionUserId!="null") {
 		dao.deleteNotice(noticepostnum);
 		 return "redirect:/notice";
 		}else {
@@ -402,21 +402,18 @@ public class HomeController {
 	
 	/* 비밀번호 찾기 임시 비밀번호 발송 메소드*/
 	public void findpwServer(String id,String email) throws Exception{
-		
 		/* 뷰(View)로부터 넘어온 데이터 확인 */
 		//System.out.println(id);
 		//System.out.println(email);
-				
 		IDaoygw dao=sqlSession.getMapper(IDaoygw.class);
 				
 		/* 인증번호(난수) 생성 */
 		Random random = new Random();
 		int tempPassword = random.nextInt(888888) + 111111;
 		String password = Integer.toString(tempPassword);
-		
+
 		/* 비밀번호 임시비밀번호로 update */
 		dao.updatePassword(password,id);
-		
 		
 		/* 이메일 보내기 */
 		String setFrom = "brokerdev99@gmail.com";
@@ -566,8 +563,21 @@ public class HomeController {
 			String juso = request.getParameter("ujuso");
 			String lati = request.getParameter("ulati");
 			String longi = request.getParameter("ulongi");
+			System.out.println(id);
+			System.out.println(name);
+			System.out.println(pw);
+			System.out.println(nick);
+			System.out.println(mobile);
+			System.out.println(gender);
+			System.out.println(year);
+			System.out.println(birth);
+			System.out.println(email);
+			System.out.println(juso);
+			System.out.println(lati);
+			System.out.println(longi);
+			
 			IDaopjh dao = sqlSession.getMapper(IDaopjh.class);
-			dao.pjhsignup(id, pw, name, nick, year, birth, gender, mobile, email, juso, lati, longi);
+			//dao.pjhsignup(id, pw, name, nick, year, birth, gender, mobile, email, juso, lati, longi);
 	   }
 	
 	
@@ -961,9 +971,13 @@ public class HomeController {
 		}
 		if(flag==true) {
 			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
+<<<<<<< HEAD
 //			BMembers members = dao.psgUserInfo(sessionUserId);
 //			//model.addAttribute("user", members);
 //			session.setAttribute("unick", members.getuNick());
+=======
+			model.addAttribute("user", dao.psgUserInfo(sessionUserId));
+>>>>>>> branch 'main' of https://github.com/Seulgi-Park1206/Neowoori.git
 			model.addAttribute("post", dao.psgSelectStudyPost(post_num));
 			model.addAttribute("cmt", dao.psgSelectCmt(post_num));
 			return "psgPostView";
@@ -1133,7 +1147,7 @@ public class HomeController {
 		IDaojsb jsbdao = sqlSession.getMapper(IDaojsb.class);
 		int result = jsbdao.jsbFindUserStateMeeting(study_id, jsbdao.jsbOnlyGetUserNum(sessionUserId));
 		
-		if(result==30) {
+		if(result==30 || result==20) {
 			IDaopsg dao = sqlSession.getMapper(IDaopsg.class);
 			System.out.println(study_id);
 			model.addAttribute("studyInfo", dao.psgStudyInfo(study_id));
@@ -1171,9 +1185,8 @@ public class HomeController {
 	public String meetUser(@PathVariable int study_id, Model model,HttpSession session) {
 		IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 		String sessionUserId = String.valueOf(session.getAttribute("userid"));
-		//System.out.println(sessionUserId);
-		//System.out.println(study_id);
-		if(sessionUserId!=null) {
+
+		if(sessionUserId!="null") {
 			BMembers userInfo=dao.jsbGetUser(sessionUserId);
 			int getUNum=userInfo.getuNum();
 			int chkStudyAdmin=dao.jsbStudyAmdinboolean(getUNum,study_id);
@@ -1182,7 +1195,6 @@ public class HomeController {
 				return "psgMeetuserTest";
 			}else {
 				return "redirect:/Invalid";
-				//return "redirect:/meetList/"+sessionUserId; //혹은 에러페이지..
 			}
 		}else {
 			return "redirect:/index";
@@ -1192,7 +1204,7 @@ public class HomeController {
 	@RequestMapping("/admin/{question_id}")
 	public String question(@PathVariable String question_id, Model model,HttpSession session) {
 		String sessionUserId = String.valueOf(session.getAttribute("adminid"));
-		if(sessionUserId!=null) {
+		if(sessionUserId!="null") {
 			model.addAttribute("q_id", question_id);
 			return "psgQna";
 		}else{
@@ -1231,8 +1243,14 @@ public class HomeController {
 	   }
 	@RequestMapping("/search") //get
 	   public String search(Model model,HttpSession session) {
-	
-	      return "jsbSearch";
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		System.out.println("sessionUserId");
+		if(sessionUserId!="null") {
+			return "jsbSearch";
+		}else {
+			return "redirect:/index";
+		}
+	      
 	   }
 	
 	@RequestMapping("/test") //get
@@ -1278,13 +1296,28 @@ public class HomeController {
 			String mWhere2 = request.getParameter("ujuso2");
 			String mWhere3 = request.getParameter("ujuso3");
 			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
-			
+			System.out.println();
 			BMembers mem = dao.jsbGetUser(loginUId);
 			int mUserNum = mem.getuNum();
 			int count = dao.jsbStrudyCreateCount(mUserNum);
 			
 			if(count<=11) {
-				dao.jsbCreateStudy(mUserNum,mName,CATEGORY1,CATEGORY2,mWhere,mDay,mTime,mPtime,mLevel,mContents,mPersonnel,lati,longi,mWhere2,mWhere3);
+				dao.jsbCreateStudy(
+						mUserNum,	//1
+						mName,		//2
+						CATEGORY1,	//3
+						CATEGORY2,//4
+						mWhere,		//5
+						mDay,			//6
+						mTime,			//7
+						mPtime,		//8
+						mLevel,		//9
+						mContents,	//10
+						mPersonnel,//11
+						lati,				//12
+						longi,			//13
+						mWhere2,	//14
+						mWhere3);	//15
 				return mUserNum;
 			}else {
 				return 0;
@@ -1297,6 +1330,7 @@ public class HomeController {
 	@RequestMapping(value="/jsbCreateToMeet.do", method=RequestMethod.POST)
 	   public void createToMeetAjax(String studyName,String userId,
 			   HttpServletRequest request,Model model) {
+		
 			String mName = request.getParameter("studyName");
 			String loginUId = request.getParameter("userId");
 			IDaojsb dao = sqlSession.getMapper(IDaojsb.class);
@@ -1307,6 +1341,7 @@ public class HomeController {
 //			System.out.println("reqNUM:"+reqMNum);
 //			System.out.println(mUserNum+","+reqMNum+","+stateNum);
 			if(reqMNum > 1) dao.jsbCreateMeet(mUserNum,reqMNum,stateNum);
+			
 			}
 	
 	@ResponseBody	/*가입신청 상태인지 아닌지 확인*/
@@ -1662,7 +1697,7 @@ public class HomeController {
 		public String meetUserTest(@PathVariable int study_id, Model model,HttpSession session) {
 			IDaojsb dao=sqlSession.getMapper(IDaojsb.class);
 			String sessionUserId = String.valueOf(session.getAttribute("userid"));
-			if(sessionUserId!=null) {
+			if(sessionUserId!="null") {
 				BMembers userInfo=dao.jsbGetUser(sessionUserId);
 				int getUNum=userInfo.getuNum();
 				int chkStudyAdmin=dao.jsbStudyAmdinboolean(getUNum,study_id);
@@ -1698,8 +1733,15 @@ public class HomeController {
 */
 	
 	@RequestMapping("/create") //게시글만들기
-	   public String create() {
-	      return "ehsCreate";
+	   public String create(HttpSession session) {
+		String sessionUserId = String.valueOf(session.getAttribute("userid"));
+		System.out.println(sessionUserId);
+		if(sessionUserId!="null") {
+			return "ehsCreate";
+		}else {
+			return "redirect:/index";
+		}
+	      
 	   }
 	
 //	@RequestMapping("/findid") //아이디 찾기

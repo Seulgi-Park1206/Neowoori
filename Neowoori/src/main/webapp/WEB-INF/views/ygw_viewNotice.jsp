@@ -37,7 +37,7 @@ table,td{
 		<td class="table-light">제목</td><td colspan=3>${noticelist.title}</td>
 	</tr>
 	<tr>
-		<td class="table-light">작성자</td><td>관리자</td><td class="table-light">작성일자</td><td>${noticelist.admin_date}</td>
+		<td class="table-light">작성자</td><td>관리자</td><td class="table-light">작성일자</td><td>${noticelist.admin_date}<input type=hidden id=noticenum value="${noticelist.postnum}"></td>
 	</tr>
 	<tr>
 		<td class="table-light">내용</td><td colspan=3>${noticelist.admin_contents}</td>
@@ -48,7 +48,7 @@ table,td{
 	<!--<input type=button id=btnUpdate value=수정>-->
 	<input class="btn btn-outline-secondary" type=button id=btnDelete value=삭제>
 	<!--<input type=button id=btnNew value=새글쓰기>-->
-	<input class="btn btn-outline-secondary" type=button id=btnNoticelist value=목록보기 onclick="document.location='http://localhost:8080/app/notice'"></td></tr>
+	<input class="btn btn-outline-secondary" type=button id=btnNoticelist value=목록보기 onclick="document.location='/notice'"></td></tr>
 </div>
 <jsp:include page="/module/footer.jsp" flush="false" />
 </body>
@@ -63,11 +63,13 @@ if(noticewriter==""||noticewriter!='human'){
 $(document)
 .on('click','#btnDelete',function(){
 	
-	let noticepostnum=$('#viewnoticetable').find('td:eq(1)').text();
+	//let noticepostnum=$('#viewnoticetable').find('td:eq(6)').text();
+	let noticepostnum=$('#noticenum').val();
+	//alert(noticepostnum);
 	let seldelete=confirm("정말 삭제하시겠습니까?");
 	
 	if(seldelete==true){
-		document.location="http://localhost:8080/app/noticedelete/"+noticepostnum;	
+		document.location="/noticedelete/"+noticepostnum;	
 	}
 	else{
 		return false;	

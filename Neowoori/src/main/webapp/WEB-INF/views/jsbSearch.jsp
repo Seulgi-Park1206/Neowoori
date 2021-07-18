@@ -150,7 +150,7 @@ $(document)
 	    	//"studyName" : $('#studyName').val() // 스터디명
 	    },
 	    success : function(data){
-//	    	console.log(data);
+	    	console.log(data);
 	    	datas= new Array(data);
 //	    	console.log(datas[0]);
 	    	//console.log(datas[0][0].mName);
@@ -219,7 +219,7 @@ $(document)
    	$("#modal-body1").append("<tr><td><p class='text-primary'>주소&nbsp</p></td><td>&nbsp"+path.mWhere+" "+path.mWhere3+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>활동요일</p></td><td>&nbsp"+path.mDay+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>시작시간</p></td><td>&nbsp"+path.mTime+"</td></tr>");
-   	$("#modal-body1").append("<tr><td><p class='text-primary'>진행시간</p></td><td>&nbsp"+path.mPtime+"</td></tr>");
+   	$("#modal-body1").append("<tr><td><p class='text-primary'>진행시간</p></td><td>&nbsp"+path.mPTime+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>인원</p></td><td>&nbsp"+path.cnt+"/"+path.mPersonnel+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>난이도</p></td><td>&nbsp"+path.mLevel+"</td></tr>");
    	$("#modal-body1").append("<tr><td><p class='text-primary'>소개</p></td><td></td></tr><tr><td colspan='2'>"+path.mContents+"</td></tr>");

@@ -900,7 +900,7 @@ $(document)
 
 //이전페이지
 .on('click','#btn_back',function(){
-	location.href = document.referrer;
+	location.href = '/meetadmin/'+s_num;
 })
 
 </script>

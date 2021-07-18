@@ -167,7 +167,8 @@ function go_adminBoard(){
 
 // 취소(뒤로가기)
 function cancel(){
-	window.history.back();
+	   var userid = '<%=session.getAttribute("userid")%>';
+	   location.href ='${path}/meetList/'+userid;
 }
 
 // 본문 내용 크기에 맞게 높이 자동 조절

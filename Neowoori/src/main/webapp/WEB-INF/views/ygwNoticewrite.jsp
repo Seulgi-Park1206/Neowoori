@@ -19,7 +19,7 @@
 </div>
 
 <div class="container" style="float:none; margin:0 auto; width:40%;">
-	<form action="/app/noticeserver" method="post">
+	<form action="/noticeserver" method="post">
 	<div class="form-group">
 	<label for=postTitle><strong>제목</strong></label>
 	<input class="form-control" type=text maxlength="25" id=postTitle name=postTitle placeholder="제목을 입력하세요."><br>
@@ -30,7 +30,7 @@
 	</div>
 	<br>
 	<div style="text-align:center;">
-	<input class="btn btn-outline-secondary" type=submit id=noticewrite value=글쓰기>&nbsp;&nbsp;<input class="btn btn-outline-secondary" type=button value=취소 onclick="document.location='http://localhost:8080/app/notice'">
+	<input class="btn btn-outline-secondary" type=submit id=noticewrite value=글쓰기>&nbsp;&nbsp;<input class="btn btn-outline-secondary" type=button value=취소 onclick=listnotice()>
 	</div>
 
 	</form>
@@ -39,6 +39,11 @@
 </body>
 <script src='https://code.jquery.com/jquery-3.5.0.js'></script>
 <script>
+
+function listnotice(){
+	location.href='/notice';
+}
+
 $(document)
 .on('click','#noticewrite',function(){
 	if($('#postTitle').val()==""){
